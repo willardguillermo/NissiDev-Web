@@ -72,7 +72,7 @@
 
 .carrito-modulo__nombre {
   font-size: 0.9375rem;
-  font-weight: 800;
+  font-weight: var(--peso-titulo);
   line-height: 1.25;
 }
 
@@ -125,6 +125,13 @@
   font-size: var(--texto-sm);
   font-weight: 700;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform var(--duracion-toque) var(--ease-out);
+}
+
+.carrito-boton:active {
+  transform: scale(0.97);
 }
 
 .carrito-boton--secundario {
@@ -170,7 +177,7 @@
 
 .carrito-resumen__fila dd {
   margin: 0;
-  font-weight: 800;
+  font-weight: var(--peso-titulo);
 }
 
 .carrito-resumen__inicial {
