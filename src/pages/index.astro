@@ -45,9 +45,11 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
       <TelefonoDemo />
     </div>
     <p class="demo__sello">Demo · datos de ejemplo</p>
-    <button class="demo__boton" type="button" aria-disabled="true" aria-describedby="demo-pronto">
-      Abrir la demo <span id="demo-pronto" class="demo__pronto">Muy pronto</span>
-    </button>
+    <!-- Aún no hay demo que abrir: es un aviso (texto), no un botón, así que no recibe foco.
+         Un lector de pantalla lee "Abrir la demo: muy pronto". -->
+    <p class="demo__aviso">
+      Abrir la demo<span class="solo-lector">:</span> <span class="demo__pronto">Muy pronto</span>
+    </p>
   </section>
 
   <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
@@ -333,19 +335,17 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
     font-size: var(--texto-xs);
   }
 
-  .demo__boton {
+  /* Aviso, no botón: borde punteado y texto suave para que no parezca algo que se puede tocar */
+  .demo__aviso {
     display: inline-flex;
     align-items: center;
     gap: var(--espacio-2);
     min-height: 3rem;
     padding-inline: 1.375rem var(--espacio-2);
-    background: transparent;
-    color: var(--texto);
-    border: 0;
+    color: var(--texto-suave);
+    border: 1px dashed var(--color-punteado);
     border-radius: var(--radio-pildora);
-    box-shadow: inset 0 0 0 1px rgb(30 31 34 / 0.18);
     font-weight: 600;
-    cursor: not-allowed;
   }
 
   .demo__pronto {
