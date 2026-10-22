@@ -27,7 +27,7 @@
    - El total separa la **inversión inicial** de la **mensualidad**.
    - Hay un carrito sugerido de **"Dulcería"** que se carga con un clic.
 4. **Cotización:**
-   - Lleva **número automático** (formato `NSD-AAAA-NNN`, siguiendo a NSD-2026-001) y **validez de 15 días**.
+   - Lleva un **código único** generado en el navegador, sin correlativo (formato `NSD-AAAA-XXXX`, ej. `NSD-2026-K7Q3`), y **validez de 15 días**.
    - Muestra un resumen del carrito que se puede guardar como PDF con la opción de imprimir del navegador.
    - Tiene un botón que abre WhatsApp al **+51 913 351 627** con el resumen ya escrito.
    - Los precios se indican como **referenciales**.
@@ -54,7 +54,7 @@
 | Estilos | CSS propio con variables (tokens) | Control total del diseño; sin librería de componentes |
 | Calidad | Vitest, ESLint, `astro check` | Probar la lógica del carrito, la cotización y la demo |
 | Hosting | **Cloudflare Pages** conectado al repo de GitHub | Gratis; cada push publica; cada rama tiene un enlace de vista previa |
-| Repo | GitHub `willardguillermo/nissidev-web` (público) | Versiones, respaldo y portafolio |
+| Repo | GitHub `willardguillermo/NissiDev-Web` (público) | Versiones, respaldo y portafolio |
 | Carpeta local | `~/Proyectos Personales/nissidev-web` (Mac) | Separada de las carpetas de cursos |
 | PDF | Hoja de estilos de impresión + "Guardar como PDF" | Sin dependencias extra |
 | Analítica | **Cloudflare Web Analytics** | Gratis y sin cookies |
@@ -98,7 +98,7 @@ Todo vive en archivos del repo, sin base de datos. Los montos se guardan en cén
 | **Módulo de servicio** | id, nombre, descripción para dueños, precio inicial "desde" (vacío = "Cotizar"), mensualidad (opcional), dependencias (otros módulos), etapa en que está disponible |
 | **Carrito sugerido** | rubro, lista de módulos |
 | **Carrito** | módulos elegidos, total inicial, total mensual, ¿incluye módulos "Cotizar"? |
-| **Cotización** | número (`NSD-AAAA-NNN`), fecha, válida hasta (fecha + 15 días), módulos, totales, rubro, nombre del negocio (opcional), aviso de precios referenciales, texto para WhatsApp |
+| **Cotización** | código (`NSD-AAAA-XXXX`), fecha, válida hasta (fecha + 15 días), módulos, totales, rubro, nombre del negocio (opcional), aviso de precios referenciales, texto para WhatsApp |
 
 **Módulos del carrito y su referencia de precio** (de la proforma NSD-2026-001):
 
@@ -159,7 +159,7 @@ Regla: el stock y las cantidades se piensan en unidad base, y el pedido guarda e
 - Imágenes: ilustraciones simples o marcadores; se reemplazan después por fotos de Guillermo.
 - Catálogo web: **desde S/ 700**.
 - Textos: primer borrador de Claude Code, corregido por Guillermo.
-- Cotización: número automático `NSD-AAAA-NNN` y validez de 15 días.
+- Cotización: código único `NSD-AAAA-XXXX` generado en el navegador (sin servidor ni correlativo) y validez de 15 días.
 - Analítica: Cloudflare Web Analytics.
 
 **Pendientes (no bloquean el inicio):**

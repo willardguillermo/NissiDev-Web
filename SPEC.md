@@ -40,7 +40,7 @@ Decisión en `docs/decisions/ADR-001-astro-con-islas-de-react.md`.
 - Lint: `npm run lint`
 
 ## Estructura
-Carpeta en la Mac: `~/Proyectos Personales/nissidev-web` (aparte de las carpetas por curso) · repo `willardguillermo/nissidev-web`.
+Carpeta en la Mac: `~/Proyectos Personales/nissidev-web` (aparte de las carpetas por curso) · repo `willardguillermo/NissiDev-Web`.
 ```
 nissidev-web/
 ├── SPEC.md · AGENTS.md · CLAUDE.md · README.md
@@ -102,11 +102,11 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 
 ## Supuestos
 1. Es un sitio **solo frontend**; no hay base de datos ni login en el MVP.
-2. Un repo nuevo y **público** en GitHub (`willardguillermo/nissidev-web`), que también suma al portafolio.
+2. Un repo nuevo y **público** en GitHub (`willardguillermo/NissiDev-Web`), que también suma al portafolio.
 3. Precios "desde" tomados de la proforma NSD-2026-001 (catálogo, panel, mantenimiento, caja). **Reservas, Inventario, Boletas SUNAT y Chatbot muestran "Cotizar"** (decidido).
 4. El PDF se genera con la impresión del navegador ("Guardar como PDF") y una hoja de estilos de impresión, sin librería extra.
 5. Las imágenes de productos de la demo son ilustraciones o marcadores propios, no fotos de marcas.
-6. El código lo escribe Guillermo con Claude Code en la terminal, a partir de prompts por tarea que prepara Claude; cada tarea termina en un commit.
+6. El código lo escribe Guillermo con Claude Code en la terminal, a partir de prompts por tarea que prepara Claude; cada tarea termina en un commit (implementar → test → verificar → commit). En cada punto de control del plan, Codex revisa (`/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar) y se aplica lo que corresponda antes de seguir.
 
 ## Decisiones tomadas (2026-10-21)
 - Código en una carpeta de la Mac + repo en GitHub + Cloudflare Pages conectado al repo.
@@ -115,7 +115,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - Módulos sin precio de referencia: "Cotizar".
 
 - Demo: **Dulcería La Golosa**, ~30 productos genéricos sin marcas reales; ilustraciones o marcadores como imágenes.
-- Catálogo web desde S/ 700 · cotización con número `NSD-AAAA-NNN` y 15 días de validez · Cloudflare Web Analytics.
+- Catálogo web desde S/ 700 · cotización con código único `NSD-AAAA-XXXX` (sin correlativo) y 15 días de validez · Cloudflare Web Analytics.
 - Textos: borrador de Claude Code, corregido por Guillermo.
 
 ## Preguntas abiertas

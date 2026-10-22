@@ -15,7 +15,7 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima 
 - GSAP + ScrollTrigger, Lenis y View Transitions de Astro para animación
 - CSS propio con variables en `src/styles/tokens.css`
 - Vitest, ESLint, `astro check`
-- Cloudflare Pages conectado a GitHub (`willardguillermo/nissidev-web`)
+- Cloudflare Pages conectado a GitHub (`willardguillermo/NissiDev-Web`)
 
 ## Comandos
 - Instalar: `npm install`
@@ -53,9 +53,10 @@ Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/l
 
 ## Revisión con Codex
 - Claude Code implementa; Codex revisa con el plugin `/codex`.
-- Al terminar el plan, o una tarea, **no** hacer commit: detenerse y escribir "Listo para /codex:review".
+- La revisión de Codex se hace en cada **punto de control** de `tasks/plan.md`, no en cada tarea.
+- Tareas intermedias: implementar → test → verificar → commit.
+- Al llegar a un punto de control: detenerse y escribir "Listo para revisión de Codex". Guillermo elige el comando: `/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar.
 - Cuando Guillermo pegue la revisión de Codex, evaluar cada punto: aplicar lo correcto y explicar por qué se descarta lo demás. Después, hacer el commit.
-- Así, el ciclo de cada tarea queda: implementar → test → verificar → revisión de Codex → commit.
 - Si se falla dos veces con el mismo error, detenerse y sugerir `/codex:rescue`.
 
 ## Git
