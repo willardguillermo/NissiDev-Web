@@ -5,8 +5,8 @@ import { CARRITO_VACIO, type Carrito } from '../carrito/carrito';
 import { $carrito, agregar, quitar } from '../carrito/store';
 import { avisoAgregar, avisoQuitar } from '../carrito/textos';
 
-// Comportamiento compartido por las islas que editan el carrito (Arma tu sistema y el mini carrito del
-// Inicio): mismas reglas, confirmaciones, avisos y manejo del foco.
+// Comportamiento de las islas que editan el carrito (hoy, Arma tu sistema): reglas, confirmaciones,
+// avisos y manejo del foco, separados del dibujo para que otra isla pueda reutilizarlos.
 
 /** Dónde ocurrió la última acción: la tarjeta de un módulo o el bloque del carrito sugerido. */
 export type Lugar = ModuloId | 'sugerido';
