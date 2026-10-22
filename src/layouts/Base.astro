@@ -121,11 +121,13 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <footer class="pie zona-oscura">
+    <!-- Como el cierre del video: logo, NissiDev, WhatsApp y el número -->
+    <footer class="pie">
       <div class="contenedor pie__fila">
-        <h2 class="pie__titulo">¿Lo conversamos?</h2>
-        <Boton href={WHATSAPP_ENLACE} variante="dorado" externo>WhatsApp {WHATSAPP_VISIBLE}</Boton>
-        <p class="pie__nota">NissiDev · Webs y sistemas para negocios del Este de Lima</p>
+        <Logo class="pie__logo" />
+        <p class="pie__marca">NissiDev</p>
+        <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
+        <p class="pie__numero">{WHATSAPP_VISIBLE}</p>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
       </div>
     </footer>
@@ -370,32 +372,38 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .pie {
-    margin-top: var(--espacio-14);
-    padding-block: var(--espacio-8) var(--espacio-12);
-    background: var(--fondo-oscuro);
-    color: var(--texto-sobre-oscuro);
+    margin-top: var(--espacio-24);
+    padding-block: var(--espacio-12) var(--espacio-16);
+    border-top: 1px solid var(--color-linea);
   }
 
   .pie__fila {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--espacio-3);
-    justify-items: stretch;
+    text-align: center;
   }
 
-  @media (min-width: 48rem) {
-    .pie__fila {
-      justify-items: start;
-    }
+  .pie :global(.pie__logo) {
+    width: 2.75rem;
   }
 
-  .pie__titulo {
-    font-size: 1.625rem;
-    font-weight: 800;
-    letter-spacing: -0.023em;
+  .pie__marca {
+    margin-bottom: var(--espacio-2);
+    font-size: 1.375rem;
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.02em;
+  }
+
+  .pie__numero {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
 
   .pie__nota {
-    color: var(--nota-sobre-oscuro);
-    font-size: var(--texto-sm);
+    margin-top: var(--espacio-4);
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
   }
 </style>

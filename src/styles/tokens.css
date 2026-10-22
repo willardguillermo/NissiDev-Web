@@ -88,7 +88,7 @@
   --borde-sutil: 0 0 0 1px rgb(30 31 34 / 0.12);
   --sombra-tarjeta: 0 18px 40px rgb(30 31 34 / 0.1);
   --sombra-flotante: 0 20px 40px rgb(30 31 34 / 0.25);
-  --sombra-telefono: 0 0 0 1px #34353a, 0 30px 60px rgb(0 0 0 / 0.5);
+  --sombra-telefono: 0 0 0 1px #34353a, 0 30px 60px rgb(30 31 34 / 0.22); /* sobre fondo claro */
 
   /* Movimiento (reglas de Emil Kowalski, ver docs/diseño.md): solo transform, opacity y blur ≤ 4 px */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* entradas y respuesta a la interfaz */
