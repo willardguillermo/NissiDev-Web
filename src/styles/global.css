@@ -1,5 +1,14 @@
 @import './tokens.css';
 
+/* Manrope variable (subconjunto latino: incluye á, ñ, ¿, ¡). Licencia en public/fonts/Manrope-OFL.txt */
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-latin-wght.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Reset mínimo */
 *,
 *::before,
@@ -16,7 +25,10 @@ html {
   text-size-adjust: 100%;
 }
 
+/* El footer queda abajo aunque la página sea corta */
 body {
+  display: flex;
+  flex-direction: column;
   min-height: 100dvh;
   background: var(--fondo);
   color: var(--texto);
@@ -24,6 +36,10 @@ body {
   font-size: var(--texto-md);
   line-height: var(--interlineado);
   -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
 }
 
 h1,
@@ -56,6 +72,22 @@ select {
 
 a {
   color: inherit;
+}
+
+/* Contenedor de página */
+.contenedor {
+  width: min(100% - 2 * var(--margen-lateral), var(--ancho-max));
+  margin-inline: auto;
+}
+
+/* Oculto a la vista pero leído por lectores de pantalla */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Foco visible solo con teclado */

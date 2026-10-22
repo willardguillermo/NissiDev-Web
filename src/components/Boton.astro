@@ -1,0 +1,61 @@
+---
+// Con href es un enlace; sin href, un <button>.
+interface Props {
+  href?: string;
+  variante?: 'primario' | 'secundario';
+  type?: 'button' | 'submit';
+  externo?: boolean;
+}
+
+const { href, variante = 'primario', type = 'button', externo = false } = Astro.props;
+const clases = ['boton', `boton--${variante}`];
+---
+
+{
+  href ? (
+    <a
+      class:list={clases}
+      href={href}
+      target={externo ? '_blank' : undefined}
+      rel={externo ? 'noopener noreferrer' : undefined}
+    >
+      <slot />
+      {externo && <span class="solo-lector">(se abre en otra pestaña)</span>}
+    </a>
+  ) : (
+    <button class:list={clases} type={type}>
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacio-2);
+    min-height: 3rem;
+    padding: var(--espacio-3) var(--espacio-6);
+    border: 2px solid var(--texto);
+    border-radius: var(--radio-pildora);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform var(--duracion-corta) var(--curva-salida);
+  }
+
+  .boton:active {
+    transform: scale(0.97);
+  }
+
+  .boton--primario {
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+  }
+
+  .boton--secundario {
+    background: transparent;
+    color: var(--texto);
+  }
+</style>

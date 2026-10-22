@@ -1,0 +1,233 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+}
+
+const {
+  titulo,
+  descripcion = 'NissiDev: sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
+} = Astro.props;
+const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
+
+// Las páginas se crean en T05 y T21–T23; hasta entonces estos enlaces dan 404.
+const enlaces = [
+  { href: '/', texto: 'Inicio' },
+  { href: '/servicios', texto: 'Servicios' },
+  { href: '/demos', texto: 'Demos' },
+  { href: '/arma-tu-sistema', texto: 'Arma tu sistema' },
+  { href: '/contacto', texto: 'Contacto' },
+];
+const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
+const enlaceWhatsApp = 'https://wa.me/51913351627';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#1e1f22" />
+    <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+    <header class="cabecera">
+      <div class="contenedor cabecera__fila">
+        <a class="logo" href="/" aria-label="NissiDev, ir al inicio">Nissi<span>Dev</span></a>
+
+        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
+          Menú
+        </button>
+
+        <nav id="menu-principal" class="menu" aria-label="Principal">
+          <ul>
+            {
+              enlaces.map(({ href, texto }) => (
+                <li>
+                  <a href={href} aria-current={rutaActual === href ? 'page' : undefined}>
+                    {texto}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="pie">
+      <div class="contenedor pie__fila">
+        <p class="logo logo--oscuro">Nissi<span>Dev</span></p>
+        <p>
+          <a href={enlaceWhatsApp} target="_blank" rel="noopener noreferrer">
+            WhatsApp: +51 913 351 627<span class="solo-lector"> (se abre en otra pestaña)</span>
+          </a>
+        </p>
+        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
+      </div>
+    </footer>
+
+    <script>
+      // Menú móvil: sin JavaScript el menú queda siempre visible.
+      const cabecera = document.querySelector<HTMLElement>('.cabecera');
+      const boton = document.querySelector<HTMLButtonElement>('.menu-boton');
+      const menu = document.getElementById('menu-principal');
+
+      if (cabecera && boton && menu) {
+        const movil = window.matchMedia('(max-width: 47.99rem)');
+
+        const abrir = (abierto: boolean) => {
+          boton.setAttribute('aria-expanded', String(abierto));
+          cabecera.dataset.menu = abierto ? 'abierto' : 'cerrado';
+        };
+
+        boton.hidden = false;
+        abrir(false);
+
+        boton.addEventListener('click', () => abrir(boton.getAttribute('aria-expanded') !== 'true'));
+
+        document.addEventListener('keydown', (evento) => {
+          if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+            abrir(false);
+            boton.focus();
+          }
+        });
+
+        menu.addEventListener('click', (evento) => {
+          if (movil.matches && (evento.target as HTMLElement).closest('a')) abrir(false);
+        });
+
+        movil.addEventListener('change', () => abrir(false));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .saltar {
+    position: absolute;
+    top: var(--espacio-2);
+    left: var(--espacio-2);
+    z-index: 10;
+    padding: var(--espacio-2) var(--espacio-4);
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+    border-radius: var(--radio-sm);
+    transform: translateY(-200%);
+  }
+
+  .saltar:focus {
+    transform: none;
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  .cabecera {
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .cabecera__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espacio-2) var(--espacio-4);
+    min-height: 4rem;
+  }
+
+  .logo {
+    font-size: var(--texto-lg);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--acento-texto);
+  }
+
+  .logo--oscuro span {
+    color: var(--acento);
+  }
+
+  .menu-boton {
+    min-height: 2.75rem;
+    padding: var(--espacio-2) var(--espacio-4);
+    background: transparent;
+    border: 2px solid var(--texto);
+    border-radius: var(--radio-pildora);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .menu ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacio-1) var(--espacio-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu a {
+    display: inline-block;
+    padding-block: var(--espacio-2);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .menu a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--acento);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+  }
+
+  @media (max-width: 47.99rem) {
+    .menu {
+      flex-basis: 100%;
+      padding-bottom: var(--espacio-4);
+    }
+
+    .menu ul {
+      flex-direction: column;
+    }
+
+    .cabecera[data-menu='cerrado'] .menu {
+      display: none;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .menu-boton {
+      display: none;
+    }
+  }
+
+  .pie {
+    margin-top: var(--espacio-16);
+    padding-block: var(--espacio-12);
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+  }
+
+  .pie__fila {
+    display: grid;
+    gap: var(--espacio-3);
+  }
+
+  .pie__nota {
+    color: var(--texto-suave-sobre-oscuro);
+    font-size: var(--texto-sm);
+  }
+</style>

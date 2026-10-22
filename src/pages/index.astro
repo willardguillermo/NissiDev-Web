@@ -1,15 +1,27 @@
 ---
-import '../styles/global.css';
+import Boton from '../components/Boton.astro';
+import Tarjeta from '../components/Tarjeta.astro';
+import Base from '../layouts/Base.astro';
 ---
 
-<html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>NissiDev</title>
-	</head>
-	<body>
-		<h1>NissiDev</h1>
-		<p>Sitio en construcción.</p>
-	</body>
-</html>
+<Base titulo="NissiDev">
+  <section class="contenedor provisional">
+    <h1>NissiDev</h1>
+    <Tarjeta titulo="Sitio en construcción">
+      <p>Pronto podrás probar la demo del sistema de tu negocio y armar tu cotización.</p>
+      <Boton href="https://wa.me/51913351627" externo>Escríbeme por WhatsApp</Boton>
+    </Tarjeta>
+  </section>
+</Base>
+
+<style>
+  .provisional {
+    display: grid;
+    gap: var(--espacio-8);
+    padding-block: var(--espacio-12);
+  }
+
+  h1 {
+    font-size: var(--texto-2xl);
+  }
+</style>

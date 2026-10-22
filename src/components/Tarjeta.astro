@@ -1,0 +1,30 @@
+---
+interface Props {
+  titulo?: string;
+  nivel?: 2 | 3;
+}
+
+const { titulo, nivel = 2 } = Astro.props;
+const Encabezado = `h${nivel}` as const;
+---
+
+<article class="tarjeta">
+  {titulo && <Encabezado class="tarjeta__titulo">{titulo}</Encabezado>}
+  <slot />
+</article>
+
+<style>
+  .tarjeta {
+    display: grid;
+    gap: var(--espacio-4);
+    padding: var(--espacio-6);
+    background: var(--fondo-elevado);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-lg);
+    box-shadow: var(--sombra-suave);
+  }
+
+  .tarjeta__titulo {
+    font-size: var(--texto-lg);
+  }
+</style>

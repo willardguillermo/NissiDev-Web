@@ -27,8 +27,8 @@
   --borde: color-mix(in srgb, var(--color-negro) 15%, transparent);
   --foco: var(--color-dorado-texto);
 
-  /* Tipografía (la familia se define en T04) */
-  --fuente-base: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Tipografía: Manrope (OFL), servida desde public/fonts */
+  --fuente-base: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --texto-xs: 0.8125rem;
   --texto-sm: 0.9375rem;
   --texto-md: 1.0625rem;
