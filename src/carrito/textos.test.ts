@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { agregarModulo, CARRITO_VACIO, quitarModulo } from './carrito';
-import { avisoAgregar, avisoQuitar, preguntaQuitar, textoTotales, unirNombres } from './textos';
+import {
+  avisoAgregar,
+  avisoQuitar,
+  avisoSugerido,
+  preguntaQuitar,
+  preguntaReemplazar,
+  textoTotales,
+  unirNombres,
+} from './textos';
 
 describe('unirNombres', () => {
   it('une en español', () => {
@@ -75,5 +83,18 @@ describe('textoTotales', () => {
       notaCotizar: '+ módulos por cotizar',
       mensual: 'S/ 140/mes',
     });
+  });
+});
+
+describe('carrito sugerido', () => {
+  it('aviso al cargar', () => {
+    expect(avisoSugerido('Dulcería', { items: ['catalogo-web', 'pedidos-whatsapp', 'panel-dueno'] })).toBe(
+      'Cargaste el sistema para Dulcería: Catálogo web, Pedidos por WhatsApp y Panel del dueño.',
+    );
+  });
+
+  it('pregunta antes de reemplazar, en singular y plural', () => {
+    expect(preguntaReemplazar(1)).toBe('Esto reemplaza el módulo que ya elegiste. ¿Continuar?');
+    expect(preguntaReemplazar(4)).toBe('Esto reemplaza los 4 módulos que ya elegiste. ¿Continuar?');
   });
 });

@@ -1,6 +1,6 @@
 import { obtenerModulo, type ModuloId } from '../catalogo-servicios/modulos';
 import { formatearSoles } from '../ui/formato';
-import type { ResultadoAgregar, ResultadoQuitar, Totales } from './carrito';
+import type { Carrito, ResultadoAgregar, ResultadoQuitar, Totales } from './carrito';
 
 const nombre = (id: ModuloId) => obtenerModulo(id).nombre;
 
@@ -50,4 +50,14 @@ export function textoTotales({ inicial, mensual, incluyeCotizar }: Totales): Tex
     notaCotizar: inicial > 0 && incluyeCotizar ? '+ módulos por cotizar' : undefined,
     mensual: mensual > 0 ? `${formatearSoles(mensual)}/mes` : 'Sin mensualidad',
   };
+}
+
+export function avisoSugerido(nombreRubro: string, carrito: Carrito): string {
+  return `Cargaste el sistema para ${nombreRubro}: ${unirNombres(carrito.items)}.`;
+}
+
+export function preguntaReemplazar(cantidad: number): string {
+  return cantidad === 1
+    ? 'Esto reemplaza el módulo que ya elegiste. ¿Continuar?'
+    : `Esto reemplaza los ${cantidad} módulos que ya elegiste. ¿Continuar?`;
 }

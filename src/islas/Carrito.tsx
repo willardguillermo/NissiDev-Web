@@ -3,14 +3,28 @@ import { useEffect, useRef, useState } from 'react';
 import { MODULOS, obtenerModulo, type ModuloId } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { calcularTotales, CARRITO_VACIO } from '../carrito/carrito';
-import { $carrito, agregar, quitar } from '../carrito/store';
-import { avisoAgregar, avisoQuitar, preguntaQuitar, textoTotales } from '../carrito/textos';
+import { $carrito, agregar, cargarSugeridoEnStore, quitar } from '../carrito/store';
+import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
+import {
+  avisoAgregar,
+  avisoQuitar,
+  avisoSugerido,
+  preguntaQuitar,
+  preguntaReemplazar,
+  textoTotales,
+  unirNombres,
+} from '../carrito/textos';
 import './Carrito.css';
 
 interface Pendiente {
   id: ModuloId;
   afectados: ModuloId[];
 }
+
+/** Dónde ocurrió la última acción: la tarjeta de un módulo o el bloque del carrito sugerido. */
+type Lugar = ModuloId | 'sugerido';
+
+const SUGERIDO = CARRITOS_SUGERIDOS.dulceria;
 
 export default function Carrito() {
   const guardado = useStore($carrito);
@@ -20,16 +34,17 @@ export default function Carrito() {
   const carrito = montado ? guardado : CARRITO_VACIO;
 
   // El aviso se ve en la tarjeta donde se actuó y se anuncia en una región solo para lectores.
-  const [aviso, setAviso] = useState<{ id: ModuloId; texto: string } | null>(null);
+  const [aviso, setAviso] = useState<{ id: Lugar; texto: string } | null>(null);
   const [pendiente, setPendiente] = useState<Pendiente | null>(null);
-  const botones = useRef(new Map<ModuloId, HTMLButtonElement>());
+  const [pendienteSugerido, setPendienteSugerido] = useState(false);
+  const botones = useRef(new Map<Lugar, HTMLButtonElement>());
   const cancelar = useRef<HTMLButtonElement>(null);
-  // Al cerrar la confirmación, el botón del módulo se vuelve a dibujar: el foco se mueve después de dibujar.
-  const [enfocar, setEnfocar] = useState<ModuloId | null>(null);
+  // Al cerrar una confirmación, el botón se vuelve a dibujar: el foco se mueve después de dibujar.
+  const [enfocar, setEnfocar] = useState<Lugar | null>(null);
 
   useEffect(() => {
-    if (pendiente) cancelar.current?.focus();
-  }, [pendiente]);
+    if (pendiente || pendienteSugerido) cancelar.current?.focus();
+  }, [pendiente, pendienteSugerido]);
 
   useEffect(() => {
     if (!enfocar) return;
@@ -44,6 +59,7 @@ export default function Carrito() {
     }
     const resultado = quitar(id);
     if (resultado.estado === 'requiere-confirmacion') {
+      setPendienteSugerido(false);
       setPendiente({ id, afectados: resultado.afectados });
       return;
     }
@@ -62,11 +78,71 @@ export default function Carrito() {
     setEnfocar(id);
   };
 
+  const pedirSugerido = () => {
+    if (mismoContenido(carrito, cargarSugerido('dulceria'))) {
+      setAviso({ id: 'sugerido', texto: `Ya tienes cargado el sistema para ${SUGERIDO.nombre}.` });
+    } else if (carrito.items.length > 0) {
+      setPendiente(null);
+      setPendienteSugerido(true);
+    } else {
+      aplicarSugerido();
+    }
+  };
+
+  const aplicarSugerido = () => {
+    const nuevo = cargarSugeridoEnStore('dulceria');
+    setAviso({ id: 'sugerido', texto: avisoSugerido(SUGERIDO.nombre, nuevo) });
+    setPendienteSugerido(false);
+    setEnfocar('sugerido');
+  };
+
+  const cancelarSugerido = () => {
+    setPendienteSugerido(false);
+    setEnfocar('sugerido');
+  };
+
+  const registrarBoton = (lugar: Lugar) => (boton: HTMLButtonElement | null) => {
+    if (boton) botones.current.set(lugar, boton);
+    else botones.current.delete(lugar);
+  };
+
   const totales = textoTotales(calcularTotales(carrito));
   const cantidad = carrito.items.length;
 
   return (
     <div className="carrito">
+      <section className="carrito-sugerido" aria-labelledby="sugerido-titulo">
+        <h2 id="sugerido-titulo">¿Tienes una dulcería?</h2>
+        <p>Empieza con lo que suele necesitar una dulcería: {unirNombres([...SUGERIDO.modulos])}.</p>
+        {pendienteSugerido ? (
+          <div className="carrito-confirmar" role="group" aria-labelledby="pregunta-sugerido">
+            <p id="pregunta-sugerido">{preguntaReemplazar(cantidad)}</p>
+            <div className="carrito-confirmar__botones">
+              <button type="button" className="carrito-boton" onClick={aplicarSugerido}>
+                Sí, reemplazar
+              </button>
+              <button
+                ref={cancelar}
+                type="button"
+                className="carrito-boton carrito-boton--secundario"
+                onClick={cancelarSugerido}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button ref={registrarBoton('sugerido')} type="button" className="carrito-boton" onClick={pedirSugerido}>
+            Cargar sistema para {SUGERIDO.nombre}
+          </button>
+        )}
+        {aviso?.id === 'sugerido' && (
+          <p className="carrito-modulo__aviso" aria-hidden="true">
+            {aviso.texto}
+          </p>
+        )}
+      </section>
+
       <ul className="carrito-modulos" role="list">
         {MODULOS.map((modulo) => {
           const elegido = carrito.items.includes(modulo.id);
@@ -99,10 +175,7 @@ export default function Carrito() {
                 </div>
               ) : (
                 <button
-                  ref={(boton) => {
-                    if (boton) botones.current.set(modulo.id, boton);
-                    else botones.current.delete(modulo.id);
-                  }}
+                  ref={registrarBoton(modulo.id)}
                   type="button"
                   className={elegido ? 'carrito-boton carrito-boton--secundario' : 'carrito-boton'}
                   onClick={() => alternar(modulo.id)}

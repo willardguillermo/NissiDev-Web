@@ -3,6 +3,19 @@
   gap: var(--espacio-6);
 }
 
+.carrito-sugerido {
+  display: grid;
+  gap: var(--espacio-3);
+  padding: var(--espacio-6);
+  background: var(--fondo-elevado);
+  border: 2px dashed var(--acento);
+  border-radius: var(--radio-lg);
+}
+
+.carrito-sugerido h2 {
+  font-size: var(--texto-lg);
+}
+
 .carrito-modulos {
   display: grid;
   gap: var(--espacio-4);
