@@ -21,10 +21,10 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima 
 - Instalar: `npm install`
 - Desarrollo: `npm run dev` (http://localhost:4321)
 - Compilar: `npm run build` · Ver lo compilado: `npm run preview`
-- Tipos: `npx astro check`
-- Tests: `npm test`
-- Lint: `npm run lint`
-> Confirmar los nombres reales de los scripts en `package.json` cuando exista.
+- Tipos: `npm run check` (= `astro check`)
+- Tests: `npm test` (= `vitest run`)
+- Lint: `npm run lint` (= `eslint .`)
+- Node ≥ 22.23.4 (lo exige Astro 7). TypeScript se queda en 6.0.x: la 7 aún no es compatible con `@astrojs/check` ni con typescript-eslint.
 
 ## Primera vez (el repo aún no está creado)
 - La carpeta ya tiene documentos. Si `npm create astro` se niega porque la carpeta no está vacía, crear el proyecto en una carpeta temporal y mover los archivos aquí sin pisar `BRIEF.md`, `SPEC.md`, `AGENTS.md`, `CLAUDE.md` ni `docs/`.
