@@ -46,7 +46,7 @@ export const MODULOS: readonly ModuloServicio[] = [
   {
     id: 'panel-dueno',
     nombre: 'Panel del dueño',
-    descripcion: 'Ves en un solo lugar cuánto vendiste hoy, lo que más sale y cómo va cada local.',
+    descripcion: 'Ves en un solo lugar cuánto vendiste hoy, lo que más sale y cómo va cada local o puesto.',
     precioInicial: { tipo: 'desde', centimos: 50000 },
     dependencias: ['catalogo-web'],
   },
@@ -75,7 +75,7 @@ export const MODULOS: readonly ModuloServicio[] = [
   {
     id: 'boletas-sunat',
     nombre: 'Boletas SUNAT',
-    descripcion: 'Emites boletas electrónicas desde la caja, sin llenarlas a mano.',
+    descripcion: 'Emites boletas electrónicas válidas para SUNAT al momento de vender, desde la caja.',
     precioInicial: { tipo: 'cotizar' },
     dependencias: ['caja'],
   },
@@ -89,7 +89,8 @@ export const MODULOS: readonly ModuloServicio[] = [
   {
     id: 'mantenimiento',
     nombre: 'Mantenimiento',
-    descripcion: 'Tu sistema siempre funcionando: copias de seguridad, ajustes pequeños y soporte cuando lo necesites.',
+    descripcion:
+      'Nos encargamos de que tu sistema siga funcionando: copias de seguridad, ajustes pequeños y soporte cuando lo necesites.',
     precioInicial: { tipo: 'ninguno' },
     mensualidad: 8000,
     dependencias: [],
