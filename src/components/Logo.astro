@@ -8,10 +8,15 @@ interface Props {
 }
 
 const { etiqueta, class: clase } = Astro.props;
-const accesible = etiqueta ? { role: 'img', 'aria-label': etiqueta } : { 'aria-hidden': 'true' as const };
 ---
 
-<svg class:list={['logo-marca', clase]} viewBox="0 0 879 1121" {...accesible}>
+<svg
+  class:list={['logo-marca', clase]}
+  viewBox="0 0 879 1121"
+  role={etiqueta ? 'img' : undefined}
+  aria-label={etiqueta}
+  aria-hidden={etiqueta ? undefined : 'true'}
+>
   <path class="pz p-tl" fill="#1E1F22" d="M222 0 L210 5 L82 76 L72 90 L71 105 L75 115 L84 124 L213 204 L223 208 L234 208 L247 202 L253 195 L257 185 L257 24 L253 13 L244 4 L234 0Z"></path>
   <path class="pz p-bl" fill="#1E1F22" d="M25 526 L12 531 L5 538 L0 551 L0 953 L5 967 L12 974 L23 979 L35 979 L51 972 L240 868 L251 859 L257 845 L257 673 L252 662 L242 653 L44 530 L33 526Z"></path>
   <path class="pz p-tr" fill="#1E1F22" d="M844 142 L828 149 L639 253 L628 262 L622 276 L622 447 L629 461 L638 468 L833 589 L845 594 L856 594 L866 590 L872 585 L879 570 L879 168 L874 154 L867 147 L856 142Z"></path>
