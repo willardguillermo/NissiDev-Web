@@ -1,0 +1,96 @@
+---
+import Tarjeta from '../components/Tarjeta.astro';
+import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
+import { textoPrecio } from '../catalogo-servicios/precio';
+import Base from '../layouts/Base.astro';
+
+const modulos = MODULOS.map((modulo) => ({
+  ...modulo,
+  precio: textoPrecio(modulo),
+  necesita: modulo.dependencias.map((id) => obtenerModulo(id).nombre),
+}));
+---
+
+<Base
+  titulo="Arma tu sistema"
+  descripcion="Elige las funciones que necesita tu negocio y mira cuánto costaría. Precios referenciales."
+>
+  <section class="contenedor arma">
+    <header class="arma__intro">
+      <h1>Arma tu sistema</h1>
+      <p>Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
+      <p class="aviso" role="note">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
+    </header>
+
+    <ul class="modulos" role="list">
+      {
+        modulos.map((modulo) => (
+          <li>
+            <Tarjeta titulo={modulo.nombre}>
+              <p>{modulo.descripcion}</p>
+              <p class="modulo__precio">{modulo.precio}</p>
+              {modulo.necesita.length > 0 && (
+                <p class="modulo__nota">Necesita: {modulo.necesita.join(', ')}</p>
+              )}
+              {modulo.requiereOtroModulo && <p class="modulo__nota">Se agrega junto a otro módulo.</p>}
+            </Tarjeta>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .arma {
+    display: grid;
+    gap: var(--espacio-8);
+    padding-block: var(--espacio-12);
+  }
+
+  .arma__intro {
+    display: grid;
+    gap: var(--espacio-3);
+  }
+
+  h1 {
+    font-size: var(--texto-xl);
+  }
+
+  .aviso {
+    padding: var(--espacio-3) var(--espacio-4);
+    border-left: 4px solid var(--acento);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-sm);
+    font-size: var(--texto-sm);
+  }
+
+  .modulos {
+    display: grid;
+    gap: var(--espacio-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .modulos {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .modulos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .modulo__precio {
+    font-size: var(--texto-lg);
+    font-weight: 800;
+  }
+
+  .modulo__nota {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+</style>
