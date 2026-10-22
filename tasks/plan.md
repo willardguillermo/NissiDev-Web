@@ -99,7 +99,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests: formato `NSD-2026-K7Q3` (año de la fecha, 4 caracteres del alfabeto sin 0/O/1/I/L), validez cruzando fin de mes y de año.
 - **Verificación:** `npm test`.
 
-### TD1 · Dirección visual de NissiDev — ✅ hecha en `feature/td1-diseno` (falta unirla a `main` cuando Guillermo la apruebe)
+### TD1 · Dirección visual de NissiDev — ✅ unida a `main` en `808f12d` (PR #1)
 - **Primera versión (2026-10-21), descartada:** dirección B "Papel y oro" + momento A (la N en 3D), commits `f1346da`…`0f0bb60`. Parecía una plantilla y no se parecía a la marca.
 - **Elegida (2026-10-22): Ensamble**, sacada del video oficial de la marca. Referencia en `docs/referencias/td1/prototipo-ensamble.html` y el logo en `docs/referencias/marca/`; detalle en `docs/diseño.md`.
 - **Partes y commits:** E1 referencias, `diseño.md` y tokens `cfbae25` · E2 logo en el header y favicon `3154f5c` + `8d096e8` · E3 hero con el logo que se arma `cde9b18` + `cd1c3f3` · E4 rotador de servicios `9712ffd` · E5 resto del Inicio y footer `2d91517` · E6 Arma tu sistema `8b7a06b` · E7 movimiento con CSS, sin GSAP ni Lenis `864ce73`.
@@ -107,10 +107,10 @@ Además de los criterios de cada tarea:
 - **Se resolvieron aquí:** parte de la **T21** (Inicio de NissiDev) y toda la **T24** y la **T25**, con CSS en vez de librerías (ADR-002).
 - **Qué:** Guillermo define con Claude la dirección visual de la web de NissiDev a partir de un boceto de **Inicio** y de **Arma tu sistema** (tipografía, color, ritmo, tono de las imágenes, componentes). Los tokens y componentes de las T03–T04 son provisionales.
 - **Al terminar:** se actualizan `src/styles/tokens.css` y los componentes (`Boton`, `Tarjeta`, `Base.astro`, isla `Carrito`) a la dirección elegida, con sus tests de contraste.
-- **Bloquea:** la T11 y todas las tareas con pantallas (marcadas con 🔒). La lógica pura (T09, T10, T12a, T12b, T13, T15, T20a) puede avanzar.
+- **Bloqueaba:** la T11 y todas las tareas con pantallas (T14, T16–T19, T20b, T21–T23). Desbloqueadas al unirse a `main`.
 - **Terminado cuando:** Guillermo aprueba los bocetos y los tokens/componentes quedan actualizados.
 
-### T11 · feat: página de cotización imprimible — 🔒 bloqueada por TD1
+### T11 · feat: página de cotización imprimible
 - **Qué:** página `cotizacion.astro` + isla `Cotizacion.tsx`: resumen del carrito, campo opcional "Nombre de tu negocio" (con label; no se guarda), botón "Enviar por WhatsApp" y botón "Guardar como PDF" (`window.print()`), hoja de estilos de impresión. Si el carrito está vacío, lleva a Arma tu sistema.
 - **Terminado cuando:** la vista de impresión sale en una hoja limpia (sin header, menú ni botones) con "precios referenciales" y la validez; no hay nada que parezca un cobro.
 - **Verificación:** vista previa de impresión en Chrome (guardar PDF); botón de WhatsApp probado en el celular.
@@ -134,7 +134,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests con un catálogo de prueba pequeño (tildes, filtros combinados, sin resultados).
 - **Verificación:** `npm test`.
 
-### T14 · feat: cascarón de la demo — 🔒 bloqueada por TD1
+### T14 · feat: cascarón de la demo
 - **Qué:** página `demos/dulceria.astro` + isla `DemoDulceria.tsx` que recibe un `RubroConfig`: cambio entre vista cliente y vista dueño, navegación interna entre pantallas (estado en memoria), tema por variables CSS de la config, sello fijo **"Demo · datos de ejemplo"**. Con una config mínima de prueba.
 - **Terminado cuando:** se cambia de vista y de pantalla con teclado; el sello se ve en todas las pantallas.
 - **Verificación:** build; prueba manual en 375 px.
@@ -149,22 +149,22 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** test de integridad: toda presentación base tiene factor 1, cada producto está en al menos un puesto, referencias a categoría/ocasión/puesto válidas.
 - **Verificación:** `npm test`; revisión de que ninguna marca sea real.
 
-### T16 · feat: Inicio de la demo — 🔒 bloqueada por TD1
+### T16 · feat: Inicio de la demo
 - **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros 3 puestos", por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
 - **Terminado cuando:** 5-10-15 de la referencia en 375 px; el carrusel se usa con teclado.
 - **Verificación:** prueba manual en 375 px y con Tab.
 
-### T17 · feat: Catálogo de la demo — 🔒 bloqueada por TD1
+### T17 · feat: Catálogo de la demo
 - **Qué:** buscador fijo, chips de filtro, interruptor precio unidad / por mayor, grilla de 2 columnas con etiquetas Nuevo, Oferta y Agotado. Usa `filtros.ts`.
 - **Terminado cuando:** buscar y filtrar actualiza la grilla; hay mensaje si no hay resultados; Agotado no se puede agregar.
 - **Verificación:** prueba manual en 375 px.
 
-### T18 · feat: Detalle de producto — 🔒 bloqueada por TD1
+### T18 · feat: Detalle de producto
 - **Qué:** imagen, nombre, marca, selector de presentación con precio, cantidad, "Agregar al pedido", "También te puede gustar".
 - **Terminado cuando:** cambiar presentación cambia precio; agregar actualiza "Mi pedido (n)"; si supera lo disponible (T12b), no se agrega y se muestra el motivo.
 - **Verificación:** prueba manual en 375 px.
 
-### T19 · feat: Mi pedido — 🔒 bloqueada por TD1
+### T19 · feat: Mi pedido
 - **Qué:** líneas con cantidad y subtotal, total, puesto de recojo (1, 2 o 3), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
 - **Terminado cuando:** cambiar cantidades recalcula; el envío no abre ningún enlace externo y deja claro que es una demostración; el aviso se cierra con teclado (Esc) y devuelve el foco al botón.
 - **Verificación:** test del mensaje del pedido; prueba manual en 375 px.
@@ -174,7 +174,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en los 3 puestos y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
 - **Verificación:** `npm test`.
 
-### T20b · feat: Panel del dueño — 🔒 bloqueada por TD1
+### T20b · feat: Panel del dueño
 - **Qué:** cálculos puros en `demo/panel.ts` a partir de las ventas, productos y `HOY_DEMO` (ventas del día por puesto, por vencer en 7 días, stock bajo, más vendidos de la semana, cobros por medio de pago) y la vista con barras CSS, sin librería de gráficos. La vista solo muestra lo que devuelven los cálculos.
 - **Terminado cuando:** tests de cada cálculo con datos pequeños de prueba y fecha fija; ningún número está escrito a mano en la vista; se lee bien en 375 px.
 - **Verificación:** `npm test`; prueba manual en 375 px.
@@ -183,17 +183,17 @@ Además de los criterios de cada tarea:
 
 ## Fase 7 — `sitio`
 
-### T21 · feat: Inicio de NissiDev — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
+### T21 · feat: Inicio de NissiDev — en parte adelantada en la TD1
 - **Qué:** hero 5-10-15, botón "Ver la demo de mi rubro", WhatsApp secundario, resumen de servicios, llamado al carrito y sección "Casos: próximamente" (P4). Textos en borrador para que Guillermo los corrija.
 - **Terminado cuando:** criterio de éxito 1: qué hago, por qué elegirme y WhatsApp visibles sin bajar más de una pantalla en 375 px.
 - **Verificación:** captura en 375 px.
 
-### T22 · feat: Servicios y stack — 🔒 bloqueada por TD1
+### T22 · feat: Servicios y stack
 - **Qué:** proceso (maqueta → propuesta → ≈4 semanas → soporte) y tecnologías.
 - **Terminado cuando:** página enlazada desde el menú; textos en borrador marcados para revisión.
 - **Verificación:** prueba manual en 375 px.
 
-### T23 · feat: Demos y Contacto — 🔒 bloqueada por TD1
+### T23 · feat: Demos y Contacto
 - **Qué:** tarjetas por rubro (Dulcería activa; Hospedaje y Restaurante campestre "Próximamente") y página de Contacto con WhatsApp.
 - **Terminado cuando:** todas las páginas del BRIEF existen y están enlazadas.
 - **Verificación:** recorrer el menú en 375 px.
