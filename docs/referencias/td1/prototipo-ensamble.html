@@ -1,0 +1,370 @@
+<title>NissiDev Prototipo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: una columna en celular (como el video: centrado y con aire); en escritorio, contenedor de 1080px.
+   Paleta del logo y del video de NissiDev: un solo mundo claro, a propósito. */
+:root{
+  --crema:#F7F4EC; --papel:#FFFFFF; --tinta:#1E1F22; --oro:#B28A4C; --oro-texto:#80612C;
+  --gris:#5E5F63; --linea:rgba(30,31,34,.10); --sombra:0 1px 0 rgba(30,31,34,.04),0 12px 32px rgba(30,31,34,.08);
+  --f:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease-out:cubic-bezier(0.23,1,0.32,1); --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--crema)}
+body{background:var(--crema);color:var(--tinta);font-family:var(--f);font-size:16px;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+#stage{min-height:100%}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+.bar{display:flex;justify-content:space-between;align-items:center;padding-block:14px}
+.marca{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em;color:var(--tinta);text-decoration:none}
+.marca svg{width:22px;height:auto}
+.icono{width:44px;height:44px;border-radius:999px;border:0;background:transparent;color:var(--tinta);display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--linea);cursor:pointer;transition:transform 160ms var(--ease-out)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font:600 15px/1 var(--f);text-decoration:none;border:0;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 200ms ease}
+.btn-1{background:var(--tinta);color:var(--crema)}
+.btn-2{background:transparent;color:var(--tinta);box-shadow:inset 0 0 0 1px rgba(30,31,34,.18)}
+.btn:active,.icono:active,.chip:active,.fila:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.btn-1:hover{background:#34353a}.btn-2:hover{background:rgba(30,31,34,.04)}}
+:focus-visible{outline:2px solid var(--oro-texto);outline-offset:3px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--oro-texto)}
+.num{font-variant-numeric:tabular-nums}
+.demo-nota{font-size:12px;color:var(--gris)}
+.pie{padding-block:40px 120px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;color:var(--gris);font-size:14px}
+.pie b{color:var(--tinta);font-weight:700}
+
+/* Piezas del logo: cada una se mueve desde su propio centro */
+.pz{transform-box:fill-box;transform-origin:center}
+
+/* ---------- 1 · Ensamble ---------- */
+.v1 .hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding-block:44px 28px}
+.v1 .escena{perspective:900px;width:132px;height:170px;display:grid;place-items:center}
+.v1 .logo{width:132px;height:auto;animation:iso 1150ms var(--ease-in-out) both}
+@keyframes iso{from{transform:rotateX(58deg) rotateZ(-38deg) scale(.82)}to{transform:none}}
+.v1 .escena .pz{animation:pz 720ms var(--ease-out) both}
+.v1 .escena .p-tl{--dx:-70px;--dy:-60px;animation-delay:60ms}
+.v1 .escena .p-bl{--dx:-90px;--dy:40px;animation-delay:140ms}
+.v1 .escena .p-tr{--dx:90px;--dy:-40px;animation-delay:200ms}
+.v1 .escena .p-br{--dx:70px;--dy:60px;animation-delay:260ms}
+.v1 .escena .p-oro{--r:-62deg;animation-duration:860ms;animation-delay:420ms}
+@keyframes pz{from{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) rotate(var(--r,0deg)) scale(.92)}to{opacity:1;transform:none}}
+.sube{animation:sube 620ms var(--ease-out) both;animation-delay:var(--d,0ms)}
+@keyframes sube{from{opacity:0;transform:translateY(10px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.v1 h1{font-size:clamp(32px,8.6vw,56px);line-height:1.04;font-weight:700;letter-spacing:-.035em;max-width:14ch}
+.v1 .lead{font-size:16px;line-height:1.55;color:var(--gris);max-width:36ch}
+.v1 .ctas{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-top:6px}
+.rot{margin:28px auto 0;max-width:420px;background:var(--papel);border-radius:24px;box-shadow:var(--sombra);padding:26px 22px 20px;text-align:center;display:flex;flex-direction:column;gap:14px}
+.rot-vista{position:relative;height:92px}
+.rot-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;transform:translateY(8px);filter:blur(4px);transition:opacity 360ms var(--ease-out),transform 360ms var(--ease-out),filter 360ms var(--ease-out);pointer-events:none}
+.rot-item.on{opacity:1;transform:none;filter:none}
+.rot-item.sale{opacity:0;transform:translateY(-6px);filter:blur(4px);transition-duration:200ms}
+.rot-cont{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--oro-texto)}
+.rot-tit{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.rot-linea{width:28px;height:2px;border-radius:2px;background:var(--oro)}
+.rot-sub{font-size:14px;color:var(--gris)}
+.puntos{display:flex;justify-content:center;gap:2px}
+.punto{width:44px;height:28px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;padding:0}
+.punto i{display:block;width:18px;height:3px;border-radius:3px;background:rgba(30,31,34,.15);transition:background-color 200ms ease}
+.punto[aria-current="true"] i{background:var(--tinta)}
+
+/* ---------- 2 · Editorial ---------- */
+.v2 .hero{padding-block:36px 8px;display:grid;gap:22px}
+.v2 .sello{width:64px;height:auto}
+.v2 h1{font-size:clamp(40px,11vw,84px);line-height:.98;font-weight:600;letter-spacing:-.045em;max-width:11ch}
+.v2 h1 .w{display:inline-block;animation:sube 560ms var(--ease-out) both;animation-delay:calc(var(--i)*45ms + 80ms)}
+.v2 h1 .oro{color:var(--oro-texto)}
+.v2 .lead{font-size:17px;line-height:1.55;color:var(--gris);max-width:38ch}
+.v2 .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.v2 .lista{margin-top:40px;border-top:1px solid var(--linea)}
+.fila{width:100%;display:grid;grid-template-columns:44px 1fr 24px;align-items:baseline;gap:8px;padding:20px 0;background:none;border:0;border-bottom:1px solid var(--linea);font:inherit;color:inherit;text-align:left;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.fila .n{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--oro-texto)}
+.fila .t{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.fila .s{display:block;font-size:14px;font-weight:500;color:var(--gris);margin-top:4px;letter-spacing:0}
+.fila .mas{width:18px;height:18px;align-self:center;transition:transform 250ms var(--ease-out)}
+.fila[aria-expanded="true"] .mas{transform:rotate(45deg)}
+.det{display:grid;grid-template-rows:0fr;transition:grid-template-rows 250ms var(--ease-out)}
+.det>div{overflow:hidden}
+.det p{padding:0 0 20px 52px;font-size:15px;line-height:1.55;color:var(--tinta);opacity:0;transition:opacity 200ms ease}
+.det.abierto{grid-template-rows:1fr}
+.det.abierto p{opacity:1}
+.v2 .cinta-sep{margin-top:44px;height:56px;background:var(--oro);clip-path:polygon(0 0,100% 38%,100% 100%,0 62%);animation:revela 900ms var(--ease-in-out) 500ms both}
+@keyframes revela{from{clip-path:polygon(0 0,0 0,0 62%,0 62%)}to{clip-path:polygon(0 0,100% 38%,100% 100%,0 62%)}}
+@media (min-width:900px){.v2 .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:end}.v2 .lista{margin-top:0}}
+
+/* ---------- 3 · Cinta ---------- */
+.v3 .hero{position:relative;padding-block:40px 36px;overflow:hidden}
+.v3 .cinta{position:absolute;left:-10%;right:-10%;top:150px;height:64px;background:var(--oro);transform:rotate(-11deg);transform-origin:center;animation:cinta 1000ms var(--ease-in-out) 150ms both;z-index:0}
+@keyframes cinta{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.v3 .hero>*:not(.cinta){position:relative;z-index:1}
+.v3 h1{font-size:clamp(38px,10.5vw,80px);line-height:1;font-weight:800;letter-spacing:-.045em;max-width:11ch}
+.v3 .lead{margin-top:16px;font-size:16px;line-height:1.55;color:var(--gris);max-width:30ch}
+.v3 .ctas{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.v3 .cab{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px}
+.v3 .cab h2{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.carril{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 20px 18px;margin:0 -20px;scrollbar-width:none;overscroll-behavior-x:contain}
+.carril::-webkit-scrollbar{display:none}
+.tarj{flex:0 0 78%;max-width:320px;scroll-snap-align:start;background:var(--papel);border-radius:24px;box-shadow:var(--sombra);padding:22px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;min-height:200px}
+.tarj .n{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--oro-texto)}
+.tarj h3{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.tarj p{font-size:14px;line-height:1.5;color:var(--gris);max-width:24ch}
+.tarj .franja{position:absolute;right:-30px;bottom:24px;width:140px;height:26px;background:var(--oro);transform:rotate(-30deg) translateX(var(--px,0px));opacity:.9}
+.armar{margin-top:26px;background:var(--papel);border-radius:24px;box-shadow:var(--sombra);padding:22px;display:flex;flex-direction:column;gap:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:0;font:600 14px/1 var(--f);background:var(--crema);color:var(--tinta);box-shadow:inset 0 0 0 1px rgba(30,31,34,.14);cursor:pointer;transition:transform 160ms var(--ease-out),background-color 200ms ease,color 200ms ease}
+.chip[aria-pressed="true"]{background:var(--tinta);color:var(--crema);box-shadow:none}
+.total{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;border-top:1px solid var(--linea)}
+.total b{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.total span{font-size:13px;color:var(--gris)}
+
+@media (prefers-reduced-motion:reduce){
+  .v1 .logo,.v1 .escena .pz,.v3 .cinta,.v2 .cinta-sep{animation:none}
+  .sube,.v2 h1 .w{animation:fadein 200ms ease both}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .rot-item,.rot-item.sale{transform:none;filter:none}
+  .btn,.icono,.chip,.fila,.det,.fila .mas{transition:none}
+}
+
+/* ---------- Selector (spec de la skill prototype de Emil Kowalski, sin cambios) ---------- */
+.proto-picker{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2147483647;display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(10,10,10,.82);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 0 0 1px rgba(255,255,255,.08) inset,0 8px 24px rgba(0,0,0,.24),0 2px 6px rgba(0,0,0,.12);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;line-height:1;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+.proto-picker-highlight{position:absolute;top:4px;left:0;height:28px;border-radius:999px;background:rgba(255,255,255,.12);will-change:transform}
+.proto-picker[data-ready] .proto-picker-highlight{transition:transform 250ms cubic-bezier(0.23,1,0.32,1),width 250ms cubic-bezier(0.23,1,0.32,1)}
+@media (prefers-reduced-motion:reduce){.proto-picker[data-ready] .proto-picker-highlight{transition:none}}
+.proto-picker-item{position:relative;display:flex;align-items:center;height:28px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:rgba(255,255,255,.55);font:inherit;cursor:pointer;transition:color 150ms ease-out}
+.proto-picker-item:hover{color:rgba(255,255,255,.85)}
+.proto-picker-item:active{transform:scale(.97)}
+.proto-picker-item:focus-visible{outline:2px solid rgba(255,255,255,.4);outline-offset:2px}
+.proto-picker-item[data-active]{color:#fff}
+.proto-picker-divider{width:1px;height:16px;margin:0 4px;background:rgba(255,255,255,.12)}
+.proto-picker-replay{padding:0 10px;font-size:14px}
+.proto-picker[data-position="top"]{bottom:auto;top:24px}
+</style>
+
+<main id="stage" aria-live="polite"></main>
+
+<nav class="proto-picker" aria-label="Prototype variants">
+  <span class="proto-picker-highlight" aria-hidden="true"></span>
+  <button class="proto-picker-item" data-active aria-current="true">Ensamble</button>
+  <button class="proto-picker-item">Editorial</button>
+  <button class="proto-picker-item">Cinta</button>
+  <span class="proto-picker-divider" aria-hidden="true"></span>
+  <button class="proto-picker-item proto-picker-replay" aria-label="Replay animation (R)">↻</button>
+</nav>
+
+<script>
+const LOGO = {
+  br: 'M646 912 L631 919 L626 925 L622 935 L622 1097 L626 1108 L635 1117 L645 1121 L657 1121 L669 1116 L797 1045 L804 1038 L807 1032 L808 1014 L804 1005 L796 997 L659 913Z',
+  bl: 'M25 526 L12 531 L5 538 L0 551 L0 953 L5 967 L12 974 L23 979 L35 979 L51 972 L240 868 L251 859 L257 845 L257 673 L252 662 L242 653 L44 530 L33 526Z',
+  tr: 'M844 142 L828 149 L639 253 L628 262 L622 276 L622 447 L629 461 L638 468 L833 589 L845 594 L856 594 L866 590 L872 585 L879 570 L879 168 L874 154 L867 147 L856 142Z',
+  tl: 'M222 0 L210 5 L82 76 L72 90 L71 105 L75 115 L84 124 L213 204 L223 208 L234 208 L247 202 L253 195 L257 185 L257 24 L253 13 L244 4 L234 0Z',
+  oro: 'M7 154 L3 160 L0 171 L0 439 L1 446 L5 454 L12 461 L835 972 L847 976 L858 975 L868 970 L874 964 L879 949 L879 681 L878 674 L869 661 L45 149 L35 145 L23 145 L13 149Z'
+};
+function logo(cls, label) {
+  const a = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
+  return `<svg class="${cls}" viewBox="0 0 879 1121" ${a}>
+    <path class="pz p-tl" fill="#1E1F22" d="${LOGO.tl}"/>
+    <path class="pz p-bl" fill="#1E1F22" d="${LOGO.bl}"/>
+    <path class="pz p-tr" fill="#1E1F22" d="${LOGO.tr}"/>
+    <path class="pz p-br" fill="#1E1F22" d="${LOGO.br}"/>
+    <path class="pz p-oro" fill="#B28A4C" d="${LOGO.oro}"/>
+  </svg>`;
+}
+const SERVICIOS = [
+  { t: 'Páginas web', s: 'Que te encuentren. Que te elijan.', d: 'Tu negocio visible en Google y listo para compartir por WhatsApp: catálogo, horarios, ubicación y pedidos.' },
+  { t: 'Sistemas a medida', s: 'Tu negocio, bajo control.', d: 'Inventario, ventas y caja pensados para cómo trabajas tú, no al revés.' },
+  { t: 'Aplicaciones móviles', s: 'Tu negocio en el bolsillo de tus clientes.', d: 'Una app para que tus clientes pidan o reserven desde su celular.' },
+  { t: 'Paneles de administración', s: 'Decide con datos, no con suposiciones.', d: 'Ventas, stock y cobros del día en un solo lugar, también desde tu celular.' }
+];
+const dos = (n) => String(n).padStart(2, '0');
+const barra = () => `<div class="bar"><a class="marca" href="#">${logo('', '')}NissiDev</a>
+  <button class="icono" aria-label="Abrir menú"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9h16M4 15h16"/></svg></button></div>`;
+const pie = () => `<div class="pie wrap"><b>NissiDev</b><span>Escríbeme por WhatsApp</span><span class="num">+51 913 351 627</span></div>`;
+
+const variants = [
+  // 1 · Ensamble: el logo se arma como en el video, todo centrado
+  () => `<div class="v1"><div class="wrap">${barra()}
+    <section class="hero">
+      <div class="escena">${logo('logo', 'NissiDev')}</div>
+      <span class="eyebrow sube" style="--d:900ms">Webs y sistemas · Este de Lima</span>
+      <h1 class="sube" style="--d:980ms">Software que impulsa tu negocio.</h1>
+      <p class="lead sube" style="--d:1060ms">Pruebas cómo quedaría el sistema de tu negocio, eliges lo que necesitas y te llega la cotización por WhatsApp.</p>
+      <div class="ctas sube" style="--d:1140ms"><a class="btn btn-1" href="#">Ver la demo de mi rubro</a><a class="btn btn-2" href="#">Escríbeme por WhatsApp</a></div>
+    </section>
+    <section class="rot sube" style="--d:1250ms" aria-label="Servicios">
+      <div class="rot-vista">${SERVICIOS.map((s, i) => `<div class="rot-item${i === 0 ? ' on' : ''}" aria-hidden="${i !== 0}"><span class="rot-cont num">${dos(i + 1)} / 04</span><span class="rot-tit">${s.t}</span><span class="rot-linea"></span><span class="rot-sub">${s.s}</span></div>`).join('')}</div>
+      <div class="puntos">${SERVICIOS.map((s, i) => `<button class="punto" data-i="${i}" aria-label="${s.t}" ${i === 0 ? 'aria-current="true"' : ''}><i></i></button>`).join('')}</div>
+    </section></div>${pie()}</div>`,
+
+  // 2 · Editorial: tipografía grande, servicios como índice que se abre
+  () => `<div class="v2"><div class="wrap">${barra()}
+    <div class="grid">
+      <section class="hero">
+        ${logo('sello sube', 'NissiDev')}
+        <h1 aria-label="Software que impulsa tu negocio.">${'Software que impulsa tu negocio.'.split(' ').map((w, i) => `<span class="w${i === 3 ? ' oro' : ''}" style="--i:${i}" aria-hidden="true">${w}</span>`).join(' ')}</h1>
+        <p class="lead sube" style="--d:380ms">Webs y sistemas para negocios del Este de Lima. Prueba cómo quedaría el tuyo antes de hablar de precio.</p>
+        <div class="ctas sube" style="--d:460ms"><a class="btn btn-1" href="#">Ver la demo de mi rubro</a><a class="btn btn-2" href="#">WhatsApp</a></div>
+      </section>
+      <section class="lista sube" style="--d:560ms" aria-label="Servicios">${SERVICIOS.map((s, i) => `
+        <button class="fila" aria-expanded="false" aria-controls="det${i}"><span class="n num">${dos(i + 1)}</span><span><span class="t">${s.t}</span><span class="s">${s.s}</span></span>
+          <svg class="mas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="det" id="det${i}"><div><p>${s.d}</p></div></div>`).join('')}
+      </section>
+    </div>
+    <div class="cinta-sep" aria-hidden="true"></div></div>${pie()}</div>`,
+
+  // 3 · Cinta: la cinta dorada del logo cruza el hero; servicios para deslizar
+  () => `<div class="v3"><div class="wrap">${barra()}
+    <section class="hero">
+      <div class="cinta" aria-hidden="true"></div>
+      <span class="eyebrow sube" style="--d:200ms">NissiDev · Este de Lima</span>
+      <h1 class="sube" style="--d:280ms;margin-top:12px">Software que impulsa tu negocio.</h1>
+      <p class="lead sube" style="--d:420ms">Prueba cómo quedaría el tuyo y arma tu sistema como un carrito.</p>
+      <div class="ctas sube" style="--d:520ms"><a class="btn btn-1" href="#">Ver la demo de mi rubro</a><a class="btn btn-2" href="#">WhatsApp</a></div>
+    </section>
+    <div class="cab"><h2>Lo que hago</h2><span class="eyebrow num" id="contador">01 / 04</span></div>
+    <div class="carril" id="carril" aria-label="Servicios">${SERVICIOS.map((s, i) => `<article class="tarj"><span class="n num">${dos(i + 1)}</span><h3>${s.t}</h3><p>${s.s}</p><span class="franja" aria-hidden="true"></span></article>`).join('')}</div>
+    <section class="armar" aria-label="Arma tu sistema">
+      <span class="eyebrow">Arma tu sistema</span>
+      <div class="chips">
+        <button class="chip" aria-pressed="true" data-ini="70000">Catálogo web</button>
+        <button class="chip" aria-pressed="true" data-ini="0">Pedidos por WhatsApp</button>
+        <button class="chip" aria-pressed="false" data-ini="50000">Panel del dueño</button>
+        <button class="chip" aria-pressed="false" data-mes="8000">Mantenimiento</button>
+      </div>
+      <div class="total"><span>Inversión inicial</span><b class="num" id="total">desde S/ 700</b></div>
+      <span class="demo-nota">Precios referenciales. Ejemplo para probar el efecto.</span>
+    </section></div>${pie()}</div>`
+];
+
+/* Comportamiento propio de cada versión (se limpia al cambiar) */
+let limpiar = () => {};
+const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const iniciar = [
+  (raiz) => {
+    const items = [...raiz.querySelectorAll('.rot-item')];
+    const puntos = [...raiz.querySelectorAll('.punto')];
+    let i = 0, timer;
+    const ir = (n) => {
+      if (n === i) return;
+      items[i].classList.remove('on'); items[i].classList.add('sale'); items[i].setAttribute('aria-hidden', 'true');
+      const viejo = items[i];
+      setTimeout(() => viejo.classList.remove('sale'), 220);
+      i = n;
+      items[i].classList.add('on'); items[i].setAttribute('aria-hidden', 'false');
+      puntos.forEach((p, j) => j === i ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current'));
+    };
+    const ciclo = () => { clearInterval(timer); timer = setInterval(() => ir((i + 1) % items.length), 3000); };
+    puntos.forEach((p) => p.addEventListener('click', () => { ir(+p.dataset.i); ciclo(); }));
+    const t0 = setTimeout(ciclo, 1600);
+    return () => { clearInterval(timer); clearTimeout(t0); };
+  },
+  (raiz) => {
+    raiz.querySelectorAll('.fila').forEach((f) => f.addEventListener('click', () => {
+      const abierto = f.getAttribute('aria-expanded') === 'true';
+      f.setAttribute('aria-expanded', String(!abierto));
+      raiz.querySelector('#' + f.getAttribute('aria-controls')).classList.toggle('abierto', !abierto);
+    }));
+    return () => {};
+  },
+  (raiz) => {
+    const carril = raiz.querySelector('#carril');
+    const cont = raiz.querySelector('#contador');
+    const tarjs = [...carril.children];
+    let raf = 0;
+    const alMover = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const ancho = tarjs[0].offsetWidth + 12;
+        const pos = carril.scrollLeft / ancho;
+        cont.textContent = dos(Math.min(tarjs.length, Math.round(pos) + 1)) + ' / 04';
+        if (!reducido) tarjs.forEach((t, k) => t.querySelector('.franja').style.transform = `rotate(-30deg) translateX(${(k - pos) * 36}px)`);
+      });
+    };
+    carril.addEventListener('scroll', alMover, { passive: true });
+    alMover();
+    const totalEl = raiz.querySelector('#total');
+    let mostrado = 70000, anim = 0;
+    const soles = (c) => 'desde S/ ' + Math.round(c / 100).toLocaleString('en-US');
+    const contar = (hasta) => {
+      cancelAnimationFrame(anim);
+      const desde = mostrado, t0 = performance.now(), dur = reducido ? 0 : 320;
+      const paso = (t) => {
+        const k = dur ? Math.min(1, (t - t0) / dur) : 1;
+        const e = 1 - Math.pow(1 - k, 3);
+        mostrado = desde + (hasta - desde) * e;
+        totalEl.textContent = soles(mostrado);
+        if (k < 1) anim = requestAnimationFrame(paso);
+      };
+      anim = requestAnimationFrame(paso);
+    };
+    raiz.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
+      c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'));
+      let ini = 0;
+      raiz.querySelectorAll('.chip[aria-pressed="true"]').forEach((x) => ini += +(x.dataset.ini || 0));
+      contar(ini);
+    }));
+    return () => { carril.removeEventListener('scroll', alMover); cancelAnimationFrame(raf); cancelAnimationFrame(anim); };
+  }
+];
+
+/* Cableado del selector (referencia de la skill, con limpieza e inicio por versión) */
+const stage = document.getElementById('stage');
+const picker = document.querySelector('.proto-picker');
+const highlight = picker.querySelector('.proto-picker-highlight');
+const items = [...picker.querySelectorAll('.proto-picker-item:not(.proto-picker-replay)')];
+const replay = picker.querySelector('.proto-picker-replay');
+let current = 0;
+
+function moveHighlight() {
+  const el = items[current];
+  highlight.style.width = el.offsetWidth + 'px';
+  highlight.style.transform = `translateX(${el.offsetLeft}px)`;
+}
+
+function mount(i) {
+  limpiar();
+  stage.innerHTML = '';
+  requestAnimationFrame(() => {
+    stage.innerHTML = variants[i]();
+    window.scrollTo(0, 0);
+    limpiar = iniciar[i](stage) || (() => {});
+  });
+}
+
+function setActive(i) {
+  if (i < 0 || i >= variants.length) return;
+  current = i;
+  items.forEach((el, j) => {
+    el.toggleAttribute('data-active', j === i);
+    if (j === i) el.setAttribute('aria-current', 'true');
+    else el.removeAttribute('aria-current');
+  });
+  moveHighlight();
+  try {
+    const url = new URL(location);
+    url.searchParams.set('v', i + 1);
+    history.replaceState(null, '', url);
+  } catch (e) {}
+  mount(i);
+}
+
+items.forEach((el, i) => el.addEventListener('click', () => setActive(i)));
+replay?.addEventListener('click', () => mount(current));
+window.addEventListener('resize', moveHighlight);
+
+document.addEventListener('keydown', (e) => {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const num = parseInt(e.key, 10);
+  if (num >= 1 && num <= variants.length) setActive(num - 1);
+  else if (e.key === 'ArrowRight') setActive((current + 1) % variants.length);
+  else if (e.key === 'ArrowLeft') setActive((current - 1 + variants.length) % variants.length);
+  else if (e.key === 'r' || e.key === 'R') mount(current);
+});
+
+let inicial = 1;
+try { inicial = parseInt(new URLSearchParams(location.search).get('v'), 10) || 1; } catch (e) {}
+setActive(inicial - 1);
+requestAnimationFrame(() => requestAnimationFrame(() => picker.setAttribute('data-ready', '')));
+</script>

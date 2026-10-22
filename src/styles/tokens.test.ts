@@ -13,6 +13,12 @@ const TEXTO = 4.5; // WCAG AA, texto normal
 const GRAFICO = 3; // WCAG AA, contornos de foco y elementos gráficos
 
 describe('contraste de los tokens', () => {
+  it('el fondo es la crema del logo y del video (#F7F4EC), con tinta #1E1F22 y dorado #B28A4C', () => {
+    expect(color('claro').toLowerCase()).toBe('#f7f4ec');
+    expect(color('negro').toLowerCase()).toBe('#1e1f22');
+    expect(color('dorado').toLowerCase()).toBe('#b28a4c');
+  });
+
   it.each([
     ['negro', 'claro'],
     ['negro', 'blanco'],

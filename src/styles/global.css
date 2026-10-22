@@ -54,17 +54,17 @@ p {
   text-wrap: pretty;
 }
 
-/* Titulares grandes y apretados (dirección B) */
+/* Titulares en peso 700, apretados (dirección Ensamble) */
 .titulo-1 {
   font-size: var(--titulo-1);
-  font-weight: 800;
+  font-weight: var(--peso-titulo);
   line-height: 0.98;
   letter-spacing: var(--espaciado-titulo-1);
 }
 
 .titulo-2 {
   font-size: var(--titulo-2);
-  font-weight: 800;
+  font-weight: var(--peso-titulo);
   line-height: 1.05;
   letter-spacing: var(--espaciado-titulo-2);
 }

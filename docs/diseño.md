@@ -1,74 +1,89 @@
 # Diseño de la web de NissiDev
 
-> Dirección **provisional** (TD1, 2026-10-21), en revisión en la rama `feature/td1-diseno`.
-> Bocetos de referencia en `docs/referencias/td1/`. Los valores viven en `src/styles/tokens.css`;
-> este documento explica **cuándo** usar cada uno.
+> Dirección **Ensamble** (TD1, 2026-10-22), en revisión en la rama `feature/td1-diseno`.
+> Sale del **video oficial de la marca**. Referencia: `docs/referencias/td1/prototipo-ensamble.html`
+> (versión 1) y el logo `docs/referencias/marca/nissidev-logo.svg`.
+> Los valores viven en `src/styles/tokens.css`; este documento explica **cuándo** usar cada uno.
 
-## Dirección: B "Papel y oro" + momento A
-- **Base B · Papel y oro:** fondo claro cálido, tarjetas blancas, bloques y footer negros, dorado como acento. Se siente ordenado, cercano y "de confianza" para el dueño de un negocio que llega desde WhatsApp.
-- **Momento A:** la **N de NissiDev en 3D**, en una sección oscura cerca del final ("Hecho a medida"). **Nunca en la primera pantalla**: el hero tiene que cargar rápido y decir qué hago.
-- **La N** se hace con CSS 3D + GSAP (tres piezas: dos laterales oscuras y la diagonal dorada).
-  - 📌 **Lugar reservado para una escena de Spline futura**: `src/components/NTresD.astro`. Si algún día se usa Spline, reemplaza solo esa pieza, se carga con `client:visible` y debe tener la versión CSS como respaldo (y para "movimiento reducido").
-- **No se usan** (decidido): Spline por ahora, Skiper UI, Tailwind ni Motion. Sus ideas (pestañas con indicador que se desliza, contador del total) se hacen con GSAP y código propio.
+## Dirección: Ensamble
+- **Un solo mundo claro**, como el video: fondo crema, tarjetas blancas, tinta casi negra y el dorado del logo para líneas y detalles.
+- **El logo es el protagonista.** Abre el Inicio y se **arma en 3D**: cuatro piezas negras llegan a su lugar, la cinta dorada gira y cae, y la escena, inclinada en vista isométrica, se endereza.
+- **Todo centrado y con mucho aire** en el celular. En escritorio, el mismo eje central con un ancho máximo.
+- **Frase de marca:** "Software que impulsa tu negocio."
+- Reemplaza a la dirección B "Papel y oro" + momento A (la N en 3D), que parecía una plantilla. Ya no hay bandas negras ni la sección "Hecho a medida".
+
+## El logo
+- SVG de 5 piezas (`src/components/Logo.astro`): `p-tl`, `p-bl`, `p-tr`, `p-br` (negras) y `p-oro` (la cinta).
+- Los colores del logo no cambian: tinta `#1E1F22` y dorado `#B28A4C`.
+- El favicon (`public/favicon.svg`) es el mismo logo.
+
+## Servicios (textos de Guillermo, no cambiarlos)
+| # | Servicio | Frase |
+|---|---|---|
+| 01 | Páginas web | Que te encuentren. Que te elijan. |
+| 02 | Sistemas a medida | Tu negocio, bajo control. |
+| 03 | Aplicaciones móviles | Tu negocio en el bolsillo de tus clientes. |
+| 04 | Paneles de administración | Decide con datos, no con suposiciones. |
 
 ## Paleta y en qué fondo va cada color
-| Token | Color | Sobre claro `#F3EFE7` / blanco | Sobre negro `#1E1F22` | Uso |
+| Token | Color | Sobre crema `#F7F4EC` / blanco | Sobre negro `#1E1F22` | Uso |
 |---|---|---|---|---|
-| `--color-negro` | `#1E1F22` | ✅ texto (14.4 / 16.5) | — | texto principal, bloques y footer, botón principal |
-| `--color-claro` | `#F3EFE7` | — | ✅ texto (14.4) | fondo de página, texto sobre negro |
-| `--color-blanco` | `#FFFFFF` | — | ✅ | tarjetas, píldoras |
-| `--color-dorado` | `#B28A4C` | ❌ texto (2.8) · solo adornos o texto ≥ 24 px en negrita | ✅ texto (5.2) | acento, botón dorado (texto negro 5.2), foco sobre negro |
-| `--color-dorado-texto` | `#80612C` | ✅ texto (5.0 / 5.7) | ❌ (2.9) | precios, "Dev" del logo, números, foco sobre claro |
-| `--color-gris` | `#5E5F63` | ✅ texto (5.6 / 6.4) | ❌ | texto secundario |
-| `--color-piedra` | `#C9C4BA` | ❌ | ✅ texto (9.5) | texto secundario sobre negro |
-| `--color-arena` | `#9C978E` | ❌ | ✅ texto (5.7) | notas pequeñas sobre negro |
-| `--color-oro-claro` | `#D9B77E` | ❌ | ✅ texto (8.7) | avisos dorados sobre negro |
-| `--color-contorno` | `#8A857C` | ✅ borde de control (3.7 / 3.2) | — | límite de interruptores apagados |
-| `--color-linea`, `--color-interruptor`, `--color-punteado` | | decorativos | | separadores, fondo del interruptor, borde punteado |
+| `--color-claro` (crema) | `#F7F4EC` | — | ✅ texto (15.0) | fondo de página, texto sobre negro |
+| `--color-blanco` | `#FFFFFF` | — | ✅ | tarjetas |
+| `--color-negro` (tinta) | `#1E1F22` | ✅ texto (15.0 / 16.5) | — | texto, botón principal, piezas del logo |
+| `--color-dorado` | `#B28A4C` | ❌ texto (2.9) · solo logo, líneas y adornos | ✅ texto (5.2) | cinta del logo, líneas cortas, perilla del interruptor |
+| `--color-dorado-texto` | `#80612C` | ✅ texto (5.2 / 5.7) | ❌ (2.9) | etiquetas, "01 / 04", precios, foco |
+| `--color-gris` | `#5E5F63` | ✅ texto (5.8 / 6.4) | ❌ | texto secundario |
+| `--color-contorno` | `#8A857C` | ✅ borde de control (3.3 / 3.7) | — | límite de interruptores apagados |
+| `--color-piedra`, `--color-arena`, `--color-oro-claro` | | ❌ | ✅ | solo dentro del resumen negro de Arma tu sistema |
 
 **Reglas**
-- El dorado `#B28A4C` **nunca** es texto normal sobre fondo claro: para eso está `#80612C`.
-- Toda zona con fondo negro lleva la clase **`.zona-oscura`** (cambia el color del foco al dorado original).
-- Un control (interruptor, campo) necesita un borde con ≥ 3:1 respecto a su fondo; si el diseño lo quiere claro, se agrega un contorno.
-- Cualquier combinación nueva se agrega a `src/styles/tokens.test.ts`, que mide el contraste real y falla si baja del mínimo.
+- El dorado `#B28A4C` **nunca** es texto sobre claro: para eso está `#80612C`.
+- La única zona oscura que queda es el **resumen fijo** de Arma tu sistema (lleva `.zona-oscura`, que cambia el color del foco).
+- Un control necesita un borde con ≥ 3:1 respecto a su fondo.
+- Toda combinación nueva se agrega a `src/styles/tokens.test.ts`, que mide el contraste real.
 
 ## Tipografía
-Manrope (OFL), variable, servida desde `public/fonts/`.
+Manrope (OFL), variable, servida desde `public/fonts/`. **Titulares en peso 700** (`--peso-titulo`), no 800.
 
-| Token | Celular → escritorio | Uso |
+| Uso | Tamaño | Notas |
 |---|---|---|
-| `--titulo-1` | 44 px → 76 px · peso 800 · interlineado 0.98 · espaciado −0.04em | titular del hero y de cada página |
-| `--titulo-2` | 30 px → 44 px · peso 800 · espaciado −0.027em | títulos de sección |
-| `--texto-xl` | 20 → 24 px | cifras destacadas |
-| `--texto-lg` | 17 px · 800 | títulos de tarjeta |
-| `--texto-md` | 16 px · interlineado 1.55 | texto |
-| `--texto-sm` / `--texto-xs` | 14 / 12 px | notas, etiquetas |
-
-Titulares **grandes y apretados**; el texto, cómodo de leer en celular.
+| h1 del hero | 32 → 56 px | 700 · interlineado 1.04 · espaciado −0.035em · máx. 14ch |
+| `--titulo-2` | 30 → 44 px | 700 · títulos de sección |
+| Etiqueta (eyebrow) | 12 px | 700 · mayúsculas · espaciado 0.14em · `--acento-texto` |
+| `--texto-md` | 16 px | texto, interlineado 1.55 |
+| `--texto-sm` / `--texto-xs` | 14 / 12 px | notas |
 
 ## Formas
-- **Radios:** tarjetas 20 px (`--radio-tarjeta`), tarjeta destacada 28 px (`--radio-tarjeta-grande`), bloques internos 16 px, botones y chips en píldora.
-- **Sombras:** `--sombra-tarjeta` (suave y amplia) para tarjetas que flotan; `--sombra-flotante` para el resumen negro.
-- **Bordes:** simulados con `box-shadow: var(--borde-sutil)` (1 px): no ocupan espacio ni mueven el diseño.
-- **Botones:** principal negro, secundario blanco con borde sutil, destacado dorado con texto negro; altura mínima 44 px.
+- **Tarjetas** blancas, radio 24 px, `--sombra-tarjeta` suave. Sin bordes duros.
+- **Botones** en píldora, 48 px de alto: principal tinta con texto crema; secundario transparente con contorno suave.
+- **Botón de icono** (menú, pausa): 44 × 44 px, círculo con contorno suave.
+- **Línea dorada corta** (28 × 2 px) como separador dentro de tarjetas.
 
-## Movimiento
-| Curva | Valor | Duración | Uso |
-|---|---|---|---|
-| `--ease-expo` | `cubic-bezier(0.19, 1, 0.22, 1)` | 0.75 s | entradas: titular por líneas, secciones al hacer scroll |
-| `--ease-ui` | `cubic-bezier(0.4, 0, 0.2, 1)` | 0.2 s | interfaz: interruptores, menú, estados |
-| `--ease-rebote` | `cubic-bezier(0.175, 0.885, 0.32, 1.275)` | 0.3 s | botones al pasar el mouse o tocar |
+## Movimiento (reglas de Emil Kowalski)
+| Curva | Valor | Uso |
+|---|---|---|
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | entradas, botones, cambios de la interfaz |
+| `--ease-in-out` | `cubic-bezier(0.77, 0, 0.175, 1)` | lo que se mueve en pantalla: la escena del logo que se endereza |
 
-**Reglas de movimiento**
-1. Solo se animan `transform` y `opacity`. Nada que cambie el tamaño o la posición en el flujo (CLS = 0).
-2. El contenido **nunca depende** de la animación para verse: el titular del hero se ve aunque el JavaScript falle o tarde. Si la animación no arranca a tiempo, el contenido se muestra quieto.
-3. Con **"movimiento reducido"** no hay Lenis, ni entradas, ni giros, ni contadores: todo se ve quieto y completo.
-4. La animación acompaña, no bloquea: nada impide hacer clic, leer o hacer scroll mientras se mueve.
-5. Efectos con GSAP (+ ScrollTrigger y SplitText) y Lenis; transiciones entre páginas con View Transitions de Astro.
+1. **La herramienta más barata que funcione:** CSS (`@keyframes` y transiciones). Sin GSAP ni Lenis.
+2. Solo `transform`, `opacity` y un `filter: blur()` de **4 px como máximo**. Nunca `transition: all`. Nunca desde `scale(0)`. Nunca `ease-in` en una entrada.
+3. **El armado del logo es de "una vez":** completo en la primera visita de la sesión; en las siguientes páginas o visitas, el logo aparece con un fundido corto (`sessionStorage`, dentro de `try/catch`).
+4. **El texto no espera al logo:** el hero empieza a aparecer a los ~300 ms y queda completo en ~1.2 s. Sin JavaScript se ve igual (es CSS).
+5. **Botones:** `scale(0.97)` en `:active`, 160 ms. Los efectos de pasar el mouse, solo en `@media (hover: hover) and (pointer: fine)`.
+6. **Movimiento reducido = menos y más suave, no cero:** sin desplazamientos ni giros, con fundidos cortos (200 ms). El logo aparece armado. El rotador de servicios no avanza solo.
+7. **Celular:** sin el destello gris al tocar, `100svh`/`dvh` en vez de `100vh`, `touch-action: manipulation` en lo que se toca.
+8. Transiciones entre páginas con View Transitions de Astro; el carrito no se pierde.
+
+## Rotador de servicios
+- Tarjeta blanca con "01 / 04", el nombre, la línea dorada y la frase. Cambia con fundido + desenfoque leve.
+- Avanza cada 3 s, con botón visible de pausa/reproducir (44 px).
+- Se pausa al recibir el foco, al tocar un punto o si la pestaña está oculta. Con movimiento reducido no avanza solo.
+- Los puntos son botones con nombre ("Páginas web", …).
 
 ## Accesibilidad
 - Contraste: texto ≥ 4.5:1, controles y foco ≥ 3:1 (medido en los tests).
 - Foco visible siempre (`:focus-visible`), y nada fijo lo tapa (`scroll-padding`).
 - Interruptores con `role="switch"` y `aria-checked`; avisos con `role="status"`.
-- Lo decorativo (la N en 3D, el celular de muestra) lleva `aria-hidden="true"` o un texto alternativo breve.
+- El logo grande lleva `role="img"` y nombre; el del header es parte del enlace "NissiDev, ir al inicio".
 - Áreas táctiles de 44 × 44 px como mínimo.

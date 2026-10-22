@@ -12,3 +12,11 @@ Léelos para sacar colores, tamaños, espaciados, orden de secciones y textos.
 
 Decisión: base **B** + un **momento A** (la N en 3D, más abajo en la página, nunca en la primera pantalla).
 Detalle en el prompt de la TD1 y en `docs/diseño.md` (cuando exista).
+
+## Actualización 2026-10-22: dirección elegida = Ensamble
+La primera vista previa (B + momento A) no convenció. Guillermo eligió **Ensamble** del prototipo nuevo.
+| Archivo | Qué es |
+|---|---|
+| `prototipo-ensamble.html` | **Referencia principal.** Prototipo con 3 versiones y selector; la elegida es la **1 · Ensamble** (`variants[0]`). Tiene el CSS y la lógica de las animaciones (armado del logo, rotador de servicios). Es un HTML suelto: tómalo como referencia, adáptalo a Astro y a los tokens del proyecto. |
+| `../marca/nissidev-logo.svg` | Logo oficial en SVG, con 5 piezas (cuatro negras y la cinta dorada). |
+Los bocetos `boceto-*.html` quedan como historial; ya no son la dirección.
