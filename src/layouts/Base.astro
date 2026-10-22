@@ -1,4 +1,5 @@
 ---
+import Boton from '../components/Boton.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
@@ -9,11 +10,11 @@ interface Props {
 
 const {
   titulo,
-  descripcion = 'NissiDev: sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
+  descripcion = 'NissiDev: webs y sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
 } = Astro.props;
 const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
 
-// Las páginas se crean en T05 y T21–T23; hasta entonces estos enlaces dan 404.
+// Las páginas se crean en T21–T23; hasta entonces Servicios, Demos y Contacto dan 404.
 const enlaces = [
   { href: '/', texto: 'Inicio' },
   { href: '/servicios', texto: 'Servicios' },
@@ -30,7 +31,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
-    <meta name="theme-color" content="#1e1f22" />
+    <meta name="theme-color" content="#f3efe7" />
     <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
@@ -42,10 +43,20 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 
         <div class="cabecera__acciones">
           <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
-            Mi sistema <span class="mi-sistema__cantidad" data-mi-sistema-cantidad></span>
+            Mi sistema (<span data-mi-sistema-cantidad></span>)
           </a>
-          <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
-            Menú
+          <button
+            class="menu-boton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu-principal"
+            aria-label="Menú"
+            hidden
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <path class="menu-boton__abrir" d="M4 8h16M4 16h16"></path>
+              <path class="menu-boton__cerrar" d="M6 6l12 12M18 6L6 18"></path>
+            </svg>
           </button>
         </div>
 
@@ -71,12 +82,9 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 
     <footer class="pie zona-oscura">
       <div class="contenedor pie__fila">
-        <p class="logo logo--oscuro">Nissi<span>Dev</span></p>
-        <p>
-          <a href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
-            WhatsApp: {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
-          </a>
-        </p>
+        <h2 class="pie__titulo">¿Lo conversamos?</h2>
+        <Boton href={WHATSAPP_ENLACE} variante="dorado" externo>WhatsApp {WHATSAPP_VISIBLE}</Boton>
+        <p class="pie__nota">NissiDev · Webs y sistemas para negocios del Este de Lima</p>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
       </div>
     </footer>
@@ -145,7 +153,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     padding: var(--espacio-2) var(--espacio-4);
     background: var(--fondo-oscuro);
     color: var(--texto-sobre-oscuro);
-    border-radius: var(--radio-sm);
+    border-radius: var(--radio-pildora);
     transform: translateY(-200%);
   }
 
@@ -157,32 +165,24 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     outline: none;
   }
 
-  .cabecera {
-    border-bottom: 1px solid var(--borde);
-  }
-
   .cabecera__fila {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--espacio-2) var(--espacio-4);
-    min-height: 4rem;
+    min-height: 4.75rem;
   }
 
   .logo {
-    font-size: var(--texto-lg);
+    font-size: 1.3125rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     text-decoration: none;
   }
 
   .logo span {
     color: var(--acento-texto);
-  }
-
-  .logo--oscuro span {
-    color: var(--acento);
   }
 
   .cabecera__acciones {
@@ -194,8 +194,12 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .mi-sistema {
     display: inline-flex;
     align-items: center;
-    gap: var(--espacio-2);
     min-height: 2.75rem;
+    padding-inline: var(--espacio-4);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-pildora);
+    box-shadow: var(--borde-sutil);
+    font-size: var(--texto-sm);
     font-weight: 700;
     text-decoration: none;
   }
@@ -204,40 +208,45 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: none;
   }
 
-  .mi-sistema__cantidad {
-    display: inline-grid;
+  .menu-boton {
+    display: grid;
     place-items: center;
-    min-width: 1.75rem;
-    height: 1.75rem;
-    padding-inline: var(--espacio-1);
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
     background: var(--fondo-oscuro);
     color: var(--texto-sobre-oscuro);
+    border: 0;
     border-radius: var(--radio-pildora);
-    font-size: var(--texto-sm);
+    cursor: pointer;
   }
 
-  .menu-boton {
-    min-height: 2.75rem;
-    padding: var(--espacio-2) var(--espacio-4);
-    background: transparent;
-    border: 2px solid var(--texto);
-    border-radius: var(--radio-pildora);
-    font-weight: 700;
-    cursor: pointer;
+  .menu-boton[hidden] {
+    display: none;
+  }
+
+  .menu-boton__cerrar,
+  .menu-boton[aria-expanded='true'] .menu-boton__abrir {
+    display: none;
+  }
+
+  .menu-boton[aria-expanded='true'] .menu-boton__cerrar {
+    display: inline;
   }
 
   .menu ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--espacio-1) var(--espacio-4);
+    gap: var(--espacio-1) var(--espacio-6);
     padding: 0;
     list-style: none;
   }
 
   .menu a {
-    display: inline-block;
-    padding-block: var(--espacio-2);
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 700;
     text-decoration: none;
   }
 
@@ -251,11 +260,26 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   @media (max-width: 47.99rem) {
     .menu {
       flex-basis: 100%;
-      padding-bottom: var(--espacio-4);
+      padding: var(--espacio-2) var(--espacio-5);
+      margin-bottom: var(--espacio-4);
+      background: var(--fondo-elevado);
+      border-radius: var(--radio-tarjeta);
+      box-shadow: var(--sombra-tarjeta);
     }
 
     .menu ul {
       flex-direction: column;
+      gap: 0;
+    }
+
+    .menu li + li {
+      border-top: 1px solid var(--color-linea);
+    }
+
+    .menu a {
+      display: flex;
+      min-height: 3rem;
+      font-size: var(--texto-lg);
     }
 
     .cabecera[data-menu='cerrado'] .menu {
@@ -279,8 +303,8 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .pie {
-    margin-top: var(--espacio-16);
-    padding-block: var(--espacio-12);
+    margin-top: var(--espacio-14);
+    padding-block: var(--espacio-8) var(--espacio-12);
     background: var(--fondo-oscuro);
     color: var(--texto-sobre-oscuro);
   }
@@ -288,10 +312,23 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .pie__fila {
     display: grid;
     gap: var(--espacio-3);
+    justify-items: stretch;
+  }
+
+  @media (min-width: 48rem) {
+    .pie__fila {
+      justify-items: start;
+    }
+  }
+
+  .pie__titulo {
+    font-size: 1.625rem;
+    font-weight: 800;
+    letter-spacing: -0.023em;
   }
 
   .pie__nota {
-    color: var(--texto-suave-sobre-oscuro);
+    color: var(--nota-sobre-oscuro);
     font-size: var(--texto-sm);
   }
 </style>

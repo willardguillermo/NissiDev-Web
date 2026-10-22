@@ -2,13 +2,15 @@
 // Con href es un enlace; sin href, un <button>.
 interface Props {
   href?: string;
-  variante?: 'primario' | 'secundario';
+  /** primario: negro · secundario: blanco con borde sutil · dorado: para fondos oscuros */
+  variante?: 'primario' | 'secundario' | 'dorado';
   type?: 'button' | 'submit';
   externo?: boolean;
+  class?: string;
 }
 
-const { href, variante = 'primario', type = 'button', externo = false } = Astro.props;
-const clases = ['boton', `boton--${variante}`];
+const { href, variante = 'primario', type = 'button', externo = false, class: clase } = Astro.props;
+const clases = ['boton', `boton--${variante}`, clase];
 ---
 
 {
@@ -20,7 +22,7 @@ const clases = ['boton', `boton--${variante}`];
       rel={externo ? 'noopener noreferrer' : undefined}
     >
       <slot />
-      {externo && <span class="solo-lector">(se abre en otra pestaña)</span>}
+      {externo && <span class="solo-lector"> (se abre en otra pestaña)</span>}
     </a>
   ) : (
     <button class:list={clases} type={type}>
@@ -35,18 +37,32 @@ const clases = ['boton', `boton--${variante}`];
     align-items: center;
     justify-content: center;
     gap: var(--espacio-2);
-    min-height: 3rem;
+    min-height: 3.25rem;
     padding: var(--espacio-3) var(--espacio-6);
-    border: 2px solid var(--texto);
+    border: 0;
     border-radius: var(--radio-pildora);
+    font-size: 0.9375rem;
     font-weight: 700;
+    text-align: center;
     text-decoration: none;
     cursor: pointer;
-    transition: transform var(--duracion-rebote) var(--ease-rebote);
   }
 
-  .boton:active {
-    transform: scale(0.97);
+  /* Rebote al pasar el mouse o tocar (solo transform). Sin movimiento si se pidió reducirlo. */
+  @media (prefers-reduced-motion: no-preference) {
+    .boton {
+      transition: transform var(--duracion-rebote) var(--ease-rebote);
+    }
+
+    @media (hover: hover) {
+      .boton:hover {
+        transform: scale(1.03);
+      }
+    }
+
+    .boton:active {
+      transform: scale(0.96);
+    }
   }
 
   .boton--primario {
@@ -55,7 +71,13 @@ const clases = ['boton', `boton--${variante}`];
   }
 
   .boton--secundario {
-    background: transparent;
+    background: var(--fondo-elevado);
     color: var(--texto);
+    box-shadow: var(--borde-sutil);
+  }
+
+  .boton--dorado {
+    background: var(--acento);
+    color: var(--color-negro);
   }
 </style>
