@@ -78,7 +78,7 @@ describe('quitarModulo', () => {
 
   it('con confirmación quita el módulo y sus dependientes', () => {
     const inicial = carritoCon('catalogo-web', 'panel-dueno', 'pedidos-whatsapp', 'chatbot');
-    const r = quitarModulo(inicial, 'catalogo-web', { confirmado: true });
+    const r = quitarModulo(inicial, 'catalogo-web', { afectadosConfirmados: ['panel-dueno', 'pedidos-whatsapp'] });
     expect(r).toEqual({
       estado: 'quitado',
       carrito: carritoCon('chatbot'),
@@ -93,13 +93,60 @@ describe('quitarModulo', () => {
   });
 
   it('con confirmación también se va Mantenimiento si queda solo', () => {
-    const r = quitarModulo(carritoCon('reservas', 'mantenimiento'), 'reservas', { confirmado: true });
+    const r = quitarModulo(carritoCon('reservas', 'mantenimiento'), 'reservas', {
+      afectadosConfirmados: ['mantenimiento'],
+    });
     expect(r).toEqual({ estado: 'quitado', carrito: CARRITO_VACIO, tambienQuitados: ['mantenimiento'] });
   });
 
   it('Mantenimiento se puede quitar sin aviso', () => {
     const r = quitarModulo(carritoCon('reservas', 'mantenimiento'), 'mantenimiento');
     expect(r).toEqual({ estado: 'quitado', carrito: carritoCon('reservas'), tambienQuitados: [] });
+  });
+
+  it('si después de advertir se agregó otro dependiente, no quita y pide confirmar de nuevo (caso de Codex)', () => {
+    // Se advirtió quitar Catálogo con Panel; con la confirmación abierta se agregó Inventario.
+    const advertido = quitarModulo(carritoCon('catalogo-web', 'panel-dueno'), 'catalogo-web');
+    if (advertido.estado !== 'requiere-confirmacion') throw new Error('se esperaba confirmación');
+    const actual = agregarModulo(advertido.carrito, 'inventario').carrito;
+
+    const r = quitarModulo(actual, 'catalogo-web', { afectadosConfirmados: advertido.afectados });
+    expect(r).toEqual({
+      estado: 'requiere-confirmacion',
+      carrito: actual,
+      afectados: ['panel-dueno', 'inventario'],
+    });
+  });
+
+  it('acepta los mismos afectados en otro orden', () => {
+    const r = quitarModulo(carritoCon('catalogo-web', 'panel-dueno', 'pedidos-whatsapp'), 'catalogo-web', {
+      afectadosConfirmados: ['pedidos-whatsapp', 'panel-dueno'],
+    });
+    expect(r).toEqual({ estado: 'quitado', carrito: CARRITO_VACIO, tambienQuitados: ['panel-dueno', 'pedidos-whatsapp'] });
+  });
+
+  it('si un afectado advertido ya no está, pide confirmar con la lista actual', () => {
+    const r = quitarModulo(carritoCon('catalogo-web', 'panel-dueno'), 'catalogo-web', {
+      afectadosConfirmados: ['panel-dueno', 'pedidos-whatsapp'],
+    });
+    expect(r).toEqual({
+      estado: 'requiere-confirmacion',
+      carrito: carritoCon('catalogo-web', 'panel-dueno'),
+      afectados: ['panel-dueno'],
+    });
+  });
+
+  it('si ya no queda ningún afectado, quita sin pedir confirmación (no se pierde nada sin aviso)', () => {
+    const r = quitarModulo(carritoCon('catalogo-web', 'chatbot'), 'catalogo-web', {
+      afectadosConfirmados: ['panel-dueno'],
+    });
+    expect(r).toEqual({ estado: 'quitado', carrito: carritoCon('chatbot'), tambienQuitados: [] });
+  });
+
+  it('confirmar con una lista vacía no alcanza si hay afectados', () => {
+    const inicial = carritoCon('catalogo-web', 'panel-dueno');
+    const r = quitarModulo(inicial, 'catalogo-web', { afectadosConfirmados: [] });
+    expect(r.estado).toBe('requiere-confirmacion');
   });
 
   it('quitar un módulo que no está no cambia nada', () => {

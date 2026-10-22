@@ -55,10 +55,18 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): ResultadoAgregar 
   };
 }
 
+const mismosIds = (a: readonly ModuloId[], b: readonly ModuloId[]) =>
+  a.length === b.length && a.every((id) => b.includes(id));
+
+/**
+ * Sin `afectadosConfirmados`, si quitar arrastra otros módulos solo los informa.
+ * Con ellos (la lista que se le mostró al dueño), quita solo si siguen siendo exactamente esos:
+ * si el carrito cambió mientras decidía, vuelve a pedir confirmación con la lista nueva.
+ */
 export function quitarModulo(
   carrito: Carrito,
   id: ModuloId,
-  { confirmado = false }: { confirmado?: boolean } = {},
+  { afectadosConfirmados }: { afectadosConfirmados?: readonly ModuloId[] } = {},
 ): ResultadoQuitar {
   if (!carrito.items.includes(id)) return { estado: 'quitado', carrito, tambienQuitados: [] };
 
@@ -70,6 +78,7 @@ export function quitarModulo(
     restantes = [];
   }
 
+  const confirmado = afectadosConfirmados !== undefined && mismosIds(afectados, afectadosConfirmados);
   if (afectados.length > 0 && !confirmado) {
     return { estado: 'requiere-confirmacion', carrito, afectados };
   }

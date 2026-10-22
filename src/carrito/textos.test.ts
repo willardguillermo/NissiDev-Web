@@ -57,7 +57,9 @@ describe('quitar', () => {
 
   it('aviso después de quitar', () => {
     const solo = quitarModulo({ items: ['chatbot'] }, 'chatbot');
-    const cascada = quitarModulo({ items: ['catalogo-web', 'panel-dueno'] }, 'catalogo-web', { confirmado: true });
+    const cascada = quitarModulo({ items: ['catalogo-web', 'panel-dueno'] }, 'catalogo-web', {
+      afectadosConfirmados: ['panel-dueno'],
+    });
     if (solo.estado !== 'quitado' || cascada.estado !== 'quitado') throw new Error('se esperaba "quitado"');
     expect(avisoQuitar('chatbot', solo)).toBe('Quitaste Chatbot.');
     expect(avisoQuitar('catalogo-web', cascada)).toBe('Quitaste Catálogo web. También se quitó Panel del dueño.');

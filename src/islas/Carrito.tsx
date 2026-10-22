@@ -2,7 +2,7 @@ import { useStore } from '@nanostores/react';
 import { useEffect, useRef, useState } from 'react';
 import { MODULOS, obtenerModulo, type ModuloId } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
-import { calcularTotales, CARRITO_VACIO } from '../carrito/carrito';
+import { calcularTotales, CARRITO_VACIO, type Carrito as CarritoDatos } from '../carrito/carrito';
 import { $carrito, agregar, cargarSugeridoEnStore, quitar } from '../carrito/store';
 import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
 import {
@@ -16,13 +16,16 @@ import {
 } from '../carrito/textos';
 import './Carrito.css';
 
-interface Pendiente {
-  id: ModuloId;
-  afectados: ModuloId[];
-}
-
 /** Dónde ocurrió la última acción: la tarjeta de un módulo o el bloque del carrito sugerido. */
 type Lugar = ModuloId | 'sugerido';
+
+/** Confirmación abierta, con el carrito tal como estaba al pedirla. */
+type Confirmacion =
+  | { tipo: 'quitar'; id: ModuloId; afectados: ModuloId[]; carrito: CarritoDatos }
+  | { tipo: 'sugerido'; carrito: CarritoDatos };
+
+const lugarDe = (confirmacion: Confirmacion): Lugar =>
+  confirmacion.tipo === 'quitar' ? confirmacion.id : 'sugerido';
 
 const SUGERIDO = CARRITOS_SUGERIDOS.dulceria;
 
@@ -35,16 +38,26 @@ export default function Carrito() {
 
   // El aviso se ve en la tarjeta donde se actuó y se anuncia en una región solo para lectores.
   const [aviso, setAviso] = useState<{ id: Lugar; texto: string } | null>(null);
-  const [pendiente, setPendiente] = useState<Pendiente | null>(null);
-  const [pendienteSugerido, setPendienteSugerido] = useState(false);
+  const [confirmacion, setConfirmacion] = useState<Confirmacion | null>(null);
   const botones = useRef(new Map<Lugar, HTMLButtonElement>());
   const cancelar = useRef<HTMLButtonElement>(null);
+  const zonaConfirmacion = useRef<HTMLDivElement>(null);
   // Al cerrar una confirmación, el botón se vuelve a dibujar: el foco se mueve después de dibujar.
   const [enfocar, setEnfocar] = useState<Lugar | null>(null);
 
   useEffect(() => {
-    if (pendiente || pendienteSugerido) cancelar.current?.focus();
-  }, [pendiente, pendienteSugerido]);
+    if (confirmacion) cancelar.current?.focus();
+  }, [confirmacion]);
+
+  // Si el carrito cambia con una confirmación abierta (otro botón, otra pestaña), esa pregunta ya
+  // no describe lo que pasaría: se cancela. Si el foco estaba en ella, vuelve al botón de su lugar;
+  // si el cambio vino de otro botón, el foco ya está ahí y no se mueve.
+  useEffect(() => {
+    if (!confirmacion || confirmacion.carrito === carrito) return;
+    const focoDentro = zonaConfirmacion.current?.contains(document.activeElement) ?? false;
+    setConfirmacion(null);
+    if (focoDentro) setEnfocar(lugarDe(confirmacion));
+  }, [carrito, confirmacion]);
 
   useEffect(() => {
     if (!enfocar) return;
@@ -59,31 +72,34 @@ export default function Carrito() {
     }
     const resultado = quitar(id);
     if (resultado.estado === 'requiere-confirmacion') {
-      setPendienteSugerido(false);
-      setPendiente({ id, afectados: resultado.afectados });
+      setConfirmacion({ tipo: 'quitar', id, afectados: resultado.afectados, carrito });
       return;
     }
     setAviso({ id, texto: avisoQuitar(id, resultado) });
   };
 
-  const confirmarQuitar = (id: ModuloId) => {
-    const resultado = quitar(id, { confirmado: true });
-    if (resultado.estado === 'quitado') setAviso({ id, texto: avisoQuitar(id, resultado) });
-    setPendiente(null);
+  const confirmarQuitar = (id: ModuloId, afectadosConfirmados: ModuloId[]) => {
+    const resultado = quitar(id, { afectadosConfirmados });
+    if (resultado.estado === 'requiere-confirmacion') {
+      // Los afectados cambiaron: se vuelve a preguntar con la lista nueva, sin quitar nada.
+      setConfirmacion({ tipo: 'quitar', id, afectados: resultado.afectados, carrito });
+      return;
+    }
+    setAviso({ id, texto: avisoQuitar(id, resultado) });
+    setConfirmacion(null);
     setEnfocar(id);
   };
 
-  const cancelarQuitar = (id: ModuloId) => {
-    setPendiente(null);
-    setEnfocar(id);
+  const cerrarConfirmacion = (lugar: Lugar) => {
+    setConfirmacion(null);
+    setEnfocar(lugar);
   };
 
   const pedirSugerido = () => {
     if (mismoContenido(carrito, cargarSugerido('dulceria'))) {
       setAviso({ id: 'sugerido', texto: `Ya tienes cargado el sistema para ${SUGERIDO.nombre}.` });
     } else if (carrito.items.length > 0) {
-      setPendiente(null);
-      setPendienteSugerido(true);
+      setConfirmacion({ tipo: 'sugerido', carrito });
     } else {
       aplicarSugerido();
     }
@@ -92,12 +108,7 @@ export default function Carrito() {
   const aplicarSugerido = () => {
     const nuevo = cargarSugeridoEnStore('dulceria');
     setAviso({ id: 'sugerido', texto: avisoSugerido(SUGERIDO.nombre, nuevo) });
-    setPendienteSugerido(false);
-    setEnfocar('sugerido');
-  };
-
-  const cancelarSugerido = () => {
-    setPendienteSugerido(false);
+    setConfirmacion(null);
     setEnfocar('sugerido');
   };
 
@@ -114,8 +125,8 @@ export default function Carrito() {
       <section className="carrito-sugerido" aria-labelledby="sugerido-titulo">
         <h2 id="sugerido-titulo">¿Tienes una dulcería?</h2>
         <p>Empieza con lo que suele necesitar una dulcería: {unirNombres([...SUGERIDO.modulos])}.</p>
-        {pendienteSugerido ? (
-          <div className="carrito-confirmar" role="group" aria-labelledby="pregunta-sugerido">
+        {confirmacion?.tipo === 'sugerido' ? (
+          <div ref={zonaConfirmacion} className="carrito-confirmar" role="group" aria-labelledby="pregunta-sugerido">
             <p id="pregunta-sugerido">{preguntaReemplazar(cantidad)}</p>
             <div className="carrito-confirmar__botones">
               <button type="button" className="carrito-boton" onClick={aplicarSugerido}>
@@ -125,7 +136,7 @@ export default function Carrito() {
                 ref={cancelar}
                 type="button"
                 className="carrito-boton carrito-boton--secundario"
-                onClick={cancelarSugerido}
+                onClick={() => cerrarConfirmacion('sugerido')}
               >
                 Cancelar
               </button>
@@ -156,18 +167,27 @@ export default function Carrito() {
               {necesita.length > 0 && <p className="carrito-modulo__nota">Necesita: {necesita.join(', ')}</p>}
               {modulo.requiereOtroModulo && <p className="carrito-modulo__nota">Se agrega junto a otro módulo.</p>}
 
-              {pendiente?.id === modulo.id ? (
-                <div className="carrito-confirmar" role="group" aria-labelledby={`pregunta-${modulo.id}`}>
-                  <p id={`pregunta-${modulo.id}`}>{preguntaQuitar(modulo.id, pendiente.afectados)}</p>
+              {confirmacion?.tipo === 'quitar' && confirmacion.id === modulo.id ? (
+                <div
+                  ref={zonaConfirmacion}
+                  className="carrito-confirmar"
+                  role="group"
+                  aria-labelledby={`pregunta-${modulo.id}`}
+                >
+                  <p id={`pregunta-${modulo.id}`}>{preguntaQuitar(modulo.id, confirmacion.afectados)}</p>
                   <div className="carrito-confirmar__botones">
-                    <button type="button" className="carrito-boton" onClick={() => confirmarQuitar(modulo.id)}>
+                    <button
+                      type="button"
+                      className="carrito-boton"
+                      onClick={() => confirmarQuitar(modulo.id, confirmacion.afectados)}
+                    >
                       Sí, quitar
                     </button>
                     <button
                       ref={cancelar}
                       type="button"
                       className="carrito-boton carrito-boton--secundario"
-                      onClick={() => cancelarQuitar(modulo.id)}
+                      onClick={() => cerrarConfirmacion(modulo.id)}
                     >
                       Cancelar
                     </button>

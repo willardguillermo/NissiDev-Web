@@ -26,9 +26,9 @@ export function agregar(id: ModuloId) {
   return resultado;
 }
 
-export function quitar(id: ModuloId, opciones?: { confirmado?: boolean }) {
+export function quitar(id: ModuloId, opciones?: { afectadosConfirmados?: readonly ModuloId[] }) {
   const resultado = quitarModulo($carrito.get(), id, opciones);
-  $carrito.set(resultado.carrito);
+  if (resultado.estado === 'quitado') $carrito.set(resultado.carrito);
   return resultado;
 }
 
