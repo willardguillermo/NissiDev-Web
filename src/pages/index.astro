@@ -1,28 +1,452 @@
 ---
 import Boton from '../components/Boton.astro';
-import Tarjeta from '../components/Tarjeta.astro';
+import Logo from '../components/Logo.astro';
+import RotadorServicios from '../components/RotadorServicios.astro';
 import { WHATSAPP_ENLACE } from '../config/contacto';
+import TelefonoDemo from '../components/TelefonoDemo.astro';
 import Base from '../layouts/Base.astro';
+
+const pasos = [
+  { titulo: 'Maqueta', texto: 'Ves cómo quedaría, sin costo.' },
+  { titulo: 'Propuesta', texto: 'Precio cerrado y qué incluye.' },
+  { titulo: 'Desarrollo', texto: 'Unas 4 semanas, con avances.' },
+  { titulo: 'Soporte', texto: 'Te acompaño después.' },
+];
+const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQL', 'Cloudflare'];
 ---
 
 <Base titulo="NissiDev">
-  <section class="contenedor provisional">
-    <h1>NissiDev</h1>
-    <Tarjeta titulo="Sitio en construcción">
-      <p>Pronto podrás probar la demo del sistema de tu negocio y armar tu cotización.</p>
-      <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
-    </Tarjeta>
+  <section class="contenedor hero" aria-labelledby="hero-titulo">
+    <!-- El logo se arma en 3D (solo CSS). data-logo-armado: la primera visita de la sesión lo ve completo. -->
+    <div class="hero__escena" data-logo-armado>
+      <Logo etiqueta="NissiDev" class="hero__logo" />
+    </div>
+    <p class="hero__etiqueta entra" style="--n: 0">Webs y sistemas · Este de Lima</p>
+    <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">Software que impulsa tu negocio.</h1>
+    <p class="hero__bajada entra" style="--n: 2">
+      Prueba cómo quedaría el sistema de tu negocio, elige lo que necesitas y recibe la cotización por WhatsApp.
+    </p>
+    <div class="hero__acciones entra" style="--n: 3">
+      <Boton href="#demo">Ver la demo de mi rubro</Boton>
+      <Boton href={WHATSAPP_ENLACE} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
+    </div>
+  </section>
+
+  <div class="contenedor entra" style="--n: 4">
+    <RotadorServicios />
+  </div>
+
+  <section id="demo" class="contenedor seccion demo" aria-labelledby="demo-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="demo__tu">tu</span> sistema.</h2>
+      <p class="seccion__bajada">Una dulcería de ejemplo, funcionando.</p>
+    </div>
+    <div class="demo__telefono">
+      <TelefonoDemo />
+    </div>
+    <p class="demo__sello">Demo · datos de ejemplo</p>
+    <!-- Aún no hay demo que abrir: es un aviso (texto), no un botón, así que no recibe foco.
+         Un lector de pantalla lee "Abrir la demo: muy pronto". -->
+    <p class="demo__aviso">
+      Abrir la demo<span class="solo-lector">:</span> <span class="demo__pronto">Muy pronto</span>
+    </p>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
+    <div class="arma">
+      <p class="etiqueta">Precios referenciales</p>
+      <h2 id="arma-titulo" class="titulo-2">Arma tu sistema</h2>
+      <span class="linea-dorada" aria-hidden="true"></span>
+      <p class="seccion__bajada">
+        Elige las funciones que necesita tu negocio y mira cuánto costaría. Puedes empezar con poco y sumar después.
+      </p>
+      <Boton href="/arma-tu-sistema">Elegir funciones</Boton>
+    </div>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="pasos-titulo" data-aparecer>
+    <h2 id="pasos-titulo" class="titulo-2">Cómo trabajamos</h2>
+    <ol class="pasos" role="list">
+      {
+        pasos.map((paso, i) => (
+          <li class="paso">
+            <span class="paso__numero" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="paso__titulo">{paso.titulo}</span>
+            <span class="paso__texto">{paso.texto}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
+    <h2 id="stack-titulo" class="etiqueta">Con qué construyo</h2>
+    <ul class="chips" role="list">
+      {tecnologias.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
+    </ul>
+  </section>
+
+  <section class="contenedor seccion" data-aparecer>
+    <p class="casos">Casos: próximamente.</p>
   </section>
 </Base>
 
 <style>
-  .provisional {
-    display: grid;
-    gap: var(--espacio-8);
-    padding-block: var(--espacio-12);
+  /* ---------- Hero Ensamble: todo centrado y con aire ---------- */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.125rem;
+    padding-block: var(--espacio-8) var(--espacio-6);
+    text-align: center;
   }
 
-  h1 {
-    font-size: var(--texto-2xl);
+  .hero__escena {
+    display: grid;
+    place-items: center;
+    width: 8.25rem;
+    height: 10.625rem;
+    perspective: 900px;
+  }
+
+  .hero__escena :global(.hero__logo) {
+    width: 8.25rem;
+  }
+
+  .hero__etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hero__titulo {
+    max-width: 14ch;
+    font-size: clamp(2rem, 1.2rem + 4.2vw, 3.5rem);
+    font-weight: var(--peso-titulo);
+    line-height: var(--interlineado-titulo);
+    letter-spacing: -0.035em;
+  }
+
+  .hero__bajada {
+    max-width: 36ch;
+    color: var(--texto-suave);
+  }
+
+  .hero__acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 100%;
+    max-width: 21.25rem;
+    margin-top: 0.375rem;
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      padding-block: var(--espacio-14) var(--espacio-8);
+    }
+
+    .hero__escena,
+    .hero__escena :global(.hero__logo) {
+      width: 10rem;
+    }
+
+    .hero__escena {
+      height: 12.75rem;
+    }
+
+    .hero__acciones {
+      flex-direction: row;
+      justify-content: center;
+      max-width: none;
+    }
+  }
+
+  /* ---------- Armado del logo ----------
+     La escena llega inclinada (vista isométrica) y se endereza con --ease-in-out; mientras, las cuatro
+     piezas negras llegan a su lugar y la cinta dorada gira y cae. Todo termina en ~1.1 s. */
+  @keyframes logo-iso {
+    from {
+      transform: rotateX(58deg) rotateZ(-38deg) scale(0.82);
+    }
+  }
+
+  @keyframes logo-pieza {
+    from {
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) rotate(var(--giro, 0deg)) scale(0.92);
+    }
+  }
+
+  .hero__escena :global(.hero__logo) {
+    animation: logo-iso 1100ms var(--ease-in-out) both;
+  }
+
+  .hero__escena :global(.pz) {
+    animation: logo-pieza 640ms var(--ease-out) both;
+  }
+
+  .hero__escena :global(.p-tl) {
+    --dx: -70px;
+    --dy: -60px;
+    animation-delay: 40ms;
+  }
+
+  .hero__escena :global(.p-bl) {
+    --dx: -90px;
+    --dy: 40px;
+    animation-delay: 100ms;
+  }
+
+  .hero__escena :global(.p-tr) {
+    --dx: 90px;
+    --dy: -40px;
+    animation-delay: 160ms;
+  }
+
+  .hero__escena :global(.p-br) {
+    --dx: 70px;
+    --dy: 60px;
+    animation-delay: 220ms;
+  }
+
+  .hero__escena :global(.p-oro) {
+    --dx: 0px;
+    --dy: -24px;
+    --giro: -62deg;
+    animation-duration: 760ms;
+    animation-delay: 300ms;
+  }
+
+  /* El texto no espera al logo: empieza a los 300 ms, en paralelo, y termina hacia los 1.1 s.
+     Es solo CSS, así que se ve aunque el JavaScript falle. */
+  .entra {
+    animation: sube 560ms var(--ease-out) both;
+    animation-delay: calc(var(--inicio-texto, 300ms) + var(--n) * 80ms);
+  }
+
+  /* Segunda vez en la sesión: el logo ya armado aparece con un fundido corto y el texto no espera. */
+  :global(.logo-visto) .hero {
+    --inicio-texto: 0ms;
+  }
+
+  :global(.logo-visto) .hero__escena :global(.hero__logo) {
+    animation: fundido var(--duracion-fundido) var(--ease-out) both;
+  }
+
+  :global(.logo-visto) .hero__escena :global(.pz) {
+    animation: none;
+  }
+
+  /* Movimiento reducido: sin giros ni desplazamientos; el logo aparece armado y todo entra con un fundido. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__escena :global(.hero__logo),
+    :global(.logo-visto) .hero__escena :global(.hero__logo) {
+      animation: fundido var(--duracion-fundido) ease both;
+    }
+
+    .hero__escena :global(.pz) {
+      animation: none;
+    }
+
+    .entra {
+      animation: fundido var(--duracion-fundido) ease both;
+      animation-delay: calc(var(--n) * 40ms);
+    }
+  }
+
+  /* ---------- Resto del Inicio: claro, centrado y con aire ---------- */
+  .seccion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-4);
+    padding-top: var(--espacio-16);
+    text-align: center;
+  }
+
+  .seccion__cabeza {
+    display: grid;
+    gap: var(--espacio-3);
+    justify-items: center;
+  }
+
+  .seccion__bajada {
+    max-width: 36ch;
+    color: var(--texto-suave);
+  }
+
+  .etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .linea-dorada {
+    width: 1.75rem;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+  }
+
+  .demo {
+    scroll-margin-top: var(--espacio-4);
+  }
+
+  .demo__tu {
+    color: var(--acento-texto);
+  }
+
+  .demo__telefono {
+    margin-top: var(--espacio-4);
+  }
+
+  /* "Producto dentro del dispositivo": el celular sube y se agranda mientras entra en pantalla.
+     Solo CSS, atado al scroll; sin soporte o con movimiento reducido queda quieto en su lugar. */
+  @keyframes telefono-entra {
+    from {
+      transform: translateY(80px) scale(0.86);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .demo__telefono {
+        /* Propiedades sueltas: animation-timeline no puede ir dentro del atajo "animation" (el minificador
+           las juntaría y el navegador descartaría la regla). */
+        animation-name: telefono-entra;
+        animation-fill-mode: both;
+        animation-timing-function: var(--ease-out);
+        animation-timeline: view();
+        animation-range: entry 0% cover 45%;
+      }
+    }
+  }
+
+  .demo__sello {
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+
+  /* Aviso, no botón: borde punteado y texto suave para que no parezca algo que se puede tocar */
+  .demo__aviso {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-2);
+    min-height: 3rem;
+    padding-inline: 1.375rem var(--espacio-2);
+    color: var(--texto-suave);
+    border: 1px dashed var(--color-punteado);
+    border-radius: var(--radio-pildora);
+    font-weight: 600;
+  }
+
+  .demo__pronto {
+    padding: var(--espacio-1) var(--espacio-3);
+    background: var(--fondo);
+    color: var(--acento-texto);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+  }
+
+  .arma {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-3);
+    width: 100%;
+    max-width: 30rem;
+    padding: var(--espacio-8) var(--espacio-6);
+    background: var(--fondo-elevado);
+    border-radius: 1.5rem;
+    box-shadow: var(--sombra-tarjeta);
+  }
+
+  .arma :global(.boton) {
+    margin-top: var(--espacio-2);
+  }
+
+  .pasos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espacio-3);
+    width: 100%;
+    max-width: 30rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .paso {
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    gap: var(--espacio-1);
+    padding: var(--espacio-5) var(--espacio-3);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-tarjeta);
+  }
+
+  .paso__numero {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .paso__titulo {
+    font-weight: var(--peso-titulo);
+  }
+
+  .paso__texto {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--espacio-2);
+    max-width: 30rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chip {
+    padding: var(--espacio-2) var(--espacio-4);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-sm);
+    font-weight: 600;
+  }
+
+  .casos {
+    width: 100%;
+    max-width: 30rem;
+    padding: var(--espacio-5);
+    color: var(--texto-suave);
+    border: 1px dashed var(--color-punteado);
+    border-radius: var(--radio-tarjeta);
+    font-size: var(--texto-sm);
+  }
+
+  @media (min-width: 48rem) {
+    .seccion {
+      padding-top: var(--espacio-24);
+    }
+
+    .pasos {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: 56rem;
+    }
   }
 </style>

@@ -5,14 +5,14 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima 
 ## Leer antes de trabajar
 1. `BRIEF.md`: qué es, para quién, alcance del MVP y lo que va después.
 2. `SPEC.md`: objetivo, comandos, estructura, estilo, tests, límites y criterios de éxito (aprobada).
-3. `docs/decisions/`: decisiones de arquitectura (ADR-001: Astro con islas de React).
+3. `docs/decisions/`: decisiones de arquitectura (ADR-001: Astro con islas de React; ADR-002: movimiento con CSS).
 4. `docs/referencias/demo-dulceria.md`: pantallas, estilo y modelo de datos de la demo.
 5. `tasks/plan.md`: plan de tareas (cuando exista).
 
 ## Stack
 - Astro + TypeScript; islas de React solo para lo interactivo (demo, carrito, cotización)
 - nanostores (+ `@nanostores/persistent`) para el carrito compartido
-- GSAP + ScrollTrigger, Lenis y View Transitions de Astro para animación
+- Animación con CSS (`@keyframes`, transiciones, `animation-timeline: view()`) y View Transitions de Astro; sin GSAP ni Lenis (ADR-002)
 - CSS propio con variables en `src/styles/tokens.css`
 - Vitest, ESLint, `astro check`
 - Cloudflare Pages conectado a GitHub (`willardguillermo/NissiDev-Web`)
@@ -31,7 +31,7 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima 
 - `git init` con rama `main`; el `.gitignore` debe incluir `node_modules/`, `dist/`, `.astro/`, `.env*` y `.DS_Store`.
 
 ## Estructura
-Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/layouts`, `src/components` (.astro sin estado), `src/islas` (React), `src/animacion`, `src/catalogo-servicios`, `src/carrito`, `src/cotizacion`, `src/demo`, `src/rubros/dulceria`.
+Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/layouts`, `src/components` (.astro sin estado), `src/islas` (React), `src/catalogo-servicios`, `src/carrito`, `src/cotizacion`, `src/demo`, `src/rubros/dulceria`.
 
 ## Convenciones
 - Código, nombres y textos en **español** (`agregarModulo`, `totalInicial`); componentes en PascalCase.

@@ -23,6 +23,15 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Celular: sin el destello gris al tocar (cada control tiene su propio :active) */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Toques rápidos: sin la espera del doble toque */
+a,
+button,
+[role='button'] {
+  touch-action: manipulation;
 }
 
 /* El footer queda abajo aunque la página sea corta */
@@ -52,6 +61,21 @@ h4 {
 
 p {
   text-wrap: pretty;
+}
+
+/* Titulares en peso 700, apretados (dirección Ensamble) */
+.titulo-1 {
+  font-size: var(--titulo-1);
+  font-weight: var(--peso-titulo);
+  line-height: 0.98;
+  letter-spacing: var(--espaciado-titulo-1);
+}
+
+.titulo-2 {
+  font-size: var(--titulo-2);
+  font-weight: var(--peso-titulo);
+  line-height: 1.05;
+  letter-spacing: var(--espaciado-titulo-2);
 }
 
 img,
@@ -101,14 +125,46 @@ a {
   outline-offset: 3px;
 }
 
-/* Movimiento reducido: sin animaciones ni scroll suave */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* Entradas del sitio: suben un poco y se enfocan. --d es el retraso de cada pieza. */
+@keyframes sube {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+}
+
+@keyframes fundido {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Aparecer al hacer scroll, solo con CSS: la animación avanza con la posición de la sección en la
+   pantalla (animation-timeline: view()). Donde no hay soporte, el contenido se ve quieto desde el inicio. */
+@keyframes aparece {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Salto suave a los anclas (#demo). Movimiento reducido = menos y más suave, no cero: cada animación trae
+   su versión con solo fundidos; las que dependen del scroll, simplemente no se mueven. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @supports (animation-timeline: view()) {
+    [data-aparecer] {
+      /* Propiedades sueltas: animation-timeline no puede ir dentro del atajo "animation" (el minificador
+         las juntaría y el navegador descartaría la regla). */
+      animation-name: aparece;
+      animation-fill-mode: both;
+      animation-timing-function: var(--ease-out);
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
   }
 }

@@ -1,0 +1,33 @@
+---
+// Logo oficial de NissiDev (docs/referencias/marca/nissidev-logo.svg): 4 piezas negras y la cinta dorada.
+// Cada pieza tiene su clase para poder armarlo pieza por pieza (ver el hero del Inicio).
+// Con "etiqueta" es una imagen con nombre; sin ella es decorativo (el texto de al lado ya dice "NissiDev").
+interface Props {
+  etiqueta?: string;
+  class?: string;
+}
+
+const { etiqueta, class: clase } = Astro.props;
+---
+
+<svg
+  class:list={['logo-marca', clase]}
+  viewBox="0 0 879 1121"
+  role={etiqueta ? 'img' : undefined}
+  aria-label={etiqueta}
+  aria-hidden={etiqueta ? undefined : 'true'}
+>
+  <path class="pz p-tl" fill="#1E1F22" d="M222 0 L210 5 L82 76 L72 90 L71 105 L75 115 L84 124 L213 204 L223 208 L234 208 L247 202 L253 195 L257 185 L257 24 L253 13 L244 4 L234 0Z"></path>
+  <path class="pz p-bl" fill="#1E1F22" d="M25 526 L12 531 L5 538 L0 551 L0 953 L5 967 L12 974 L23 979 L35 979 L51 972 L240 868 L251 859 L257 845 L257 673 L252 662 L242 653 L44 530 L33 526Z"></path>
+  <path class="pz p-tr" fill="#1E1F22" d="M844 142 L828 149 L639 253 L628 262 L622 276 L622 447 L629 461 L638 468 L833 589 L845 594 L856 594 L866 590 L872 585 L879 570 L879 168 L874 154 L867 147 L856 142Z"></path>
+  <path class="pz p-br" fill="#1E1F22" d="M646 912 L631 919 L626 925 L622 935 L622 1097 L626 1108 L635 1117 L645 1121 L657 1121 L669 1116 L797 1045 L804 1038 L807 1032 L808 1014 L804 1005 L796 997 L659 913Z"></path>
+  <path class="pz p-oro" fill="#B28A4C" d="M7 154 L3 160 L0 171 L0 439 L1 446 L5 454 L12 461 L835 972 L847 976 L858 975 L868 970 L874 964 L879 949 L879 681 L878 674 L869 661 L45 149 L35 145 L23 145 L13 149Z"></path>
+</svg>
+
+<style>
+  /* Cada pieza se mueve desde su propio centro */
+  .pz {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+</style>

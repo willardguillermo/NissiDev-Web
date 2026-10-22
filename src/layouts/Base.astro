@@ -1,4 +1,7 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+import Boton from '../components/Boton.astro';
+import Logo from '../components/Logo.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
@@ -9,11 +12,11 @@ interface Props {
 
 const {
   titulo,
-  descripcion = 'NissiDev: sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
+  descripcion = 'NissiDev: webs y sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
 } = Astro.props;
 const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
 
-// Las páginas se crean en T05 y T21–T23; hasta entonces estos enlaces dan 404.
+// Las páginas se crean en T21–T23; hasta entonces Servicios, Demos y Contacto dan 404.
 const enlaces = [
   { href: '/', texto: 'Inicio' },
   { href: '/servicios', texto: 'Servicios' },
@@ -30,22 +33,63 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
-    <meta name="theme-color" content="#1e1f22" />
+    <meta name="theme-color" content="#f7f4ec" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
+      // Las clases se ponen antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos
+      // de <html> al cambiar de página, por eso se vuelven a poner en astro:after-swap.
+      // "logo-visto": el armado del logo es de una vez por sesión; después aparece con un fundido corto.
+      // Si sessionStorage falla (modo privado, bloqueado), no hay clase y el logo se arma normal.
+      const LOGO_ARMADO = 'nissidev:logo-armado';
+      const marcarClases = function () {
+        const raiz = document.documentElement;
+        raiz.classList.add('js');
+        try {
+          if (sessionStorage.getItem(LOGO_ARMADO)) raiz.classList.add('logo-visto');
+        } catch {
+          // Sin sessionStorage el logo se arma normal.
+        }
+      };
+      marcarClases();
+      document.addEventListener('astro:after-swap', marcarClases);
+      document.addEventListener('astro:page-load', function () {
+        if (!document.querySelector('[data-logo-armado]')) return;
+        try {
+          sessionStorage.setItem(LOGO_ARMADO, '1');
+        } catch {
+          // Si no se puede guardar, la próxima visita también lo verá armarse.
+        }
+      });
+    </script>
+    <ClientRouter />
   </head>
   <body>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
 
     <header class="cabecera">
       <div class="contenedor cabecera__fila">
-        <a class="logo" href="/" aria-label="NissiDev, ir al inicio">Nissi<span>Dev</span></a>
+        <a class="marca" href="/" aria-label="NissiDev, ir al inicio">
+          <Logo class="marca__logo" />
+          <span>NissiDev</span>
+        </a>
 
         <div class="cabecera__acciones">
           <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
-            Mi sistema <span class="mi-sistema__cantidad" data-mi-sistema-cantidad></span>
+            Mi sistema (<span data-mi-sistema-cantidad></span>)
           </a>
-          <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
-            Menú
+          <button
+            class="menu-boton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu-principal"
+            aria-label="Menú"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <path class="menu-boton__abrir" d="M4 8h16M4 16h16"></path>
+              <path class="menu-boton__cerrar" d="M6 6l12 12M18 6L6 18"></path>
+            </svg>
           </button>
         </div>
 
@@ -69,70 +113,78 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <footer class="pie zona-oscura">
+    <!-- Como el cierre del video: logo, NissiDev, WhatsApp y el número -->
+    <footer class="pie">
       <div class="contenedor pie__fila">
-        <p class="logo logo--oscuro">Nissi<span>Dev</span></p>
-        <p>
-          <a href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
-            WhatsApp: {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
-          </a>
-        </p>
+        <Logo class="pie__logo" />
+        <p class="pie__marca">NissiDev</p>
+        <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
+        <p class="pie__numero">{WHATSAPP_VISIBLE}</p>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
       </div>
     </footer>
 
     <script>
       // Menú móvil: sin JavaScript el menú queda siempre visible.
-      const cabecera = document.querySelector<HTMLElement>('.cabecera');
-      const boton = document.querySelector<HTMLButtonElement>('.menu-boton');
-      const menu = document.getElementById('menu-principal');
+      // Con View Transitions el header es nuevo en cada página: se conecta en cada astro:page-load.
+      const movil = window.matchMedia('(max-width: 47.99rem)');
 
-      if (cabecera && boton && menu) {
-        const movil = window.matchMedia('(max-width: 47.99rem)');
+      const elementosMenu = () => {
+        const cabecera = document.querySelector<HTMLElement>('.cabecera');
+        const boton = document.querySelector<HTMLButtonElement>('.menu-boton');
+        const menu = document.getElementById('menu-principal');
+        return cabecera && boton && menu ? { cabecera, boton, menu } : null;
+      };
 
-        const abrir = (abierto: boolean) => {
-          boton.setAttribute('aria-expanded', String(abierto));
-          cabecera.dataset.menu = abierto ? 'abierto' : 'cerrado';
-        };
+      const abrir = (abierto: boolean) => {
+        const actuales = elementosMenu();
+        if (!actuales) return;
+        actuales.boton.setAttribute('aria-expanded', String(abierto));
+        actuales.cabecera.dataset.menu = abierto ? 'abierto' : 'cerrado';
+      };
 
-        boton.hidden = false;
+      document.addEventListener('astro:page-load', () => {
+        const actuales = elementosMenu();
+        if (!actuales) return;
+        const { boton, menu } = actuales;
         abrir(false);
-
         boton.addEventListener('click', () => abrir(boton.getAttribute('aria-expanded') !== 'true'));
-
-        document.addEventListener('keydown', (evento) => {
-          if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
-            abrir(false);
-            boton.focus();
-          }
-        });
-
         menu.addEventListener('click', (evento) => {
           if (movil.matches && (evento.target as HTMLElement).closest('a')) abrir(false);
         });
+      });
 
-        movil.addEventListener('change', () => abrir(false));
-      }
+      // Estos dos escuchan siempre al header actual, así que se registran una sola vez.
+      document.addEventListener('keydown', (evento) => {
+        const actuales = elementosMenu();
+        if (evento.key === 'Escape' && actuales?.boton.getAttribute('aria-expanded') === 'true') {
+          abrir(false);
+          actuales.boton.focus();
+        }
+      });
+      movil.addEventListener('change', () => abrir(false));
     </script>
 
     <script>
       // Acceso "Mi sistema (n)" en el header: solo aparece si hay módulos elegidos. Sin React.
       import { $carrito } from '../carrito/store';
 
-      const enlace = document.querySelector<HTMLElement>('[data-mi-sistema]');
-      const cantidad = document.querySelector<HTMLElement>('[data-mi-sistema-cantidad]');
+      const pintar = ({ items }: { items: unknown[] }) => {
+        const enlace = document.querySelector<HTMLElement>('[data-mi-sistema]');
+        const cantidad = document.querySelector<HTMLElement>('[data-mi-sistema-cantidad]');
+        if (!enlace || !cantidad) return;
+        enlace.hidden = items.length === 0;
+        cantidad.textContent = String(items.length);
+        enlace.setAttribute(
+          'aria-label',
+          `Mi sistema: ${items.length} ${items.length === 1 ? 'módulo elegido' : 'módulos elegidos'}`,
+        );
+      };
 
-      if (enlace && cantidad) {
-        $carrito.subscribe(({ items }) => {
-          enlace.hidden = items.length === 0;
-          cantidad.textContent = String(items.length);
-          enlace.setAttribute(
-            'aria-label',
-            `Mi sistema: ${items.length} ${items.length === 1 ? 'módulo elegido' : 'módulos elegidos'}`,
-          );
-        });
-      }
+      $carrito.subscribe(pintar);
+      document.addEventListener('astro:page-load', () => pintar($carrito.get()));
     </script>
+
   </body>
 </html>
 
@@ -145,7 +197,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     padding: var(--espacio-2) var(--espacio-4);
     background: var(--fondo-oscuro);
     color: var(--texto-sobre-oscuro);
-    border-radius: var(--radio-sm);
+    border-radius: var(--radio-pildora);
     transform: translateY(-200%);
   }
 
@@ -157,32 +209,28 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     outline: none;
   }
 
-  .cabecera {
-    border-bottom: 1px solid var(--borde);
-  }
-
   .cabecera__fila {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--espacio-2) var(--espacio-4);
-    min-height: 4rem;
+    min-height: 4.5rem;
   }
 
-  .logo {
-    font-size: var(--texto-lg);
-    font-weight: 800;
+  .marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
     letter-spacing: -0.02em;
     text-decoration: none;
   }
 
-  .logo span {
-    color: var(--acento-texto);
-  }
-
-  .logo--oscuro span {
-    color: var(--acento);
+  .marca :global(.marca__logo) {
+    width: 1.375rem;
   }
 
   .cabecera__acciones {
@@ -194,50 +242,68 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .mi-sistema {
     display: inline-flex;
     align-items: center;
-    gap: var(--espacio-2);
     min-height: 2.75rem;
+    padding-inline: var(--espacio-4);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-pildora);
+    box-shadow: var(--borde-sutil);
+    font-size: var(--texto-sm);
     font-weight: 700;
     text-decoration: none;
+    transition: transform var(--duracion-toque) var(--ease-out);
+  }
+
+  .mi-sistema:active,
+  .menu-boton:active {
+    transform: scale(0.97);
   }
 
   .mi-sistema[hidden] {
     display: none;
   }
 
-  .mi-sistema__cantidad {
-    display: inline-grid;
+  /* Sin JavaScript no hay botón: el menú queda siempre visible. Círculo de 44 px con contorno suave. */
+  .menu-boton {
+    display: none;
     place-items: center;
-    min-width: 1.75rem;
-    height: 1.75rem;
-    padding-inline: var(--espacio-1);
-    background: var(--fondo-oscuro);
-    color: var(--texto-sobre-oscuro);
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    background: transparent;
+    color: var(--texto);
+    border: 0;
     border-radius: var(--radio-pildora);
-    font-size: var(--texto-sm);
+    box-shadow: var(--borde-sutil);
+    cursor: pointer;
+    transition: transform var(--duracion-toque) var(--ease-out);
   }
 
-  .menu-boton {
-    min-height: 2.75rem;
-    padding: var(--espacio-2) var(--espacio-4);
-    background: transparent;
-    border: 2px solid var(--texto);
-    border-radius: var(--radio-pildora);
-    font-weight: 700;
-    cursor: pointer;
+  :global(.js) .menu-boton {
+    display: grid;
+  }
+
+  .menu-boton__cerrar,
+  .menu-boton[aria-expanded='true'] .menu-boton__abrir {
+    display: none;
+  }
+
+  .menu-boton[aria-expanded='true'] .menu-boton__cerrar {
+    display: inline;
   }
 
   .menu ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--espacio-1) var(--espacio-4);
+    gap: var(--espacio-1) var(--espacio-6);
     padding: 0;
     list-style: none;
   }
 
   .menu a {
-    display: inline-block;
-    padding-block: var(--espacio-2);
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 700;
     text-decoration: none;
   }
 
@@ -251,20 +317,36 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   @media (max-width: 47.99rem) {
     .menu {
       flex-basis: 100%;
-      padding-bottom: var(--espacio-4);
+      padding: var(--espacio-2) var(--espacio-5);
+      margin-bottom: var(--espacio-4);
+      background: var(--fondo-elevado);
+      border-radius: var(--radio-tarjeta);
+      box-shadow: var(--sombra-tarjeta);
     }
 
     .menu ul {
       flex-direction: column;
+      gap: 0;
     }
 
-    .cabecera[data-menu='cerrado'] .menu {
+    .menu li + li {
+      border-top: 1px solid var(--color-linea);
+    }
+
+    .menu a {
+      display: flex;
+      min-height: 3rem;
+      font-size: var(--texto-lg);
+    }
+
+    /* Con JavaScript el menú empieza cerrado desde el primer dibujo (la clase "js" se pone en el <head>). */
+    :global(.js) .cabecera:not([data-menu='abierto']) .menu {
       display: none;
     }
   }
 
   @media (min-width: 48rem) {
-    .menu-boton {
+    :global(.js) .menu-boton {
       display: none;
     }
 
@@ -279,19 +361,38 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .pie {
-    margin-top: var(--espacio-16);
-    padding-block: var(--espacio-12);
-    background: var(--fondo-oscuro);
-    color: var(--texto-sobre-oscuro);
+    margin-top: var(--espacio-24);
+    padding-block: var(--espacio-12) var(--espacio-16);
+    border-top: 1px solid var(--color-linea);
   }
 
   .pie__fila {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--espacio-3);
+    text-align: center;
+  }
+
+  .pie :global(.pie__logo) {
+    width: 2.75rem;
+  }
+
+  .pie__marca {
+    margin-bottom: var(--espacio-2);
+    font-size: 1.375rem;
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.02em;
+  }
+
+  .pie__numero {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
 
   .pie__nota {
-    color: var(--texto-suave-sobre-oscuro);
-    font-size: var(--texto-sm);
+    margin-top: var(--espacio-4);
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
   }
 </style>

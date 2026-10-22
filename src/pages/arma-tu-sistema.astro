@@ -9,9 +9,10 @@ import Base from '../layouts/Base.astro';
 >
   <section class="contenedor arma">
     <header class="arma__intro">
-      <h1>Arma tu sistema</h1>
-      <p>Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
-      <p class="aviso" role="note">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
+      <p class="arma__etiqueta">Precios referenciales</p>
+      <h1 class="arma__titulo">Arma tu sistema.</h1>
+      <span class="arma__linea" aria-hidden="true"></span>
+      <p class="arma__bajada">Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
     </header>
 
     <Carrito client:visible />
@@ -21,24 +22,44 @@ import Base from '../layouts/Base.astro';
 <style>
   .arma {
     display: grid;
-    gap: var(--espacio-8);
-    padding-top: var(--espacio-12);
+    gap: var(--espacio-4);
+    padding-top: var(--espacio-5);
   }
 
+  /* Cabecera centrada como el Inicio; la lista y el resumen quedan alineados a la izquierda para leerlos */
   .arma__intro {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--espacio-3);
+    padding-block: var(--espacio-4) var(--espacio-4);
+    text-align: center;
   }
 
-  h1 {
-    font-size: var(--texto-xl);
+  .arma__etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
-  .aviso {
-    padding: var(--espacio-3) var(--espacio-4);
-    border-left: 4px solid var(--acento);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-sm);
-    font-size: var(--texto-sm);
+  .arma__titulo {
+    font-size: clamp(2.25rem, 1.8rem + 2.4vw, 3.5rem);
+    font-weight: var(--peso-titulo);
+    line-height: var(--interlineado-titulo);
+    letter-spacing: -0.035em;
+  }
+
+  .arma__linea {
+    width: 1.75rem;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+  }
+
+  .arma__bajada {
+    max-width: 36ch;
+    color: var(--texto-suave);
   }
 </style>
