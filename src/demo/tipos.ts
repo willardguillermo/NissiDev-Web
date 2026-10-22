@@ -38,25 +38,84 @@ export interface Producto {
 
 export interface Puesto {
   numero: number;
+  nombre: string;
   queSeEncuentra: string;
   horario: string;
   referencia: string;
 }
 
+export type CampanaId = 'halloween' | 'navidad' | 'dia-del-nino';
+
+/** Ocasión de compra. Si es de una campaña, solo se ve con esa campaña activa. */
 export interface Ocasion {
   id: string;
   nombre: string;
-  activaEnHero: boolean;
+  descripcion: string;
+  campana?: CampanaId;
+  /** Solo tiene sentido si el negocio vende por mayor. */
+  soloPorMayor?: boolean;
 }
 
-/** Configuración de un rubro para el motor de demos (se completa en T14–T15). */
-export interface RubroConfig {
+/** Hero de temporada. */
+export interface Campana {
+  id: CampanaId;
+  nombre: string;
+  titular: string;
+  bajada: string;
+}
+
+export interface Categoria {
   id: string;
   nombre: string;
-  categorias: string[];
+  /** Nombre de la ilustración propia (ver islas/demo/Ilustracion.tsx). */
+  ilustracion: string;
+}
+
+/** Colores y tipografías del negocio; la demo los vuelve variables CSS. */
+export interface TemaDemo {
+  marca: string;
+  /** Texto sobre el color de marca (botones). */
+  sobreMarca: string;
+  /** Marca usada como texto sobre el fondo, con contraste suficiente. */
+  marcaTexto: string;
+  texto: string;
+  textoSuave: string;
+  fondo: string;
+  fondoSuave: string;
+  /** Solo para etiquetas pequeñas, con texto oscuro encima. */
+  etiquetaAmarilla: string;
+  etiquetaTurquesa: string;
+  fuenteTitulos: string;
+  fuenteTexto: string;
+}
+
+/** Todo lo propio del negocio. Ningún componente de la demo tiene estos datos fijos. */
+export interface RubroConfig {
+  id: string;
+  /** Nombre del rubro: "Dulcería". */
+  rubro: string;
+  negocio: string;
+  /** Número ficticio que se muestra; la demo nunca abre WhatsApp. */
+  whatsappVisible: string;
+  direccion: string;
+  redes: string[];
+  textos: {
+    anuncio: string;
+    buscador: string;
+    heroGeneral: { titular: string; bajada: string };
+    porQue: { titulo: string; texto: string }[];
+  };
+  tema: TemaDemo;
+  vendePorMayor: boolean;
+  categorias: Categoria[];
   ocasiones: Ocasion[];
+  campanas: Campana[];
+  campanaActiva: CampanaId | null;
+  /** De 1 a 3. */
   puestos: Puesto[];
   productos: Producto[];
+  /** Ids de productos para "Más vendidos". */
+  masVendidos: string[];
 }
 
 /** Línea del pedido: guarda una copia de la presentación usada (factor y precios de ese momento). */

@@ -1,0 +1,36 @@
+---
+// Layout de las demos: sin el header ni el footer de NissiDev. La demo tiene su propio estilo
+// (el del negocio) y la franja de NissiDev con el sello va dentro de la isla.
+import '../styles/global.css';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  /** Fuentes de public/fonts que la demo usa arriba del todo (se precargan). */
+  fuentes?: string[];
+  colorTema?: string;
+}
+
+const { titulo, descripcion, fuentes = [], colorTema = '#1e1f22' } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{`${titulo} · Demo · NissiDev`}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content={colorTema} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {fuentes.map((fuente) => <link rel="preload" href={fuente} as="font" type="font/woff2" crossorigin />)}
+  </head>
+  <body class="pagina-demo">
+    <slot />
+  </body>
+</html>
+
+<style>
+  .pagina-demo {
+    background: var(--color-negro);
+  }
+</style>

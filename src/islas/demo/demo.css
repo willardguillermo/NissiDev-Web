@@ -1,0 +1,156 @@
+/* Motor de las demos. Los colores y fuentes del negocio llegan como variables --d-* (demo/tema.ts);
+   aquí no hay ningún color del negocio fijo. La franja de arriba (.demo-marco) es de NissiDev. */
+
+.demo {
+  --d-radio: 1.25rem;
+  --d-radio-grande: 1.75rem;
+  --d-sombra: 0 8px 24px rgb(18 18 18 / 0.08);
+  --d-borde: 0 0 0 1px color-mix(in srgb, var(--d-texto) 12%, transparent);
+  --d-duracion: 200ms;
+  --d-alto-marco: 3.25rem;
+  --foco: var(--d-texto);
+
+  min-height: 100dvh;
+  background: var(--d-fondo);
+  color: var(--d-texto);
+  font-family: var(--d-fuente-texto);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.demo-contenedor {
+  width: min(100% - 2.5rem, 70rem);
+  margin-inline: auto;
+}
+
+.demo-titulo {
+  font-family: var(--d-fuente-titulos);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  line-height: 1.1;
+}
+
+.demo-titulo:focus {
+  outline: none;
+}
+
+/* Botones tipo píldora; responden al toque con scale(0.97) */
+.demo-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+  border: 0;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-boton:active {
+  transform: scale(0.97);
+}
+
+/* Franja de NissiDev: negra, fija arriba, con el sello en todas las pantallas */
+.demo-marco {
+  --foco: var(--foco-sobre-oscuro);
+
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--d-alto-marco);
+  padding: 0.25rem max(0.75rem, env(safe-area-inset-right)) 0.25rem max(0.75rem, env(safe-area-inset-left));
+  background: var(--color-negro);
+  color: var(--color-claro);
+  font-family: var(--fuente-base);
+  font-size: 0.75rem;
+}
+
+.demo-marco__sello {
+  margin-right: auto;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--color-oro-claro);
+  border-radius: 999px;
+  color: var(--color-oro-claro);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.demo-marco__vistas {
+  display: flex;
+  padding: 2px;
+  background: rgb(255 255 255 / 0.1);
+  border-radius: 999px;
+}
+
+.demo-marco__vistas button {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--color-piedra);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-marco__vistas button[aria-pressed='true'] {
+  background: var(--color-claro);
+  color: var(--color-negro);
+}
+
+.demo-marco__salir {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.5rem;
+  border-radius: 999px;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-marco__vistas button:active,
+.demo-marco__salir:active {
+  transform: scale(0.97);
+}
+
+/* Cada pantalla entra con un fundido corto que sube 6 px (interfaz que se usa: ≤ 250 ms) */
+@keyframes demo-entra {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes demo-fundido {
+  from {
+    opacity: 0;
+  }
+}
+
+.demo-pantalla {
+  animation: demo-entra var(--d-duracion) var(--ease-out);
+}
+
+/* Movimiento reducido: menos y más suave, solo el fundido */
+@media (prefers-reduced-motion: reduce) {
+  .demo-pantalla {
+    animation: demo-fundido 150ms ease-out;
+  }
+}
+
+.demo-pendiente {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding-block: 3rem;
+}
