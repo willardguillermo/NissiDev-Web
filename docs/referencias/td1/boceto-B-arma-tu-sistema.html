@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>B · Arma tu sistema</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#80612C}a:hover{color:#5E4520}
+</style>
+</helmet>
+<div style="width: 390px; height: 1660px; box-sizing: border-box; background: #F3EFE7; color: #1E1F22; font-family: Manrope, system-ui, sans-serif; overflow: hidden; display: flex; flex-direction: column">
+
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px">
+    <a href="B-Inicio.dc.html" style="text-decoration: none; color: #1E1F22; font-size: 21px; font-weight: 800; letter-spacing: -0.5px">Nissi<span style="color: #80612C">Dev</span></a>
+    <span style="font-size: 13px; font-weight: 700; padding: 10px 14px; background: #FFFFFF; border-radius: 999px; box-shadow: 0 0 0 1px rgba(30,31,34,0.12)">Mi sistema ({{count}})</span>
+  </header>
+
+  <section style="padding: 20px 20px 16px; display: flex; flex-direction: column; gap: 12px">
+    <h1 style="margin: 0; font-size: 38px; line-height: 1; font-weight: 800; letter-spacing: -1.4px">Arma tu sistema.</h1>
+    <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5E5F63">Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap">
+      <button onClick="{{loadSug}}" style="border: 0; background: #1E1F22; color: #F3EFE7; font-family: inherit; font-weight: 700; font-size: 13px; padding: 0 16px; height: 44px; border-radius: 999px">Sugerido: Dulcería</button>
+      <span style="font-size: 13px; font-weight: 600; color: #5E5F63; padding: 0 14px; height: 44px; display: flex; align-items: center; border-radius: 999px; box-shadow: 0 0 0 1px rgba(30,31,34,0.14)">Hospedaje · pronto</span>
+    </div>
+  </section>
+
+  <section aria-label="Módulos" style="padding: 0 20px; display: flex; flex-direction: column; gap: 8px">
+    <sc-for list="{{items}}" as="item" hint-placeholder-count="9">
+      <div style="padding: 14px 16px; border-radius: 20px; background: #FFFFFF; display: flex; gap: 14px; align-items: flex-start">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-weight: 800; font-size: 15px">{{item.n}}</span>
+          <span style="font-size: 12px; font-weight: 700; color: #80612C">{{item.p}}</span>
+          <span style="font-size: 13px; line-height: 1.45; color: #5E5F63">{{item.d}}</span>
+        </div>
+        <sc-if value="{{item.on}}" hint-placeholder-val="{{true}}">
+          <button onClick="{{item.toggle}}" role="switch" aria-checked="true" aria-label="{{item.n}}" style="flex: none; width: 52px; height: 44px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center">
+            <span style="width: 48px; height: 28px; border-radius: 999px; background: #1E1F22; display: flex; justify-content: flex-end; align-items: center; padding: 3px; box-sizing: border-box"><span style="width: 22px; height: 22px; border-radius: 999px; background: #B28A4C"></span></span>
+          </button>
+        </sc-if>
+        <sc-if value="{{item.off}}" hint-placeholder-val="{{false}}">
+          <button onClick="{{item.toggle}}" role="switch" aria-checked="false" aria-label="{{item.n}}" style="flex: none; width: 52px; height: 44px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center">
+            <span style="width: 48px; height: 28px; border-radius: 999px; background: #CFC8BB; display: flex; align-items: center; padding: 3px; box-sizing: border-box"><span style="width: 22px; height: 22px; border-radius: 999px; background: #FFFFFF"></span></span>
+          </button>
+        </sc-if>
+      </div>
+    </sc-for>
+  </section>
+
+  <section aria-label="Resumen" style="margin: auto 12px 16px; padding: 18px; border-radius: 24px; background: #1E1F22; color: #F3EFE7; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 20px 40px rgba(30,31,34,0.25)">
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 13px; color: #C9C4BA">Inversión inicial</span><span style="font-size: 24px; font-weight: 800">desde {{ini}}</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 13px; color: #C9C4BA">Mensualidad</span><span style="font-size: 16px; font-weight: 700">{{mes}}</span></div>
+    <sc-if value="{{cot}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #D9B77E">Incluye módulos a cotizar.</span></sc-if>
+    <span style="font-size: 12px; color: #9C978E">Precios referenciales; la cotización final se confirma por WhatsApp.</span>
+    <a href="#" style="text-decoration: none; background: #B28A4C; color: #1E1F22; font-weight: 700; padding: 15px 18px; border-radius: 999px; text-align: center">Ver mi cotización</a>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1660}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const M = [
+      { id: 'catalogo', n: 'Catálogo web', p: 'Desde S/ 700', ini: 70000, d: 'Tu página con todos tus productos y precios, lista para compartir por WhatsApp y redes.' },
+      { id: 'pedidos', n: 'Pedidos por WhatsApp', p: 'Incluido en Catálogo web', dep: ['catalogo'], d: 'Tus clientes arman su pedido en el catálogo y te llega completo a tu WhatsApp.' },
+      { id: 'panel', n: 'Panel del dueño', p: 'Desde S/ 500', ini: 50000, dep: ['catalogo'], d: 'Ves en un solo lugar cuánto vendiste hoy, lo que más sale y cómo va cada local o puesto.' },
+      { id: 'reservas', n: 'Reservas', p: 'Cotizar', cot: true, d: 'Tus clientes separan día y hora (mesa, habitación o servicio) sin tener que llamarte.' },
+      { id: 'inventario', n: 'Inventario con vencimientos', p: 'Cotizar', cot: true, dep: ['panel'], d: 'Sabes cuánto te queda de cada producto y qué se vence pronto, para no perder mercadería.' },
+      { id: 'caja', n: 'Caja con Yape/Plin', p: 'S/ 60/mes + instalación (Cotizar)', mes: 6000, cot: true, dep: ['inventario'], d: 'Registras cada venta en efectivo, Yape o Plin, y al cerrar el día sabes cuánto entró por cada uno.' },
+      { id: 'sunat', n: 'Boletas SUNAT', p: 'Cotizar', cot: true, dep: ['caja'], d: 'Emites boletas electrónicas válidas para SUNAT al momento de vender, desde la caja.' },
+      { id: 'chatbot', n: 'Chatbot', p: 'Cotizar', cot: true, d: 'Responde por ti las preguntas de siempre de tus clientes, a cualquier hora.' },
+      { id: 'mant', n: 'Mantenimiento', p: 'S/ 80/mes', mes: 8000, d: 'Nos encargamos de que tu sistema siga funcionando: copias de seguridad, ajustes pequeños y soporte.' }
+    ];
+    const byId = {};
+    M.forEach((m) => { byId[m.id] = m; });
+    const sel = (this.state && this.state.sel) || ['catalogo', 'pedidos', 'panel'];
+    const conDeps = (id, acc) => { (byId[id].dep || []).forEach((d) => conDeps(d, acc)); if (acc.indexOf(id) < 0) acc.push(id); return acc; };
+    const quitar = (id, lista) => {
+      let out = lista.filter((x) => x !== id);
+      M.forEach((m) => { if ((m.dep || []).indexOf(id) >= 0 && out.indexOf(m.id) >= 0) out = quitar(m.id, out); });
+      return out;
+    };
+    const toggle = (id) => {
+      let s = sel.slice();
+      if (s.indexOf(id) >= 0) s = quitar(id, s);
+      else { if (id === 'mant' && s.length === 0) return; s = conDeps(id, s); }
+      if (s.length === 1 && s[0] === 'mant') s = [];
+      this.setState({ sel: s });
+    };
+    const fmt = (c) => 'S/ ' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
+    let ini = 0, mes = 0, cot = false;
+    sel.forEach((id) => { const m = byId[id]; ini += m.ini || 0; mes += m.mes || 0; if (m.cot) cot = true; });
+    const items = M.map((m) => {
+      const on = sel.indexOf(m.id) >= 0;
+      return Object.assign({}, m, { on: on, off: !on, toggle: () => toggle(m.id) });
+    });
+    return {
+      items: items,
+      count: sel.length,
+      ini: fmt(ini),
+      mes: mes ? fmt(mes) + '/mes' : '—',
+      cot: cot,
+      loadSug: () => this.setState({ sel: ['catalogo', 'pedidos', 'panel'] })
+    };
+  }
+}
+</script>
+</body>
+</html>

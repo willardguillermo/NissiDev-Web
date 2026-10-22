@@ -99,7 +99,10 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests: formato `NSD-2026-K7Q3` (año de la fecha, 4 caracteres del alfabeto sin 0/O/1/I/L), validez cruzando fin de mes y de año.
 - **Verificación:** `npm test`.
 
-### TD1 · Dirección visual de NissiDev — ⏳ pendiente (no la implementa Claude Code solo)
+### TD1 · Dirección visual de NissiDev — 🚧 en curso en `feature/td1-diseno`
+- **Decidida (provisional, 2026-10-21):** dirección **B "Papel y oro"** + **momento A** (la N en 3D, cerca del final). Bocetos en `docs/referencias/td1/`; detalle en `docs/diseño.md`. Guillermo la corrige viendo la vista previa en su celular; nada pasa a `main` hasta que la apruebe.
+- **Partes:** D1 tokens y `docs/diseño.md` · D2 header y footer · D3 Inicio · D4 Arma tu sistema · D5 movimiento · D6 la N en 3D.
+- **Se adelantan aquí:** parte de la **T21** (Inicio de NissiDev), de la **T24** (View Transitions y Lenis) y de la **T25** (animaciones de entrada y scroll, con gsap). Lo que quede pendiente de esas tareas se anota al cerrar la TD1.
 - **Qué:** Guillermo define con Claude la dirección visual de la web de NissiDev a partir de un boceto de **Inicio** y de **Arma tu sistema** (tipografía, color, ritmo, tono de las imágenes, componentes). Los tokens y componentes de las T03–T04 son provisionales.
 - **Al terminar:** se actualizan `src/styles/tokens.css` y los componentes (`Boton`, `Tarjeta`, `Base.astro`, isla `Carrito`) a la dirección elegida, con sus tests de contraste.
 - **Bloquea:** la T11 y todas las tareas con pantallas (marcadas con 🔒). La lógica pura (T09, T10, T12a, T12b, T13, T15, T20a) puede avanzar.
@@ -178,7 +181,7 @@ Además de los criterios de cada tarea:
 
 ## Fase 7 — `sitio`
 
-### T21 · feat: Inicio de NissiDev — 🔒 bloqueada por TD1
+### T21 · feat: Inicio de NissiDev — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
 - **Qué:** hero 5-10-15, botón "Ver la demo de mi rubro", WhatsApp secundario, resumen de servicios, llamado al carrito y sección "Casos: próximamente" (P4). Textos en borrador para que Guillermo los corrija.
 - **Terminado cuando:** criterio de éxito 1: qué hago, por qué elegirme y WhatsApp visibles sin bajar más de una pantalla en 375 px.
 - **Verificación:** captura en 375 px.
@@ -193,13 +196,13 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** todas las páginas del BRIEF existen y están enlazadas.
 - **Verificación:** recorrer el menú en 375 px.
 
-### T24 · feat: transiciones y scroll suave — 🔒 bloqueada por TD1
+### T24 · feat: transiciones y scroll suave — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
 - **Antes:** permiso para `lenis`.
 - **Qué:** View Transitions de Astro y Lenis en `src/animacion/lenis.ts`; el carrito sigue intacto al cambiar de página.
 - **Terminado cuando:** con "movimiento reducido" no hay scroll suave ni transición animada.
 - **Verificación:** prueba manual con y sin "movimiento reducido" (emulación en DevTools).
 
-### T25 · feat: animaciones de entrada y scroll — 🔒 bloqueada por TD1
+### T25 · feat: animaciones de entrada y scroll — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
 - **Antes:** permiso para `gsap`.
 - **Qué:** `src/animacion/gsap.ts`: entrada del hero y aparición al hacer scroll, solo `transform` y `opacity`.
 - **Terminado cuando:** con "movimiento reducido" todo se ve sin animar; sin saltos de diseño (CLS).
