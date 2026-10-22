@@ -5,10 +5,13 @@ import { cargarSugeridoEnStore } from '../carrito/store';
 import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
 import { avisoSugerido, preguntaQuitar, preguntaReemplazar, textoTotales, unirNombres } from '../carrito/textos';
 import { Interruptor } from './Interruptor';
+import { formatearSoles } from '../ui/formato';
 import { useCarritoInteractivo } from './useCarritoInteractivo';
+import { useContador } from './useContador';
 import './Carrito.css';
 
 const SUGERIDO = CARRITOS_SUGERIDOS.dulceria;
+const desde = (centimos: number) => `Desde ${formatearSoles(centimos)}`;
 
 export default function Carrito() {
   const {
@@ -43,8 +46,10 @@ export default function Carrito() {
     setEnfocar('sugerido');
   };
 
-  const totales = textoTotales(calcularTotales(carrito));
+  const calculados = calcularTotales(carrito);
+  const totales = textoTotales(calculados);
   const cantidad = carrito.items.length;
+  const cifra = useContador<HTMLElement>(calculados.inicial, desde);
 
   return (
     <div className="carrito">
@@ -163,7 +168,9 @@ export default function Carrito() {
           <dl className="carrito-resumen__totales">
             <div className="carrito-resumen__fila">
               <dt>Inversión inicial</dt>
-              <dd className="carrito-resumen__inicial">{totales.inicial}</dd>
+              <dd ref={cifra} className="carrito-resumen__inicial">
+                {totales.inicial}
+              </dd>
             </div>
             <div className="carrito-resumen__fila">
               <dt>Mensualidad</dt>

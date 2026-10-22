@@ -105,6 +105,19 @@ a {
   white-space: nowrap;
 }
 
+/* El titular del hero espera a su animación solo si hay JavaScript (clase puesta en el <head>,
+   con respaldo de 1.5 s). Sin JavaScript o con "movimiento reducido" se ve siempre. */
+.animar [data-titular] {
+  opacity: 0;
+}
+
+/* Máscara de cada línea del titular animado: con un interlineado tan apretado recortaría la "y" y la "g".
+   Se le da aire abajo y se compensa con un margen negativo para que el diseño no se mueva. */
+.titular-linea-mask {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
 /* Zonas con fondo oscuro (footer y las que vengan): el foco cambia de color para seguir viéndose */
 .zona-oscura {
   --foco: var(--foco-sobre-oscuro);

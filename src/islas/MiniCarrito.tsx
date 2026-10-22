@@ -1,20 +1,25 @@
 import { obtenerModulo, type ModuloId } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
+import { formatearSoles } from '../ui/formato';
 import { calcularTotales } from '../carrito/carrito';
 import { preguntaQuitar, textoTotales } from '../carrito/textos';
 import { Interruptor } from './Interruptor';
 import { useCarritoInteractivo } from './useCarritoInteractivo';
+import { useContador } from './useContador';
 import './MiniCarrito.css';
 
 // Prueba rápida del carrito en el Inicio: el MISMO store y las mismas reglas que Arma tu sistema.
 const MODULOS_DEL_INICIO: ModuloId[] = ['catalogo-web', 'pedidos-whatsapp', 'panel-dueno'];
+const desde = (centimos: number) => `Desde ${formatearSoles(centimos)}`;
 
 export default function MiniCarrito() {
   const { carrito, aviso, confirmacion, cancelar, zonaConfirmacion, alternar, confirmarQuitar, cerrarConfirmacion, registrarBoton } =
     useCarritoInteractivo();
 
-  const totales = textoTotales(calcularTotales(carrito));
+  const calculados = calcularTotales(carrito);
+  const totales = textoTotales(calculados);
   const cantidad = carrito.items.length;
+  const cifra = useContador<HTMLSpanElement>(calculados.inicial, desde);
 
   return (
     <section className="mini" aria-labelledby="mini-titulo">
@@ -78,7 +83,7 @@ export default function MiniCarrito() {
       <div className="mini__total zona-oscura">
         <span className="mini__total-etiqueta">Inversión inicial</span>
         <span className="mini__total-valor">
-          {cantidad === 0 ? 'Elige un módulo' : totales.inicial}
+          <span ref={cifra}>{cantidad === 0 ? 'Elige un módulo' : totales.inicial}</span>
           {cantidad > 0 && totales.notaCotizar && <span className="mini__total-nota">{totales.notaCotizar}</span>}
         </span>
       </div>
