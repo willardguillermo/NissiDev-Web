@@ -33,6 +33,7 @@ Además de los criterios de cada tarea:
 ### T02 · ci: repo en GitHub y Cloudflare Pages
 - **Antes:** permiso de Guillermo (publica el repo y la web). Guillermo conecta Cloudflare Pages en su panel; Claude le da los valores (comando `npm run build`, carpeta `dist`, versión de Node).
 - **Qué:** repo público `willardguillermo/NissiDev-Web` (ya creado y con `main` subido al aprobar el plan); falta solo la conexión con Cloudflare Pages.
+- **Hecho (2026-10-21):** producción en https://nissidev-web.pages.dev; la rama de prueba `build/prueba-vista-previa` publicó su vista previa en `https://build-prueba-vista-previa.nissidev-web.pages.dev` y luego se borró.
 - **Terminado cuando:** la dirección `*.pages.dev` muestra la página provisional y una rama de prueba genera su enlace de vista previa.
 - **Verificación:** abrir la URL en el celular; `git push` de una rama → aparece la vista previa en Cloudflare.
 

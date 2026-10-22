@@ -56,6 +56,7 @@ Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/l
 - La revisión de Codex se hace en cada **punto de control** de `tasks/plan.md`, no en cada tarea.
 - Tareas intermedias: implementar → test → verificar → commit.
 - Al llegar a un punto de control: detenerse y escribir "Listo para revisión de Codex". Guillermo elige el comando: `/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar.
+- Junto con "Listo para revisión de Codex", dar el **commit base**: el hash del commit que cerró el punto de control anterior, para usarlo con `--base <hash>`.
 - Cuando Guillermo pegue la revisión de Codex, evaluar cada punto: aplicar lo correcto y explicar por qué se descarta lo demás. Después, hacer el commit.
 - Si se falla dos veces con el mismo error, detenerse y sugerir `/codex:rescue`.
 
