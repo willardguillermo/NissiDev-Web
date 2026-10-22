@@ -90,6 +90,11 @@ a {
   white-space: nowrap;
 }
 
+/* Zonas con fondo oscuro (footer y las que vengan): el foco cambia de color para seguir viéndose */
+.zona-oscura {
+  --foco: var(--foco-sobre-oscuro);
+}
+
 /* Foco visible solo con teclado */
 :focus-visible {
   outline: 3px solid var(--foco);
