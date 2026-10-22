@@ -89,12 +89,12 @@ Además de los criterios de cada tarea:
 
 ## Fase 4 — `cotizacion`
 
-### T09 · feat: mensaje y enlace de WhatsApp
+### T09 · feat: mensaje y enlace de WhatsApp — ✅ `c713f66`
 - **Qué:** `cotizacion/mensajeWhatsApp.ts`: texto con número, fecha, validez, módulos, inversión inicial, mensualidad, la palabra "referencial" y el nombre del negocio si lo hay; `enlaceWhatsApp(texto)` → `https://wa.me/51913351627?text=…` codificado.
 - **Terminado cuando:** tests de la SPEC: el mensaje lleva módulos, totales y "referencial"; el enlace codifica tildes, saltos de línea, `&` y `#`.
 - **Verificación:** `npm test`; abrir un enlace generado en el celular y ver el texto bien escrito.
 
-### T10 · feat: datos de la cotización
+### T10 · feat: datos de la cotización — ✅ `063445e`
 - **Qué:** `crearCotizacion(carrito, fecha, codigo)` con código `NSD-AAAA-XXXX` (P1) y válida hasta fecha + 15 días. `generarCodigo(fecha, aleatorio)` recibe la fuente de azar como parámetro para poder probarla; en el navegador usa `crypto.getRandomValues`.
 - **Terminado cuando:** tests: formato `NSD-2026-K7Q3` (año de la fecha, 4 caracteres del alfabeto sin 0/O/1/I/L), validez cruzando fin de mes y de año.
 - **Verificación:** `npm test`.
@@ -114,17 +114,17 @@ Además de los criterios de cada tarea:
 
 ## Fase 5 — `demo` (motor)
 
-### T12a · feat: modelo, conversiones y precios del pedido
+### T12a · feat: modelo, conversiones y precios del pedido — ✅ `8969a4a`
 - **Qué:** tipos en `demo/` (`RubroConfig`, `Producto`, `Presentacion`, `PrecioMayorista`, `Puesto`, `Ocasion`, `LineaPedido`, `Pedido`) y `demo/pedido.ts`: agregar línea (guarda la presentación y su factor), cambiar presentación, editar cantidad, eliminar línea, `aUnidadBase(cantidad, factor)`, subtotal, total y precio por mayor según cantidad mínima.
 - **Terminado cuando:** test de la SPEC (cambiar unidad/bolsa/caja recalcula el subtotal); caso de conversión de la referencia (3 cajas × 24 = 72 unidades base; 1 bolsa de 6 + 2 unidades = 8 → 72 − 8 = 64); el precio por mayor se aplica desde la cantidad mínima; una línea guarda su factor aunque la presentación cambie después.
 - **Verificación:** `npm test`.
 
-### T12b · feat: disponibilidad del pedido
+### T12b · feat: disponibilidad del pedido — ✅ `95eeaf6`
 - **Qué:** `demo/disponibilidad.ts`. El pedido de la demo **no descuenta stock**: solo valida que la suma de todas sus líneas del mismo producto, en unidad base y entre todas las presentaciones, no supere lo disponible. Agregar, editar o cambiar presentación que exceda el disponible se rechaza con un motivo para mostrar.
 - **Terminado cuando:** tests: cantidades inválidas (0, negativas, decimales) rechazadas; exceso acumulado (8 disponibles: bolsa de 6 + 3 sueltas → falla; bolsa de 6 + 2 sueltas → pasa); editar una línea a más de lo disponible falla; reducir o eliminar una línea libera disponibilidad para otra; el stock del producto no cambia tras ninguna operación.
 - **Verificación:** `npm test`.
 
-### T13 · feat: búsqueda y filtros
+### T13 · feat: búsqueda y filtros — ✅ `70cea57`
 - **Qué:** `demo/filtros.ts`: buscar por texto (sin importar tildes ni mayúsculas) y filtrar por categoría, ocasión, puesto y marca, combinables.
 - **Terminado cuando:** tests con un catálogo de prueba pequeño (tildes, filtros combinados, sin resultados).
 - **Verificación:** `npm test`.
