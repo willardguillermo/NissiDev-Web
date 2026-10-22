@@ -1,28 +1,82 @@
 ---
 import Boton from '../components/Boton.astro';
-import Tarjeta from '../components/Tarjeta.astro';
 import { WHATSAPP_ENLACE } from '../config/contacto';
+import MiniCarrito from '../islas/MiniCarrito';
 import Base from '../layouts/Base.astro';
 ---
 
 <Base titulo="NissiDev">
-  <section class="contenedor provisional">
-    <h1>NissiDev</h1>
-    <Tarjeta titulo="Sitio en construcción">
-      <p>Pronto podrás probar la demo del sistema de tu negocio y armar tu cotización.</p>
-      <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
-    </Tarjeta>
+  <section class="contenedor hero">
+    <div class="hero__texto">
+      <h1 class="titulo-1 hero__titulo">Webs y sistemas para negocios del Este de Lima.</h1>
+      <p class="hero__bajada">
+        Prueba cómo quedaría el tuyo, elige lo que necesitas y recibe la cotización por WhatsApp.
+      </p>
+      <div class="hero__acciones">
+        <Boton href="#demo" class="hero__principal">Ver la demo de mi rubro</Boton>
+        <a class="hero__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"></path>
+            <path d="M9 10c.5 2 2 3.5 4 4"></path>
+          </svg>
+          <span class="solo-lector">Escribir por WhatsApp (se abre en otra pestaña)</span>
+        </a>
+      </div>
+    </div>
+
+    <MiniCarrito client:visible />
   </section>
 </Base>
 
 <style>
-  .provisional {
+  .hero {
     display: grid;
     gap: var(--espacio-8);
-    padding-block: var(--espacio-12);
+    padding-top: var(--espacio-6);
   }
 
-  h1 {
-    font-size: var(--titulo-1);
+  .hero__texto {
+    display: grid;
+    gap: var(--espacio-4);
+    align-content: start;
+  }
+
+  .hero__bajada {
+    max-width: 34rem;
+    color: var(--texto-suave);
+  }
+
+  .hero__acciones {
+    display: flex;
+    gap: var(--espacio-3);
+  }
+
+  .hero__acciones :global(.hero__principal) {
+    flex: 1;
+  }
+
+  .hero__whatsapp {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    background: var(--fondo-elevado);
+    color: var(--texto);
+    border-radius: var(--radio-pildora);
+    box-shadow: var(--borde-sutil);
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      grid-template-columns: 1.15fr 1fr;
+      align-items: center;
+      gap: var(--espacio-16);
+      padding-top: var(--espacio-12);
+    }
+
+    .hero__acciones :global(.hero__principal) {
+      flex: none;
+    }
   }
 </style>

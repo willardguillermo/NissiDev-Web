@@ -1,0 +1,44 @@
+.interruptor {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radio-pildora);
+  cursor: pointer;
+}
+
+/* Apagado: fondo claro con contorno (≥ 3:1) para que se vea el límite del control. */
+.interruptor__pista {
+  display: flex;
+  align-items: center;
+  width: 3rem;
+  height: 1.75rem;
+  padding: 3px;
+  background: var(--color-interruptor);
+  border-radius: var(--radio-pildora);
+  box-shadow: inset 0 0 0 1.5px var(--color-contorno);
+}
+
+.interruptor__perilla {
+  width: 1.375rem;
+  height: 1.375rem;
+  background: var(--color-blanco);
+  border-radius: var(--radio-pildora);
+  box-shadow: 0 1px 2px rgb(30 31 34 / 0.25);
+  transition: transform var(--duracion-ui) var(--ease-ui);
+}
+
+/* Encendido: pista negra y perilla dorada a la derecha (solo se anima transform). */
+.interruptor[aria-checked='true'] .interruptor__pista {
+  background: var(--color-negro);
+  box-shadow: none;
+}
+
+.interruptor[aria-checked='true'] .interruptor__perilla {
+  background: var(--acento);
+  transform: translateX(1.25rem);
+}
