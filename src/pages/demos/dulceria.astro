@@ -1,7 +1,7 @@
 ---
 import DemoRubro from '../../islas/DemoRubro';
 import Demo from '../../layouts/Demo.astro';
-import { DULCERIA, FUENTES_DULCERIA } from '../../rubros/dulceria/config';
+import { DULCERIA, DULCERIA_COMPLETA, FUENTES_DULCERIA, PERSONALIZACION_DULCERIA } from '../../rubros/dulceria/config';
 import '../../rubros/dulceria/fuentes.css';
 ---
 
@@ -10,5 +10,5 @@ import '../../rubros/dulceria/fuentes.css';
   descripcion="Demo de un sistema para dulcerías: catálogo, pedidos por WhatsApp y panel del dueño. Datos de ejemplo."
   fuentes={FUENTES_DULCERIA}
 >
-  <DemoRubro client:load config={DULCERIA} />
+  <DemoRubro client:load plantilla={DULCERIA_COMPLETA} personalizacion={PERSONALIZACION_DULCERIA} />
 </Demo>

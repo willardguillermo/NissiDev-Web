@@ -85,6 +85,11 @@ export function totalPedido(pedido: Pedido): number {
 }
 
 /** Unidades base que el pedido pide de un producto, sumando todas sus presentaciones. */
+/** Cuántas presentaciones lleva el pedido (para "Mi pedido (n)"): 2 bolsas + 3 unidades = 5. */
+export function presentacionesEnPedido(pedido: Pedido): number {
+  return pedido.lineas.reduce((suma, linea) => suma + linea.cantidad, 0);
+}
+
 export function unidadesBaseDelProducto(pedido: Pedido, productoId: string): number {
   return pedido.lineas
     .filter((l) => l.productoId === productoId)

@@ -12,8 +12,9 @@ export const RUBRO_DE_PRUEBA: RubroConfig = {
   textos: {
     anuncio: 'Precios por mayor · Pedidos por WhatsApp',
     buscador: '¿Qué dulce buscas?',
-    heroGeneral: { titular: 'Dulces para todo', bajada: 'Por unidad y por mayor.' },
+    heroGeneral: { titular: 'Dulces para todo', bajada: 'Por unidad y por mayor.', ilustracion: 'caramelo' },
     porQue: [{ titulo: 'Variedad', texto: 'De todo un poco.' }],
+    tiendaUnica: 'De todo en un solo lugar',
   },
   tema: {
     marca: '#ec48ae',
@@ -41,7 +42,7 @@ export const RUBRO_DE_PRUEBA: RubroConfig = {
     { id: 'halloween', nombre: 'Halloween', descripcion: 'Dulce o truco', campana: 'halloween' },
     { id: 'por-mayor', nombre: 'Por mayor', descripcion: 'Cajas y bolsas', soloPorMayor: true },
   ],
-  campanas: [{ id: 'halloween', nombre: 'Halloween', titular: 'Dulce o truco', bajada: 'Todo para el 31.' }],
+  campanas: [{ id: 'halloween', nombre: 'Halloween', titular: 'Dulce o truco', bajada: 'Todo para el 31.', ilustracion: 'calabaza' }],
   campanaActiva: 'halloween',
   puestos: [
     { numero: 1, nombre: 'Puesto 1', queSeEncuentra: 'Chocolates', horario: '9 a 7', referencia: 'Entrada' },

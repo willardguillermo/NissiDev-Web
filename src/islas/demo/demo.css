@@ -2,6 +2,7 @@
    aquí no hay ningún color del negocio fijo. La franja de arriba (.demo-marco) es de NissiDev. */
 
 .demo {
+  --d-alto-barra: 4.5rem;
   --d-radio: 1.25rem;
   --d-radio-grande: 1.75rem;
   --d-sombra: 0 8px 24px rgb(18 18 18 / 0.08);
@@ -10,6 +11,8 @@
   --d-alto-marco: 3.25rem;
   --foco: var(--d-texto);
 
+  /* El body es flex: sin esto, el carrusel de categorías ensancha toda la demo */
+  min-width: 0;
   min-height: 100dvh;
   background: var(--d-fondo);
   color: var(--d-texto);
@@ -52,8 +55,26 @@
   transition: transform 160ms var(--ease-out);
 }
 
-.demo-boton:active {
+.demo-boton:active:not(:disabled) {
   transform: scale(0.97);
+}
+
+.demo-boton:disabled {
+  background: var(--d-fondo-suave);
+  color: var(--d-texto-suave);
+  cursor: not-allowed;
+}
+
+.demo-boton--claro {
+  background: var(--d-fondo);
+  color: var(--d-texto);
+  box-shadow: inset 0 0 0 2px var(--d-marca);
+}
+
+.demo-boton--chico {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 
 /* Franja de NissiDev: negra, fija arriba, con el sello en todas las pantallas */
@@ -153,4 +174,623 @@
   justify-items: start;
   gap: 1rem;
   padding-block: 3rem;
+}
+
+/* ——— Inicio ——— */
+
+.demo-pantalla {
+  padding-bottom: calc(var(--d-alto-barra) + env(safe-area-inset-bottom));
+}
+
+.demo-anuncio {
+  padding: 0.5rem 1rem;
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.demo-cabecera {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: 1rem 0.5rem;
+}
+
+.demo-cabecera__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.demo-logo {
+  color: var(--d-marca-texto);
+  font-family: var(--d-fuente-titulos);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.demo-icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--d-fondo-suave);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-icono:active {
+  transform: scale(0.97);
+}
+
+.demo-buscador {
+  display: flex;
+  align-items: center;
+  background: var(--d-fondo-suave);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px transparent;
+}
+
+.demo-buscador:focus-within {
+  box-shadow: inset 0 0 0 2px var(--d-marca);
+}
+
+/* 16 px para que el celular no haga zoom al escribir */
+.demo-buscador input {
+  flex: 1;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0 0 0 1.25rem;
+  background: transparent;
+  border: 0;
+  font-size: 1rem;
+}
+
+.demo-buscador input::placeholder {
+  color: var(--d-texto-suave);
+}
+
+.demo-buscador input:focus {
+  outline: none;
+}
+
+.demo-buscador button {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.demo-hero {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  padding: 1.5rem 1.25rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio-grande);
+}
+
+.demo-hero__temporada {
+  color: var(--d-marca-texto);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.demo-hero__titular {
+  margin-top: 0.25rem;
+}
+
+.demo-hero__bajada {
+  margin-top: 0.5rem;
+  color: var(--d-texto-suave);
+}
+
+.demo-hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+/* En celular, la ilustración va arriba del texto para que el titular tenga todo el ancho */
+.demo-hero__ilustracion {
+  order: -1;
+  width: 4.5rem;
+}
+
+.demo-seccion {
+  margin-top: 2.25rem;
+}
+
+.demo-subtitulo {
+  margin-bottom: 0.875rem;
+  font-family: var(--d-fuente-titulos);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.demo-ocasiones,
+.demo-categorias,
+.demo-grilla,
+.demo-puestos,
+.demo-por-que {
+  padding: 0;
+  list-style: none;
+}
+
+.demo-ocasiones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.demo-ocasion {
+  display: grid;
+  align-content: end;
+  gap: 0.125rem;
+  width: 100%;
+  min-height: 6rem;
+  padding: 1rem;
+  background: var(--d-fondo-suave);
+  border: 0;
+  border-radius: var(--d-radio);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-ocasion[data-campana] {
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+}
+
+.demo-ocasion strong {
+  font-size: 1.0625rem;
+}
+
+.demo-ocasion span {
+  font-size: 0.8125rem;
+}
+
+/* Carrusel de categorías: se desliza con el dedo; con Tab, cada botón se trae a la vista */
+.demo-categorias {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 1.25rem 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  scrollbar-width: none;
+}
+
+.demo-categorias::-webkit-scrollbar {
+  display: none;
+}
+
+.demo-categorias li {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+/* Tarjeta tipo sticker: borde grueso de color + línea oscura fina */
+.demo-categoria {
+  display: grid;
+  justify-items: center;
+  gap: 0.375rem;
+  width: 6.5rem;
+  padding: 0.75rem 0.5rem;
+  background: var(--d-fondo);
+  border: 0;
+  border-radius: var(--d-radio);
+  box-shadow:
+    0 0 0 1px var(--d-texto),
+    0 0 0 4px var(--d-marca);
+  margin: 4px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-categoria svg {
+  width: 3.5rem;
+}
+
+.demo-ocasion:active,
+.demo-categoria:active,
+.tarjeta-producto:active:not(:has(.tarjeta-producto__agregar:active)) {
+  transform: scale(0.97);
+}
+
+.demo-grilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* ——— Tarjeta de producto ——— */
+
+.tarjeta-producto {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.625rem;
+  background: var(--d-fondo);
+  border-radius: var(--d-radio);
+  box-shadow: var(--d-borde), var(--d-sombra);
+  transition: transform 160ms var(--ease-out);
+}
+
+.tarjeta-producto__imagen {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: var(--d-fondo-suave);
+  border-radius: calc(var(--d-radio) - 0.375rem);
+}
+
+.tarjeta-producto__imagen svg {
+  width: 62%;
+}
+
+.tarjeta-producto[data-agotado] .tarjeta-producto__imagen svg {
+  opacity: 0.4;
+}
+
+.demo-etiqueta {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  color: var(--d-texto);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.demo-etiqueta--nuevo {
+  background: var(--d-turquesa);
+}
+
+.demo-etiqueta--oferta {
+  background: var(--d-amarillo);
+}
+
+.demo-etiqueta--agotado {
+  background: var(--d-texto);
+  color: var(--d-fondo);
+}
+
+.tarjeta-producto__nombre {
+  margin-top: 0.625rem;
+  font-family: var(--d-fuente-texto);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Todo el cuadro abre el detalle (el botón Agregar queda encima) */
+.tarjeta-producto__abrir {
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tarjeta-producto__abrir::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--d-radio);
+}
+
+.tarjeta-producto__abrir:focus-visible {
+  outline: none;
+}
+
+.tarjeta-producto__abrir:focus-visible::after {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+.tarjeta-producto__marca {
+  color: var(--d-texto-suave);
+  font-size: 0.8125rem;
+}
+
+.tarjeta-producto__precio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.375rem;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.tarjeta-producto__presentacion {
+  flex-basis: 100%;
+  color: var(--d-texto-suave);
+}
+
+.tarjeta-producto__precio strong {
+  font-size: 1.0625rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tarjeta-producto__desde {
+  color: var(--d-marca-texto);
+  font-weight: 700;
+}
+
+.tarjeta-producto__agregar {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: auto;
+}
+
+.tarjeta-producto__precio + .tarjeta-producto__agregar,
+.tarjeta-producto__precio:last-of-type {
+  margin-bottom: 0.75rem;
+}
+
+/* ——— Puestos, por qué y pie ——— */
+
+.demo-puestos {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.demo-puesto {
+  display: grid;
+  justify-items: start;
+  gap: 0.25rem;
+  padding: 1.25rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio);
+  font-size: 0.9375rem;
+}
+
+.demo-puesto__nombre {
+  font-size: 1.125rem;
+}
+
+.demo-puesto__que {
+  font-weight: 700;
+}
+
+.demo-puesto__referencia {
+  margin-bottom: 0.5rem;
+  color: var(--d-texto-suave);
+}
+
+.demo-por-que {
+  display: grid;
+  gap: 1rem;
+}
+
+.demo-por-que li {
+  display: grid;
+  gap: 0.125rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--d-marca);
+}
+
+.demo-pie {
+  margin-top: 3rem;
+  padding-block: 2rem;
+  background: var(--d-fondo-suave);
+  font-size: 0.875rem;
+}
+
+.demo-pie__fila {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.demo-pie__nissidev {
+  margin-top: 1rem;
+  color: var(--d-texto-suave);
+}
+
+.demo-pie__nissidev a {
+  color: var(--d-texto);
+  font-weight: 700;
+}
+
+/* ——— Siempre visibles: WhatsApp flotante y "Mi pedido (n)" ——— */
+
+.demo-abajo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem max(1rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+.demo-abajo > * {
+  pointer-events: auto;
+}
+
+.demo-barra-pedido {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  background: var(--d-texto);
+  color: var(--d-fondo);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-flotante {
+  display: grid;
+  order: 2;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.demo-barra-pedido:active,
+.demo-flotante:active {
+  transform: scale(0.97);
+}
+
+/* Aviso: entra desde abajo en 200 ms, encima de la barra */
+.demo-aviso-zona {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--d-alto-barra) + env(safe-area-inset-bottom));
+  left: 0;
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  padding-inline: 1rem;
+  pointer-events: none;
+}
+
+.demo-aviso {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 28rem;
+  padding: 0.75rem 0.5rem 0.75rem 1rem;
+  background: var(--color-negro);
+  color: var(--color-claro);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.25);
+  font-size: 0.875rem;
+  pointer-events: auto;
+  animation: demo-entra var(--d-duracion) var(--ease-out);
+  --foco: var(--foco-sobre-oscuro);
+}
+
+.demo-aviso button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-aviso {
+    animation: demo-fundido 150ms ease-out;
+  }
+}
+
+/* Hover solo con mouse: en el celular no se queda "pegado" */
+@media (hover: hover) and (pointer: fine) {
+  .demo-ocasion,
+  .demo-categoria,
+  .tarjeta-producto {
+    transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+  }
+
+  .demo-ocasion:hover,
+  .demo-categoria:hover,
+  .tarjeta-producto:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (min-width: 48rem) {
+  .demo-hero {
+    padding: 2.5rem;
+  }
+
+  .demo-hero {
+    grid-template-columns: 1fr auto;
+  }
+
+  .demo-hero__ilustracion {
+    order: 0;
+    width: 12rem;
+  }
+
+  .demo-ocasiones {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .demo-categorias {
+    width: min(100% - 2.5rem, 70rem);
+    margin-inline: auto;
+    padding-inline: 0;
+    flex-wrap: wrap;
+  }
+
+  .demo-grilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .demo-puestos {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .demo-por-que {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .demo-abajo {
+    justify-content: flex-end;
+  }
+
+  .demo-barra-pedido {
+    flex: 0 1 20rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .demo-grilla--ancha {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tarjeta-producto__imagen {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tarjeta-producto__imagen svg {
+    width: 46%;
+  }
 }

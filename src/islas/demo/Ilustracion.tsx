@@ -62,6 +62,34 @@ const DIBUJOS: Record<string, ReactNode> = {
       <ellipse cx="34" cy="30" rx="4" ry="6" fill="#fff" opacity="0.5" />
     </>
   ),
+  calabaza: (
+    <>
+      <path d="M48 22q2-10 10-12" fill="none" stroke="#3f7d3a" strokeWidth="4" strokeLinecap="round" />
+      <ellipse cx="34" cy="54" rx="18" ry="26" fill="#f08a24" />
+      <ellipse cx="62" cy="54" rx="18" ry="26" fill="#f08a24" />
+      <ellipse cx="48" cy="54" rx="16" ry="28" fill="#ff9d3b" />
+      <path d="M36 46l6 6h-10zM60 46l4 6H54z" fill="#2b1a0e" />
+      <path d="M34 64q14 10 28 0l-4 4-4-3-4 4-4-4-4 4-4-3z" fill="#2b1a0e" />
+    </>
+  ),
+  arbol: (
+    <>
+      <path d="M48 12L22 50h12L18 74h60L62 50h12z" fill="#2f8f4e" />
+      <rect x="42" y="74" width="12" height="12" rx="2" fill="#7a4a2a" />
+      <circle cx="40" cy="44" r="4" fill="#ffc72c" />
+      <circle cx="58" cy="58" r="4" fill="#ec48ae" />
+      <circle cx="36" cy="64" r="4" fill="#00c2b9" />
+      <path d="M48 6l3 6h-6z" fill="#ffc72c" />
+    </>
+  ),
+  regalo: (
+    <>
+      <rect x="18" y="40" width="60" height="44" rx="6" fill="#00c2b9" />
+      <rect x="14" y="30" width="68" height="14" rx="4" fill="#00a89f" />
+      <path d="M44 30h8v54h-8z" fill="#ec48ae" />
+      <path d="M48 30q-18-18-20-6t20 6q18-18 20-6t-20 6" fill="none" stroke="#ec48ae" strokeWidth="5" />
+    </>
+  ),
 };
 
 interface Props {

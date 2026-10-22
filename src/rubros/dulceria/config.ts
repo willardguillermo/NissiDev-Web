@@ -1,6 +1,6 @@
 // Plantilla de dulcería con su negocio de ejemplo, "Dulcería La Golosa" (ficticio).
 // Todo lo propio del negocio está aquí; para otro negocio del mismo rubro se cambia este archivo.
-import { personalizar } from '../../demo/rubro';
+import { personalizar, type Personalizacion } from '../../demo/rubro';
 import type { RubroConfig } from '../../demo/tipos';
 import { PRODUCTOS } from './productos';
 
@@ -18,12 +18,14 @@ export const DULCERIA_COMPLETA: RubroConfig = {
     heroGeneral: {
       titular: 'Dulces para cada fiesta',
       bajada: 'Chocolates, gomitas y todo para tu fiesta, por unidad o por mayor.',
+      ilustracion: 'caramelo',
     },
     porQue: [
       { titulo: 'Variedad', texto: 'Más de 30 productos entre dulces, snacks y piñatería.' },
       { titulo: 'Precio de mayorista', texto: 'Mientras más llevas, menos pagas por unidad.' },
       { titulo: 'Pedidos para fiestas', texto: 'Arma tu pedido aquí y recógelo listo.' },
     ],
+    tiendaUnica: 'Dulces, snacks y piñatería en un solo lugar',
   },
   tema: {
     marca: '#ec48ae',
@@ -56,9 +58,9 @@ export const DULCERIA_COMPLETA: RubroConfig = {
     { id: 'por-mayor', nombre: 'Por mayor', descripcion: 'Cajas y bolsas grandes', soloPorMayor: true },
   ],
   campanas: [
-    { id: 'halloween', nombre: 'Halloween', titular: '¡Dulce o truco!', bajada: 'Todo para el 31: gomitas, chupetines y bolsas calabaza, también por mayor.' },
-    { id: 'navidad', nombre: 'Navidad', titular: 'Una Navidad bien dulce', bajada: 'Chocolate para taza, bastones y monedas para tu chocolatada.' },
-    { id: 'dia-del-nino', nombre: 'Día del Niño', titular: 'Sorpresas para los chicos', bajada: 'Galletas, gomitas y globos para celebrar su día.' },
+    { id: 'halloween', nombre: 'Halloween', titular: '¡Dulce o truco!', bajada: 'Todo para el 31: gomitas, chupetines y bolsas calabaza, también por mayor.', ilustracion: 'calabaza' },
+    { id: 'navidad', nombre: 'Navidad', titular: 'Una Navidad bien dulce', bajada: 'Chocolate para taza, bastones y monedas para tu chocolatada.', ilustracion: 'arbol' },
+    { id: 'dia-del-nino', nombre: 'Día del Niño', titular: 'Sorpresas para los chicos', bajada: 'Galletas, gomitas y globos para celebrar su día.', ilustracion: 'regalo' },
   ],
   campanaActiva: 'halloween',
   puestos: [
@@ -70,8 +72,9 @@ export const DULCERIA_COMPLETA: RubroConfig = {
   masVendidos: ['bombones-mani', 'gomitas-ositos', 'caramelos-leche', 'galletas-vainilla', 'papitas-hilo', 'globos-colores'],
 };
 
-/** La que usa la demo: 2 puestos y Halloween. */
-export const DULCERIA = personalizar(DULCERIA_COMPLETA, { puestos: 2 });
+/** Lo que usa la demo: 2 puestos (y Halloween, que ya viene en la configuración). */
+export const PERSONALIZACION_DULCERIA: Personalizacion = { puestos: 2 };
+export const DULCERIA = personalizar(DULCERIA_COMPLETA, PERSONALIZACION_DULCERIA);
 
 /** Fuentes del negocio en public/fonts (licencia OFL al lado); la demo las precarga. */
 export const FUENTES_DULCERIA = ['/fonts/shrikhand-latin.woff2', '/fonts/chivo-latin-wght.woff2'];

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { RUBRO_DE_PRUEBA } from './rubro-de-prueba';
-import { campanaActiva, ocasionesVisibles, personalizar, validarRubro } from './rubro';
+import { campanaActiva, ocasionesVisibles, personalizacionDeUrl, personalizar, validarRubro } from './rubro';
 import type { RubroConfig } from './tipos';
 
 const ids = (lista: { id: string }[]) => lista.map((x) => x.id);
@@ -88,5 +88,21 @@ describe('personalizar: campaña y por mayor', () => {
     expect(ids(ocasionesVisibles(config))).not.toContain('por-mayor');
     expect(config.productos.flatMap((p) => p.presentaciones).some((x) => x.precioMayorista)).toBe(false);
     expect(validarRubro(config)).toEqual([]);
+  });
+});
+
+describe('personalizacionDeUrl', () => {
+  it('lee puestos y campaña', () => {
+    expect(personalizacionDeUrl('?puestos=1&campana=ninguna')).toEqual({ puestos: 1, campana: null });
+    expect(personalizacionDeUrl('?campana=navidad')).toEqual({ campana: 'navidad' });
+  });
+
+  it('la venta por mayor no se cambia por URL', () => {
+    expect(personalizacionDeUrl('?mayor=no')).toEqual({});
+  });
+
+  it('ignora lo que no entiende', () => {
+    expect(personalizacionDeUrl('?puestos=7&campana=pascua')).toEqual({});
+    expect(personalizacionDeUrl('')).toEqual({});
   });
 });

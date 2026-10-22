@@ -64,6 +64,8 @@ export interface Campana {
   nombre: string;
   titular: string;
   bajada: string;
+  /** Ilustración del hero (ver islas/demo/Ilustracion.tsx). */
+  ilustracion: string;
 }
 
 export interface Categoria {
@@ -104,8 +106,10 @@ export interface RubroConfig {
   textos: {
     anuncio: string;
     buscador: string;
-    heroGeneral: { titular: string; bajada: string };
+    heroGeneral: { titular: string; bajada: string; ilustracion: string };
     porQue: { titulo: string; texto: string }[];
+    /** Qué se encuentra cuando el negocio tiene un solo puesto ("Nuestra tienda"). */
+    tiendaUnica: string;
   };
   tema: TemaDemo;
   vendePorMayor: boolean;

@@ -44,6 +44,24 @@ export function personalizar(config: RubroConfig, cambios: Personalizacion): Rub
   };
 }
 
+const CAMPANAS: CampanaId[] = ['halloween', 'navidad', 'dia-del-nino'];
+
+/**
+ * Vista previa por URL para probar la plantilla: ?puestos=1&campana=ninguna.
+ * Lo que no se entiende se ignora (queda lo de la configuración). La venta por mayor no se cambia
+ * por URL: los textos del negocio la mencionan, así que se cambia en la configuración junto con ellos.
+ */
+export function personalizacionDeUrl(busqueda: string): Personalizacion {
+  const parametros = new URLSearchParams(busqueda);
+  const cambios: Personalizacion = {};
+  const puestos = Number(parametros.get('puestos'));
+  if ([1, 2, 3].includes(puestos)) cambios.puestos = puestos;
+  const campana = parametros.get('campana');
+  if (campana === 'ninguna') cambios.campana = null;
+  else if (CAMPANAS.includes(campana as CampanaId)) cambios.campana = campana as CampanaId;
+  return cambios;
+}
+
 export function campanaActiva(config: RubroConfig): Campana | null {
   return config.campanas.find((c) => c.id === config.campanaActiva) ?? null;
 }
