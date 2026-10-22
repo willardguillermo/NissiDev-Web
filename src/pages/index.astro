@@ -1,6 +1,7 @@
 ---
 import Boton from '../components/Boton.astro';
 import Logo from '../components/Logo.astro';
+import RotadorServicios from '../components/RotadorServicios.astro';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import TelefonoDemo from '../components/TelefonoDemo.astro';
 import NTresD from '../components/NTresD.astro';
@@ -31,6 +32,10 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
       <Boton href={WHATSAPP_ENLACE} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
     </div>
   </section>
+
+  <div class="contenedor entra" style="--n: 4">
+    <RotadorServicios />
+  </div>
 
   <section id="demo" class="banda zona-oscura" aria-labelledby="demo-titulo">
     <div class="contenedor banda__contenido">
