@@ -9,9 +9,29 @@ import type { Cotizacion } from './tipos';
 
 const LARGO_MAXIMO_NEGOCIO = 80;
 
+/**
+ * Corta por grafemas (lo que una persona ve como un carácter: 🍬, 👨‍👩‍👧, 🇵🇪), nunca por
+ * unidades UTF-16, que partirían un emoji en dos. Sin Intl.Segmenter, corta por puntos de código.
+ */
+function recortar(texto: string, maximo: number): string {
+  if (typeof Intl.Segmenter === 'function') {
+    const grafemas = [...new Intl.Segmenter('es', { granularity: 'grapheme' }).segment(texto)];
+    return grafemas
+      .slice(0, maximo)
+      .map((g) => g.segment)
+      .join('');
+  }
+  return Array.from(texto).slice(0, maximo).join('');
+}
+
 /** Una sola línea y de largo razonable: el nombre no puede imitar otras líneas del mensaje. */
 function limpiarNegocio(negocio: string | undefined): string {
-  return (negocio ?? '').replace(/\s+/g, ' ').trim().slice(0, LARGO_MAXIMO_NEGOCIO);
+  return recortar((negocio ?? '').replace(/\s+/g, ' ').trim(), LARGO_MAXIMO_NEGOCIO);
+}
+
+/** Cambia las mitades sueltas de un emoji (UTF-16 mal formado) por "�": encodeURIComponent lanzaría error. */
+function textoBienFormado(texto: string): string {
+  return texto.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '\uFFFD');
 }
 
 /** Texto plano para WhatsApp: líneas cortas, sin tablas ni emojis, fácil de leer en el celular. */
@@ -48,5 +68,5 @@ export function mensajeWhatsApp({ codigo, emitida, validaHasta, carrito, negocio
 }
 
 export function enlaceWhatsApp(texto: string): string {
-  return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(texto)}`;
+  return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(textoBienFormado(texto))}`;
 }

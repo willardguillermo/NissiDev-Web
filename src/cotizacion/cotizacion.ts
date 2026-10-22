@@ -46,7 +46,8 @@ export function crearCotizacion({
     codigo: generarCodigo(emitida.anio, aleatorio),
     emitida,
     validaHasta: sumarDias(emitida, DIAS_VALIDEZ),
-    carrito,
+    // Copia: la cotización emitida no debe cambiar si después cambia el carrito.
+    carrito: { items: [...carrito.items] },
     negocio,
   };
 }

@@ -70,6 +70,18 @@ describe('mensajeWhatsApp', () => {
     expect(largo).toContain(`Negocio: ${'x'.repeat(80)}\n`);
   });
 
+  it.each([
+    ['un emoji simple', '🍬'],
+    ['una familia (varios emojis unidos)', '👨‍👩‍👧'],
+    ['una bandera (dos letras regionales)', '🇵🇪'],
+  ])('recorta sin partir %s que cae justo en el corte', (_caso, emoji) => {
+    const negocio = 'a'.repeat(79) + emoji + 'zzz';
+    const texto = mensajeWhatsApp(cotizacion(dulceriaConCaja, negocio));
+    expect(texto).toContain(`Negocio: ${'a'.repeat(79)}${emoji}\n`);
+    const enlace = new URL(enlaceWhatsApp(texto));
+    expect(enlace.searchParams.get('text')).toBe(texto);
+  });
+
   it('sin emojis', () => {
     expect(mensajeWhatsApp(cotizacion(dulceriaConCaja))).not.toMatch(/\p{Extended_Pictographic}/u);
   });
@@ -90,6 +102,12 @@ describe('enlaceWhatsApp', () => {
     expect(texto).toContain('%23');
     expect(texto).toContain('%3F');
     expect(texto).not.toMatch(/[ \n&#?]/);
+  });
+
+  it('nunca lanza error, aunque el texto traiga mitades de un emoji', () => {
+    const roto = 'Hola \uD83C fin \uDF6C';
+    expect(() => enlaceWhatsApp(roto)).not.toThrow();
+    expect(new URL(enlaceWhatsApp(roto)).searchParams.get('text')).toBe('Hola \uFFFD fin \uFFFD');
   });
 
   it('el mensaje completo vuelve igual al decodificarlo', () => {

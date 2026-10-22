@@ -10,10 +10,14 @@ function exigirCantidad(cantidad: number) {
   }
 }
 
-function obtenerPresentacion(producto: Producto, presentacionId: string): Presentacion {
+/**
+ * Copia profunda de la presentación (incluido el precio por mayor): la línea no debe cambiar
+ * aunque después se modifique el catálogo. Nunca se guarda una referencia a sus objetos.
+ */
+function copiarPresentacion(producto: Producto, presentacionId: string): Presentacion {
   const presentacion = producto.presentaciones.find((p) => p.id === presentacionId);
   if (!presentacion) throw new Error(`"${producto.nombre}" no tiene la presentación "${presentacionId}"`);
-  return presentacion;
+  return structuredClone(presentacion);
 }
 
 export function aUnidadBase(cantidad: number, factor: number): number {
@@ -29,7 +33,7 @@ function ponerLinea(lineas: LineaPedido[], nueva: LineaPedido): LineaPedido[] {
 
 export function agregarLinea(pedido: Pedido, producto: Producto, presentacionId: string, cantidad: number): Pedido {
   exigirCantidad(cantidad);
-  const presentacion = obtenerPresentacion(producto, presentacionId);
+  const presentacion = copiarPresentacion(producto, presentacionId);
   const linea: LineaPedido = {
     id: idLinea(producto.id, presentacion.id),
     productoId: producto.id,
@@ -47,7 +51,7 @@ export function cambiarPresentacion(
 ): Pedido {
   const linea = pedido.lineas.find((l) => l.id === lineaId);
   if (!linea) return pedido;
-  const presentacion = obtenerPresentacion(producto, nuevaPresentacionId);
+  const presentacion = copiarPresentacion(producto, nuevaPresentacionId);
   const nueva: LineaPedido = { ...linea, id: idLinea(producto.id, presentacion.id), presentacion };
   const resto = pedido.lineas.filter((l) => l.id !== lineaId);
   // Si ya había una línea con esa presentación, se juntan; si no, la línea queda en su lugar.

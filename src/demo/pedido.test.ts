@@ -113,6 +113,35 @@ describe('la línea conserva lo pactado', () => {
   });
 });
 
+describe('la línea guarda una copia, no una referencia al catálogo', () => {
+  const chocolateEditable = (): Producto => structuredClone(CHOCOLATE);
+
+  it('si se modifica el objeto original después de agregar, la línea no cambia', () => {
+    const producto = chocolateEditable();
+    const pedido = agregarLinea(PEDIDO_VACIO, producto, 'caja', 3);
+    const caja = producto.presentaciones[2];
+    caja.factor = 20;
+    caja.precio = 2600;
+    caja.precioMayorista!.precio = 1;
+    caja.precioMayorista!.cantidadMinima = 1;
+
+    const linea = pedido.lineas[0];
+    expect(linea.presentacion).toEqual(CHOCOLATE.presentaciones[2]);
+    expect(unidadesBaseDelProducto(pedido, producto.id)).toBe(72);
+    expect(subtotal(linea)).toBe(3 * 2700);
+  });
+
+  it('lo mismo al cambiar de presentación', () => {
+    const producto = chocolateEditable();
+    let pedido = agregarLinea(PEDIDO_VACIO, producto, 'unidad', 2);
+    pedido = cambiarPresentacion(pedido, 'choco-luna:unidad', producto, 'caja');
+    producto.presentaciones[2].factor = 20;
+    producto.presentaciones[2].precio = 2600;
+    expect(pedido.lineas[0].presentacion.factor).toBe(24);
+    expect(subtotal(pedido.lineas[0])).toBe(6000);
+  });
+});
+
 describe('editar líneas', () => {
   it('cambiar presentación a una que ya está en el pedido junta las líneas', () => {
     let pedido = agregarLinea(PEDIDO_VACIO, CHOCOLATE, 'unidad', 2);

@@ -75,6 +75,13 @@ describe('crearCotizacion', () => {
     });
   });
 
+  it('guarda una copia del carrito', () => {
+    const carrito = cargarSugerido('dulceria');
+    const cotizacion = crearCotizacion({ carrito, emitida: { anio: 2026, mes: 10, dia: 21 } });
+    carrito.items.push('chatbot');
+    expect(cotizacion.carrito.items).toEqual(['catalogo-web', 'pedidos-whatsapp', 'panel-dueno']);
+  });
+
   it('el año del código es el de la fecha de emisión', () => {
     const cotizacion = crearCotizacion({ carrito: cargarSugerido('dulceria'), emitida: { anio: 2027, mes: 1, dia: 2 } });
     expect(cotizacion.codigo).toMatch(/^NSD-2027-/);
