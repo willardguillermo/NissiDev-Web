@@ -138,14 +138,25 @@ a {
   outline-offset: 3px;
 }
 
-/* Movimiento reducido: sin animaciones ni scroll suave */
+/* Entradas del sitio: suben un poco y se enfocan. --d es el retraso de cada pieza. */
+@keyframes sube {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+}
+
+@keyframes fundido {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Movimiento reducido = menos y más suave, no cero: cada animación trae su versión con solo fundidos
+   (sin desplazamientos ni giros). Aquí solo se quita el scroll suave. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  html {
+    scroll-behavior: auto;
   }
 }

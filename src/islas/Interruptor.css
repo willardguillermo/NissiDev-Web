@@ -9,6 +9,8 @@
   border: 0;
   border-radius: var(--radio-pildora);
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Apagado: fondo claro con contorno (≥ 3:1) para que se vea el límite del control. */
@@ -29,7 +31,14 @@
   background: var(--color-blanco);
   border-radius: var(--radio-pildora);
   box-shadow: 0 1px 2px rgb(30 31 34 / 0.25);
-  transition: transform var(--duracion-ui) var(--ease-ui);
+  transition: transform var(--duracion-fundido) var(--ease-out);
+}
+
+/* Con movimiento reducido la perilla cambia de lado sin deslizarse */
+@media (prefers-reduced-motion: reduce) {
+  .interruptor__perilla {
+    transition: none;
+  }
 }
 
 /* Encendido: pista negra y perilla dorada a la derecha (solo se anima transform). */

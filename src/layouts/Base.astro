@@ -38,11 +38,25 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
-      // Se pone antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos de <html>
-      // al cambiar de página, por eso se vuelve a poner en astro:after-swap.
-      document.documentElement.classList.add('js');
-      document.addEventListener('astro:after-swap', function () {
-        document.documentElement.classList.add('js');
+      // Las clases se ponen antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos
+      // de <html> al cambiar de página, por eso se vuelven a poner en astro:after-swap.
+      // "logo-visto": el armado del logo es de una vez por sesión; después aparece con un fundido corto.
+      // Si sessionStorage falla (modo privado, bloqueado), no hay clase y el logo se arma normal.
+      var LOGO_ARMADO = 'nissidev:logo-armado';
+      var marcarClases = function () {
+        var raiz = document.documentElement;
+        raiz.classList.add('js');
+        try {
+          if (sessionStorage.getItem(LOGO_ARMADO)) raiz.classList.add('logo-visto');
+        } catch (e) {}
+      };
+      marcarClases();
+      document.addEventListener('astro:after-swap', marcarClases);
+      document.addEventListener('astro:page-load', function () {
+        if (!document.querySelector('[data-logo-armado]')) return;
+        try {
+          sessionStorage.setItem(LOGO_ARMADO, '1');
+        } catch (e) {}
       });
       // Si hay JavaScript y no se pidió "movimiento reducido", el titular del hero espera a su animación.
       // Respaldo: si la animación no arranca en 1.5 s (el JavaScript falló o tardó), todo se muestra quieto.
