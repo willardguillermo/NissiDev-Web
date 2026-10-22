@@ -99,10 +99,12 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests: formato `NSD-2026-K7Q3` (año de la fecha, 4 caracteres del alfabeto sin 0/O/1/I/L), validez cruzando fin de mes y de año.
 - **Verificación:** `npm test`.
 
-### TD1 · Dirección visual de NissiDev — 🚧 en curso en `feature/td1-diseno`
-- **Decidida (provisional, 2026-10-21):** dirección **B "Papel y oro"** + **momento A** (la N en 3D, cerca del final). Bocetos en `docs/referencias/td1/`; detalle en `docs/diseño.md`. Guillermo la corrige viendo la vista previa en su celular; nada pasa a `main` hasta que la apruebe.
-- **Partes:** D1 tokens y `docs/diseño.md` · D2 header y footer · D3 Inicio · D4 Arma tu sistema · D5 movimiento · D6 la N en 3D.
-- **Se adelantan aquí:** parte de la **T21** (Inicio de NissiDev), de la **T24** (View Transitions y Lenis) y de la **T25** (animaciones de entrada y scroll, con gsap). Lo que quede pendiente de esas tareas se anota al cerrar la TD1.
+### TD1 · Dirección visual de NissiDev — ✅ hecha en `feature/td1-diseno` (falta unirla a `main` cuando Guillermo la apruebe)
+- **Primera versión (2026-10-21), descartada:** dirección B "Papel y oro" + momento A (la N en 3D), commits `f1346da`…`0f0bb60`. Parecía una plantilla y no se parecía a la marca.
+- **Elegida (2026-10-22): Ensamble**, sacada del video oficial de la marca. Referencia en `docs/referencias/td1/prototipo-ensamble.html` y el logo en `docs/referencias/marca/`; detalle en `docs/diseño.md`.
+- **Partes y commits:** E1 referencias, `diseño.md` y tokens `cfbae25` · E2 logo en el header y favicon `3154f5c` + `8d096e8` · E3 hero con el logo que se arma `cde9b18` + `cd1c3f3` · E4 rotador de servicios `9712ffd` · E5 resto del Inicio y footer `2d91517` · E6 Arma tu sistema `8b7a06b` · E7 movimiento con CSS, sin GSAP ni Lenis `864ce73`.
+- **Revisión de Codex (base `466536f`):** 1 hallazgo P2 (el contador restauraba un importe viejo), arreglado en `c0801db` con tests en `src/islas/contador.test.ts`. Limpieza: mini carrito borrado `fbffd69`; «Abrir la demo · Muy pronto» pasa a aviso sin foco `22fb561`.
+- **Se resolvieron aquí:** parte de la **T21** (Inicio de NissiDev) y toda la **T24** y la **T25**, con CSS en vez de librerías (ADR-002).
 - **Qué:** Guillermo define con Claude la dirección visual de la web de NissiDev a partir de un boceto de **Inicio** y de **Arma tu sistema** (tipografía, color, ritmo, tono de las imágenes, componentes). Los tokens y componentes de las T03–T04 son provisionales.
 - **Al terminar:** se actualizan `src/styles/tokens.css` y los componentes (`Boton`, `Tarjeta`, `Base.astro`, isla `Carrito`) a la dirección elegida, con sus tests de contraste.
 - **Bloquea:** la T11 y todas las tareas con pantallas (marcadas con 🔒). La lógica pura (T09, T10, T12a, T12b, T13, T15, T20a) puede avanzar.
@@ -196,16 +198,14 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** todas las páginas del BRIEF existen y están enlazadas.
 - **Verificación:** recorrer el menú en 375 px.
 
-### T24 · feat: transiciones y scroll suave — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
-- **Antes:** permiso para `lenis`.
-- **Qué:** View Transitions de Astro y Lenis en `src/animacion/lenis.ts`; el carrito sigue intacto al cambiar de página.
+### T24 · feat: transiciones y scroll suave — ✅ resuelta en la TD1 con CSS (ADR-002)
+- **Qué:** View Transitions de Astro; el carrito sigue intacto al cambiar de página. Scroll nativo del navegador y `scroll-behavior: smooth` para los anclas (sin Lenis).
 - **Terminado cuando:** con "movimiento reducido" no hay scroll suave ni transición animada.
 - **Verificación:** prueba manual con y sin "movimiento reducido" (emulación en DevTools).
 
-### T25 · feat: animaciones de entrada y scroll — 🔒 bloqueada por TD1 (en parte adelantada en TD1)
-- **Antes:** permiso para `gsap`.
-- **Qué:** `src/animacion/gsap.ts`: entrada del hero y aparición al hacer scroll, solo `transform` y `opacity`.
-- **Terminado cuando:** con "movimiento reducido" todo se ve sin animar; sin saltos de diseño (CLS).
+### T25 · feat: animaciones de entrada y scroll — ✅ resuelta en la TD1 con CSS (ADR-002)
+- **Qué:** entrada del hero (el logo que se arma) con `@keyframes` y aparición al hacer scroll con `animation-timeline: view()`; solo `transform`, `opacity` y un desenfoque ≤ 4 px. Sin GSAP.
+- **Terminado cuando:** con "movimiento reducido", menos y más suave, no cero (sin desplazamientos ni giros, con fundidos cortos); sin saltos de diseño (CLS).
 - **Verificación:** prueba manual con ambas preferencias; Lighthouse local sin aumento de CLS.
 
 ### T26 · feat: Cloudflare Web Analytics

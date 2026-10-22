@@ -25,7 +25,7 @@ Decisión en `docs/decisions/ADR-001-astro-con-islas-de-react.md`.
 - **Astro + TypeScript** (versión estable al crear el repo) para páginas, layout y diseño
 - **Islas de React** solo para lo interactivo: demo, carrito, cotización
 - **nanostores** (+ `@nanostores/persistent`) para compartir el carrito entre islas y páginas
-- Animación: **GSAP + ScrollTrigger**, **Lenis** (smooth scroll), **View Transitions** de Astro; CSS para lo simple
+- Animación: **CSS** (`@keyframes`, transiciones, `animation-timeline: view()`) y **View Transitions** de Astro; sin GSAP ni Lenis (ADR-002)
 - CSS propio con variables (tokens) en `src/styles/tokens.css`; sin librería de componentes
 - Vitest para lógica; ESLint; `astro check` para tipos
 - Hosting: Cloudflare Pages conectado al repo de GitHub (cada push publica; cada rama tiene su enlace de vista previa)
@@ -93,7 +93,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - [ ] **Carrito:** al agregar un módulo con dependencias se agregan o se avisan; al quitar uno del que dependen otros, avisa; muestra inversión inicial "desde" y mensualidad por separado.
 - [ ] **Carrito sugerido "Dulcería"** con un clic.
 - [ ] **Cotización:** abre WhatsApp al **+51 913 351 627** con el resumen correcto y se puede guardar en PDF.
-- [ ] **Animaciones:** entrada del hero, aparición al hacer scroll y transición entre páginas; con "movimiento reducido" activado, todo se ve sin animar.
+- [ ] **Animaciones:** entrada del hero, aparición al hacer scroll y transición entre páginas; con "movimiento reducido" activado, menos y más suave, no cero: sin desplazamientos ni giros, con fundidos cortos.
 - [ ] **Rendimiento (móvil, publicado):** LCP ≤ 2.5 s · CLS ≤ 0.1 · INP ≤ 200 ms.
 - [ ] **Accesibilidad:** todo se usa con teclado, contraste ≥ 4.5:1, campos con label, respeta "movimiento reducido".
 - [ ] `npm run build`, `npm test` y `npm run lint` pasan sin errores.
