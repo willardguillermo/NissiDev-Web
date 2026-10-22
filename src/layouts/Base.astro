@@ -1,4 +1,5 @@
 ---
+import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
 interface Props {
@@ -21,7 +22,6 @@ const enlaces = [
   { href: '/contacto', texto: 'Contacto' },
 ];
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
-const enlaceWhatsApp = 'https://wa.me/51913351627';
 ---
 
 <html lang="es">
@@ -73,8 +73,8 @@ const enlaceWhatsApp = 'https://wa.me/51913351627';
       <div class="contenedor pie__fila">
         <p class="logo logo--oscuro">Nissi<span>Dev</span></p>
         <p>
-          <a href={enlaceWhatsApp} target="_blank" rel="noopener noreferrer">
-            WhatsApp: +51 913 351 627<span class="solo-lector"> (se abre en otra pestaña)</span>
+          <a href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+            WhatsApp: {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
           </a>
         </p>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>

@@ -5,10 +5,13 @@ import type { Carrito, ResultadoAgregar, ResultadoQuitar, Totales } from './carr
 const nombre = (id: ModuloId) => obtenerModulo(id).nombre;
 
 /** "A", "A y B", "A, B y C". */
+export function unirTextos(textos: readonly string[]): string {
+  if (textos.length <= 1) return textos.join('');
+  return `${textos.slice(0, -1).join(', ')} y ${textos.at(-1)}`;
+}
+
 export function unirNombres(ids: ModuloId[]): string {
-  const nombres = ids.map(nombre);
-  if (nombres.length <= 1) return nombres.join('');
-  return `${nombres.slice(0, -1).join(', ')} y ${nombres.at(-1)}`;
+  return unirTextos(ids.map(nombre));
 }
 
 export function avisoAgregar(id: ModuloId, resultado: ResultadoAgregar): string {

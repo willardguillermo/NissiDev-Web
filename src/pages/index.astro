@@ -1,6 +1,7 @@
 ---
 import Boton from '../components/Boton.astro';
 import Tarjeta from '../components/Tarjeta.astro';
+import { WHATSAPP_ENLACE } from '../config/contacto';
 import Base from '../layouts/Base.astro';
 ---
 
@@ -9,7 +10,7 @@ import Base from '../layouts/Base.astro';
     <h1>NissiDev</h1>
     <Tarjeta titulo="Sitio en construcción">
       <p>Pronto podrás probar la demo del sistema de tu negocio y armar tu cotización.</p>
-      <Boton href="https://wa.me/51913351627" externo>Escríbeme por WhatsApp</Boton>
+      <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
     </Tarjeta>
   </section>
 </Base>
