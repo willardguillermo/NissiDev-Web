@@ -40,9 +40,14 @@ const enlaceWhatsApp = 'https://wa.me/51913351627';
       <div class="contenedor cabecera__fila">
         <a class="logo" href="/" aria-label="NissiDev, ir al inicio">Nissi<span>Dev</span></a>
 
-        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
-          Menú
-        </button>
+        <div class="cabecera__acciones">
+          <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
+            Mi sistema <span class="mi-sistema__cantidad" data-mi-sistema-cantidad></span>
+          </a>
+          <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal" hidden>
+            Menú
+          </button>
+        </div>
 
         <nav id="menu-principal" class="menu" aria-label="Principal">
           <ul>
@@ -109,6 +114,25 @@ const enlaceWhatsApp = 'https://wa.me/51913351627';
         movil.addEventListener('change', () => abrir(false));
       }
     </script>
+
+    <script>
+      // Acceso "Mi sistema (n)" en el header: solo aparece si hay módulos elegidos. Sin React.
+      import { $carrito } from '../carrito/store';
+
+      const enlace = document.querySelector<HTMLElement>('[data-mi-sistema]');
+      const cantidad = document.querySelector<HTMLElement>('[data-mi-sistema-cantidad]');
+
+      if (enlace && cantidad) {
+        $carrito.subscribe(({ items }) => {
+          enlace.hidden = items.length === 0;
+          cantidad.textContent = String(items.length);
+          enlace.setAttribute(
+            'aria-label',
+            `Mi sistema: ${items.length} ${items.length === 1 ? 'módulo elegido' : 'módulos elegidos'}`,
+          );
+        });
+      }
+    </script>
   </body>
 </html>
 
@@ -161,6 +185,37 @@ const enlaceWhatsApp = 'https://wa.me/51913351627';
     color: var(--acento);
   }
 
+  .cabecera__acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-2);
+  }
+
+  .mi-sistema {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-2);
+    min-height: 2.75rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mi-sistema[hidden] {
+    display: none;
+  }
+
+  .mi-sistema__cantidad {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding-inline: var(--espacio-1);
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-sm);
+  }
+
   .menu-boton {
     min-height: 2.75rem;
     padding: var(--espacio-2) var(--espacio-4);
@@ -211,6 +266,15 @@ const enlaceWhatsApp = 'https://wa.me/51913351627';
   @media (min-width: 48rem) {
     .menu-boton {
       display: none;
+    }
+
+    /* En escritorio: logo | menú | Mi sistema */
+    .menu {
+      order: 1;
+    }
+
+    .cabecera__acciones {
+      order: 2;
     }
   }
 
