@@ -34,6 +34,8 @@ export interface Producto {
   /** Existencias en unidad base. */
   stock: number;
   presentaciones: Presentacion[];
+  /** Vencimiento más próximo (AAAA-MM-DD). Sin fecha si no vence (piñatería). */
+  vence?: string;
 }
 
 export interface Puesto {

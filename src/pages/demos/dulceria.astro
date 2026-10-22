@@ -1,9 +1,14 @@
 ---
-import { RUBRO_DE_PRUEBA } from '../../demo/rubro-de-prueba';
 import DemoRubro from '../../islas/DemoRubro';
 import Demo from '../../layouts/Demo.astro';
+import { DULCERIA, FUENTES_DULCERIA } from '../../rubros/dulceria/config';
+import '../../rubros/dulceria/fuentes.css';
 ---
 
-<Demo titulo="Dulcería" descripcion="Demo de un sistema para dulcerías: catálogo, pedidos por WhatsApp y panel del dueño. Datos de ejemplo.">
-  <DemoRubro client:load config={RUBRO_DE_PRUEBA} />
+<Demo
+  titulo={DULCERIA.rubro}
+  descripcion="Demo de un sistema para dulcerías: catálogo, pedidos por WhatsApp y panel del dueño. Datos de ejemplo."
+  fuentes={FUENTES_DULCERIA}
+>
+  <DemoRubro client:load config={DULCERIA} />
 </Demo>

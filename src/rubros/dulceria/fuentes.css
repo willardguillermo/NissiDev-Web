@@ -1,0 +1,16 @@
+/* Fuentes de la plantilla de dulcería (OFL; licencias en public/fonts). Solo las carga la página de la demo. */
+@font-face {
+  font-family: 'Shrikhand';
+  src: url('/fonts/shrikhand-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src: url('/fonts/chivo-latin-wght.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
