@@ -35,6 +35,13 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="theme-color" content="#f3efe7" />
     <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
+      // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
+      // Se pone antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos de <html>
+      // al cambiar de página, por eso se vuelve a poner en astro:after-swap.
+      document.documentElement.classList.add('js');
+      document.addEventListener('astro:after-swap', function () {
+        document.documentElement.classList.add('js');
+      });
       // Si hay JavaScript y no se pidió "movimiento reducido", el titular del hero espera a su animación.
       // Respaldo: si la animación no arranca en 1.5 s (el JavaScript falló o tardó), todo se muestra quieto.
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -63,7 +70,6 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
             aria-expanded="false"
             aria-controls="menu-principal"
             aria-label="Menú"
-            hidden
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
               <path class="menu-boton__abrir" d="M4 8h16M4 16h16"></path>
@@ -124,7 +130,6 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         const actuales = elementosMenu();
         if (!actuales) return;
         const { boton, menu } = actuales;
-        boton.hidden = false;
         abrir(false);
         boton.addEventListener('click', () => abrir(boton.getAttribute('aria-expanded') !== 'true'));
         menu.addEventListener('click', (evento) => {
@@ -233,8 +238,9 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: none;
   }
 
+  /* Sin JavaScript no hay botón: el menú queda siempre visible. */
   .menu-boton {
-    display: grid;
+    display: none;
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
@@ -246,8 +252,8 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     cursor: pointer;
   }
 
-  .menu-boton[hidden] {
-    display: none;
+  :global(.js) .menu-boton {
+    display: grid;
   }
 
   .menu-boton__cerrar,
@@ -307,13 +313,14 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       font-size: var(--texto-lg);
     }
 
-    .cabecera[data-menu='cerrado'] .menu {
+    /* Con JavaScript el menú empieza cerrado desde el primer dibujo (la clase "js" se pone en el <head>). */
+    :global(.js) .cabecera:not([data-menu='abierto']) .menu {
       display: none;
     }
   }
 
   @media (min-width: 48rem) {
-    .menu-boton {
+    :global(.js) .menu-boton {
       display: none;
     }
 
