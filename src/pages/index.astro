@@ -1,8 +1,17 @@
 ---
 import Boton from '../components/Boton.astro';
 import { WHATSAPP_ENLACE } from '../config/contacto';
+import TelefonoDemo from '../components/TelefonoDemo.astro';
 import MiniCarrito from '../islas/MiniCarrito';
 import Base from '../layouts/Base.astro';
+
+const pasos = [
+  { titulo: 'Maqueta', texto: 'Ves cómo quedaría, sin costo.' },
+  { titulo: 'Propuesta', texto: 'Precio cerrado y qué incluye.' },
+  { titulo: 'Desarrollo', texto: 'Unas 4 semanas, con avances.' },
+  { titulo: 'Soporte', texto: 'Te acompaño después.' },
+];
+const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQL', 'Cloudflare'];
 ---
 
 <Base titulo="NissiDev">
@@ -25,6 +34,48 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <MiniCarrito client:visible />
+  </section>
+
+  <section id="demo" class="banda zona-oscura" aria-labelledby="demo-titulo">
+    <div class="contenedor banda__contenido">
+      <div class="banda__texto">
+        <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="banda__tu">tu</span> sistema.</h2>
+        <p class="banda__bajada">Una dulcería de ejemplo, funcionando.</p>
+      </div>
+      <div class="banda__telefono" data-telefono>
+        <TelefonoDemo />
+      </div>
+      <p class="banda__sello">Demo · datos de ejemplo</p>
+      <button class="banda__boton" type="button" aria-disabled="true" aria-describedby="demo-pronto">
+        Abrir la demo <span id="demo-pronto" class="banda__pronto">Muy pronto</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="pasos-titulo" data-aparecer>
+    <h2 id="pasos-titulo" class="titulo-2">Cómo trabajamos</h2>
+    <ol class="pasos" role="list">
+      {
+        pasos.map((paso, i) => (
+          <li class="paso">
+            <span class="paso__numero" aria-hidden="true">{i + 1}</span>
+            <span class="paso__titulo">{paso.titulo}</span>
+            <span class="paso__texto">{paso.texto}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
+    <h2 id="stack-titulo" class="seccion__etiqueta">Con qué construyo</h2>
+    <ul class="chips" role="list">
+      {tecnologias.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
+    </ul>
+  </section>
+
+  <section class="contenedor" data-aparecer>
+    <p class="casos">Casos: próximamente.</p>
   </section>
 </Base>
 
@@ -67,7 +118,155 @@ import Base from '../layouts/Base.astro';
     box-shadow: var(--borde-sutil);
   }
 
+  /* Banda negra: la demo dentro de un celular */
+  .banda {
+    margin-top: var(--espacio-14);
+    padding-block: var(--espacio-12);
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+    scroll-margin-top: var(--espacio-4);
+  }
+
+  .banda__contenido {
+    display: grid;
+    justify-items: center;
+    gap: var(--espacio-5);
+  }
+
+  .banda__texto {
+    display: grid;
+    gap: var(--espacio-3);
+    justify-self: stretch;
+  }
+
+  .banda__tu {
+    color: var(--acento);
+  }
+
+  .banda__bajada {
+    color: var(--texto-suave-sobre-oscuro);
+  }
+
+  .banda__sello {
+    color: var(--nota-sobre-oscuro);
+    font-size: var(--texto-xs);
+  }
+
+  .banda__boton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-2);
+    min-height: 3.25rem;
+    padding-inline: var(--espacio-6) var(--espacio-3);
+    background: var(--acento);
+    color: var(--color-negro);
+    border: 0;
+    border-radius: var(--radio-pildora);
+    font-weight: 700;
+    cursor: not-allowed;
+  }
+
+  .banda__pronto {
+    padding: var(--espacio-1) var(--espacio-3);
+    background: var(--color-negro);
+    color: var(--texto-sobre-oscuro);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-xs);
+  }
+
+  /* Secciones claras */
+  .seccion {
+    display: grid;
+    gap: var(--espacio-3);
+    padding-top: var(--espacio-12);
+  }
+
+  .pasos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espacio-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .paso {
+    display: grid;
+    align-content: start;
+    gap: var(--espacio-1);
+    padding: var(--espacio-4);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-tarjeta);
+  }
+
+  .paso__numero {
+    color: var(--acento-texto);
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .paso__titulo {
+    font-weight: 800;
+  }
+
+  .paso__texto {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+
+  .seccion__etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-sm);
+    font-weight: 800;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacio-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .chip {
+    padding: var(--espacio-2) var(--espacio-3);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-sm);
+    font-weight: 600;
+  }
+
+  .casos {
+    margin-top: var(--espacio-12);
+    padding: var(--espacio-5);
+    color: var(--texto-suave);
+    border: 1px dashed var(--color-punteado);
+    border-radius: var(--radio-tarjeta);
+    font-size: var(--texto-sm);
+  }
+
+  @media (min-width: 48rem) {
+    .pasos {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
   @media (min-width: 64rem) {
+    .banda__contenido {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto auto;
+      align-items: center;
+      column-gap: var(--espacio-16);
+    }
+
+    .banda__texto {
+      grid-row: 1 / span 3;
+    }
+
+    .banda__telefono {
+      grid-column: 2;
+    }
+
     .hero {
       grid-template-columns: 1.15fr 1fr;
       align-items: center;
