@@ -9,7 +9,7 @@
   padding: var(--espacio-6);
   background: var(--fondo-elevado);
   border: 2px dashed var(--acento);
-  border-radius: var(--radio-lg);
+  border-radius: var(--radio-tarjeta);
 }
 
 .carrito-sugerido h2 {
@@ -42,8 +42,8 @@
   padding: var(--espacio-6);
   background: var(--fondo-elevado);
   border: 2px solid transparent;
-  border-radius: var(--radio-lg);
-  box-shadow: var(--sombra-suave);
+  border-radius: var(--radio-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .carrito-modulo--elegido {
@@ -122,8 +122,8 @@
   padding: var(--espacio-3) var(--espacio-4);
   background: var(--fondo-oscuro);
   color: var(--texto-sobre-oscuro);
-  border-radius: var(--radio-lg) var(--radio-lg) 0 0;
-  box-shadow: var(--sombra-media);
+  border-radius: var(--radio-tarjeta) var(--radio-tarjeta) 0 0;
+  box-shadow: var(--sombra-flotante);
 }
 
 .carrito-resumen__totales {

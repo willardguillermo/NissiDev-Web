@@ -54,6 +54,21 @@ p {
   text-wrap: pretty;
 }
 
+/* Titulares grandes y apretados (dirección B) */
+.titulo-1 {
+  font-size: var(--titulo-1);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: var(--espaciado-titulo-1);
+}
+
+.titulo-2 {
+  font-size: var(--titulo-2);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--espaciado-titulo-2);
+}
+
 img,
 svg,
 video {

@@ -1,4 +1,5 @@
-/* Tokens de diseño de NissiDev. La demo de dulcería define los suyos aparte. */
+/* Tokens de diseño de NissiDev · dirección B "Papel y oro" (ver docs/diseño.md).
+   La demo de dulcería define los suyos aparte. */
 :root {
   /* Colores de la marca */
   --color-negro: #1e1f22;
@@ -6,13 +7,23 @@
   --color-claro: #f3efe7;
   --color-blanco: #ffffff;
 
-  /* Derivados para texto. Contraste medido (WCAG):
-     negro / claro 14.37 · claro / negro 14.37 · dorado / negro 5.21
-     dorado / claro 2.76 → no sirve para texto: solo bordes, adornos o texto ≥ 24 px
-     dorado-texto / claro 5.00 · gris / claro 5.56 · gris-claro / negro 8.13 */
+  /* Derivados. Contraste medido (WCAG) y comprobado en src/styles/tokens.test.ts:
+     sobre claro/blanco: negro 14.37/16.48 · dorado-texto 5.00/5.73 · gris 5.56/6.38
+     sobre negro: claro 14.37 · piedra 9.49 · oro-claro 8.65 · arena 5.67 · dorado 5.21
+     negro sobre dorado (botón dorado) 5.21
+     dorado / claro 2.76 → NO sirve para texto: solo adornos o texto ≥ 24 px en negrita
+     contorno / blanco 3.67 · contorno / claro 3.20 → bordes de controles (mínimo 3:1) */
   --color-dorado-texto: #80612c;
   --color-gris: #5e5f63;
-  --color-gris-claro: #b8b6b0;
+  --color-piedra: #c9c4ba;
+  --color-arena: #9c978e;
+  --color-oro-claro: #d9b77e;
+  --color-contorno: #8a857c;
+  /* Decorativos (no llevan texto ni marcan el límite de un control) */
+  --color-linea: #ece7dd;
+  --color-interruptor: #ddd7cc;
+  --color-punteado: #b9b2a5;
+  --color-pantalla: #0f1012;
 
   /* Uso */
   --fondo: var(--color-claro);
@@ -21,57 +32,70 @@
   --texto: var(--color-negro);
   --texto-suave: var(--color-gris);
   --texto-sobre-oscuro: var(--color-claro);
-  --texto-suave-sobre-oscuro: var(--color-gris-claro);
+  --texto-suave-sobre-oscuro: var(--color-piedra);
+  --nota-sobre-oscuro: var(--color-arena);
   --acento: var(--color-dorado);
   --acento-texto: var(--color-dorado-texto);
+  --acento-sobre-oscuro: var(--color-oro-claro);
   --borde: color-mix(in srgb, var(--color-negro) 15%, transparent);
 
   /* Foco: el contorno necesita contraste ≥ 3:1 con el fondo que lo rodea.
      Regla: dorado oscuro sobre fondos claros, dorado original sobre fondos oscuros.
      dorado-texto / claro 5.00 · dorado-texto / blanco 5.73 · dorado / negro 5.21
-     (dorado-texto / negro 2.88 → no sirve). Las zonas oscuras usan la clase .zona-oscura.
-     Lo comprueba src/styles/tokens.test.ts. */
+     (dorado-texto / negro 2.88 → no sirve). Las zonas oscuras usan la clase .zona-oscura. */
   --foco: var(--color-dorado-texto);
   --foco-sobre-oscuro: var(--color-dorado);
 
   /* Tipografía: Manrope (OFL), servida desde public/fonts */
   --fuente-base: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --texto-xs: 0.8125rem;
-  --texto-sm: 0.9375rem;
-  --texto-md: 1.0625rem;
-  --texto-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --texto-xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
-  --texto-2xl: clamp(2.25rem, 1.6rem + 3vw, 4rem);
-  --interlineado: 1.6;
-  --interlineado-titulo: 1.1;
+  --texto-xs: 0.75rem; /* 12 px: notas */
+  --texto-sm: 0.875rem; /* 14 px */
+  --texto-md: 1rem; /* 16 px: texto */
+  --texto-lg: 1.0625rem; /* 17 px: títulos de tarjeta */
+  --texto-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --titulo-2: clamp(1.875rem, 1.55rem + 1.4vw, 2.75rem); /* 30 px en celular */
+  --titulo-1: clamp(2.75rem, 2rem + 3.2vw, 4.75rem); /* 44 px en celular */
+  --espaciado-titulo-1: -0.04em; /* titulares grandes y apretados */
+  --espaciado-titulo-2: -0.027em;
+  --interlineado: 1.55;
+  --interlineado-titulo: 1.02;
 
   /* Espacios (múltiplos de 4 px) */
   --espacio-1: 0.25rem;
   --espacio-2: 0.5rem;
   --espacio-3: 0.75rem;
   --espacio-4: 1rem;
+  --espacio-5: 1.25rem;
   --espacio-6: 1.5rem;
   --espacio-8: 2rem;
   --espacio-12: 3rem;
+  --espacio-14: 3.5rem;
   --espacio-16: 4rem;
   --espacio-24: 6rem;
 
-  /* Contenedor: 16 px de margen lateral en celular */
+  /* Contenedor: 20 px de margen lateral en celular */
   --ancho-max: 72rem;
-  --margen-lateral: clamp(1rem, 4vw, 2rem);
+  --margen-lateral: clamp(1.25rem, 4vw, 2rem);
 
   /* Formas */
   --radio-sm: 0.375rem;
-  --radio-md: 0.75rem;
-  --radio-lg: 1.25rem;
+  --radio-md: 1rem; /* 16 px: bloques internos */
+  --radio-tarjeta: 1.25rem; /* 20 px */
+  --radio-tarjeta-grande: 1.75rem; /* 28 px */
   --radio-pildora: 999px;
-  --sombra-suave: 0 1px 2px rgb(30 31 34 / 0.06), 0 4px 12px rgb(30 31 34 / 0.06);
-  --sombra-media: 0 2px 4px rgb(30 31 34 / 0.08), 0 12px 32px rgb(30 31 34 / 0.1);
+  /* Borde simulado con box-shadow: no ocupa espacio ni mueve el diseño */
+  --borde-sutil: 0 0 0 1px rgb(30 31 34 / 0.12);
+  --sombra-tarjeta: 0 18px 40px rgb(30 31 34 / 0.1);
+  --sombra-flotante: 0 20px 40px rgb(30 31 34 / 0.25);
+  --sombra-telefono: 0 0 0 1px #34353a, 0 30px 60px rgb(0 0 0 / 0.5);
 
-  /* Movimiento (solo transform y opacity) */
-  --duracion-corta: 150ms;
-  --duracion-media: 300ms;
-  --curva-salida: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Movimiento: solo transform y opacity (curvas del vault, "Movimiento que no bloquea") */
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duracion-entrada: 0.75s; /* entradas de secciones y titulares */
+  --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+  --duracion-ui: 0.2s; /* interruptores, menús, estados */
+  --ease-rebote: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --duracion-rebote: 0.3s; /* botones */
 
   /* Puntos de quiebre (las media queries no aceptan variables; usar estos valores):
      tablet 48rem (768 px) · escritorio 64rem (1024 px) */
