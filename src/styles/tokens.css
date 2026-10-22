@@ -1,0 +1,71 @@
+/* Tokens de diseño de NissiDev. La demo de dulcería define los suyos aparte. */
+:root {
+  /* Colores de la marca */
+  --color-negro: #1e1f22;
+  --color-dorado: #b28a4c;
+  --color-claro: #f3efe7;
+  --color-blanco: #ffffff;
+
+  /* Derivados para texto. Contraste medido (WCAG):
+     negro / claro 14.37 · claro / negro 14.37 · dorado / negro 5.21
+     dorado / claro 2.76 → no sirve para texto: solo bordes, adornos o texto ≥ 24 px
+     dorado-texto / claro 5.00 · gris / claro 5.56 · gris-claro / negro 8.13 */
+  --color-dorado-texto: #80612c;
+  --color-gris: #5e5f63;
+  --color-gris-claro: #b8b6b0;
+
+  /* Uso */
+  --fondo: var(--color-claro);
+  --fondo-elevado: var(--color-blanco);
+  --fondo-oscuro: var(--color-negro);
+  --texto: var(--color-negro);
+  --texto-suave: var(--color-gris);
+  --texto-sobre-oscuro: var(--color-claro);
+  --texto-suave-sobre-oscuro: var(--color-gris-claro);
+  --acento: var(--color-dorado);
+  --acento-texto: var(--color-dorado-texto);
+  --borde: color-mix(in srgb, var(--color-negro) 15%, transparent);
+  --foco: var(--color-dorado-texto);
+
+  /* Tipografía (la familia se define en T04) */
+  --fuente-base: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --texto-xs: 0.8125rem;
+  --texto-sm: 0.9375rem;
+  --texto-md: 1.0625rem;
+  --texto-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --texto-xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+  --texto-2xl: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --interlineado: 1.6;
+  --interlineado-titulo: 1.1;
+
+  /* Espacios (múltiplos de 4 px) */
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+  --espacio-12: 3rem;
+  --espacio-16: 4rem;
+  --espacio-24: 6rem;
+
+  /* Contenedor: 16 px de margen lateral en celular */
+  --ancho-max: 72rem;
+  --margen-lateral: clamp(1rem, 4vw, 2rem);
+
+  /* Formas */
+  --radio-sm: 0.375rem;
+  --radio-md: 0.75rem;
+  --radio-lg: 1.25rem;
+  --radio-pildora: 999px;
+  --sombra-suave: 0 1px 2px rgb(30 31 34 / 0.06), 0 4px 12px rgb(30 31 34 / 0.06);
+  --sombra-media: 0 2px 4px rgb(30 31 34 / 0.08), 0 12px 32px rgb(30 31 34 / 0.1);
+
+  /* Movimiento (solo transform y opacity) */
+  --duracion-corta: 150ms;
+  --duracion-media: 300ms;
+  --curva-salida: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Puntos de quiebre (las media queries no aceptan variables; usar estos valores):
+     tablet 48rem (768 px) · escritorio 64rem (1024 px) */
+}
