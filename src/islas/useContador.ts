@@ -1,5 +1,8 @@
-import { gsap } from 'gsap';
 import { useLayoutEffect, useRef } from 'react';
+
+const DURACION = 600;
+/** Desaceleración suave (cúbica): arranca rápido y frena al llegar, como --ease-out. */
+const desacelerar = (t: number) => 1 - (1 - t) ** 3;
 
 /**
  * Hace que una cifra "cuente" desde el valor anterior hasta el nuevo cuando cambia.
@@ -18,18 +21,19 @@ export function useContador<T extends HTMLElement>(centimos: number, formatear: 
     const reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!(nodo instanceof Text) || reducir || desde === centimos || desde === 0 || centimos === 0) return;
 
-    const valor = { centimos: desde };
     nodo.nodeValue = formatear(desde);
-    const animacion = gsap.to(valor, {
-      centimos,
-      duration: 0.6,
-      ease: 'power2.out',
-      onUpdate: () => {
-        nodo.nodeValue = formatear(Math.round(valor.centimos / 100) * 100);
-      },
-    });
+    const inicio = performance.now();
+    let cuadro = 0;
+    const paso = (ahora: number) => {
+      const avance = Math.min(1, (ahora - inicio) / DURACION);
+      const valor = desde + (centimos - desde) * desacelerar(avance);
+      // En el camino, soles enteros; al final, el monto exacto.
+      nodo.nodeValue = formatear(avance < 1 ? Math.round(valor / 100) * 100 : centimos);
+      if (avance < 1) cuadro = requestAnimationFrame(paso);
+    };
+    cuadro = requestAnimationFrame(paso);
     return () => {
-      animacion.kill();
+      cancelAnimationFrame(cuadro);
       nodo.nodeValue = formatear(centimos);
     };
   }, [centimos, formatear]);

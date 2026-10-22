@@ -114,19 +114,6 @@ a {
   white-space: nowrap;
 }
 
-/* El titular del hero espera a su animación solo si hay JavaScript (clase puesta en el <head>,
-   con respaldo de 1.5 s). Sin JavaScript o con "movimiento reducido" se ve siempre. */
-.animar [data-titular] {
-  opacity: 0;
-}
-
-/* Máscara de cada línea del titular animado: con un interlineado tan apretado recortaría la "y" y la "g".
-   Se le da aire abajo y se compensa con un margen negativo para que el diseño no se mueva. */
-.titular-linea-mask {
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
-}
-
 /* Zonas con fondo oscuro (footer y las que vengan): el foco cambia de color para seguir viéndose */
 .zona-oscura {
   --foco: var(--foco-sobre-oscuro);
@@ -153,10 +140,31 @@ a {
   }
 }
 
-/* Movimiento reducido = menos y más suave, no cero: cada animación trae su versión con solo fundidos
-   (sin desplazamientos ni giros). Aquí solo se quita el scroll suave. */
-@media (prefers-reduced-motion: reduce) {
+/* Aparecer al hacer scroll, solo con CSS: la animación avanza con la posición de la sección en la
+   pantalla (animation-timeline: view()). Donde no hay soporte, el contenido se ve quieto desde el inicio. */
+@keyframes aparece {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Salto suave a los anclas (#demo). Movimiento reducido = menos y más suave, no cero: cada animación trae
+   su versión con solo fundidos; las que dependen del scroll, simplemente no se mueven. */
+@media (prefers-reduced-motion: no-preference) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
+  }
+
+  @supports (animation-timeline: view()) {
+    [data-aparecer] {
+      /* Propiedades sueltas: animation-timeline no puede ir dentro del atajo "animation" (el minificador
+         las juntaría y el navegador descartaría la regla). */
+      animation-name: aparece;
+      animation-fill-mode: both;
+      animation-timing-function: var(--ease-out);
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
   }
 }

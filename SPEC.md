@@ -49,10 +49,9 @@ nissidev-web/
 ├── public/                      # logo NissiDev, favicon
 └── src/
     ├── pages/                   # index, servicios, demos/dulceria, arma-tu-sistema, cotizacion, contacto (.astro)
-    ├── layouts/Base.astro       # header, footer, View Transitions, Lenis
+    ├── layouts/Base.astro       # header, footer, View Transitions
     ├── components/              # piezas .astro sin estado (Hero, Tarjeta, Boton)
     ├── islas/                   # React: Carrito.tsx, DemoDulceria.tsx, Cotizacion.tsx
-    ├── animacion/               # gsap.ts, lenis.ts (respetan movimiento reducido)
     ├── styles/tokens.css
     ├── catalogo-servicios/      # modulos.ts
     ├── carrito/                 # carrito.ts (lógica pura) + carrito.test.ts + store.ts (nanostores)

@@ -62,14 +62,6 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
           // Si no se puede guardar, la próxima visita también lo verá armarse.
         }
       });
-      // Si hay JavaScript y no se pidió "movimiento reducido", el titular del hero espera a su animación.
-      // Respaldo: si la animación no arranca en 1.5 s (el JavaScript falló o tardó), todo se muestra quieto.
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('animar');
-        window.__nissidevRespaldo = window.setTimeout(function () {
-          document.documentElement.classList.remove('animar');
-        }, 1500);
-      }
     </script>
     <ClientRouter />
   </head>
@@ -193,9 +185,6 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       document.addEventListener('astro:page-load', () => pintar($carrito.get()));
     </script>
 
-    <script>
-      import '../animacion/movimiento';
-    </script>
   </body>
 </html>
 
