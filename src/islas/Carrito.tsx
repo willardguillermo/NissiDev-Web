@@ -4,6 +4,7 @@ import { calcularTotales } from '../carrito/carrito';
 import { cargarSugeridoEnStore } from '../carrito/store';
 import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
 import { avisoSugerido, preguntaQuitar, preguntaReemplazar, textoTotales, unirNombres } from '../carrito/textos';
+import { Interruptor } from './Interruptor';
 import { useCarritoInteractivo } from './useCarritoInteractivo';
 import './Carrito.css';
 
@@ -47,10 +48,25 @@ export default function Carrito() {
 
   return (
     <div className="carrito">
-      <section className="carrito-sugerido" aria-labelledby="sugerido-titulo">
-        <h2 id="sugerido-titulo">¿Tienes una dulcería?</h2>
-        <p>Empieza con lo que suele necesitar una dulcería: {unirNombres([...SUGERIDO.modulos])}.</p>
-        {confirmacion?.tipo === 'sugerido' ? (
+      <section className="carrito-sugerido" aria-label="Sistemas sugeridos por rubro">
+        <div className="carrito-sugerido__fila">
+          {confirmacion?.tipo === 'sugerido' ? null : (
+            <button
+              ref={registrarBoton('sugerido')}
+              type="button"
+              className="carrito-boton"
+              aria-describedby="sugerido-detalle"
+              onClick={pedirSugerido}
+            >
+              Sugerido: {SUGERIDO.nombre}
+            </button>
+          )}
+          <span className="carrito-sugerido__pronto">Hospedaje · pronto</span>
+        </div>
+        <p id="sugerido-detalle" className="carrito-sugerido__detalle">
+          Carga {unirNombres([...SUGERIDO.modulos])}.
+        </p>
+        {confirmacion?.tipo === 'sugerido' && (
           <div ref={zonaConfirmacion} className="carrito-confirmar" role="group" aria-labelledby="pregunta-sugerido">
             <p id="pregunta-sugerido">{preguntaReemplazar(cantidad)}</p>
             <div className="carrito-confirmar__botones">
@@ -67,44 +83,51 @@ export default function Carrito() {
               </button>
             </div>
           </div>
-        ) : (
-          <button ref={registrarBoton('sugerido')} type="button" className="carrito-boton" onClick={pedirSugerido}>
-            Cargar sistema para {SUGERIDO.nombre}
-          </button>
         )}
         {aviso?.id === 'sugerido' && (
-          <p className="carrito-modulo__aviso" aria-hidden="true">
+          <p className="carrito-aviso" aria-hidden="true">
             {aviso.texto}
           </p>
         )}
       </section>
 
-      <ul className="carrito-modulos" role="list">
+      <ul className="carrito-modulos" role="list" aria-label="Módulos">
         {MODULOS.map((modulo) => {
           const elegido = carrito.items.includes(modulo.id);
           const necesita = modulo.dependencias.map((dep) => obtenerModulo(dep).nombre);
+          const pendiente = confirmacion?.tipo === 'quitar' && confirmacion.id === modulo.id ? confirmacion : null;
           return (
-            <li key={modulo.id} className={elegido ? 'carrito-modulo carrito-modulo--elegido' : 'carrito-modulo'}>
-              <h2 className="carrito-modulo__nombre">{modulo.nombre}</h2>
-              {elegido && <p className="carrito-modulo__marca">✓ En tu sistema</p>}
-              <p>{modulo.descripcion}</p>
-              <p className="carrito-modulo__precio">{textoPrecio(modulo)}</p>
-              {necesita.length > 0 && <p className="carrito-modulo__nota">Necesita: {necesita.join(', ')}</p>}
-              {modulo.requiereOtroModulo && <p className="carrito-modulo__nota">Se agrega junto a otro módulo.</p>}
+            <li key={modulo.id} className="carrito-modulo">
+              <div className="carrito-modulo__info">
+                <h2 className="carrito-modulo__nombre">{modulo.nombre}</h2>
+                <p className="carrito-modulo__precio">{textoPrecio(modulo)}</p>
+                <p className="carrito-modulo__descripcion">{modulo.descripcion}</p>
+                {necesita.length > 0 && <p className="carrito-modulo__nota">Necesita: {necesita.join(', ')}</p>}
+                {modulo.requiereOtroModulo && <p className="carrito-modulo__nota">Se agrega junto a otro módulo.</p>}
+              </div>
 
-              {confirmacion?.tipo === 'quitar' && confirmacion.id === modulo.id ? (
+              {pendiente ? null : (
+                <Interruptor
+                  ref={registrarBoton(modulo.id)}
+                  encendido={elegido}
+                  etiqueta={modulo.nombre}
+                  onCambiar={() => alternar(modulo.id)}
+                />
+              )}
+
+              {pendiente && (
                 <div
                   ref={zonaConfirmacion}
                   className="carrito-confirmar"
                   role="group"
                   aria-labelledby={`pregunta-${modulo.id}`}
                 >
-                  <p id={`pregunta-${modulo.id}`}>{preguntaQuitar(modulo.id, confirmacion.afectados)}</p>
+                  <p id={`pregunta-${modulo.id}`}>{preguntaQuitar(modulo.id, pendiente.afectados)}</p>
                   <div className="carrito-confirmar__botones">
                     <button
                       type="button"
                       className="carrito-boton"
-                      onClick={() => confirmarQuitar(modulo.id, confirmacion.afectados)}
+                      onClick={() => confirmarQuitar(modulo.id, pendiente.afectados)}
                     >
                       Sí, quitar
                     </button>
@@ -118,19 +141,9 @@ export default function Carrito() {
                     </button>
                   </div>
                 </div>
-              ) : (
-                <button
-                  ref={registrarBoton(modulo.id)}
-                  type="button"
-                  className={elegido ? 'carrito-boton carrito-boton--secundario' : 'carrito-boton'}
-                  onClick={() => alternar(modulo.id)}
-                >
-                  {elegido ? 'Quitar' : 'Agregar'}
-                  <span className="solo-lector"> {modulo.nombre}</span>
-                </button>
               )}
               {aviso?.id === modulo.id && (
-                <p className="carrito-modulo__aviso" aria-hidden="true">
+                <p className="carrito-aviso" aria-hidden="true">
                   {aviso.texto}
                 </p>
               )}
@@ -145,24 +158,23 @@ export default function Carrito() {
 
       <section className="carrito-resumen zona-oscura" aria-label="Resumen de tu sistema">
         {cantidad === 0 ? (
-          <p>Aún no elegiste módulos.</p>
+          <p className="carrito-resumen__vacio">Aún no elegiste módulos.</p>
         ) : (
           <dl className="carrito-resumen__totales">
-            <div>
+            <div className="carrito-resumen__fila">
               <dt>Inversión inicial</dt>
-              <dd>
-                {totales.inicial}
-                {totales.notaCotizar && <span className="carrito-resumen__nota"> {totales.notaCotizar}</span>}
-              </dd>
+              <dd className="carrito-resumen__inicial">{totales.inicial}</dd>
             </div>
-            <div>
+            <div className="carrito-resumen__fila">
               <dt>Mensualidad</dt>
-              <dd>{totales.mensual}</dd>
+              <dd className="carrito-resumen__mensual">{totales.mensual}</dd>
             </div>
           </dl>
         )}
+        {cantidad > 0 && totales.notaCotizar && <p className="carrito-resumen__cotizar">Incluye módulos a cotizar.</p>}
         <p className="carrito-resumen__referencial">
-          {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales
+          {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales; la cotización final se confirma
+          por WhatsApp.
         </p>
       </section>
     </div>

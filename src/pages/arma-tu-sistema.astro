@@ -9,9 +9,8 @@ import Base from '../layouts/Base.astro';
 >
   <section class="contenedor arma">
     <header class="arma__intro">
-      <h1>Arma tu sistema</h1>
-      <p>Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
-      <p class="aviso" role="note">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
+      <h1 class="arma__titulo">Arma tu sistema.</h1>
+      <p class="arma__bajada">Elige solo lo que tu negocio necesita. Puedes empezar con poco y sumar funciones después.</p>
     </header>
 
     <Carrito client:visible />
@@ -21,8 +20,8 @@ import Base from '../layouts/Base.astro';
 <style>
   .arma {
     display: grid;
-    gap: var(--espacio-8);
-    padding-top: var(--espacio-12);
+    gap: var(--espacio-4);
+    padding-top: var(--espacio-5);
   }
 
   .arma__intro {
@@ -30,15 +29,16 @@ import Base from '../layouts/Base.astro';
     gap: var(--espacio-3);
   }
 
-  h1 {
-    font-size: var(--texto-xl);
+  .arma__titulo {
+    font-size: clamp(2.375rem, 1.8rem + 2.4vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.037em;
   }
 
-  .aviso {
-    padding: var(--espacio-3) var(--espacio-4);
-    border-left: 4px solid var(--acento);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-sm);
-    font-size: var(--texto-sm);
+  .arma__bajada {
+    max-width: 36rem;
+    color: var(--texto-suave);
+    font-size: 0.9375rem;
   }
 </style>
