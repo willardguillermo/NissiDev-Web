@@ -50,7 +50,7 @@
 | Framework | **Astro + TypeScript** | Las páginas de contenido llegan como HTML sin JavaScript: cargan rápido en celular y posicionan mejor en Google |
 | Interactividad | **Islas de React** (demo, carrito, cotización) | Solo lo interactivo usa React; Guillermo ya sabe React |
 | Estado compartido | **nanostores** (+ persistencia en `localStorage`) | Compartir el carrito entre islas y páginas de Astro |
-| Animación | **GSAP + ScrollTrigger**, **Lenis**, **View Transitions** de Astro; CSS para lo simple | Lo que hace llamativa una web premiada es esto, no el framework |
+| Animación | CSS (@keyframes, transiciones, animation-timeline: view()) + View Transitions de Astro; sin GSAP ni Lenis (ADR-002) | Las animaciones decididas de antemano no esperan al JavaScript: el Inicio pesa ~10 KB de JS |
 | Estilos | CSS propio con variables (tokens) | Control total del diseño; sin librería de componentes |
 | Calidad | Vitest, ESLint, `astro check` | Probar la lógica del carrito, la cotización y la demo |
 | Hosting | **Cloudflare Pages** conectado al repo de GitHub | Gratis; cada push publica; cada rama tiene un enlace de vista previa |
