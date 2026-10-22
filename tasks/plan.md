@@ -24,43 +24,43 @@ Además de los criterios de cada tarea:
 
 ## Fase 0 — Proyecto
 
-### T01 · build: crear el proyecto Astro + TypeScript
+### T01 · build: crear el proyecto Astro + TypeScript — ✅ `92c78d2`
 - **Qué:** proyecto Astro (estable) con TypeScript estricto, integración de React, Vitest y ESLint (con plugin de Astro y typescript-eslint). Scripts `dev`, `build`, `preview`, `test`, `lint`, `check`. Página `index.astro` provisional. Sin pisar `BRIEF.md`, `SPEC.md`, `AGENTS.md`, `CLAUDE.md` ni `docs/`.
 - **Antes:** pedir permiso para las dependencias (`astro`, `@astrojs/react`, `react`, `react-dom`, `typescript`, `@astrojs/check`, `vitest`, `eslint` + plugins).
 - **Terminado cuando:** los cinco comandos corren; existe un test de ejemplo que pasa; los nombres reales de los scripts quedan anotados en `AGENTS.md`.
 - **Verificación:** `npm run build && npm test && npm run lint && npx astro check`; `npm run dev` muestra la página en http://localhost:4321.
 
-### T02 · ci: repo en GitHub y Cloudflare Pages
+### T02 · ci: repo en GitHub y Cloudflare Pages — ✅ `6859fa8`
 - **Antes:** permiso de Guillermo (publica el repo y la web). Guillermo conecta Cloudflare Pages en su panel; Claude le da los valores (comando `npm run build`, carpeta `dist`, versión de Node).
 - **Qué:** repo público `willardguillermo/NissiDev-Web` (ya creado y con `main` subido al aprobar el plan); falta solo la conexión con Cloudflare Pages.
 - **Hecho (2026-10-21):** producción en https://nissidev-web.pages.dev; la rama de prueba `build/prueba-vista-previa` publicó su vista previa en `https://build-prueba-vista-previa.nissidev-web.pages.dev` y luego se borró.
 - **Terminado cuando:** la dirección `*.pages.dev` muestra la página provisional y una rama de prueba genera su enlace de vista previa.
 - **Verificación:** abrir la URL en el celular; `git push` de una rama → aparece la vista previa en Cloudflare.
 
-**Punto de control 0:** proyecto vacío publicado y comandos en verde.
+**Punto de control 0:** proyecto vacío publicado y comandos en verde. ✅ Cerrado en `6859fa8` (sin revisión de Codex).
 
 ## Fase 1 — `ui`
 
-### T03 · feat: tokens y formato de soles
+### T03 · feat: tokens y formato de soles — ✅ `3b761e8`
 - **Qué:** `src/styles/tokens.css` (colores NissiDev, espacios, radios, sombras, tamaños de texto fluidos), reset mínimo, foco visible. `formatearSoles(centimos)` en `src/ui/formato.ts` → `S/ 700`, `S/ 1,000`, `S/ 60.50`.
 - **Terminado cuando:** las combinaciones de texto/fondo usadas cumplen contraste ≥ 4.5:1 (el dorado `#B28A4C` sobre claro **no** llega: queda solo para texto grande, bordes y adornos); `formatearSoles` tiene tests.
 - **Verificación:** `npm test` (formato con 0, enteros, miles y céntimos); contraste revisado con las DevTools y anotado en el cierre.
 
-### T04 · feat: layout base y componentes
+### T04 · feat: layout base y componentes — ✅ `717b87c`
 - **Qué:** `layouts/Base.astro` (`lang="es"`, metadatos, enlace "Saltar al contenido", header con logo de texto y menú móvil accesible, footer con WhatsApp), Manrope en `public/fonts/` con su licencia, `components/Boton.astro` y `components/Tarjeta.astro`. La página provisional usa el layout.
 - **Terminado cuando:** el menú se abre y cierra con teclado, el foco se ve, nada se desborda a 375 px.
 - **Verificación:** `npm run build`; recorrido con Tab en el navegador; vista a 375 px; en DevTools → Red, la fuente sale de `/fonts/` y no de un dominio externo.
 
-**Punto de control 1:** la base visual se ve bien en celular.
+**Punto de control 1:** la base visual se ve bien en celular. ✅ Revisión de Codex (base `6859fa8`): 1 hallazgo (contraste del foco en fondos oscuros), arreglado en `58afc2f`; `tokens.test.ts` comprueba el contraste del foco en ambos fondos.
 
 ## Fase 2 — `catalogo-servicios`
 
-### T05 · feat: catálogo de módulos y página de lista
+### T05 · feat: catálogo de módulos y página de lista — ✅ `49291a0`
 - **Qué:** tipos (`ModuloServicio`, `ModuloId`) y `modulos.ts` con los 9 módulos del BRIEF (céntimos; `precioDesde` vacío = "Cotizar"; mensualidad opcional; dependencias; etapa). Caja con Yape/Plin: "S/ 60/mes + instalación (Cotizar)" (P2). Página `arma-tu-sistema.astro` que los lista **sin interacción** con "desde", "Cotizar", "/mes" y "precios referenciales".
 - **Terminado cuando:** test de integridad: ids únicos, toda dependencia existe, sin ciclos, "Pedidos por WhatsApp" figura como incluido en Catálogo web.
 - **Verificación:** `npm test`; la página se ve en 375 px.
 
-**Punto de control 2:** catálogo de servicios con precios correctos (revisar antes de construir el carrito encima).
+**Punto de control 2:** catálogo de servicios con precios correctos (revisar antes de construir el carrito encima). ⏩ Alcanzado en `49291a0`; su revisión de Codex se hace junto con la del punto de control 3 (base `58afc2f`).
 
 ## Fase 3 — `carrito`
 
