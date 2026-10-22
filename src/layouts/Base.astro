@@ -42,13 +42,15 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       // de <html> al cambiar de página, por eso se vuelven a poner en astro:after-swap.
       // "logo-visto": el armado del logo es de una vez por sesión; después aparece con un fundido corto.
       // Si sessionStorage falla (modo privado, bloqueado), no hay clase y el logo se arma normal.
-      var LOGO_ARMADO = 'nissidev:logo-armado';
-      var marcarClases = function () {
-        var raiz = document.documentElement;
+      const LOGO_ARMADO = 'nissidev:logo-armado';
+      const marcarClases = function () {
+        const raiz = document.documentElement;
         raiz.classList.add('js');
         try {
           if (sessionStorage.getItem(LOGO_ARMADO)) raiz.classList.add('logo-visto');
-        } catch (e) {}
+        } catch {
+          // Sin sessionStorage el logo se arma normal.
+        }
       };
       marcarClases();
       document.addEventListener('astro:after-swap', marcarClases);
@@ -56,7 +58,9 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         if (!document.querySelector('[data-logo-armado]')) return;
         try {
           sessionStorage.setItem(LOGO_ARMADO, '1');
-        } catch (e) {}
+        } catch {
+          // Si no se puede guardar, la próxima visita también lo verá armarse.
+        }
       });
       // Si hay JavaScript y no se pidió "movimiento reducido", el titular del hero espera a su animación.
       // Respaldo: si la animación no arranca en 1.5 s (el JavaScript falló o tardó), todo se muestra quieto.
