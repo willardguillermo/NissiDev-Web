@@ -23,6 +23,15 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Celular: sin el destello gris al tocar (cada control tiene su propio :active) */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Toques rápidos: sin la espera del doble toque */
+a,
+button,
+[role='button'] {
+  touch-action: manipulation;
 }
 
 /* El footer queda abajo aunque la página sea corta */

@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Boton from '../components/Boton.astro';
+import Logo from '../components/Logo.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
@@ -33,6 +34,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
     <meta name="theme-color" content="#f7f4ec" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
@@ -58,7 +60,10 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 
     <header class="cabecera">
       <div class="contenedor cabecera__fila">
-        <a class="logo" href="/" aria-label="NissiDev, ir al inicio">Nissi<span>Dev</span></a>
+        <a class="marca" href="/" aria-label="NissiDev, ir al inicio">
+          <Logo class="marca__logo" />
+          <span>NissiDev</span>
+        </a>
 
         <div class="cabecera__acciones">
           <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
@@ -201,18 +206,22 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     align-items: center;
     justify-content: space-between;
     gap: var(--espacio-2) var(--espacio-4);
-    min-height: 4.75rem;
+    min-height: 4.5rem;
   }
 
-  .logo {
-    font-size: 1.3125rem;
-    font-weight: 800;
-    letter-spacing: -0.025em;
+  .marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     text-decoration: none;
   }
 
-  .logo span {
-    color: var(--acento-texto);
+  .marca :global(.marca__logo) {
+    width: 1.375rem;
   }
 
   .cabecera__acciones {
@@ -232,24 +241,32 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     font-size: var(--texto-sm);
     font-weight: 700;
     text-decoration: none;
+    transition: transform var(--duracion-toque) var(--ease-out);
+  }
+
+  .mi-sistema:active,
+  .menu-boton:active {
+    transform: scale(0.97);
   }
 
   .mi-sistema[hidden] {
     display: none;
   }
 
-  /* Sin JavaScript no hay botón: el menú queda siempre visible. */
+  /* Sin JavaScript no hay botón: el menú queda siempre visible. Círculo de 44 px con contorno suave. */
   .menu-boton {
     display: none;
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
     padding: 0;
-    background: var(--fondo-oscuro);
-    color: var(--texto-sobre-oscuro);
+    background: transparent;
+    color: var(--texto);
     border: 0;
     border-radius: var(--radio-pildora);
+    box-shadow: var(--borde-sutil);
     cursor: pointer;
+    transition: transform var(--duracion-toque) var(--ease-out);
   }
 
   :global(.js) .menu-boton {
