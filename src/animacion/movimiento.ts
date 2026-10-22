@@ -89,10 +89,11 @@ function animarTelefono() {
   );
 }
 
-const iniciadoresExtra: Array<() => void> = [];
+type Iniciador = () => void | (() => void);
+const iniciadoresExtra: Iniciador[] = [];
 
-/** Para que otras piezas (la N en 3D) se sumen al mismo ciclo de vida. */
-export function alIniciarPagina(iniciar: () => void) {
+/** Para que otras piezas (la N en 3D) se sumen al mismo ciclo de vida. Pueden devolver su limpieza. */
+export function alIniciarPagina(iniciar: Iniciador) {
   iniciadoresExtra.push(iniciar);
 }
 
@@ -109,7 +110,9 @@ function iniciarPagina() {
     animarTitular();
     animarSecciones();
     animarTelefono();
-    iniciadoresExtra.forEach((iniciar) => iniciar());
+    const limpiezas = iniciadoresExtra.map((iniciar) => iniciar());
+    // Se ejecuta en contexto.revert(), antes de cambiar de página.
+    return () => limpiezas.forEach((limpiar) => limpiar?.());
   });
   if (!document.querySelector('[data-titular]')) liberarContenido();
   ScrollTrigger.refresh();

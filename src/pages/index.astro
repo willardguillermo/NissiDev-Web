@@ -2,6 +2,7 @@
 import Boton from '../components/Boton.astro';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import TelefonoDemo from '../components/TelefonoDemo.astro';
+import NTresD from '../components/NTresD.astro';
 import MiniCarrito from '../islas/MiniCarrito';
 import Base from '../layouts/Base.astro';
 
@@ -72,6 +73,19 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
     <ul class="chips" role="list">
       {tecnologias.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
     </ul>
+  </section>
+
+  <section class="medida zona-oscura" aria-labelledby="medida-titulo">
+    <div class="contenedor medida__contenido">
+      <div class="medida__texto" data-aparecer>
+        <h2 id="medida-titulo" class="titulo-2">Hecho a <span class="medida__acento">medida</span>.</h2>
+        <p class="medida__bajada">
+          Cada sistema se arma para tu negocio: tus productos, tus puestos y tu forma de vender. Sin plantillas que
+          no te quedan.
+        </p>
+      </div>
+      <NTresD />
+    </div>
   </section>
 
   <section class="contenedor" data-aparecer>
@@ -245,6 +259,34 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
     font-size: var(--texto-sm);
   }
 
+  /* Momento A: la N en 3D */
+  .medida {
+    margin-top: var(--espacio-14);
+    padding-block: var(--espacio-12) var(--espacio-8);
+    overflow: hidden;
+    background: var(--fondo-oscuro);
+    color: var(--texto-sobre-oscuro);
+  }
+
+  .medida__contenido {
+    display: grid;
+    gap: var(--espacio-4);
+  }
+
+  .medida__texto {
+    display: grid;
+    gap: var(--espacio-3);
+  }
+
+  .medida__acento {
+    color: var(--acento);
+  }
+
+  .medida__bajada {
+    max-width: 30rem;
+    color: var(--texto-suave-sobre-oscuro);
+  }
+
   @media (min-width: 48rem) {
     .pasos {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -265,6 +307,11 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
 
     .banda__telefono {
       grid-column: 2;
+    }
+
+    .medida__contenido {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
     }
 
     .hero {
