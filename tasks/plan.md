@@ -60,7 +60,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** test de integridad: ids únicos, toda dependencia existe, sin ciclos, "Pedidos por WhatsApp" figura como incluido en Catálogo web.
 - **Verificación:** `npm test`; la página se ve en 375 px.
 
-**Punto de control 2:** catálogo de servicios con precios correctos (revisar antes de construir el carrito encima). ⏩ Alcanzado en `49291a0`; su revisión de Codex se hace junto con la del punto de control 3 (base `58afc2f`).
+**Punto de control 2:** catálogo de servicios con precios correctos (revisar antes de construir el carrito encima). ✅ Revisado junto con el punto de control 3.
 
 ## Fase 3 — `carrito`
 
@@ -85,7 +85,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** un clic deja el carrito sugerido con sus dependencias resueltas y totales correctos.
 - **Verificación:** test de `cargarSugerido`; prueba manual en 375 px.
 
-**Punto de control 3:** se puede armar un sistema completo y los totales cuadran. ⏸ Alcanzado en `dec8781`. Pendiente: revisión de Codex conjunta de los puntos de control 2 y 3 (base `58afc2f`).
+**Punto de control 3:** se puede armar un sistema completo y los totales cuadran. ✅ Revisión de Codex conjunta de los puntos de control 2 y 3 (base `58afc2f`): 1 hallazgo (una confirmación abierta podía quitar módulos no advertidos), arreglado en `56c971b` con revalidación en la lógica pura y cancelación en la isla.
 
 ## Fase 4 — `cotizacion`
 
@@ -99,7 +99,13 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests: formato `NSD-2026-K7Q3` (año de la fecha, 4 caracteres del alfabeto sin 0/O/1/I/L), validez cruzando fin de mes y de año.
 - **Verificación:** `npm test`.
 
-### T11 · feat: página de cotización imprimible
+### TD1 · Dirección visual de NissiDev — ⏳ pendiente (no la implementa Claude Code solo)
+- **Qué:** Guillermo define con Claude la dirección visual de la web de NissiDev a partir de un boceto de **Inicio** y de **Arma tu sistema** (tipografía, color, ritmo, tono de las imágenes, componentes). Los tokens y componentes de las T03–T04 son provisionales.
+- **Al terminar:** se actualizan `src/styles/tokens.css` y los componentes (`Boton`, `Tarjeta`, `Base.astro`, isla `Carrito`) a la dirección elegida, con sus tests de contraste.
+- **Bloquea:** la T11 y todas las tareas con pantallas (marcadas con 🔒). La lógica pura (T09, T10, T12a, T12b, T13, T15, T20a) puede avanzar.
+- **Terminado cuando:** Guillermo aprueba los bocetos y los tokens/componentes quedan actualizados.
+
+### T11 · feat: página de cotización imprimible — 🔒 bloqueada por TD1
 - **Qué:** página `cotizacion.astro` + isla `Cotizacion.tsx`: resumen del carrito, campo opcional "Nombre de tu negocio" (con label; no se guarda), botón "Enviar por WhatsApp" y botón "Guardar como PDF" (`window.print()`), hoja de estilos de impresión. Si el carrito está vacío, lleva a Arma tu sistema.
 - **Terminado cuando:** la vista de impresión sale en una hoja limpia (sin header, menú ni botones) con "precios referenciales" y la validez; no hay nada que parezca un cobro.
 - **Verificación:** vista previa de impresión en Chrome (guardar PDF); botón de WhatsApp probado en el celular.
@@ -123,7 +129,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests con un catálogo de prueba pequeño (tildes, filtros combinados, sin resultados).
 - **Verificación:** `npm test`.
 
-### T14 · feat: cascarón de la demo
+### T14 · feat: cascarón de la demo — 🔒 bloqueada por TD1
 - **Qué:** página `demos/dulceria.astro` + isla `DemoDulceria.tsx` que recibe un `RubroConfig`: cambio entre vista cliente y vista dueño, navegación interna entre pantallas (estado en memoria), tema por variables CSS de la config, sello fijo **"Demo · datos de ejemplo"**. Con una config mínima de prueba.
 - **Terminado cuando:** se cambia de vista y de pantalla con teclado; el sello se ve en todas las pantallas.
 - **Verificación:** build; prueba manual en 375 px.
@@ -138,22 +144,22 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** test de integridad: toda presentación base tiene factor 1, cada producto está en al menos un puesto, referencias a categoría/ocasión/puesto válidas.
 - **Verificación:** `npm test`; revisión de que ninguna marca sea real.
 
-### T16 · feat: Inicio de la demo
+### T16 · feat: Inicio de la demo — 🔒 bloqueada por TD1
 - **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros 3 puestos", por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
 - **Terminado cuando:** 5-10-15 de la referencia en 375 px; el carrusel se usa con teclado.
 - **Verificación:** prueba manual en 375 px y con Tab.
 
-### T17 · feat: Catálogo de la demo
+### T17 · feat: Catálogo de la demo — 🔒 bloqueada por TD1
 - **Qué:** buscador fijo, chips de filtro, interruptor precio unidad / por mayor, grilla de 2 columnas con etiquetas Nuevo, Oferta y Agotado. Usa `filtros.ts`.
 - **Terminado cuando:** buscar y filtrar actualiza la grilla; hay mensaje si no hay resultados; Agotado no se puede agregar.
 - **Verificación:** prueba manual en 375 px.
 
-### T18 · feat: Detalle de producto
+### T18 · feat: Detalle de producto — 🔒 bloqueada por TD1
 - **Qué:** imagen, nombre, marca, selector de presentación con precio, cantidad, "Agregar al pedido", "También te puede gustar".
 - **Terminado cuando:** cambiar presentación cambia precio; agregar actualiza "Mi pedido (n)"; si supera lo disponible (T12b), no se agrega y se muestra el motivo.
 - **Verificación:** prueba manual en 375 px.
 
-### T19 · feat: Mi pedido
+### T19 · feat: Mi pedido — 🔒 bloqueada por TD1
 - **Qué:** líneas con cantidad y subtotal, total, puesto de recojo (1, 2 o 3), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
 - **Terminado cuando:** cambiar cantidades recalcula; el envío no abre ningún enlace externo y deja claro que es una demostración; el aviso se cierra con teclado (Esc) y devuelve el foco al botón.
 - **Verificación:** test del mensaje del pedido; prueba manual en 375 px.
@@ -163,7 +169,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en los 3 puestos y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
 - **Verificación:** `npm test`.
 
-### T20b · feat: Panel del dueño
+### T20b · feat: Panel del dueño — 🔒 bloqueada por TD1
 - **Qué:** cálculos puros en `demo/panel.ts` a partir de las ventas, productos y `HOY_DEMO` (ventas del día por puesto, por vencer en 7 días, stock bajo, más vendidos de la semana, cobros por medio de pago) y la vista con barras CSS, sin librería de gráficos. La vista solo muestra lo que devuelven los cálculos.
 - **Terminado cuando:** tests de cada cálculo con datos pequeños de prueba y fecha fija; ningún número está escrito a mano en la vista; se lee bien en 375 px.
 - **Verificación:** `npm test`; prueba manual en 375 px.
@@ -172,28 +178,28 @@ Además de los criterios de cada tarea:
 
 ## Fase 7 — `sitio`
 
-### T21 · feat: Inicio de NissiDev
+### T21 · feat: Inicio de NissiDev — 🔒 bloqueada por TD1
 - **Qué:** hero 5-10-15, botón "Ver la demo de mi rubro", WhatsApp secundario, resumen de servicios, llamado al carrito y sección "Casos: próximamente" (P4). Textos en borrador para que Guillermo los corrija.
 - **Terminado cuando:** criterio de éxito 1: qué hago, por qué elegirme y WhatsApp visibles sin bajar más de una pantalla en 375 px.
 - **Verificación:** captura en 375 px.
 
-### T22 · feat: Servicios y stack
+### T22 · feat: Servicios y stack — 🔒 bloqueada por TD1
 - **Qué:** proceso (maqueta → propuesta → ≈4 semanas → soporte) y tecnologías.
 - **Terminado cuando:** página enlazada desde el menú; textos en borrador marcados para revisión.
 - **Verificación:** prueba manual en 375 px.
 
-### T23 · feat: Demos y Contacto
+### T23 · feat: Demos y Contacto — 🔒 bloqueada por TD1
 - **Qué:** tarjetas por rubro (Dulcería activa; Hospedaje y Restaurante campestre "Próximamente") y página de Contacto con WhatsApp.
 - **Terminado cuando:** todas las páginas del BRIEF existen y están enlazadas.
 - **Verificación:** recorrer el menú en 375 px.
 
-### T24 · feat: transiciones y scroll suave
+### T24 · feat: transiciones y scroll suave — 🔒 bloqueada por TD1
 - **Antes:** permiso para `lenis`.
 - **Qué:** View Transitions de Astro y Lenis en `src/animacion/lenis.ts`; el carrito sigue intacto al cambiar de página.
 - **Terminado cuando:** con "movimiento reducido" no hay scroll suave ni transición animada.
 - **Verificación:** prueba manual con y sin "movimiento reducido" (emulación en DevTools).
 
-### T25 · feat: animaciones de entrada y scroll
+### T25 · feat: animaciones de entrada y scroll — 🔒 bloqueada por TD1
 - **Antes:** permiso para `gsap`.
 - **Qué:** `src/animacion/gsap.ts`: entrada del hero y aparición al hacer scroll, solo `transform` y `opacity`.
 - **Terminado cuando:** con "movimiento reducido" todo se ve sin animar; sin saltos de diseño (CLS).
