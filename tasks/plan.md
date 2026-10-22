@@ -144,13 +144,13 @@ Además de los criterios de cada tarea:
 ## Fase 6 — `rubros/dulceria`
 
 ### T15 · feat: datos de Dulcería La Golosa
-- **Qué:** `rubros/dulceria/config.ts` (textos, paleta `#EC48AE`, Shrikhand + Chivo, 3 puestos, ocasiones, campaña activa) y `productos.ts` (~30 productos genéricos con marcas ficticias, presentaciones, precios por mayor, etiquetas, stock, vencimientos). Ilustraciones propias simples (SVG o CSS).
+- **Qué:** `rubros/dulceria/config.ts` (textos, paleta `#EC48AE`, Shrikhand + Chivo, 2 puestos por defecto (la plantilla admite de 1 a 3), ocasiones, campaña activa configurable: Halloween por defecto, Navidad, Día del Niño o ninguna) y `productos.ts` (~30 productos genéricos con marcas ficticias, presentaciones, precios por mayor, etiquetas, stock, vencimientos). Ilustraciones propias simples (SVG o CSS).
 - **Fuentes:** Shrikhand y Chivo en `public/fonts/` con su licencia (P5).
 - **Terminado cuando:** test de integridad: toda presentación base tiene factor 1, cada producto está en al menos un puesto, referencias a categoría/ocasión/puesto válidas.
 - **Verificación:** `npm test`; revisión de que ninguna marca sea real.
 
 ### T16 · feat: Inicio de la demo
-- **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros 3 puestos", por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
+- **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros puestos" (los que tenga la configuración; con 1, "Nuestra tienda"), por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
 - **Terminado cuando:** 5-10-15 de la referencia en 375 px; el carrusel se usa con teclado.
 - **Verificación:** prueba manual en 375 px y con Tab.
 
@@ -171,7 +171,7 @@ Además de los criterios de cada tarea:
 
 ### T20a · feat: ventas ficticias del panel
 - **Qué:** `rubros/dulceria/ventas.ts`: ventas fechadas (fecha y hora, puesto, líneas con producto, presentación, factor y cantidad, medio de pago: efectivo, Yape o Plin) que cubren al menos los 7 días anteriores, y una **fecha de referencia fija** (`HOY_DEMO`) para que el panel no dependa del reloj. Tipo `Venta` en `demo/`.
-- **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en los 3 puestos y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
+- **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en todos los puestos de la configuración y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
 - **Verificación:** `npm test`.
 
 ### T20b · feat: Panel del dueño
