@@ -64,28 +64,28 @@ Además de los criterios de cada tarea:
 
 ## Fase 3 — `carrito`
 
-### T06 · feat: lógica del carrito
+### T06 · feat: lógica del carrito — ✅ `c158bc3`
 - **Qué:** `carrito.ts` puro: `agregarModulo` (agrega dependencias faltantes, también las indirectas, y devuelve cuáles agregó para avisar), `quitarModulo` (si otros dependen de él, devuelve los dependientes y no lo quita hasta confirmar), `calcularTotales` (inicial, mensual, `incluyeCotizar`). Mantenimiento exige al menos otro módulo.
 - **Terminado cuando:** tests de la SPEC: agregar Caja agrega Inventario, Panel y Catálogo; quitar Catálogo con Panel avisa; totales inicial y mensual separados; sin duplicados; quitar el último módulo con Mantenimiento avisa.
 - **Verificación:** `npm test`.
 
-### T07a · feat: restauración validada del carrito
+### T07a · feat: restauración validada del carrito — ✅ `c02692d`
 - **Qué:** `restaurarCarrito(valorGuardado)` en `carrito/carrito.ts`, lógica pura y sin `localStorage`: comprueba la estructura (si no es válida, carrito vacío), descarta ids desconocidos, quita duplicados, resuelve dependencias faltantes con `agregarModulo` y aplica la regla de Mantenimiento (si queda solo, se quita). Los totales se calculan siempre sobre el carrito ya restaurado.
 - **Terminado cuando:** tests: JSON inválido, tipo incorrecto (objeto, número, `null`), ids desconocidos, duplicados, solo Caja → se completan Inventario, Panel y Catálogo, solo Mantenimiento → vacío, carrito válido → igual.
 - **Verificación:** `npm test`.
 
-### T07b · feat: carrito interactivo con persistencia
+### T07b · feat: carrito interactivo con persistencia — ✅ `d55bf62` + `10905e4`
 - **Antes:** permiso para `nanostores`, `@nanostores/persistent` y `@nanostores/react`.
 - **Qué:** `carrito/store.ts` (persistente; toda lectura pasa por `restaurarCarrito` y el acceso a `localStorage` va en `try/catch`) e isla `Carrito.tsx` en Arma tu sistema: agregar/quitar, avisos de dependencias con `aria-live`, confirmación al quitar con dependientes, totales separados. Contador del carrito en el header.
 - **Terminado cuando:** el carrito sobrevive a recargar la página; un valor manipulado en `localStorage` (p. ej. solo Caja) se muestra completo y con totales correctos; con `localStorage` bloqueado la página sigue funcionando (sin persistir); todo se usa con teclado.
 - **Verificación:** prueba manual: recargar, editar el valor en DevTools → Application, ventana privada, almacenamiento bloqueado.
 
-### T08 · feat: carrito sugerido "Dulcería"
+### T08 · feat: carrito sugerido "Dulcería" — ✅ `dec8781`
 - **Qué:** carritos sugeridos por rubro en `carrito/` y botón "Cargar sistema para Dulcería". Si el carrito no está vacío, pregunta antes de reemplazarlo.
 - **Terminado cuando:** un clic deja el carrito sugerido con sus dependencias resueltas y totales correctos.
 - **Verificación:** test de `cargarSugerido`; prueba manual en 375 px.
 
-**Punto de control 3:** se puede armar un sistema completo y los totales cuadran.
+**Punto de control 3:** se puede armar un sistema completo y los totales cuadran. ⏸ Alcanzado en `dec8781`. Pendiente: revisión de Codex conjunta de los puntos de control 2 y 3 (base `58afc2f`).
 
 ## Fase 4 — `cotizacion`
 
