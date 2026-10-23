@@ -626,6 +626,7 @@
   z-index: 20;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.75rem;
   padding: 0.75rem max(1rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
   pointer-events: none;
@@ -1144,6 +1145,226 @@
 
   .demo-detalle__imagen {
     aspect-ratio: 1;
+  }
+}
+
+/* ——— Mi pedido ——— */
+
+.demo-pedido__cabeza {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.demo-pedido__vacio {
+  margin-top: 1.5rem;
+}
+
+.demo-pedido__cuerpo {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.demo-lineas {
+  display: grid;
+  /* En escritorio la lista está al lado del total: sin esto, sus filas se estiran a esa altura */
+  align-content: start;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-linea {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 0.875rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--d-texto) 10%, transparent);
+}
+
+.demo-linea__imagen {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: var(--d-fondo-suave);
+  border-radius: 0.875rem;
+}
+
+.demo-linea__imagen svg {
+  width: 70%;
+}
+
+.demo-linea__datos {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.demo-linea__nombre {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.demo-linea__presentacion {
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.demo-linea__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.demo-linea__subtotal {
+  font-size: 1.0625rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-linea__mensaje:empty {
+  display: none;
+}
+
+.demo-linea__mensaje,
+.demo-campo__error {
+  color: var(--d-marca-texto);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.demo-linea__quitar {
+  justify-self: start;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+}
+
+.demo-pedido__cierre {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.demo-recojo {
+  padding: 1rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio);
+  font-size: 0.9375rem;
+}
+
+.demo-recojo__titulo {
+  font-weight: 700;
+}
+
+.demo-recojo__referencia {
+  color: var(--d-texto-suave);
+  font-weight: 400;
+}
+
+.demo-campo {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.demo-campo label {
+  font-weight: 700;
+}
+
+/* 16 px para que el celular no haga zoom */
+.demo-campo input {
+  min-height: 3rem;
+  padding: 0 1rem;
+  background: var(--d-fondo);
+  border: 0;
+  border-radius: 0.875rem;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--d-texto) 30%, transparent);
+  font-size: 1rem;
+}
+
+.demo-campo input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2.5px var(--d-marca);
+}
+
+.demo-campo input[aria-invalid] {
+  box-shadow: inset 0 0 0 2.5px var(--d-marca-texto);
+}
+
+.demo-pedido__nota {
+  margin-top: -0.5rem;
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Aviso del envío: <dialog> nativo (Esc lo cierra). Entra con fundido y escala desde 0.96. */
+.demo-dialogo {
+  width: min(100% - 2rem, 30rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 1.5rem;
+  background: var(--d-fondo);
+  color: var(--d-texto);
+  border: 0;
+  border-radius: var(--d-radio-grande);
+  box-shadow: 0 30px 60px rgb(0 0 0 / 0.3);
+  font-family: var(--d-fuente-texto);
+}
+
+.demo-dialogo[open] {
+  animation: demo-dialogo-entra var(--d-duracion) var(--ease-out);
+}
+
+.demo-dialogo::backdrop {
+  background: rgb(18 18 18 / 0.55);
+}
+
+@keyframes demo-dialogo-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-dialogo[open] {
+    animation: demo-fundido 150ms ease-out;
+  }
+}
+
+.demo-dialogo .demo-subtitulo {
+  font-size: 1.25rem;
+}
+
+.demo-dialogo__mensaje {
+  padding: 1rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.demo-dialogo__aviso {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+.demo-dialogo__acciones {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .demo-pedido__cuerpo {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2.5rem;
   }
 }
 

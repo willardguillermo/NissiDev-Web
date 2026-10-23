@@ -26,6 +26,7 @@ export const DULCERIA_COMPLETA: RubroConfig = {
       { titulo: 'Pedidos para fiestas', texto: 'Arma tu pedido aquí y recógelo listo.' },
     ],
     tiendaUnica: 'Dulces, snacks y piñatería en un solo lugar',
+    notaPedido: 'No se cobra nada aquí: pagas en efectivo, Yape o Plin al recoger.',
   },
   tema: {
     marca: '#ec48ae',

@@ -110,6 +110,8 @@ export interface RubroConfig {
     porQue: { titulo: string; texto: string }[];
     /** Qué se encuentra cuando el negocio tiene un solo puesto ("Nuestra tienda"). */
     tiendaUnica: string;
+    /** Debajo de "Enviar pedido": cómo se paga (la demo nunca cobra). */
+    notaPedido: string;
   };
   tema: TemaDemo;
   vendePorMayor: boolean;

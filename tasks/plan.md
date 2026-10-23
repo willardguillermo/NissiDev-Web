@@ -165,7 +165,7 @@ Además de los criterios de cada tarea:
 - **Verificación:** prueba manual en 375 px.
 
 ### T19 · feat: Mi pedido
-- **Qué:** líneas con cantidad y subtotal, total, puesto de recojo (1, 2 o 3), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
+- **Qué:** líneas con cantidad y subtotal, total, lugar de recojo según la configuración (con 1 puesto, "Recoger en tienda"; con 2 o 3, elegir el puesto), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
 - **Terminado cuando:** cambiar cantidades recalcula; el envío no abre ningún enlace externo y deja claro que es una demostración; el aviso se cierra con teclado (Esc) y devuelve el foco al botón.
 - **Verificación:** test del mensaje del pedido; prueba manual en 375 px.
 

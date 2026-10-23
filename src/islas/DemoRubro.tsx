@@ -12,6 +12,7 @@ import { Catalogo } from './demo/Catalogo';
 import { Detalle } from './demo/Detalle';
 import { AVISO_WHATSAPP, IconoWhatsApp, Inicio } from './demo/Inicio';
 import { Marco } from './demo/Marco';
+import { MiPedido } from './demo/MiPedido';
 import { Pendiente } from './demo/Pendiente';
 import './demo/demo.css';
 
@@ -65,6 +66,8 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
     history.pushState({ demo: siguiente }, '');
     moverFoco.current = true;
     setNav(siguiente);
+    // El aviso era de la pantalla anterior: en la nueva podría tapar un botón
+    setAviso(null);
   };
   // Un aviso a la vez; se va solo a los 5 s o con su botón. El id hace que se anuncie aunque se repita.
   const avisar = (texto: string) => setAviso({ id: Date.now(), texto });
@@ -139,7 +142,14 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
             <Pendiente titulo="No encontramos ese producto" texto="Puede que ya no esté en el catálogo." accion={alInicio} />
           )
         ) : (
-          <Pendiente titulo="Mi pedido" texto="Esta pantalla llega pronto." accion={alInicio} />
+          <MiPedido
+            config={config}
+            pedido={pedido}
+            cambiarPedido={setPedido}
+            ir={ir}
+            volver={() => history.back()}
+            ilustracionDe={ilustracionDe}
+          />
         )}
       </div>
 
@@ -148,10 +158,12 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
           <button type="button" className="demo-flotante" aria-label="WhatsApp del negocio" onClick={() => avisar(AVISO_WHATSAPP)}>
             <IconoWhatsApp />
           </button>
-          <button type="button" className="demo-barra-pedido" onClick={() => ir({ tipo: 'pedido' })}>
-            <span>Mi pedido ({cantidad})</span>
-            {cantidad > 0 && <strong>{formatearSoles(totalPedido(pedido))}</strong>}
-          </button>
+          {nav.pantalla !== 'pedido' && (
+            <button type="button" className="demo-barra-pedido" onClick={() => ir({ tipo: 'pedido' })}>
+              <span>Mi pedido ({cantidad})</span>
+              {cantidad > 0 && <strong>{formatearSoles(totalPedido(pedido))}</strong>}
+            </button>
+          )}
         </div>
       )}
 

@@ -15,6 +15,7 @@ export const RUBRO_DE_PRUEBA: RubroConfig = {
     heroGeneral: { titular: 'Dulces para todo', bajada: 'Por unidad y por mayor.', ilustracion: 'caramelo' },
     porQue: [{ titulo: 'Variedad', texto: 'De todo un poco.' }],
     tiendaUnica: 'De todo en un solo lugar',
+    notaPedido: 'Pagas al recoger.',
   },
   tema: {
     marca: '#ec48ae',
