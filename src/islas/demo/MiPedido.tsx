@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { normalizarCantidad } from '../../demo/cantidad';
 import { intentarCambiarCantidad } from '../../demo/disponibilidad';
 import { faltaParaEnviar, mensajePedido, type ErrorEnvio } from '../../demo/mensaje-pedido';
 import type { Accion } from '../../demo/navegacion';
@@ -38,11 +39,13 @@ function Linea({ linea, producto, ilustracion, pedido, cambiarPedido }: LineaPro
   const [mensaje, setMensaje] = useState<string | null>(null);
   useEffect(() => setBorrador(String(linea.cantidad)), [linea.cantidad]);
 
-  const cambiar = (cantidad: number) => {
+  // Vacío, texto, 0 o negativos → 1; el campo muestra lo que quedó (aunque la línea no cambie).
+  const cambiar = (valor: number | string) => {
+    const cantidad = normalizarCantidad(valor);
     const resultado = intentarCambiarCantidad(pedido, producto, linea.id, cantidad);
     setMensaje(resultado.ok ? null : resultado.mensaje);
     if (resultado.ok) cambiarPedido(resultado.pedido);
-    else setBorrador(String(linea.cantidad));
+    setBorrador(String(resultado.ok ? cantidad : linea.cantidad));
   };
   const conMayor = precioUnitario(linea) < linea.presentacion.precio;
 
@@ -77,8 +80,8 @@ function Linea({ linea, producto, ilustracion, pedido, cambiarPedido }: LineaPro
               value={borrador}
               aria-describedby={mensaje ? `${id}-mensaje` : undefined}
               onChange={(e) => setBorrador(e.target.value)}
-              onBlur={() => borrador !== String(linea.cantidad) && cambiar(Number(borrador))}
-              onKeyDown={(e) => e.key === 'Enter' && cambiar(Number(borrador))}
+              onBlur={() => borrador !== String(linea.cantidad) && cambiar(borrador)}
+              onKeyDown={(e) => e.key === 'Enter' && cambiar(borrador)}
             />
             <button type="button" aria-label={`Agregar uno de ${producto.nombre}`} onClick={() => cambiar(linea.cantidad + 1)}>
               +

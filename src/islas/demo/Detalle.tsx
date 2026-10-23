@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { normalizarCantidad } from '../../demo/cantidad';
 import { disponibleParaAgregar } from '../../demo/disponibilidad';
 import type { Accion } from '../../demo/navegacion';
 import { precioUnitario } from '../../demo/pedido';
@@ -39,8 +40,10 @@ export function Detalle({ config, producto, pedido, ir, volver, agregar, agregar
   const agotado = producto.etiqueta === 'agotado';
   // Cuántas de esta presentación caben todavía, contando lo que ya está en el pedido
   const caben = Math.floor(disponibleParaAgregar(producto, pedido) / presentacion.factor);
-  const cantidadValida = Number.isSafeInteger(cantidad) && cantidad >= 1;
-  const unitario = precioUnitario({ id: '', productoId: producto.id, presentacion, cantidad: cantidadValida ? cantidad : 1 });
+  // El campo puede quedar vacío mientras se escribe (NaN); los botones y el total usan esta.
+  const valida = normalizarCantidad(cantidad);
+  const tope = Math.max(1, caben);
+  const unitario = precioUnitario({ id: '', productoId: producto.id, presentacion, cantidad: valida });
   const conPrecioMayor = config.vendePorMayor && unitario < presentacion.precio;
   const relacionados = tambienTePuedeGustar(config, producto);
 
@@ -54,7 +57,7 @@ export function Detalle({ config, producto, pedido, ir, volver, agregar, agregar
     setError(null);
   };
   const enviar = () => {
-    const motivo = agregar(producto, presentacion.id, cantidad);
+    const motivo = agregar(producto, presentacion.id, valida);
     setError(motivo);
     if (!motivo) setCantidad(1);
   };
@@ -109,7 +112,7 @@ export function Detalle({ config, producto, pedido, ir, volver, agregar, agregar
               <div className="demo-cantidad">
                 <label htmlFor={ids.cantidad}>Cantidad</label>
                 <div className="demo-cantidad__control">
-                  <button type="button" aria-label="Quitar uno" disabled={cantidad <= 1} onClick={() => cambiarCantidad(Math.max(1, cantidad - 1))}>
+                  <button type="button" aria-label="Quitar uno" disabled={valida <= 1} onClick={() => cambiarCantidad(normalizarCantidad(Math.min(valida, tope) - 1))}>
                     −
                   </button>
                   <input
@@ -121,8 +124,9 @@ export function Detalle({ config, producto, pedido, ir, volver, agregar, agregar
                     value={Number.isNaN(cantidad) ? '' : cantidad}
                     aria-describedby={error ? ids.error : undefined}
                     onChange={(e) => cambiarCantidad(e.target.valueAsNumber)}
+                    onBlur={() => setCantidad(valida)}
                   />
-                  <button type="button" aria-label="Agregar uno" disabled={cantidad >= caben} onClick={() => cambiarCantidad(cantidad + 1)}>
+                  <button type="button" aria-label="Agregar uno" disabled={valida >= caben} onClick={() => cambiarCantidad(normalizarCantidad(valida + 1, tope))}>
                     +
                   </button>
                 </div>
@@ -133,7 +137,7 @@ export function Detalle({ config, producto, pedido, ir, volver, agregar, agregar
 
               <p className="demo-detalle__total">
                 <span>{conPrecioMayor ? 'Total con precio por mayor' : 'Total'}</span>
-                <strong>{cantidadValida ? formatearSoles(unitario * cantidad) : '—'}</strong>
+                <strong>{valida <= tope ? formatearSoles(unitario * valida) : '—'}</strong>
               </p>
 
               <p id={ids.error} ref={zonaError} className="demo-detalle__error" role="alert">
