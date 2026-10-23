@@ -1,4 +1,4 @@
-import { useId, useState, type FormEvent } from 'react';
+import { useId, useState, type SubmitEvent } from 'react';
 import type { Accion } from '../../demo/navegacion';
 import { campanaActiva, ocasionesVisibles } from '../../demo/rubro';
 import type { Producto, RubroConfig } from '../../demo/tipos';
@@ -19,7 +19,7 @@ export const AVISO_WHATSAPP = 'Es una demostración: en tu sistema, este botón 
 export function Buscador({ placeholder, buscar, inicial = '' }: { placeholder: string; buscar: (texto: string) => void; inicial?: string }) {
   const id = useId();
   const [texto, setTexto] = useState(inicial);
-  const enviar = (evento: FormEvent) => {
+  const enviar = (evento: SubmitEvent<HTMLFormElement>) => {
     evento.preventDefault();
     buscar(texto.trim());
   };
