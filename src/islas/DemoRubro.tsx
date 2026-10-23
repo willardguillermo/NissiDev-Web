@@ -6,6 +6,7 @@ import { personalizacionDeUrl, personalizar, type Personalizacion } from '../dem
 import { variablesDeTema } from '../demo/tema';
 import type { Pedido, Producto, RubroConfig } from '../demo/tipos';
 import { formatearSoles } from '../ui/formato';
+import { Catalogo } from './demo/Catalogo';
 import { AVISO_WHATSAPP, IconoWhatsApp, Inicio } from './demo/Inicio';
 import { Marco } from './demo/Marco';
 import { Pendiente } from './demo/Pendiente';
@@ -95,7 +96,7 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
         ) : nav.pantalla === 'inicio' ? (
           <Inicio config={config} ir={ir} agregar={agregar} avisar={avisar} ilustracionDe={ilustracionDe} />
         ) : nav.pantalla === 'catalogo' ? (
-          <Pendiente titulo="Catálogo" texto="El catálogo llega en la T17." accion={alInicio} />
+          <Catalogo config={config} filtrosIniciales={nav.filtros} ir={ir} agregar={agregar} ilustracionDe={ilustracionDe} />
         ) : nav.pantalla === 'detalle' ? (
           <Pendiente titulo="Detalle del producto" texto="Esta pantalla llega pronto." accion={alInicio} />
         ) : (
