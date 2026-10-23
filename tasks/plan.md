@@ -134,7 +134,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests con un catálogo de prueba pequeño (tildes, filtros combinados, sin resultados).
 - **Verificación:** `npm test`.
 
-### T14 · feat: cascarón de la demo
+### T14 · feat: cascarón de la demo — ✅ `c6bb659` (en `feature/demo-plantilla`)
 - **Qué:** página `demos/dulceria.astro` + isla `DemoDulceria.tsx` que recibe un `RubroConfig`: cambio entre vista cliente y vista dueño, navegación interna entre pantallas (estado en memoria), tema por variables CSS de la config, sello fijo **"Demo · datos de ejemplo"**. Con una config mínima de prueba.
 - **Terminado cuando:** se cambia de vista y de pantalla con teclado; el sello se ve en todas las pantallas.
 - **Verificación:** build; prueba manual en 375 px.
@@ -143,18 +143,18 @@ Además de los criterios de cada tarea:
 
 ## Fase 6 — `rubros/dulceria`
 
-### T15 · feat: datos de Dulcería La Golosa
+### T15 · feat: datos de Dulcería La Golosa — ✅ `ece9d2d` (en `feature/demo-plantilla`)
 - **Qué:** `rubros/dulceria/config.ts` (textos, paleta `#EC48AE`, Shrikhand + Chivo, 2 puestos por defecto (la plantilla admite de 1 a 3), ocasiones, campaña activa configurable: Halloween por defecto, Navidad, Día del Niño o ninguna) y `productos.ts` (~30 productos genéricos con marcas ficticias, presentaciones, precios por mayor, etiquetas, stock, vencimientos). Ilustraciones propias simples (SVG o CSS).
 - **Fuentes:** Shrikhand y Chivo en `public/fonts/` con su licencia (P5).
 - **Terminado cuando:** test de integridad: toda presentación base tiene factor 1, cada producto está en al menos un puesto, referencias a categoría/ocasión/puesto válidas.
 - **Verificación:** `npm test`; revisión de que ninguna marca sea real.
 
-### T16 · feat: Inicio de la demo
+### T16 · feat: Inicio de la demo — ✅ `0fd8f9d` (en `feature/demo-plantilla`)
 - **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros puestos" (los que tenga la configuración; con 1, "Nuestra tienda"), por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
 - **Terminado cuando:** 5-10-15 de la referencia en 375 px; el carrusel se usa con teclado.
 - **Verificación:** prueba manual en 375 px y con Tab.
 
-### T17 · feat: Catálogo de la demo
+### T17 · feat: Catálogo de la demo — ✅ `da65ac1` (en `feature/demo-plantilla`)
 - **Qué:** buscador fijo, chips de filtro, interruptor precio unidad / por mayor, grilla de 2 columnas con etiquetas Nuevo, Oferta y Agotado. Usa `filtros.ts`.
 - **Terminado cuando:** buscar y filtrar actualiza la grilla; hay mensaje si no hay resultados; Agotado no se puede agregar.
 - **Verificación:** prueba manual en 375 px.
