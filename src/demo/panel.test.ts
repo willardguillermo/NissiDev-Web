@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   cobrosPorMedio,
   diasEntre,
+  largoDelNombre,
   masVendidosDeLaSemana,
   porVencer,
   proporciones,
@@ -159,5 +160,19 @@ describe('textos y barras del panel', () => {
     expect(proporciones([50, 100, 0])).toEqual([0.5, 1, 0]);
     expect(proporciones([0, 0])).toEqual([0, 0]);
     expect(proporciones([])).toEqual([]);
+  });
+});
+
+describe('largoDelNombre', () => {
+  it('corto hasta 24 letras, largo hasta 48, muy largo después', () => {
+    expect(largoDelNombre('Dulcería La Golosa')).toBe('corto');
+    expect(largoDelNombre('x'.repeat(24))).toBe('corto');
+    expect(largoDelNombre('x'.repeat(25))).toBe('largo');
+    expect(largoDelNombre('x'.repeat(48))).toBe('largo');
+    expect(largoDelNombre('Distribuidora de Dulces y Artículos para Fiestas Santa Rosa de Lima E.I.R.L.')).toBe('muy-largo');
+  });
+
+  it('no cuenta los espacios de los bordes', () => {
+    expect(largoDelNombre(`  ${'x'.repeat(24)}  `)).toBe('corto');
   });
 });

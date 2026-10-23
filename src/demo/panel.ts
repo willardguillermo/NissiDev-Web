@@ -97,6 +97,16 @@ export function textoVence(faltan: number): string {
   return `Vence en ${faltan} días`;
 }
 
+/**
+ * Qué tan largo es el nombre del negocio para el título "Panel de {negocio}": con nombres
+ * largos la letra se achica en vez de ocupar 4 líneas en el celular.
+ */
+export function largoDelNombre(negocio: string): 'corto' | 'largo' | 'muy-largo' {
+  const largo = negocio.trim().length;
+  if (largo <= 24) return 'corto';
+  return largo <= 48 ? 'largo' : 'muy-largo';
+}
+
 /** Proporción de cada valor respecto al mayor (0 a 1), para el largo de las barras. */
 export function proporciones(valores: number[]): number[] {
   const mayor = Math.max(0, ...valores);

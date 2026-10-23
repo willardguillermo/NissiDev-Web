@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import {
   cobrosPorMedio,
+  largoDelNombre,
   masVendidosDeLaSemana,
   porVencer,
   proporciones,
@@ -70,7 +71,7 @@ export function Panel({ config }: Props) {
     <section className="demo-panel demo-contenedor" aria-labelledby="demo-panel-titulo">
       <header className="demo-panel__cabeza">
         <p className="demo-panel__fecha">{textoFecha(config.panel.hoy)}</p>
-        <h1 id="demo-panel-titulo" className="demo-titulo" tabIndex={-1} data-titulo-pantalla>
+        <h1 id="demo-panel-titulo" className="demo-titulo demo-panel__nombre" data-largo={largoDelNombre(config.negocio)} tabIndex={-1} data-titulo-pantalla>
           Panel de {config.negocio}
         </h1>
         <p className="demo-panel__valor">Así verías tu negocio cada día.</p>
