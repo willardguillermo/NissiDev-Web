@@ -159,27 +159,27 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** buscar y filtrar actualiza la grilla; hay mensaje si no hay resultados; Agotado no se puede agregar.
 - **Verificación:** prueba manual en 375 px.
 
-### T18 · feat: Detalle de producto
+### T18 · feat: Detalle de producto — ✅ `e4a1814` (en `feature/demo-plantilla`)
 - **Qué:** imagen, nombre, marca, selector de presentación con precio, cantidad, "Agregar al pedido", "También te puede gustar".
 - **Terminado cuando:** cambiar presentación cambia precio; agregar actualiza "Mi pedido (n)"; si supera lo disponible (T12b), no se agrega y se muestra el motivo.
 - **Verificación:** prueba manual en 375 px.
 
-### T19 · feat: Mi pedido
+### T19 · feat: Mi pedido — ✅ `0534297` (en `feature/demo-plantilla`)
 - **Qué:** líneas con cantidad y subtotal, total, lugar de recojo según la configuración (con 1 puesto, "Recoger en tienda"; con 2 o 3, elegir el puesto), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
 - **Terminado cuando:** cambiar cantidades recalcula; el envío no abre ningún enlace externo y deja claro que es una demostración; el aviso se cierra con teclado (Esc) y devuelve el foco al botón.
 - **Verificación:** test del mensaje del pedido; prueba manual en 375 px.
 
-### T20a · feat: ventas ficticias del panel
+### T20a · feat: ventas ficticias del panel — ✅ `ee7c8ce` (en `feature/demo-plantilla`)
 - **Qué:** `rubros/dulceria/ventas.ts`: ventas fechadas (fecha y hora, puesto, líneas con producto, presentación, factor y cantidad, medio de pago: efectivo, Yape o Plin) que cubren al menos los 7 días anteriores, y una **fecha de referencia fija** (`HOY_DEMO`) para que el panel no dependa del reloj. Tipo `Venta` en `demo/`.
 - **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en todos los puestos de la configuración y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
 - **Verificación:** `npm test`.
 
-### T20b · feat: Panel del dueño
+### T20b · feat: Panel del dueño — ✅ `b227e7c` (en `feature/demo-plantilla`)
 - **Qué:** cálculos puros en `demo/panel.ts` a partir de las ventas, productos y `HOY_DEMO` (ventas del día por puesto, por vencer en 7 días, stock bajo, más vendidos de la semana, cobros por medio de pago) y la vista con barras CSS, sin librería de gráficos. La vista solo muestra lo que devuelven los cálculos.
 - **Terminado cuando:** tests de cada cálculo con datos pequeños de prueba y fecha fija; ningún número está escrito a mano en la vista; se lee bien en 375 px.
 - **Verificación:** `npm test`; prueba manual en 375 px.
 
-**Punto de control 6:** demo completa navegable (criterio de éxito 2).
+**Punto de control 6:** demo completa navegable (criterio de éxito 2). ⏳ Pendiente de revisión de Codex (base `3422cc1`, último de `main`). Antes: «Más filtros» en el catálogo `a1e7ebd` y prueba de peor caso `32dd32a`.
 
 ## Fase 7 — `sitio`
 
