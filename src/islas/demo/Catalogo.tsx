@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { filtrarProductos, type Filtros } from '../../demo/filtros';
-import { alternarFiltro, gruposDeFiltro, hayFiltros } from '../../demo/grupos-de-filtro';
+import { alternarFiltro, gruposDeFiltro, hayFiltros, type GrupoFiltro } from '../../demo/grupos-de-filtro';
 import type { Accion } from '../../demo/navegacion';
 import type { Producto, RubroConfig } from '../../demo/tipos';
 import { TarjetaProducto } from './TarjetaProducto';
@@ -21,8 +21,36 @@ export function Catalogo({ config, filtrosIniciales = {}, ir, agregar, ilustraci
   const idBuscador = useId();
   const [filtros, setFiltros] = useState<Filtros>(filtrosIniciales);
   const [modo, setModo] = useState<Modo>('unidad');
+  const idMas = useId();
+  const [masAbierto, setMasAbierto] = useState(false);
+  // Categoría y ocasión siempre a la vista; marca y puesto, en "Más filtros" (en celular).
   const grupos = gruposDeFiltro(config);
+  const principales = grupos.filter((g) => g.clave === 'categoria' || g.clave === 'ocasion');
+  const extra = grupos.filter((g) => !principales.includes(g));
+  const activosEnExtra = extra.filter((g) => filtros[g.clave] !== undefined).length;
   const productos = filtrarProductos(config.productos, filtros);
+
+  const grupoDeChips = (grupo: GrupoFiltro) => (
+    <div key={grupo.clave} className="demo-filtros__grupo" role="group" aria-label={`Filtrar por ${grupo.nombre.toLowerCase()}`}>
+      <span className="demo-filtros__nombre" aria-hidden="true">
+        {grupo.nombre}
+      </span>
+      <ul className="demo-chips">
+        {grupo.opciones.map((opcion) => (
+          <li key={opcion.valor}>
+            <button
+              type="button"
+              className="demo-chip"
+              aria-pressed={filtros[grupo.clave] === opcion.valor}
+              onClick={() => setFiltros(alternarFiltro(filtros, grupo.clave, opcion.valor))}
+            >
+              {opcion.texto}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 
   return (
     <section className="demo-catalogo" aria-labelledby="demo-catalogo-titulo">
@@ -66,27 +94,26 @@ export function Catalogo({ config, filtrosIniciales = {}, ir, agregar, ilustraci
       </div>
 
       <div className="demo-filtros">
-        {grupos.map((grupo) => (
-          <div key={grupo.clave} className="demo-filtros__grupo" role="group" aria-label={`Filtrar por ${grupo.nombre.toLowerCase()}`}>
-            <span className="demo-filtros__nombre" aria-hidden="true">
-              {grupo.nombre}
-            </span>
-            <ul className="demo-chips">
-              {grupo.opciones.map((opcion) => (
-                <li key={opcion.valor}>
-                  <button
-                    type="button"
-                    className="demo-chip"
-                    aria-pressed={filtros[grupo.clave] === opcion.valor}
-                    onClick={() => setFiltros(alternarFiltro(filtros, grupo.clave, opcion.valor))}
-                  >
-                    {opcion.texto}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {principales.map(grupoDeChips)}
+        {extra.length > 0 && (
+          <>
+            <button
+              type="button"
+              className="demo-filtros__mas"
+              aria-expanded={masAbierto}
+              aria-controls={idMas}
+              onClick={() => setMasAbierto(!masAbierto)}
+            >
+              {activosEnExtra > 0 ? `Más filtros (${activosEnExtra})` : 'Más filtros'}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+            <div id={idMas} className="demo-filtros__extra" data-abierto={masAbierto || undefined}>
+              {extra.map(grupoDeChips)}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="demo-contenedor">
