@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { filtrarProductos, type Filtros } from '../../demo/filtros';
 import { alternarFiltro, gruposDeFiltro, hayFiltros, type GrupoFiltro } from '../../demo/grupos-de-filtro';
 import type { Accion } from '../../demo/navegacion';
@@ -8,6 +8,7 @@ import { TarjetaProducto } from './TarjetaProducto';
 interface Props {
   config: RubroConfig;
   filtrosIniciales?: Filtros;
+  recordarFiltros: (filtros: Filtros) => void;
   ir: (accion: Accion) => void;
   agregar: (producto: Producto, presentacionId: string) => void;
   ilustracionDe: (producto: Producto) => string;
@@ -17,10 +18,11 @@ type Modo = 'unidad' | 'mayor';
 
 const plural = (n: number) => `${n} ${n === 1 ? 'producto' : 'productos'}`;
 
-export function Catalogo({ config, filtrosIniciales = {}, ir, agregar, ilustracionDe }: Props) {
+export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, agregar, ilustracionDe }: Props) {
   const idBuscador = useId();
   const [filtros, setFiltros] = useState<Filtros>(filtrosIniciales);
   const [modo, setModo] = useState<Modo>('unidad');
+  useEffect(() => recordarFiltros(filtros), [filtros, recordarFiltros]);
   const idMas = useId();
   const [masAbierto, setMasAbierto] = useState(false);
   // Categoría y ocasión siempre a la vista; marca y puesto, en "Más filtros" (en celular).

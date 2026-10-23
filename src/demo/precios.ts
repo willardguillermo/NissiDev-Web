@@ -1,3 +1,4 @@
+import { contarPresentacion } from './presentaciones';
 import type { Presentacion, Producto } from './tipos';
 
 // Qué precio muestra una tarjeta de producto: el de la unidad o el de comprar por mayor.
@@ -29,10 +30,7 @@ export function precioPorMayor(producto: Producto): PrecioVisible | null {
   return grandes[0] ? { presentacion: grandes[0], precio: grandes[0].precio } : null;
 }
 
-/** "desde 3 cajas", "desde 4 bolsas": el nombre de la presentación sin el "x24". */
+/** "desde 3 cajas", "desde 4 bolsas". */
 export function textoDesde({ presentacion, desde }: PrecioVisible): string | null {
-  if (desde === undefined) return null;
-  const tipo = presentacion.nombre.split(' ')[0].toLowerCase();
-  const plural = /[aeiou]$/.test(tipo) ? `${tipo}s` : `${tipo}es`;
-  return `desde ${desde} ${desde === 1 ? tipo : plural}`;
+  return desde === undefined ? null : `desde ${contarPresentacion(desde, presentacion)}`;
 }
