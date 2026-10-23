@@ -93,6 +93,27 @@ export interface TemaDemo {
   fuenteTexto: string;
 }
 
+export type MedioPago = 'efectivo' | 'yape' | 'plin';
+
+/** Línea de una venta: guarda la presentación, su factor y el precio cobrado (por presentación). */
+export interface LineaVenta {
+  productoId: string;
+  presentacionId: string;
+  factor: number;
+  cantidad: number;
+  precio: number;
+}
+
+/** Venta ficticia para el panel del dueño. */
+export interface Venta {
+  id: string;
+  /** Fecha y hora local: "2026-10-24T10:35". */
+  fecha: string;
+  puesto: number;
+  medio: MedioPago;
+  lineas: LineaVenta[];
+}
+
 /** Todo lo propio del negocio. Ningún componente de la demo tiene estos datos fijos. */
 export interface RubroConfig {
   id: string;
@@ -124,6 +145,14 @@ export interface RubroConfig {
   productos: Producto[];
   /** Ids de productos para "Más vendidos". */
   masVendidos: string[];
+  /** Datos del panel del dueño. */
+  panel: {
+    /** Fecha fija del "hoy" de la demo (AAAA-MM-DD): el panel no depende del reloj. */
+    hoy: string;
+    /** Stock bajo: esta cantidad o menos, en unidad base. */
+    stockBajo: number;
+    ventas: Venta[];
+  };
 }
 
 /** Línea del pedido: guarda una copia de la presentación usada (factor y precios de ese momento). */

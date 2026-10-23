@@ -1,4 +1,4 @@
-import type { Campana, CampanaId, Ocasion, Producto, RubroConfig } from './tipos';
+import type { Campana, CampanaId, Ocasion, Producto, RubroConfig, Venta } from './tipos';
 
 // Lo que cambia de un negocio a otro dentro de la misma plantilla de rubro.
 export interface Personalizacion {
@@ -35,8 +35,10 @@ export function personalizar(config: RubroConfig, cambios: Personalizacion): Rub
   const porMayor = cambios.porMayor ?? config.vendePorMayor;
   let productos = config.productos.map((p) => ajustarPuestos(p, cantidad));
   if (!porMayor) productos = productos.map(sinPrecioMayorista);
+  const ventas = config.panel.ventas.map((v) => ({ ...v, puesto: puestoQueQueda(v.puesto, cantidad) }));
   return {
     ...config,
+    panel: { ...config.panel, ventas },
     puestos: config.puestos.slice(0, cantidad),
     campanaActiva: cambios.campana === undefined ? config.campanaActiva : cambios.campana,
     vendePorMayor: porMayor,
@@ -103,6 +105,22 @@ function erroresDeProducto(p: Producto, config: RubroConfig): string[] {
   return errores;
 }
 
+function erroresDeVenta(v: Venta, config: RubroConfig): string[] {
+  const errores: string[] = [];
+  const de = (texto: string) => errores.push(`venta ${v.id}: ${texto}`);
+  if (!config.puestos.some((p) => p.numero === v.puesto)) de(`puesto ${v.puesto} no existe`);
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(v.fecha) || !esFecha(v.fecha.slice(0, 10))) de(`fecha inválida: ${v.fecha}`);
+  if (v.fecha.slice(0, 10) > config.panel.hoy) de('fecha posterior a hoy');
+  if (v.lineas.length === 0) de('sin líneas');
+  for (const l of v.lineas) {
+    const presentacion = config.productos.find((p) => p.id === l.productoId)?.presentaciones.find((x) => x.id === l.presentacionId);
+    if (!presentacion) de(`${l.productoId}:${l.presentacionId} no existe`);
+    else if (presentacion.factor !== l.factor) de(`${l.productoId}: factor ${l.factor} no coincide`);
+    if (!esEnteroPositivo(l.cantidad) || !esEnteroPositivo(l.precio)) de(`${l.productoId}: cantidad o precio inválido`);
+  }
+  return errores;
+}
+
 /** Revisa que la configuración se pueda usar en la demo. Lista vacía = todo bien. */
 export function validarRubro(config: RubroConfig): string[] {
   const errores: string[] = [];
@@ -126,5 +144,7 @@ export function validarRubro(config: RubroConfig): string[] {
     if (!config.productos.some((p) => p.id === id)) errores.push(`más vendido "${id}" no existe`);
   }
   for (const p of config.productos) errores.push(...erroresDeProducto(p, config));
+  for (const v of config.panel.ventas) errores.push(...erroresDeVenta(v, config));
+  if (!esFecha(config.panel.hoy)) errores.push(`fecha de hoy inválida: ${config.panel.hoy}`);
   return errores;
 }

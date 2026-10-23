@@ -3,6 +3,7 @@
 import { personalizar, type Personalizacion } from '../../demo/rubro';
 import type { RubroConfig } from '../../demo/tipos';
 import { PRODUCTOS } from './productos';
+import { generarVentas, HOY_DEMO } from './ventas';
 
 /** Con los 3 puestos que admite la plantilla. */
 export const DULCERIA_COMPLETA: RubroConfig = {
@@ -71,6 +72,7 @@ export const DULCERIA_COMPLETA: RubroConfig = {
   ],
   productos: PRODUCTOS,
   masVendidos: ['bombones-mani', 'gomitas-ositos', 'caramelos-leche', 'galletas-vainilla', 'papitas-hilo', 'globos-colores'],
+  panel: { hoy: HOY_DEMO, stockBajo: 24, ventas: generarVentas(PRODUCTOS, HOY_DEMO) },
 };
 
 /** Lo que usa la demo: 2 puestos (y Halloween, que ya viene en la configuración). */

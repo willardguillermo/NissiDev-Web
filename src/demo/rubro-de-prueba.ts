@@ -52,4 +52,26 @@ export const RUBRO_DE_PRUEBA: RubroConfig = {
   ],
   productos: CATALOGO_DE_PRUEBA,
   masVendidos: ['choco-luna', 'gomitas-osito'],
+  // Ventas pequeñas y a mano para probar los cálculos del panel. Semana: 18 al 24 de octubre.
+  panel: {
+    hoy: '2026-10-24',
+    stockBajo: 10,
+    ventas: [
+      { id: 'v1', fecha: '2026-10-24T10:00', puesto: 1, medio: 'efectivo', lineas: [{ productoId: 'choco-luna', presentacionId: 'unidad', factor: 1, cantidad: 2, precio: 150 }] },
+      {
+        id: 'v2',
+        fecha: '2026-10-24T11:00',
+        puesto: 2,
+        medio: 'yape',
+        lineas: [
+          { productoId: 'gomitas-osito', presentacionId: 'bolsa', factor: 6, cantidad: 1, precio: 270 },
+          { productoId: 'choco-luna', presentacionId: 'unidad', factor: 1, cantidad: 1, precio: 150 },
+        ],
+      },
+      { id: 'v3', fecha: '2026-10-24T12:00', puesto: 3, medio: 'plin', lineas: [{ productoId: 'galleton-avena', presentacionId: 'unidad', factor: 1, cantidad: 3, precio: 120 }] },
+      { id: 'v4', fecha: '2026-10-20T15:00', puesto: 1, medio: 'yape', lineas: [{ productoId: 'choco-luna', presentacionId: 'caja', factor: 24, cantidad: 1, precio: 3000 }] },
+      // Fuera de la semana (hoy − 7 días): no cuenta en "más vendidos"
+      { id: 'v5', fecha: '2026-10-17T10:00', puesto: 2, medio: 'efectivo', lineas: [{ productoId: 'gomitas-osito', presentacionId: 'unidad', factor: 1, cantidad: 50, precio: 50 }] },
+    ],
+  },
 };
