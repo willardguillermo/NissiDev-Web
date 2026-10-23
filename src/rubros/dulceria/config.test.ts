@@ -136,3 +136,10 @@ describe('configuración de la dulcería', () => {
     expect(contraste(t.marca, t.fondo)).toBeGreaterThanOrEqual(3);
   });
 });
+
+describe('peor caso (break-ui)', () => {
+  it('los datos extremos siguen siendo una configuración válida', async () => {
+    const { DULCERIA_PEOR_CASO } = await import('./peor-caso');
+    expect(validarRubro(DULCERIA_PEOR_CASO)).toEqual([]);
+  });
+});

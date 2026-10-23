@@ -46,7 +46,7 @@ export function TarjetaProducto({ producto, ilustracion, mostrar, vendePorMayor,
         )}
       </div>
       <Titulo className="tarjeta-producto__nombre">
-        <button type="button" className="tarjeta-producto__abrir" onClick={abrir}>
+        <button type="button" className="tarjeta-producto__abrir" title={producto.nombre} onClick={abrir}>
           {producto.nombre}
         </button>
       </Titulo>

@@ -21,10 +21,12 @@ interface Props {
   /** La plantilla del rubro con todos sus puestos. */
   plantilla: RubroConfig;
   personalizacion: Personalizacion;
+  /** Solo en desarrollo: datos extremos para probar la vista con ?datos=peor. */
+  peorCaso?: RubroConfig;
 }
 
 /** Motor de las demos: recibe la configuración del rubro y no tiene datos del negocio fijos. */
-export default function DemoRubro({ plantilla, personalizacion }: Props) {
+export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Props) {
   const [config, setConfig] = useState(() => personalizar(plantilla, personalizacion));
   const [nav, setNav] = useState<Navegacion>(NAVEGACION_INICIAL);
   const navActual = useRef(nav);
@@ -38,8 +40,11 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
   // el primer dibujo coincida con el HTML del servidor.
   useEffect(() => {
     const cambios = personalizacionDeUrl(window.location.search);
-    if (Object.keys(cambios).length > 0) setConfig(personalizar(plantilla, { ...personalizacion, ...cambios }));
-  }, [plantilla, personalizacion]);
+    const usarPeorCaso = peorCaso !== undefined && new URLSearchParams(window.location.search).get('datos') === 'peor';
+    if (usarPeorCaso || Object.keys(cambios).length > 0) {
+      setConfig(personalizar(usarPeorCaso ? peorCaso : plantilla, { ...personalizacion, ...cambios }));
+    }
+  }, [plantilla, personalizacion, peorCaso]);
 
   // Cada pantalla entra al historial: el botón Atrás del celular vuelve a la anterior en vez de salir.
   useEffect(() => {

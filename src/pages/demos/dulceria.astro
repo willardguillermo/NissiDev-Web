@@ -2,7 +2,11 @@
 import DemoRubro from '../../islas/DemoRubro';
 import Demo from '../../layouts/Demo.astro';
 import { DULCERIA, DULCERIA_COMPLETA, FUENTES_DULCERIA, PERSONALIZACION_DULCERIA } from '../../rubros/dulceria/config';
+import { DULCERIA_PEOR_CASO } from '../../rubros/dulceria/peor-caso';
 import '../../rubros/dulceria/fuentes.css';
+
+// Solo en desarrollo: la isla recibe también el peor caso y lo usa con ?datos=peor (break-ui).
+const peorCaso = import.meta.env.DEV ? DULCERIA_PEOR_CASO : undefined;
 ---
 
 <Demo
@@ -10,5 +14,5 @@ import '../../rubros/dulceria/fuentes.css';
   descripcion="Demo de un sistema para dulcerías: catálogo, pedidos por WhatsApp y panel del dueño. Datos de ejemplo."
   fuentes={FUENTES_DULCERIA}
 >
-  <DemoRubro client:load plantilla={DULCERIA_COMPLETA} personalizacion={PERSONALIZACION_DULCERIA} />
+  <DemoRubro client:load plantilla={DULCERIA_COMPLETA} personalizacion={PERSONALIZACION_DULCERIA} peorCaso={peorCaso} />
 </Demo>

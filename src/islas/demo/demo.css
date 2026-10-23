@@ -211,6 +211,16 @@
   line-height: 1.1;
 }
 
+/* En la cabecera, un nombre largo no baja el hero: máximo 2 líneas (completo en el pie) */
+.demo-cabecera .demo-logo {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
 .demo-icono {
   display: grid;
   place-items: center;
@@ -487,6 +497,12 @@
 
 /* Todo el cuadro abre el detalle (el botón Agregar queda encima) */
 .tarjeta-producto__abrir {
+  /* Máximo 3 líneas para que una tarjeta no estire su fila; el nombre completo está en el detalle */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   padding: 0;
   background: none;
   border: 0;
@@ -511,8 +527,12 @@
 }
 
 .tarjeta-producto__marca {
+  overflow: hidden;
   color: var(--d-texto-suave);
   font-size: 0.8125rem;
+  /* Una línea: la marca completa está en el detalle */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tarjeta-producto__precio {

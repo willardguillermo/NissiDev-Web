@@ -54,7 +54,9 @@ export function Inicio({ config, ir, agregar, avisar, ilustracionDe }: Props) {
 
       <header className="demo-cabecera demo-contenedor">
         <div className="demo-cabecera__fila">
-          <p className="demo-logo">{config.negocio}</p>
+          <p className="demo-logo" title={config.negocio}>
+            {config.negocio}
+          </p>
           <button type="button" className="demo-icono" aria-label="WhatsApp del negocio" onClick={() => avisar(AVISO_WHATSAPP)}>
             <IconoWhatsApp />
           </button>
