@@ -71,3 +71,20 @@ export function porVencer(config: RubroConfig, dias = 7): { producto: Producto; 
 export function stockBajo(config: RubroConfig): Producto[] {
   return config.productos.filter((p) => p.stock <= config.panel.stockBajo).sort((a, b) => a.stock - b.stock);
 }
+
+const FECHA_LARGA = new Intl.DateTimeFormat('es-PE', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+
+/** "sábado, 24 de octubre" (la fecha fija de la demo, sin hora ni zona horaria del celular). */
+export const textoFecha = (fecha: string) => FECHA_LARGA.format(new Date(`${fecha}T00:00:00Z`));
+
+export function textoVence(faltan: number): string {
+  if (faltan === 0) return 'Vence hoy';
+  if (faltan === 1) return 'Vence mañana';
+  return `Vence en ${faltan} días`;
+}
+
+/** Proporción de cada valor respecto al mayor (0 a 1), para el largo de las barras. */
+export function proporciones(valores: number[]): number[] {
+  const mayor = Math.max(0, ...valores);
+  return valores.map((v) => (mayor === 0 ? 0 : v / mayor));
+}

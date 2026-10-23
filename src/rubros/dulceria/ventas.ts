@@ -38,7 +38,8 @@ function lineaAlAzar(producto: Producto, azar: (n: number) => number): LineaVent
   return { productoId: producto.id, presentacionId: presentacion.id, factor: presentacion.factor, cantidad, precio };
 }
 
-export function generarVentas(productos: Producto[], hoy: string, semilla = 31): Venta[] {
+/** La semilla 352 da días parejos entre puestos (con 1, 2 o 3). */
+export function generarVentas(productos: Producto[], hoy: string, semilla = 352): Venta[] {
   const azar = crearAzar(semilla);
   const ventas: Venta[] = [];
   for (let atras = 7; atras >= 0; atras--) {

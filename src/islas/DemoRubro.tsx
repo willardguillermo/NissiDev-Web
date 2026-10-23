@@ -13,6 +13,7 @@ import { Detalle } from './demo/Detalle';
 import { AVISO_WHATSAPP, IconoWhatsApp, Inicio } from './demo/Inicio';
 import { Marco } from './demo/Marco';
 import { MiPedido } from './demo/MiPedido';
+import { Panel } from './demo/Panel';
 import { Pendiente } from './demo/Pendiente';
 import './demo/demo.css';
 
@@ -110,10 +111,7 @@ export default function DemoRubro({ plantilla, personalizacion }: Props) {
 
       <div className="demo-pantalla" key={`${nav.vista}-${nav.pantalla}`}>
         {nav.vista === 'dueno' ? (
-          <Pendiente
-            titulo="Panel del dueño"
-            texto={`Ventas del día, stock y cobros de ${config.negocio}. Esta pantalla llega pronto.`}
-          />
+          <Panel config={config} />
         ) : nav.pantalla === 'inicio' ? (
           <Inicio config={config} ir={ir} agregar={agregar} avisar={avisar} ilustracionDe={ilustracionDe} />
         ) : nav.pantalla === 'catalogo' ? (

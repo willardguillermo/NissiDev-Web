@@ -1,5 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { cobrosPorMedio, diasEntre, masVendidosDeLaSemana, porVencer, stockBajo, totalVenta, ventasDelDiaPorPuesto } from './panel';
+import {
+  cobrosPorMedio,
+  diasEntre,
+  masVendidosDeLaSemana,
+  porVencer,
+  proporciones,
+  stockBajo,
+  textoFecha,
+  textoVence,
+  totalVenta,
+  ventasDelDiaPorPuesto,
+} from './panel';
 import { personalizar, validarRubro } from './rubro';
 import { RUBRO_DE_PRUEBA } from './rubro-de-prueba';
 
@@ -99,5 +110,21 @@ describe('integridad de las ventas', () => {
     expect(errores).toMatch('venta rota: puesto 9 no existe');
     expect(errores).toMatch('venta rota: fecha posterior a hoy');
     expect(errores).toMatch('venta rota: choco-luna: factor 6 no coincide');
+  });
+});
+
+describe('textos y barras del panel', () => {
+  it('fecha larga en español, sin depender de la zona horaria', () => {
+    expect(textoFecha('2026-10-24')).toMatch(/s[áa]bado,? 24 de octubre/);
+  });
+
+  it('vence hoy, mañana o en N días', () => {
+    expect([0, 1, 5].map(textoVence)).toEqual(['Vence hoy', 'Vence mañana', 'Vence en 5 días']);
+  });
+
+  it('proporciones respecto al mayor; todo en 0 no divide entre 0', () => {
+    expect(proporciones([50, 100, 0])).toEqual([0.5, 1, 0]);
+    expect(proporciones([0, 0])).toEqual([0, 0]);
+    expect(proporciones([])).toEqual([]);
   });
 });
