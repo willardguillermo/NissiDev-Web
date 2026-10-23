@@ -179,7 +179,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests de cada cálculo con datos pequeños de prueba y fecha fija; ningún número está escrito a mano en la vista; se lee bien en 375 px.
 - **Verificación:** `npm test`; prueba manual en 375 px.
 
-**Punto de control 6:** demo completa navegable (criterio de éxito 2). ⏳ Pendiente de revisión de Codex (base `3422cc1`, último de `main`). Antes: «Más filtros» en el catálogo `a1e7ebd` y prueba de peor caso `32dd32a`.
+**Punto de control 6:** demo completa navegable (criterio de éxito 2). ✅ Revisión de Codex (base `3422cc1`): 3 hallazgos, los 3 arreglados: filtros del catálogo perdidos al ir a Dueño y volver (`ba1d7e3`, `nav` como única fuente de verdad), cantidad vacía que guardaba `NaN` y bloqueaba + y − (`76807ba`, `normalizarCantidad()` en Detalle y Mi pedido) y flecha de «Más filtros» y hover que se movían con movimiento reducido (`69eb0f0`, con test que lista los giros y desplazamientos de `demo.css`). Ajustes del panel: más vendidos por monto en soles (`36cf015`) y título que se achica con nombres largos (`e848a45`). Antes: «Más filtros» en el catálogo `a1e7ebd` y prueba de peor caso `32dd32a`. Publicado con el PR #2 (merge `a2fd7cf`).
 
 ## Fase 7 — `sitio`
 
