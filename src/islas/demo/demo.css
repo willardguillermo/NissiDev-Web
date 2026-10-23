@@ -921,6 +921,13 @@
   transform: rotate(180deg);
 }
 
+/* Con movimiento reducido, la flecha cambia de golpe en vez de girar */
+@media (prefers-reduced-motion: reduce) {
+  .demo-filtros__mas svg {
+    transition: none;
+  }
+}
+
 .demo-filtros__extra {
   display: none;
   gap: 0.5rem;
@@ -1558,6 +1565,15 @@
   .demo-categoria:hover,
   .tarjeta-producto:hover {
     transform: translateY(-2px);
+  }
+}
+
+/* Con movimiento reducido, el hover no levanta la tarjeta */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .demo-ocasion:hover,
+  .demo-categoria:hover,
+  .tarjeta-producto:hover {
+    transform: none;
   }
 }
 
