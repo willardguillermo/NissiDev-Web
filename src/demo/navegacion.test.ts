@@ -30,4 +30,26 @@ describe('navegar', () => {
     const dueno = navegar(NAVEGACION_INICIAL, { tipo: 'vista', vista: 'dueno' });
     expect(navegar(dueno, { tipo: 'catalogo' }).vista).toBe('cliente');
   });
+
+  it('los filtros cambiados en el catálogo siguen ahí al ir a Dueño y volver a Cliente', () => {
+    const catalogo = navegar(NAVEGACION_INICIAL, { tipo: 'catalogo', filtros: { categoria: 'gomitas' } });
+    const filtrado = navegar(catalogo, { tipo: 'filtros', filtros: { categoria: 'gomitas', marca: 'Ambrosoli', texto: 'osito' } });
+    const dueno = navegar(filtrado, { tipo: 'vista', vista: 'dueno' });
+    expect(navegar(dueno, { tipo: 'vista', vista: 'cliente' })).toEqual({
+      vista: 'cliente',
+      pantalla: 'catalogo',
+      filtros: { categoria: 'gomitas', marca: 'Ambrosoli', texto: 'osito' },
+    });
+  });
+
+  it('el detalle no arrastra los filtros; los guarda el catálogo del que salió', () => {
+    const filtrado = navegar(navegar(NAVEGACION_INICIAL, { tipo: 'catalogo' }), { tipo: 'filtros', filtros: { texto: 'chocolate' } });
+    expect(filtrado.filtros).toEqual({ texto: 'chocolate' });
+    expect(navegar(filtrado, { tipo: 'detalle', productoId: 'x' }).filtros).toBeUndefined();
+  });
+
+  it('cambiar filtros fuera del catálogo no hace nada', () => {
+    const detalle = navegar(NAVEGACION_INICIAL, { tipo: 'detalle', productoId: 'x' });
+    expect(navegar(detalle, { tipo: 'filtros', filtros: { texto: 'a' } })).toBe(detalle);
+  });
 });

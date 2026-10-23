@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 import { filtrarProductos, type Filtros } from '../../demo/filtros';
 import { alternarFiltro, gruposDeFiltro, hayFiltros, type GrupoFiltro } from '../../demo/grupos-de-filtro';
 import type { Accion } from '../../demo/navegacion';
@@ -7,8 +7,9 @@ import { TarjetaProducto } from './TarjetaProducto';
 
 interface Props {
   config: RubroConfig;
-  filtrosIniciales?: Filtros;
-  recordarFiltros: (filtros: Filtros) => void;
+  /** Los guarda la isla en su navegación (y en el historial). */
+  filtros?: Filtros;
+  cambiarFiltros: (filtros: Filtros) => void;
   ir: (accion: Accion) => void;
   agregar: (producto: Producto, presentacionId: string) => void;
   ilustracionDe: (producto: Producto) => string;
@@ -18,11 +19,9 @@ type Modo = 'unidad' | 'mayor';
 
 const plural = (n: number) => `${n} ${n === 1 ? 'producto' : 'productos'}`;
 
-export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, agregar, ilustracionDe }: Props) {
+export function Catalogo({ config, filtros = {}, cambiarFiltros, ir, agregar, ilustracionDe }: Props) {
   const idBuscador = useId();
-  const [filtros, setFiltros] = useState<Filtros>(filtrosIniciales);
   const [modo, setModo] = useState<Modo>('unidad');
-  useEffect(() => recordarFiltros(filtros), [filtros, recordarFiltros]);
   const idMas = useId();
   const [masAbierto, setMasAbierto] = useState(false);
   // Categoría y ocasión siempre a la vista; marca y puesto, en "Más filtros" (en celular).
@@ -44,7 +43,7 @@ export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, a
               type="button"
               className="demo-chip"
               aria-pressed={filtros[grupo.clave] === opcion.valor}
-              onClick={() => setFiltros(alternarFiltro(filtros, grupo.clave, opcion.valor))}
+              onClick={() => cambiarFiltros(alternarFiltro(filtros, grupo.clave, opcion.valor))}
             >
               {opcion.texto}
             </button>
@@ -73,7 +72,7 @@ export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, a
               value={filtros.texto ?? ''}
               placeholder={config.textos.buscador}
               enterKeyHint="search"
-              onChange={(e) => setFiltros({ ...filtros, texto: e.target.value })}
+              onChange={(e) => cambiarFiltros({ ...filtros, texto: e.target.value })}
             />
           </div>
         </div>
@@ -122,7 +121,7 @@ export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, a
         <div className="demo-catalogo__resumen">
           <p role="status">{plural(productos.length)}</p>
           {hayFiltros(filtros) && (
-            <button type="button" className="demo-enlace" onClick={() => setFiltros({})}>
+            <button type="button" className="demo-enlace" onClick={() => cambiarFiltros({})}>
               Limpiar filtros
             </button>
           )}
@@ -131,7 +130,7 @@ export function Catalogo({ config, filtrosIniciales = {}, recordarFiltros, ir, a
         {productos.length === 0 ? (
           <div className="demo-vacio">
             <p>No encontramos productos con esa búsqueda y esos filtros.</p>
-            <button type="button" className="demo-boton" onClick={() => setFiltros({})}>
+            <button type="button" className="demo-boton" onClick={() => cambiarFiltros({})}>
               Ver todo el catálogo
             </button>
           </div>

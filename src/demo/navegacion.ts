@@ -20,6 +20,8 @@ export type Accion =
   | { tipo: 'inicio' }
   | { tipo: 'pedido' }
   | { tipo: 'catalogo'; filtros?: Filtros }
+  /** El cliente cambia los filtros dentro del catálogo (no es otra pantalla). */
+  | { tipo: 'filtros'; filtros: Filtros }
   | { tipo: 'detalle'; productoId: string };
 
 export const NAVEGACION_INICIAL: Navegacion = { vista: 'cliente', pantalla: 'inicio' };
@@ -34,6 +36,8 @@ export function navegar(estado: Navegacion, accion: Accion): Navegacion {
       return { vista: 'cliente', pantalla: accion.tipo };
     case 'catalogo':
       return { vista: 'cliente', pantalla: 'catalogo', filtros: accion.filtros };
+    case 'filtros':
+      return estado.pantalla === 'catalogo' ? { ...estado, filtros: accion.filtros } : estado;
     case 'detalle':
       return { vista: 'cliente', pantalla: 'detalle', productoId: accion.productoId };
   }

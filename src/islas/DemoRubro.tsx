@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { intentarAgregar } from '../demo/disponibilidad';
 import type { Filtros } from '../demo/filtros';
 import { NAVEGACION_INICIAL, navegar, type Accion, type Navegacion } from '../demo/navegacion';
@@ -29,8 +29,6 @@ interface Props {
 export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Props) {
   const [config, setConfig] = useState(() => personalizar(plantilla, personalizacion));
   const [nav, setNav] = useState<Navegacion>(NAVEGACION_INICIAL);
-  const navActual = useRef(nav);
-  navActual.current = nav;
   const [pedido, setPedido] = useState<Pedido>(PEDIDO_VACIO);
   const [aviso, setAviso] = useState<{ id: number; texto: string } | null>(null);
   const raiz = useRef<HTMLDivElement>(null);
@@ -98,10 +96,13 @@ export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Prop
     if (motivo) avisar(motivo);
   };
 
-  // El catálogo guarda sus filtros en el historial: al volver del detalle, se ve como se dejó.
-  const recordarFiltros = useCallback((filtros: Filtros) => {
-    history.replaceState({ ...history.state, demo: { ...navActual.current, filtros } }, '');
-  }, []);
+  // Los filtros del catálogo viven en nav (una sola fuente): el historial guarda la misma copia,
+  // así al volver del detalle o de la vista Dueño se ve como se dejó. Sin entrada nueva por tecla.
+  const cambiarFiltros = (filtros: Filtros) => {
+    const siguiente = navegar(nav, { tipo: 'filtros', filtros });
+    history.replaceState({ ...history.state, demo: siguiente }, '');
+    setNav(siguiente);
+  };
 
   const ilustraciones = new Map(config.categorias.map((c) => [c.id, c.ilustracion]));
   const ilustracionDe = (producto: Producto) => ilustraciones.get(producto.categoria) ?? '';
@@ -122,8 +123,8 @@ export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Prop
         ) : nav.pantalla === 'catalogo' ? (
           <Catalogo
             config={config}
-            filtrosIniciales={nav.filtros}
-            recordarFiltros={recordarFiltros}
+            filtros={nav.filtros}
+            cambiarFiltros={cambiarFiltros}
             ir={ir}
             agregar={agregar}
             ilustracionDe={ilustracionDe}
