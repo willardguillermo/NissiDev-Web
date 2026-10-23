@@ -43,18 +43,32 @@ export function cobrosPorMedio(config: RubroConfig): { medio: MedioPago; nombre:
   }));
 }
 
-/** Más vendidos en los últimos 7 días (hoy incluido), contados en unidad base. */
-export function masVendidosDeLaSemana(config: RubroConfig, maximo = 5): { producto: Producto; unidades: number }[] {
-  const unidades = new Map<string, number>();
+export interface Vendido {
+  producto: Producto;
+  /** Lo vendido en céntimos: manda en el orden. */
+  monto: number;
+  /** En unidad base: dato secundario. */
+  unidades: number;
+}
+
+/**
+ * Más vendidos en los últimos 7 días (hoy incluido), por monto en soles. Por unidades ganaría
+ * un producto solo porque se vende por caja; las unidades quedan como dato secundario.
+ */
+export function masVendidosDeLaSemana(config: RubroConfig, maximo = 5): Vendido[] {
+  const totales = new Map<string, { monto: number; unidades: number }>();
   for (const v of config.panel.ventas) {
     const dias = diasEntre(diaDe(v.fecha), config.panel.hoy);
     if (dias < 0 || dias > 6) continue;
-    for (const l of v.lineas) unidades.set(l.productoId, (unidades.get(l.productoId) ?? 0) + l.cantidad * l.factor);
+    for (const l of v.lineas) {
+      const t = totales.get(l.productoId) ?? { monto: 0, unidades: 0 };
+      totales.set(l.productoId, { monto: t.monto + l.precio * l.cantidad, unidades: t.unidades + l.cantidad * l.factor });
+    }
   }
-  return [...unidades]
-    .map(([id, total]) => ({ producto: config.productos.find((p) => p.id === id), unidades: total }))
-    .filter((x): x is { producto: Producto; unidades: number } => x.producto !== undefined)
-    .sort((a, b) => b.unidades - a.unidades || a.producto.nombre.localeCompare(b.producto.nombre, 'es'))
+  return [...totales]
+    .map(([id, t]) => ({ producto: config.productos.find((p) => p.id === id), ...t }))
+    .filter((x): x is Vendido => x.producto !== undefined)
+    .sort((a, b) => b.monto - a.monto || b.unidades - a.unidades || a.producto.nombre.localeCompare(b.producto.nombre, 'es'))
     .slice(0, maximo);
 }
 

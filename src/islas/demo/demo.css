@@ -1473,6 +1473,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+.demo-barras__detalle {
+  display: block;
+  color: var(--d-texto-suave);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .demo-barras__pista {
   grid-column: 1 / -1;
   height: 0.5rem;

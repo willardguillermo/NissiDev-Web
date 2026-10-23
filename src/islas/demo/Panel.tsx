@@ -20,6 +20,8 @@ interface Fila {
   clave: string | number;
   nombre: string;
   valor: string;
+  /** Dato secundario bajo el nombre (p. ej. las unidades). */
+  detalle?: string;
   proporcion: number;
 }
 
@@ -29,7 +31,10 @@ function Barras({ filas }: { filas: Fila[] }) {
     <ul className="demo-barras">
       {filas.map((fila) => (
         <li key={fila.clave}>
-          <span className="demo-barras__nombre">{fila.nombre}</span>
+          <span className="demo-barras__nombre">
+            {fila.nombre}
+            {fila.detalle && <span className="demo-barras__detalle">{fila.detalle}</span>}
+          </span>
           <strong className="demo-barras__valor">{fila.valor}</strong>
           <span className="demo-barras__pista" aria-hidden="true">
             <span className="demo-barras__barra" style={{ '--proporcion': fila.proporcion } as CSSProperties} />
@@ -59,7 +64,7 @@ export function Panel({ config }: Props) {
   };
   const pPuesto = conProporcion(porPuesto, (p) => p.total);
   const pCobro = conProporcion(cobros, (c) => c.total);
-  const pVendido = conProporcion(vendidos, (v) => v.unidades);
+  const pVendido = conProporcion(vendidos, (v) => v.monto);
 
   return (
     <section className="demo-panel demo-contenedor" aria-labelledby="demo-panel-titulo">
@@ -97,7 +102,13 @@ export function Panel({ config }: Props) {
           <h2 className="demo-panel__titulo">Más vendidos de la semana</h2>
           {vendidos.length > 0 ? (
             <Barras
-              filas={vendidos.map((v, i) => ({ clave: v.producto.id, nombre: v.producto.nombre, valor: unidades(v.unidades), proporcion: pVendido(i) }))}
+              filas={vendidos.map((v, i) => ({
+                clave: v.producto.id,
+                nombre: v.producto.nombre,
+                valor: formatearSoles(v.monto),
+                detalle: unidades(v.unidades),
+                proporcion: pVendido(i),
+              }))}
             />
           ) : (
             <p className="demo-panel__nota">Sin ventas esta semana.</p>

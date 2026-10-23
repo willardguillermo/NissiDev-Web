@@ -61,14 +61,47 @@ describe('cobrosPorMedio', () => {
 });
 
 describe('masVendidosDeLaSemana', () => {
-  it('en unidad base, de hoy a 6 días atrás (la venta del 17 no cuenta)', () => {
-    // choco: 2 + 1 + caja de 24 = 27; gomitas: bolsa de 6 = 6; galletón: 3
-    expect(masVendidosDeLaSemana(RUBRO_DE_PRUEBA).map((x) => [x.producto.id, x.unidades])).toEqual([
-      ['choco-luna', 27],
-      ['gomitas-osito', 6],
-      ['galleton-avena', 3],
+  it('por monto en soles, de hoy a 6 días atrás (la venta del 17 no cuenta)', () => {
+    // choco: S/ 3 + S/ 1.50 + caja S/ 30 = S/ 34.50 (27 u.); galletón: S/ 3.60 (3 u.); gomitas: bolsa S/ 2.70 (6 u.)
+    expect(masVendidosDeLaSemana(RUBRO_DE_PRUEBA).map((x) => [x.producto.id, x.monto, x.unidades])).toEqual([
+      ['choco-luna', 3450, 27],
+      ['galleton-avena', 360, 3],
+      ['gomitas-osito', 270, 6],
     ]);
     expect(masVendidosDeLaSemana(RUBRO_DE_PRUEBA, 1)).toHaveLength(1);
+  });
+
+  it('una caja de muchas unidades baratas no gana a lo que deja más plata', () => {
+    const linea = (productoId: string, factor: number, cantidad: number, precio: number) => ({ productoId, presentacionId: 'x', factor, cantidad, precio });
+    const config = {
+      ...RUBRO_DE_PRUEBA,
+      panel: {
+        ...RUBRO_DE_PRUEBA.panel,
+        ventas: [
+          // Gomitas: 1 caja de 100 por S/ 10. Galletón: 5 unidades por S/ 25 en total.
+          { id: 'a', fecha: '2026-10-24T10:00', puesto: 1, medio: 'efectivo' as const, lineas: [linea('gomitas-osito', 100, 1, 1000)] },
+          { id: 'b', fecha: '2026-10-23T10:00', puesto: 1, medio: 'yape' as const, lineas: [linea('galleton-avena', 1, 5, 500)] },
+        ],
+      },
+    };
+    expect(masVendidosDeLaSemana(config).map((x) => [x.producto.id, x.monto, x.unidades])).toEqual([
+      ['galleton-avena', 2500, 5],
+      ['gomitas-osito', 1000, 100],
+    ]);
+  });
+
+  it('con el mismo monto, primero el de más unidades', () => {
+    const config = {
+      ...RUBRO_DE_PRUEBA,
+      panel: {
+        ...RUBRO_DE_PRUEBA.panel,
+        ventas: [
+          { id: 'a', fecha: '2026-10-24T10:00', puesto: 1, medio: 'efectivo' as const, lineas: [{ productoId: 'choco-luna', presentacionId: 'unidad', factor: 1, cantidad: 2, precio: 150 }] },
+          { id: 'b', fecha: '2026-10-24T11:00', puesto: 1, medio: 'efectivo' as const, lineas: [{ productoId: 'galleton-avena', presentacionId: 'unidad', factor: 1, cantidad: 3, precio: 100 }] },
+        ],
+      },
+    };
+    expect(masVendidosDeLaSemana(config).map((x) => x.producto.id)).toEqual(['galleton-avena', 'choco-luna']);
   });
 });
 
