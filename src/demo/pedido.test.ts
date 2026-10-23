@@ -8,6 +8,7 @@ import {
   eliminarLinea,
   PEDIDO_VACIO,
   precioUnitario,
+  presentacionesEnPedido,
   subtotal,
   totalPedido,
   unidadesBaseDelProducto,
@@ -178,5 +179,14 @@ describe('editar líneas', () => {
     expect(cambiarCantidad(pedido, 'no-existe', 3)).toBe(pedido);
     expect(eliminarLinea(pedido, 'no-existe')).toBe(pedido);
     expect(cambiarPresentacion(pedido, 'no-existe', CHOCOLATE, 'caja')).toBe(pedido);
+  });
+});
+
+describe('presentacionesEnPedido', () => {
+  it('suma las cantidades de todas las líneas: 2 bolsas + 3 unidades = 5', () => {
+    expect(presentacionesEnPedido(PEDIDO_VACIO)).toBe(0);
+    let pedido = agregarLinea(PEDIDO_VACIO, CHOCOLATE, 'bolsa', 2);
+    pedido = agregarLinea(pedido, GOMITAS, 'unidad', 3);
+    expect(presentacionesEnPedido(pedido)).toBe(5);
   });
 });

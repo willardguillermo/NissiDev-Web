@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { RUBRO_DE_PRUEBA } from '../demo/rubro-de-prueba';
+import { variablesDeTema } from '../demo/tema';
 import { contraste } from '../ui/contraste';
 import tokensCss from './tokens.css?raw';
 
@@ -64,11 +66,15 @@ describe('contraste de los tokens', () => {
 });
 
 // Toda var(--…) usada en el código debe existir en tokens.css (o declararse en el mismo archivo).
+// Las --d-* de las demos salen del tema del negocio (demo/tema.ts).
 const fuentes = import.meta.glob('../**/*.{astro,tsx,css}', { query: '?raw', import: 'default', eager: true });
 
 describe('variables de diseño', () => {
   it('no hay var(--…) sin definir', () => {
-    const definidas = new Set([...tokensCss.matchAll(/(--[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
+    const definidas = new Set([
+      ...[...tokensCss.matchAll(/(--[a-z0-9-]+)\s*:/g)].map((m) => m[1]),
+      ...Object.keys(variablesDeTema(RUBRO_DE_PRUEBA.tema)),
+    ]);
     const sinDefinir: string[] = [];
     for (const [archivo, contenido] of Object.entries(fuentes)) {
       const texto = String(contenido);

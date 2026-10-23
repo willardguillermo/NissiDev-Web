@@ -134,7 +134,7 @@ Además de los criterios de cada tarea:
 - **Terminado cuando:** tests con un catálogo de prueba pequeño (tildes, filtros combinados, sin resultados).
 - **Verificación:** `npm test`.
 
-### T14 · feat: cascarón de la demo
+### T14 · feat: cascarón de la demo — ✅ `c6bb659` (en `feature/demo-plantilla`)
 - **Qué:** página `demos/dulceria.astro` + isla `DemoDulceria.tsx` que recibe un `RubroConfig`: cambio entre vista cliente y vista dueño, navegación interna entre pantallas (estado en memoria), tema por variables CSS de la config, sello fijo **"Demo · datos de ejemplo"**. Con una config mínima de prueba.
 - **Terminado cuando:** se cambia de vista y de pantalla con teclado; el sello se ve en todas las pantallas.
 - **Verificación:** build; prueba manual en 375 px.
@@ -143,43 +143,43 @@ Además de los criterios de cada tarea:
 
 ## Fase 6 — `rubros/dulceria`
 
-### T15 · feat: datos de Dulcería La Golosa
-- **Qué:** `rubros/dulceria/config.ts` (textos, paleta `#EC48AE`, Shrikhand + Chivo, 3 puestos, ocasiones, campaña activa) y `productos.ts` (~30 productos genéricos con marcas ficticias, presentaciones, precios por mayor, etiquetas, stock, vencimientos). Ilustraciones propias simples (SVG o CSS).
+### T15 · feat: datos de Dulcería La Golosa — ✅ `ece9d2d` (en `feature/demo-plantilla`)
+- **Qué:** `rubros/dulceria/config.ts` (textos, paleta `#EC48AE`, Shrikhand + Chivo, 2 puestos por defecto (la plantilla admite de 1 a 3), ocasiones, campaña activa configurable: Halloween por defecto, Navidad, Día del Niño o ninguna) y `productos.ts` (~30 productos genéricos con marcas ficticias, presentaciones, precios por mayor, etiquetas, stock, vencimientos). Ilustraciones propias simples (SVG o CSS).
 - **Fuentes:** Shrikhand y Chivo en `public/fonts/` con su licencia (P5).
 - **Terminado cuando:** test de integridad: toda presentación base tiene factor 1, cada producto está en al menos un puesto, referencias a categoría/ocasión/puesto válidas.
 - **Verificación:** `npm test`; revisión de que ninguna marca sea real.
 
-### T16 · feat: Inicio de la demo
-- **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros 3 puestos", por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
+### T16 · feat: Inicio de la demo — ✅ `0fd8f9d` (en `feature/demo-plantilla`)
+- **Qué:** barra de anuncio, header con buscador y WhatsApp, hero de temporada, compra por ocasión (2×2), categorías en carrusel, más vendidos, "Nuestros puestos" (los que tenga la configuración; con 1, "Nuestra tienda"), por qué elegirnos, footer; botón flotante y barra "Mi pedido (n)".
 - **Terminado cuando:** 5-10-15 de la referencia en 375 px; el carrusel se usa con teclado.
 - **Verificación:** prueba manual en 375 px y con Tab.
 
-### T17 · feat: Catálogo de la demo
+### T17 · feat: Catálogo de la demo — ✅ `da65ac1` (en `feature/demo-plantilla`)
 - **Qué:** buscador fijo, chips de filtro, interruptor precio unidad / por mayor, grilla de 2 columnas con etiquetas Nuevo, Oferta y Agotado. Usa `filtros.ts`.
 - **Terminado cuando:** buscar y filtrar actualiza la grilla; hay mensaje si no hay resultados; Agotado no se puede agregar.
 - **Verificación:** prueba manual en 375 px.
 
-### T18 · feat: Detalle de producto
+### T18 · feat: Detalle de producto — ✅ `e4a1814` (en `feature/demo-plantilla`)
 - **Qué:** imagen, nombre, marca, selector de presentación con precio, cantidad, "Agregar al pedido", "También te puede gustar".
 - **Terminado cuando:** cambiar presentación cambia precio; agregar actualiza "Mi pedido (n)"; si supera lo disponible (T12b), no se agrega y se muestra el motivo.
 - **Verificación:** prueba manual en 375 px.
 
-### T19 · feat: Mi pedido
-- **Qué:** líneas con cantidad y subtotal, total, puesto de recojo (1, 2 o 3), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
+### T19 · feat: Mi pedido — ✅ `0534297` (en `feature/demo-plantilla`)
+- **Qué:** líneas con cantidad y subtotal, total, lugar de recojo según la configuración (con 1 puesto, "Recoger en tienda"; con 2 o 3, elegir el puesto), nombre (con label) y "Enviar pedido por WhatsApp" según P3: no abre WhatsApp, muestra el mensaje, el aviso de demostración y "Quiero esto para mi negocio". Sin pago.
 - **Terminado cuando:** cambiar cantidades recalcula; el envío no abre ningún enlace externo y deja claro que es una demostración; el aviso se cierra con teclado (Esc) y devuelve el foco al botón.
 - **Verificación:** test del mensaje del pedido; prueba manual en 375 px.
 
-### T20a · feat: ventas ficticias del panel
+### T20a · feat: ventas ficticias del panel — ✅ `ee7c8ce` (en `feature/demo-plantilla`)
 - **Qué:** `rubros/dulceria/ventas.ts`: ventas fechadas (fecha y hora, puesto, líneas con producto, presentación, factor y cantidad, medio de pago: efectivo, Yape o Plin) que cubren al menos los 7 días anteriores, y una **fecha de referencia fija** (`HOY_DEMO`) para que el panel no dependa del reloj. Tipo `Venta` en `demo/`.
-- **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en los 3 puestos y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
+- **Terminado cuando:** test de integridad: toda venta referencia productos, presentaciones y puestos existentes; hay ventas en `HOY_DEMO` en todos los puestos de la configuración y con los 3 medios de pago; ninguna fecha es posterior a `HOY_DEMO`.
 - **Verificación:** `npm test`.
 
-### T20b · feat: Panel del dueño
+### T20b · feat: Panel del dueño — ✅ `b227e7c` (en `feature/demo-plantilla`)
 - **Qué:** cálculos puros en `demo/panel.ts` a partir de las ventas, productos y `HOY_DEMO` (ventas del día por puesto, por vencer en 7 días, stock bajo, más vendidos de la semana, cobros por medio de pago) y la vista con barras CSS, sin librería de gráficos. La vista solo muestra lo que devuelven los cálculos.
 - **Terminado cuando:** tests de cada cálculo con datos pequeños de prueba y fecha fija; ningún número está escrito a mano en la vista; se lee bien en 375 px.
 - **Verificación:** `npm test`; prueba manual en 375 px.
 
-**Punto de control 6:** demo completa navegable (criterio de éxito 2).
+**Punto de control 6:** demo completa navegable (criterio de éxito 2). ⏳ Pendiente de revisión de Codex (base `3422cc1`, último de `main`). Antes: «Más filtros» en el catálogo `a1e7ebd` y prueba de peor caso `32dd32a`.
 
 ## Fase 7 — `sitio`
 

@@ -31,7 +31,7 @@ describe('exceso acumulado entre presentaciones', () => {
     const r = intentarAgregar(conBolsa, GOMITAS, 'unidad', 3);
     expect(r).toMatchObject({ ok: false, motivo: 'excede-disponible', pedido: conBolsa });
     if (!r.ok) {
-      expect(r.mensaje).toBe('Solo hay 8 unidades de Gomitas Osito y tu pedido llegaría a 9. Puedes agregar hasta 2 unidades más.');
+      expect(r.mensaje).toBe('Solo alcanza para 2 unidades más de Gomitas Osito.');
     }
   });
 
@@ -74,7 +74,7 @@ describe('editar líneas', () => {
     const r = intentarCambiarCantidad(pedido, GOMITAS, 'gomitas-osito:unidad', 9);
     expect(r).toMatchObject({ ok: false, motivo: 'excede-disponible', pedido });
     if (!r.ok) {
-      expect(r.mensaje).toBe('Solo hay 8 unidades de Gomitas Osito y tu pedido llegaría a 9. En esta línea caben hasta 8 unidades.');
+      expect(r.mensaje).toBe('En esta línea caben hasta 8 unidades de Gomitas Osito.');
     }
     expect(exigirOk(intentarCambiarCantidad(pedido, GOMITAS, 'gomitas-osito:unidad', 8)).lineas[0].cantidad).toBe(8);
   });
@@ -135,5 +135,40 @@ describe('el pedido no descuenta stock', () => {
     intentarAgregar(pedido, CHOCOLATE, 'caja', 99);
     expect(CHOCOLATE).toEqual(antes);
     expect(CHOCOLATE.stock).toBe(72);
+  });
+});
+
+describe('los mensajes hablan en la presentación de la línea', () => {
+  it('en una línea de bolsas dice "bolsas", no "unidades"', () => {
+    // CHOCOLATE: 72 unidades; bolsa x6 → caben 12 bolsas
+    const pedido = exigirOk(intentarAgregar(PEDIDO_VACIO, CHOCOLATE, 'bolsa', 2));
+    const r = intentarCambiarCantidad(pedido, CHOCOLATE, 'choco-luna:bolsa', 13);
+    if (!r.ok) expect(r.mensaje).toBe('En esta línea caben hasta 12 bolsas de Chocolate Luna.');
+    const agregar = intentarAgregar(pedido, CHOCOLATE, 'bolsa', 11);
+    if (!agregar.ok) expect(agregar.mensaje).toBe('Solo alcanza para 10 bolsas más de Chocolate Luna.');
+    expect(r.ok || agregar.ok).toBe(false);
+  });
+
+  it('si no alcanza ni para una bolsa, dice cuántas unidades quedan', () => {
+    const conBolsa = exigirOk(intentarAgregar(PEDIDO_VACIO, GOMITAS, 'bolsa', 1));
+    const r = intentarAgregar(conBolsa, GOMITAS, 'bolsa', 1);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.mensaje).toBe('No alcanza para 1 bolsa más de Gomitas Osito: quedan 2 unidades.');
+  });
+
+  it('si ya está todo en el pedido, lo dice', () => {
+    const todo = exigirOk(intentarAgregar(PEDIDO_VACIO, GOMITAS, 'unidad', 8));
+    const r = intentarAgregar(todo, GOMITAS, 'unidad', 1);
+    if (!r.ok) expect(r.mensaje).toBe('Ya tienes en tu pedido todo lo que hay de Gomitas Osito.');
+    expect(r.ok).toBe(false);
+  });
+
+  it('al cambiar a una caja que no alcanza, habla de cajas', () => {
+    // 1 unidad pasa a 1 caja x24: alcanza con 72, no con 20
+    const pedido = exigirOk(intentarAgregar(PEDIDO_VACIO, CHOCOLATE, 'unidad', 1));
+    expect(intentarCambiarPresentacion(pedido, CHOCOLATE, 'choco-luna:unidad', 'caja').ok).toBe(true);
+    const r2 = intentarCambiarPresentacion(pedido, { ...CHOCOLATE, stock: 20 }, 'choco-luna:unidad', 'caja');
+    if (!r2.ok) expect(r2.mensaje).toBe('No alcanza para 1 caja de Chocolate Luna.');
+    expect(r2.ok).toBe(false);
   });
 });

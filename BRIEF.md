@@ -80,10 +80,10 @@ Basadas en los prompts de Google Stitch de `docs/referencias/demo-dulceria.md`.
 
 | Pantalla | Qué tiene |
 |---|---|
-| Inicio | Barra de anuncio, buscador, hero de temporada, compra por ocasión, categorías, más vendidos, "Nuestros 3 puestos", footer con WhatsApp |
+| Inicio | Barra de anuncio, buscador, hero de temporada, compra por ocasión, categorías, más vendidos, "Nuestros puestos" (de 1 a 3 según la configuración; con 1, "Nuestra tienda"), footer con WhatsApp |
 | Catálogo | Buscador fijo, filtros (categoría, ocasión, puesto, marca), interruptor precio unidad / por mayor, grilla con etiquetas Nuevo, Oferta y Agotado |
 | Detalle de producto | Selector de presentación (unidad, bolsa, caja) con su precio, cantidad y "Agregar al pedido" |
-| Mi pedido | Líneas con subtotal, total, recoger en Puesto 1, 2 o 3, nombre y "Enviar pedido por WhatsApp" |
+| Mi pedido | Líneas con cantidad editable y subtotal, total, lugar de recojo según la configuración (con 1 puesto, "Recoger en tienda"; con 2 o 3, elegir el puesto), nombre y "Enviar pedido por WhatsApp" (P3: muestra el mensaje, no abre WhatsApp) |
 | Panel del dueño | Ventas del día por puesto, productos por vencer, stock bajo, más vendidos de la semana y cobros por efectivo, Yape y Plin |
 
 ### Módulos de código
@@ -131,7 +131,7 @@ Todo vive en archivos del repo, sin base de datos. Los montos se guardan en cén
 | **Pedido** | líneas (producto, presentación, factor, cantidad, subtotal), puesto de recojo, nombre del cliente, total |
 | **Indicadores del panel** | ventas del día por puesto, productos por vencer, stock bajo, más vendidos, cobros por medio de pago |
 
-Alcance: **unos 30 productos genéricos** de chocolates, gomitas, galletas, caramelos, snacks y artículos de fiesta, repartidos en 3 puestos.
+Alcance: **unos 30 productos genéricos** de chocolates, gomitas, galletas, caramelos, snacks y artículos de fiesta, repartidos en los puestos de la configuración. La demo es una **plantilla del rubro** (La Golosa es solo el negocio de ejemplo): admite de 1 a 3 puestos (2 por defecto) y una campaña configurable (Halloween, Navidad, Día del Niño o ninguna).
 
 Regla: el stock y las cantidades se piensan en unidad base, y el pedido guarda el factor usado. Ver *Unidades de medida y presentaciones* (vault).
 
