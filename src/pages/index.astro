@@ -1,11 +1,17 @@
 ---
 import Boton from '../components/Boton.astro';
+import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import RotadorServicios from '../components/RotadorServicios.astro';
-import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
+import ArmaInicio from '../components/ArmaInicio.astro';
+import ContactoTarjeta from '../components/ContactoTarjeta.astro';
+import Proceso from '../components/Proceso.astro';
+import ServiciosBento from '../components/ServiciosBento.astro';
+import { TECNOLOGIAS } from '../catalogo-servicios/proceso';
+import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
-import TelefonoDemo from '../components/TelefonoDemo.astro';
+import HistoriaDemo from '../components/HistoriaDemo.astro';
 import Base from '../layouts/Base.astro';
+import { DULCERIA } from '../rubros/dulceria/config';
 ---
 
 <Base titulo="NissiDev">
@@ -15,70 +21,62 @@ import Base from '../layouts/Base.astro';
       <Logo etiqueta="NissiDev" class="hero__logo" />
     </div>
     <p class="hero__etiqueta entra" style="--n: 0">Webs y sistemas · Este de Lima</p>
-    <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">Software que impulsa tu negocio.</h1>
+    <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">
+      Software que impulsa <span class="hero__acento">tu negocio.</span>
+    </h1>
     <p class="hero__bajada entra" style="--n: 2">
       Prueba cómo quedaría el sistema de tu negocio, elige lo que necesitas y recibe la cotización por WhatsApp.
     </p>
     <div class="hero__acciones entra" style="--n: 3">
       <Boton href="/demos">Ver la demo de mi rubro</Boton>
-      <Boton href={WHATSAPP_ENLACE} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
+      <Boton href={WHATSAPP_ENLACE} variante="vidrio" externo><IconoWhatsApp />Escríbeme</Boton>
     </div>
+    <ul class="hero__servicios entra" style="--n: 4" aria-label="Servicios">
+      {SERVICIOS.map((servicio) => <li class="hero__servicio vidrio vidrio--chico">{servicio.nombre}</li>)}
+    </ul>
   </section>
 
-  <div class="contenedor entra" style="--n: 4">
-    <RotadorServicios />
-  </div>
 
   <section id="demo" class="contenedor seccion demo" aria-labelledby="demo-titulo">
     <div class="seccion__cabeza" data-aparecer>
-      <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="demo__tu">tu</span> sistema.</h2>
-      <p class="seccion__bajada">Una dulcería de ejemplo, funcionando.</p>
+      <p class="etiqueta">Demo en vivo</p>
+      <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="acento">tu</span> sistema.</h2>
+      <p class="seccion__bajada">Baja despacio: es una dulcería de ejemplo, de principio a fin.</p>
     </div>
-    <div class="demo__telefono">
-      <TelefonoDemo />
-    </div>
-    <p class="demo__sello">Demo · datos de ejemplo</p>
-    <Boton href="/demos/dulceria/">Abrir la demo</Boton>
+    <HistoriaDemo config={DULCERIA} />
+    <Boton href="/demos/dulceria/">Abrir la demo completa</Boton>
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
-    <div class="arma">
-      <p class="etiqueta">Precios referenciales</p>
-      <h2 id="arma-titulo" class="titulo-2">Arma tu sistema</h2>
-      <span class="linea-dorada" aria-hidden="true"></span>
-      <p class="seccion__bajada">
-        Elige las funciones que necesita tu negocio y mira cuánto costaría. Puedes empezar con poco y sumar después.
-      </p>
-      <Boton href="/arma-tu-sistema">Elegir funciones</Boton>
+  <section id="servicios" class="contenedor seccion" aria-labelledby="servicios-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <p class="etiqueta">Lo que hago</p>
+      <h2 id="servicios-titulo" class="titulo-2">Cuatro formas de <span class="acento">impulsar</span> tu negocio.</h2>
     </div>
+    <ServiciosBento />
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="pasos-titulo" data-aparecer>
-    <h2 id="pasos-titulo" class="titulo-2">Cómo trabajamos</h2>
-    <ol class="pasos" role="list">
-      {
-        PASOS.map((paso, i) => (
-          <li class="paso">
-            <span class="paso__numero" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span class="paso__titulo">{paso.titulo}</span>
-            <span class="paso__texto">{paso.texto}</span>
-          </li>
-        ))
-      }
-    </ol>
+  <section id="armar" class="contenedor seccion" aria-labelledby="armar-titulo" data-aparecer>
+    <ArmaInicio />
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="pasos-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <p class="etiqueta">Cómo trabajamos</p>
+      <h2 id="pasos-titulo" class="titulo-2">De la idea a tu sistema, <span class="acento">sin sorpresas.</span></h2>
+    </div>
+    <Proceso />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
     <h2 id="stack-titulo" class="etiqueta">Con qué construyo</h2>
     <ul class="chips" role="list">
-      {TECNOLOGIAS.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
+      {TECNOLOGIAS.map((tecnologia) => <li class="chip vidrio vidrio--chico">{tecnologia}</li>)}
     </ul>
+    <p class="casos">Casos: próximamente.</p>
   </section>
 
-  <section class="contenedor seccion" data-aparecer>
-    <p class="casos">Casos: próximamente.</p>
+  <section id="contacto" class="contenedor seccion" aria-labelledby="contacto-titulo" data-aparecer>
+    <ContactoTarjeta id="contacto-titulo" />
   </section>
 </Base>
 
@@ -88,51 +86,74 @@ import Base from '../layouts/Base.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.125rem;
-    padding-block: var(--espacio-8) var(--espacio-6);
+    gap: 1.375rem;
+    padding-block: var(--espacio-12) var(--espacio-8);
     text-align: center;
   }
 
   .hero__escena {
     display: grid;
     place-items: center;
-    width: 8.25rem;
-    height: 10.625rem;
+    width: 7.375rem;
+    height: 9.375rem;
     perspective: 900px;
   }
 
   .hero__escena :global(.hero__logo) {
-    width: 8.25rem;
+    width: 7.375rem;
   }
 
   .hero__etiqueta {
     color: var(--acento-texto);
     font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
+  /* 42 px en el celular, hasta 96 px; espaciado negativo que crece con el tamaño */
   .hero__titulo {
-    max-width: 14ch;
-    font-size: clamp(2rem, 1.2rem + 4.2vw, 3.5rem);
+    max-width: 13ch;
+    font-size: clamp(2.625rem, 11vw, 6rem);
     font-weight: var(--peso-titulo);
     line-height: var(--interlineado-titulo);
-    letter-spacing: -0.035em;
+    letter-spacing: var(--espaciado-titulo-1);
+  }
+
+  .hero__acento {
+    color: var(--acento-texto);
   }
 
   .hero__bajada {
-    max-width: 36ch;
+    max-width: 34ch;
     color: var(--texto-suave);
+    font-size: clamp(1.0625rem, 4.4vw, 1.25rem);
+    line-height: 1.5;
   }
 
   .hero__acciones {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 0.625rem;
-    width: 100%;
-    max-width: 21.25rem;
-    margin-top: 0.375rem;
+  }
+
+  .hero__servicios {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--espacio-2);
+    max-width: 34rem;
+    margin-top: var(--espacio-1);
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__servicio {
+    padding: var(--espacio-2) 0.875rem;
+    color: var(--tinta-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
 
   @media (min-width: 48rem) {
@@ -142,17 +163,11 @@ import Base from '../layouts/Base.astro';
 
     .hero__escena,
     .hero__escena :global(.hero__logo) {
-      width: 10rem;
+      width: 8.75rem;
     }
 
     .hero__escena {
-      height: 12.75rem;
-    }
-
-    .hero__acciones {
-      flex-direction: row;
-      justify-content: center;
-      max-width: none;
+      height: 11.125rem;
     }
   }
 
@@ -215,7 +230,7 @@ import Base from '../layouts/Base.astro';
   /* El texto no espera al logo: empieza a los 300 ms, en paralelo, y termina hacia los 1.1 s.
      Es solo CSS, así que se ve aunque el JavaScript falle. */
   .entra {
-    animation: sube 560ms var(--ease-out) both;
+    animation: sube 640ms var(--ease-out) both;
     animation-delay: calc(var(--inicio-texto, 300ms) + var(--n) * 80ms);
   }
 
@@ -278,104 +293,12 @@ import Base from '../layouts/Base.astro';
     text-transform: uppercase;
   }
 
-  .linea-dorada {
-    width: 1.75rem;
-    height: 2px;
-    background: var(--acento);
-    border-radius: 2px;
-  }
-
   .demo {
     scroll-margin-top: var(--espacio-4);
   }
 
-  .demo__tu {
+  .acento {
     color: var(--acento-texto);
-  }
-
-  .demo__telefono {
-    margin-top: var(--espacio-4);
-  }
-
-  /* "Producto dentro del dispositivo": el celular sube y se agranda mientras entra en pantalla.
-     Solo CSS, atado al scroll; sin soporte o con movimiento reducido queda quieto en su lugar. */
-  @keyframes telefono-entra {
-    from {
-      transform: translateY(80px) scale(0.86);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: view()) {
-      .demo__telefono {
-        /* Propiedades sueltas: animation-timeline no puede ir dentro del atajo "animation" (el minificador
-           las juntaría y el navegador descartaría la regla). */
-        animation-name: telefono-entra;
-        animation-fill-mode: both;
-        animation-timing-function: var(--ease-out);
-        animation-timeline: view();
-        animation-range: entry 0% cover 45%;
-      }
-    }
-  }
-
-  .demo__sello {
-    color: var(--texto-suave);
-    font-size: var(--texto-xs);
-  }
-
-  .arma {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--espacio-3);
-    width: 100%;
-    max-width: 30rem;
-    padding: var(--espacio-8) var(--espacio-6);
-    background: var(--fondo-elevado);
-    border-radius: 1.5rem;
-    box-shadow: var(--sombra-tarjeta);
-  }
-
-  .arma :global(.boton) {
-    margin-top: var(--espacio-2);
-  }
-
-  .pasos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--espacio-3);
-    width: 100%;
-    max-width: 30rem;
-    padding: 0;
-    list-style: none;
-  }
-
-  .paso {
-    display: grid;
-    align-content: start;
-    justify-items: center;
-    gap: var(--espacio-1);
-    padding: var(--espacio-5) var(--espacio-3);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-tarjeta);
-  }
-
-  .paso__numero {
-    color: var(--acento-texto);
-    font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .paso__titulo {
-    font-weight: var(--peso-titulo);
-  }
-
-  .paso__texto {
-    color: var(--texto-suave);
-    font-size: var(--texto-sm);
   }
 
   .chips {
@@ -390,8 +313,6 @@ import Base from '../layouts/Base.astro';
 
   .chip {
     padding: var(--espacio-2) var(--espacio-4);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-pildora);
     font-size: var(--texto-sm);
     font-weight: 600;
   }
@@ -411,9 +332,5 @@ import Base from '../layouts/Base.astro';
       padding-top: var(--espacio-24);
     }
 
-    .pasos {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      max-width: 56rem;
-    }
   }
 </style>

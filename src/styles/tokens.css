@@ -1,23 +1,24 @@
-/* Tokens de diseño de NissiDev · dirección "Ensamble", la del video de marca (ver docs/diseño.md).
-   La demo de dulcería define los suyos aparte. */
+/* Tokens de diseño de NissiDev · dirección "Liquid Glass" (TD2, ADR-003): el mundo claro de la marca
+   (crema + tinta + oro) con vidrio translúcido sobre luces de la marca. La demo de dulcería define los suyos aparte. */
 :root {
   /* Colores de la marca */
-  --color-negro: #1e1f22;
+  --color-negro: #1e1f22; /* tinta */
   --color-dorado: #b28a4c;
   --color-claro: #f7f4ec; /* crema del logo y del video */
   --color-blanco: #ffffff;
 
-  /* Derivados. Contraste medido (WCAG) y comprobado en src/styles/tokens.test.ts:
-     sobre crema/blanco: negro 14.99/16.48 · dorado-texto 5.21/5.73 · gris 5.80/6.38
-     sobre negro: crema 14.99 · piedra 9.49 · oro-claro 8.65 · arena 5.67 · dorado 5.21
-     negro sobre dorado (botón dorado) 5.21
-     dorado / crema 2.88 → NO sirve para texto: solo adornos o texto ≥ 24 px en negrita
-     contorno / blanco 3.67 · contorno / crema 3.34 → bordes de controles (mínimo 3:1) */
-  --color-dorado-texto: #80612c;
-  --color-gris: #5e5f63;
+  /* Textos (TD2). Todo texto sobre claro usa tinta, tinta-2, tinta-3 u oro-texto: nada de gris claro.
+     Contraste medido en src/styles/tokens.test.ts, también sobre las luces y sobre el vidrio. */
+  --tinta-2: #3e3f44; /* texto secundario */
+  --tinta-3: #55565b; /* notas y etiquetas pequeñas */
+  --oro-texto: #6e5122; /* acentos de texto sobre claro ("tu negocio.", etiquetas, cifras) */
+  --oro-claro: #e7cf9f; /* solo sobre oscuro */
+  --color-oro-claro: var(--oro-claro);
+
+  /* Sobre negro (resumen del carrito y franja de la demo) */
   --color-piedra: #c9c4ba;
   --color-arena: #9c978e;
-  --color-oro-claro: #d9b77e;
+  /* Borde de controles: contorno / blanco 3.67 · contorno / crema 3.34 (mínimo 3:1) */
   --color-contorno: #8a857c;
   /* Decorativos (no llevan texto ni marcan el límite de un control) */
   --color-linea: #ece7dd;
@@ -30,24 +31,48 @@
   --fondo-elevado: var(--color-blanco);
   --fondo-oscuro: var(--color-negro);
   --texto: var(--color-negro);
-  --texto-suave: var(--color-gris);
+  --texto-suave: var(--tinta-2);
+  --texto-nota: var(--tinta-3);
   --texto-sobre-oscuro: var(--color-claro);
   --texto-suave-sobre-oscuro: var(--color-piedra);
   --nota-sobre-oscuro: var(--color-arena);
   --acento: var(--color-dorado);
-  --acento-texto: var(--color-dorado-texto);
-  --acento-sobre-oscuro: var(--color-oro-claro);
+  --acento-texto: var(--oro-texto);
+  --acento-sobre-oscuro: var(--oro-claro);
   --borde: color-mix(in srgb, var(--color-negro) 15%, transparent);
 
-  /* Foco: el contorno necesita contraste ≥ 3:1 con el fondo que lo rodea.
-     Regla: dorado oscuro sobre fondos claros, dorado original sobre fondos oscuros.
-     dorado-texto / crema 5.21 · dorado-texto / blanco 5.73 · dorado / negro 5.21
-     (dorado-texto / negro 2.88 → no sirve). Las zonas oscuras usan la clase .zona-oscura. */
-  --foco: var(--color-dorado-texto);
+  /* Foco: contraste ≥ 3:1 con lo que lo rodea. Oro-texto sobre claro; dorado original sobre oscuro
+     (las zonas oscuras usan la clase .zona-oscura). */
+  --foco: var(--oro-texto);
   --foco-sobre-oscuro: var(--color-dorado);
 
-  /* Tipografía: Manrope (OFL), servida desde public/fonts */
-  --fuente-base: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Luces de fondo (manchas de la marca): fijas detrás de todo; solo las mueve el scroll */
+  --luz-1: #ebd3a3;
+  --luz-1-opacidad: 0.9;
+  --luz-2: #f3ddb9;
+  --luz-2-opacidad: 0.9;
+  --luz-3: #d8b98a;
+  --luz-3-opacidad: 0.55;
+  --luz-4: #c9cbd6;
+  --luz-4-opacidad: 0.5;
+
+  /* Vidrio. El degradado va de --vidrio a --vidrio-2; el borde superior brillante es la luz que lo toca.
+     Un vidrio más grande se lee más grueso: más desenfoque y más sombra que un chip. */
+  --vidrio: rgb(255 255 255 / 0.58);
+  --vidrio-2: rgb(255 255 255 / 0.36);
+  --vidrio-2-alfa: 0.36; /* lo más transparente del degradado: el peor caso del contraste */
+  --vidrio-fuerte: rgb(255 255 255 / 0.78); /* el header, que pasa por encima de otros vidrios al hacer scroll */
+  --vidrio-borde: rgb(255 255 255 / 0.75);
+  --vidrio-filtro: blur(24px) saturate(170%);
+  --vidrio-filtro-chico: blur(14px) saturate(160%);
+  --vidrio-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.95), inset 0 -1px 0 rgb(255 255 255 / 0.3), 0 1px 1px rgb(30 31 34 / 0.04),
+    0 12px 32px rgb(30 31 34 / 0.1);
+  --vidrio-sombra-chica: inset 0 1px 0 rgb(255 255 255 / 0.95), 0 4px 14px rgb(30 31 34 / 0.08);
+  --radio-vidrio: 1.75rem; /* 28 px */
+
+  /* Tipografía: Geist (OFL), variable, servida desde public/fonts */
+  --fuente-base: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --texto-xs: 0.75rem; /* 12 px: notas */
   --texto-sm: 0.875rem; /* 14 px */
   --texto-md: 1rem; /* 16 px: texto */
@@ -55,11 +80,11 @@
   --texto-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
   --titulo-2: clamp(1.875rem, 1.55rem + 1.4vw, 2.75rem); /* 30 px en celular */
   --titulo-1: clamp(2.75rem, 2rem + 3.2vw, 4.75rem); /* 44 px en celular */
-  --espaciado-titulo-1: -0.04em; /* titulares grandes y apretados */
-  --espaciado-titulo-2: -0.027em;
+  --espaciado-titulo-1: -0.045em; /* titulares grandes y apretados (Geist lo pide más que Manrope) */
+  --espaciado-titulo-2: -0.035em;
   --interlineado: 1.55;
-  --interlineado-titulo: 1.04;
-  --peso-titulo: 700; /* titulares en 700, no 800 (como el video) */
+  --interlineado-titulo: 1.02;
+  --peso-titulo: 650; /* Geist variable: 650 se ve firme sin ponerse pesado */
 
   /* Espacios (múltiplos de 4 px) */
   --espacio-1: 0.25rem;
@@ -90,9 +115,10 @@
   --sombra-flotante: 0 20px 40px rgb(30 31 34 / 0.25);
   --sombra-telefono: 0 0 0 1px #34353a, 0 30px 60px rgb(30 31 34 / 0.22); /* sobre fondo claro */
 
-  /* Movimiento (reglas de Emil Kowalski, ver docs/diseño.md): solo transform, opacity y blur ≤ 4 px */
+  /* Movimiento (reglas de Emil Kowalski, ver docs/diseño.md): solo transform, opacity y blur ≤ 6 px */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* entradas y respuesta a la interfaz */
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* lo que se mueve en pantalla: el logo que se endereza */
+  --ease-papel: cubic-bezier(0.3, 0.15, 0.2, 1); /* avance de la proforma desde la ranura */
   --duracion-toque: 160ms; /* scale(0.97) al presionar */
   --duracion-fundido: 200ms; /* fundidos cortos, también con "movimiento reducido" */
 

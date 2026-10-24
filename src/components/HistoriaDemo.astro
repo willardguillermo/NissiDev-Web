@@ -1,0 +1,651 @@
+---
+// Historia de la demo con scroll: un celular fijo (sticky) que pasa por Catálogo → Pedido → WhatsApp → Panel
+// mientras bajas. Los botones de paso también cambian la pantalla (con teclado). Nada avanza solo.
+// Las mini pantallas salen de la configuración del rubro (demo/historia.ts); este archivo solo las dibuja.
+// Ilustracion es un componente de React sin estado: aquí se dibuja como HTML estático, sin enviar React.
+import { historiaDeLaDemo, PASOS_HISTORIA } from '../demo/historia';
+import { variablesDeTema } from '../demo/tema';
+import type { RubroConfig } from '../demo/tipos';
+import { Ilustracion } from '../islas/demo/Ilustracion';
+
+interface Props {
+  config: RubroConfig;
+}
+
+const { config } = Astro.props;
+const { negocio, catalogo, pedido, whatsapp, panel } = historiaDeLaDemo(config);
+const tema = Object.entries(variablesDeTema(config.tema))
+  .map(([nombre, valor]) => `${nombre}: ${valor}`)
+  .join('; ');
+const dos = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="historia" data-historia>
+  <div class="historia__pegado">
+    <div class="historia__pasos" role="group" aria-label="Pasos de la demo">
+      {
+        PASOS_HISTORIA.map((paso, i) => (
+          <button
+            type="button"
+            class="historia__paso"
+            data-paso={i}
+            data-titulo={paso.titulo}
+            data-texto={paso.texto}
+            aria-current={i === 0 ? 'step' : undefined}
+          >
+            <span class="historia__numero">{dos(i + 1)}</span> {paso.corto}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="historia__marco">
+      <!-- Imagen ilustrativa: lo que cuenta cada paso va en la leyenda (aria-live) -->
+      <div class="fono" data-fono aria-hidden="true">
+        <div class="fono__pantalla" style={tema}>
+          <span class="fono__isla"></span>
+
+          <div class="vista vista--activa" data-vista="0">
+            <p class="d-anuncio">{catalogo.anuncio}</p>
+            <p class="d-negocio">{negocio}</p>
+            <p class="d-buscar">{catalogo.buscador}</p>
+            <div class="d-hero">{catalogo.titular}<small>{catalogo.bajada}</small></div>
+            <div class="d-cats">
+              {
+                catalogo.categorias.map((c) => (
+                  <div class="d-cat">
+                    <Ilustracion nombre={c.ilustracion} className="d-ilu" />
+                    {c.nombre}
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="vista" data-vista="1">
+            <p class="d-negocio">Catálogo</p>
+            <div class="d-grid">
+              {
+                pedido.productos.map((p, i) => (
+                  <div class:list={['d-prod', { 'd-prod--toque': i === 1 }]}>
+                    <Ilustracion nombre={p.ilustracion} className="d-ilu" />
+                    <b>{p.nombre}</b>
+                    <span>{p.presentacion}</span>
+                    <span class="d-precio">{p.precio}</span>
+                    <span class="d-agregar">Agregar</span>
+                  </div>
+                ))
+              }
+            </div>
+            <div class="d-aviso"><span>Mi pedido ({pedido.cantidad})</span><span>{pedido.total}</span></div>
+          </div>
+
+          <div class="vista" data-vista="2">
+            <p class="d-negocio d-negocio--chat">WhatsApp · {negocio}</p>
+            <div class="d-chat">
+              <p class="d-burbuja">{whatsapp.mensaje.map((linea) => <span>{linea}</span>)}</p>
+              <p class="d-burbuja d-burbuja--resp">{whatsapp.respuesta}</p>
+            </div>
+          </div>
+
+          <div class="vista" data-vista="3">
+            <p class="d-negocio d-negocio--chat">Panel del dueño</p>
+            <div class="d-kpi">
+              <small>Ventas de hoy</small><b>{panel.ventasHoy}</b>
+              <div class="d-barras">
+                {panel.puestos.map((b) => <div>{b.nombre}<span style={`--v: ${b.proporcion}`} /></div>)}
+              </div>
+            </div>
+            <div class="d-kpi">
+              <small>Cobros de hoy</small>
+              <div class="d-barras">
+                {panel.cobros.map((b) => <div>{b.nombre}<span style={`--v: ${b.proporcion}`} /></div>)}
+              </div>
+            </div>
+            {
+              panel.porVencer && (
+                <div class="d-kpi">
+                  <small>Por vencer</small>
+                  <b class="d-vence">{panel.porVencer.nombre} · {panel.porVencer.cuando.toLowerCase()}</b>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="historia__leyenda" aria-live="polite">
+      <strong data-leyenda-titulo>{PASOS_HISTORIA[0].titulo}</strong>
+      <span data-leyenda-texto>{PASOS_HISTORIA[0].texto}</span>
+    </p>
+    <p class="historia__sello">Demo · datos de ejemplo</p>
+  </div>
+
+  <!-- Un espacio por paso: al pasar por el centro de la pantalla, el celular cambia -->
+  <div class="historia__espacios" aria-hidden="true">
+    {PASOS_HISTORIA.map((_, i) => <div data-espacio={i} />)}
+  </div>
+</div>
+
+<script>
+  // Cambia la pantalla según el paso (scroll o botón) e inclina el celular según el scroll
+  // (y el puntero, solo con mouse). Con movimiento reducido no hay inclinación. Nada avanza solo.
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  function iniciar() {
+    const historia = document.querySelector<HTMLElement>('[data-historia]');
+    if (!historia) return;
+    const fono = historia.querySelector<HTMLElement>('[data-fono]')!;
+    const vistas = [...historia.querySelectorAll<HTMLElement>('[data-vista]')];
+    const botones = [...historia.querySelectorAll<HTMLButtonElement>('[data-paso]')];
+    const titulo = historia.querySelector<HTMLElement>('[data-leyenda-titulo]')!;
+    const texto = historia.querySelector<HTMLElement>('[data-leyenda-texto]')!;
+    let actual = 0;
+
+    const ir = (i: number) => {
+      if (i === actual) return;
+      actual = i;
+      vistas.forEach((v, j) => v.classList.toggle('vista--activa', j === i));
+      botones.forEach((b, j) => (j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')));
+      titulo.textContent = botones[i].dataset.titulo ?? '';
+      texto.textContent = botones[i].dataset.texto ?? '';
+    };
+
+    botones.forEach((b, i) => b.addEventListener('click', () => ir(i)));
+    let observador: IntersectionObserver;
+    const observarPasos = () => {
+      observador?.disconnect();
+      // Los porcentajes de rootMargin usan el ancho: en apaisado vaciarían la zona central.
+      const margen = window.innerHeight * 0.45;
+      observador = new IntersectionObserver(
+        (entradas) => entradas.forEach((e) => e.isIntersecting && ir(Number((e.target as HTMLElement).dataset.espacio))),
+        { rootMargin: `-${margen}px 0px -${margen}px 0px` },
+      );
+      historia.querySelectorAll('[data-espacio]').forEach((espacio) => observador.observe(espacio));
+    };
+    observarPasos();
+    window.addEventListener('resize', observarPasos);
+
+    // Inclinación: llega inclinado y se endereza mientras la historia entra en pantalla
+    let pendiente = 0;
+    let px = 0;
+    let py = 0;
+    const pintar = () => {
+      pendiente = 0;
+      if (reducido.matches) {
+        fono.style.transform = '';
+        return;
+      }
+      const caja = historia.getBoundingClientRect();
+      const avance = Math.min(1, Math.max(0, (innerHeight - caja.top) / (innerHeight * 0.9)));
+      const rx = 14 * (1 - avance) - py * 6;
+      fono.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${(px * 8).toFixed(2)}deg)`;
+    };
+    const pedir = () => {
+      if (!pendiente) pendiente = requestAnimationFrame(pintar);
+    };
+    const alMover = (e: PointerEvent) => {
+      if (!conMouse.matches) return;
+      const caja = fono.getBoundingClientRect();
+      px = Math.max(-1, Math.min(1, (e.clientX - (caja.left + caja.width / 2)) / 400));
+      py = Math.max(-1, Math.min(1, (e.clientY - (caja.top + caja.height / 2)) / 400));
+      pedir();
+    };
+    window.addEventListener('scroll', pedir, { passive: true });
+    window.addEventListener('pointermove', alMover, { passive: true });
+    reducido.addEventListener('change', pedir);
+    pintar();
+
+    // Al irse de la página (View Transitions) se limpia todo
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        observador.disconnect();
+        window.removeEventListener('resize', observarPasos);
+        cancelAnimationFrame(pendiente);
+        window.removeEventListener('scroll', pedir);
+        window.removeEventListener('pointermove', alMover);
+        reducido.removeEventListener('change', pedir);
+      },
+      { once: true },
+    );
+  }
+
+  document.addEventListener('astro:page-load', iniciar);
+</script>
+
+<style>
+  .historia {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Debajo del header flotante (~4.5 rem) */
+  .historia__pegado {
+    position: sticky;
+    top: 5.25rem;
+    display: grid;
+    justify-items: center;
+    gap: var(--espacio-4);
+  }
+
+  .historia__pasos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.375rem;
+  }
+
+  .historia__sello {
+    grid-column: 1 / -1;
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+
+  .historia__paso {
+    min-height: 2.75rem;
+    padding: 0 var(--espacio-3);
+    background: transparent;
+    color: var(--tinta-2);
+    border: 0;
+    border-radius: var(--radio-pildora);
+    box-shadow: inset 0 0 0 1px rgb(30 31 34 / 0.14);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition:
+      background-color var(--duracion-fundido) ease,
+      color var(--duracion-fundido) ease,
+      transform var(--duracion-toque) var(--ease-out);
+  }
+
+  .historia__paso:active {
+    transform: scale(0.97);
+  }
+
+  .historia__paso[aria-current='step'] {
+    background: var(--fondo-oscuro);
+    color: var(--color-blanco);
+    box-shadow: none;
+  }
+
+  /* En el celular no caben los números: solo el nombre del paso */
+  .historia__numero {
+    display: none;
+  }
+
+  /* Sin JavaScript: no hay pasos que tocar ni espacios que recorrer; queda el celular con la portada */
+  :global(html:not(.js)) .historia__pasos,
+  :global(html:not(.js)) .historia__espacios {
+    display: none;
+  }
+
+  .historia__marco {
+    perspective: 1200px;
+  }
+
+  /* Reserva también el sello: todo el bloque sticky cabe en un celular de 667 px de alto. */
+  .fono {
+    width: min(15.625rem, 54vw, calc((100svh - 18rem) * 0.486));
+    aspect-ratio: 9 / 18.5;
+    padding: 0.5625rem;
+    background: linear-gradient(160deg, #2a2b30, #121315);
+    border-radius: 2.625rem;
+    box-shadow:
+      inset 0 0 0 1.5px #3b3c42,
+      inset 0 2px 0 rgb(255 255 255 / 0.18),
+      0 40px 70px rgb(30 31 34 / 0.28),
+      0 8px 18px rgb(30 31 34 / 0.18);
+    transition: transform 400ms var(--ease-out);
+  }
+
+  .fono__pantalla {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: var(--d-fondo);
+    color: var(--d-texto);
+    border-radius: 2.125rem;
+    text-align: left;
+  }
+
+  /* Reflejo de vidrio sobre la pantalla */
+  .fono__pantalla::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, rgb(255 255 255 / 0.35) 0%, transparent 28%);
+    pointer-events: none;
+  }
+
+  .fono__isla {
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    z-index: 3;
+    width: 4.375rem;
+    height: 1.25rem;
+    margin-left: -2.1875rem;
+    background: #0c0d0e;
+    border-radius: var(--radio-pildora);
+  }
+
+  .vista {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2.375rem 0.75rem 0.75rem;
+    font-size: 0.5rem;
+    line-height: 1.35;
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(4px);
+    transition:
+      opacity 260ms var(--ease-out),
+      transform 260ms var(--ease-out),
+      filter 260ms var(--ease-out);
+  }
+
+  .vista--activa {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .d-anuncio {
+    padding: 0.3rem;
+    background: var(--d-marca);
+    color: var(--d-sobre-marca);
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .d-negocio {
+    color: var(--d-marca-texto);
+    font-size: 0.875rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .d-negocio--chat {
+    color: var(--d-texto);
+  }
+
+  .d-buscar {
+    padding: 0.4rem 0.625rem;
+    background: var(--d-fondo-suave);
+    color: var(--d-texto-suave);
+    border-radius: var(--radio-pildora);
+  }
+
+  .d-hero {
+    display: grid;
+    gap: 0.375rem;
+    padding: 0.75rem;
+    background: #1a1a1a;
+    color: var(--d-amarillo);
+    border-radius: 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .d-hero small {
+    color: #fff;
+    font-size: 0.5rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .d-cats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.375rem;
+  }
+
+  .d-cat {
+    display: grid;
+    justify-items: center;
+    gap: 0.125rem;
+    padding: 0.375rem 0.125rem;
+    border: 2px solid var(--d-marca);
+    border-radius: 0.75rem;
+    font-weight: 700;
+  }
+
+  .d-cat:nth-child(2) {
+    border-color: var(--d-turquesa);
+  }
+
+  .d-cat:nth-child(3) {
+    border-color: var(--d-amarillo);
+  }
+
+  .d-cat :global(.d-ilu) {
+    width: 1.625rem;
+  }
+
+  .d-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.375rem;
+  }
+
+  .d-prod {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.4rem;
+    background: var(--d-fondo-suave);
+    border-radius: 0.75rem;
+  }
+
+  .d-prod :global(.d-ilu) {
+    width: 100%;
+    height: 2.25rem;
+    background: var(--d-fondo);
+    border-radius: 0.5rem;
+  }
+
+  .d-prod b {
+    overflow: hidden;
+    font-size: 0.5625rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .d-precio {
+    font-size: 0.625rem;
+    font-weight: 800;
+  }
+
+  .d-agregar {
+    padding: 0.2rem;
+    background: var(--d-marca);
+    color: var(--d-sobre-marca);
+    border-radius: var(--radio-pildora);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* El dedo "toca" Agregar al llegar a este paso */
+  .vista--activa .d-prod--toque .d-agregar {
+    animation: toque 600ms var(--ease-out) 300ms both;
+  }
+
+  @keyframes toque {
+    30% {
+      transform: scale(0.9);
+    }
+  }
+
+  .d-aviso {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding: 0.5rem 0.625rem;
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 0.75rem;
+    font-size: 0.5625rem;
+    font-weight: 600;
+  }
+
+  .d-chat {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.375rem;
+    padding: 0.625rem;
+    background: #ede6da;
+    border-radius: 0.875rem;
+  }
+
+  .d-burbuja {
+    display: grid;
+    align-self: flex-end;
+    max-width: 92%;
+    padding: 0.5rem;
+    background: #dcf7c5;
+    border-radius: 0.75rem 0.75rem 0.25rem 0.75rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
+  }
+
+  .d-burbuja--resp {
+    align-self: flex-start;
+    background: #fff;
+    border-radius: 0.75rem 0.75rem 0.75rem 0.25rem;
+  }
+
+  .d-kpi {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.5625rem;
+    background: var(--d-fondo-suave);
+    border-radius: 0.75rem;
+  }
+
+  .d-kpi small {
+    color: var(--d-texto-suave);
+    font-weight: 600;
+  }
+
+  .d-kpi b {
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .d-kpi .d-vence {
+    font-size: 0.6875rem;
+  }
+
+  .d-barras {
+    display: grid;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+  }
+
+  .d-barras div {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .d-barras span {
+    height: 0.4375rem;
+    background: var(--d-marca);
+    border-radius: 0.5rem;
+    transform: scaleX(var(--v));
+    transform-origin: left;
+  }
+
+  .vista--activa .d-barras span {
+    animation: crece 700ms var(--ease-out) both;
+  }
+
+  @keyframes crece {
+    from {
+      transform: scaleX(0.02);
+    }
+  }
+
+  .historia__leyenda {
+    display: grid;
+    gap: var(--espacio-1);
+    max-width: 30ch;
+    min-height: 4.75rem;
+    text-align: center;
+  }
+
+  .historia__leyenda strong {
+    font-size: 1.25rem;
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.02em;
+  }
+
+  .historia__leyenda span {
+    color: var(--texto-suave);
+    font-size: 0.9375rem;
+  }
+
+  .historia__espacios div {
+    height: 72svh;
+  }
+
+  @media (min-width: 56.25rem) {
+    .historia__pegado {
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      top: 6rem;
+    }
+
+    .historia__pasos {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-self: end;
+    }
+
+    .historia__numero {
+      display: inline;
+    }
+
+    .historia__leyenda {
+      justify-self: start;
+      text-align: left;
+    }
+  }
+
+  /* Movimiento reducido: sin inclinación ni escala ni desenfoque; las pantallas cambian con un fundido */
+  @media (prefers-reduced-motion: reduce) {
+    .fono {
+      transform: none;
+      transition: none;
+    }
+
+    .vista {
+      transform: none;
+      filter: none;
+      transition: opacity var(--duracion-fundido) ease;
+    }
+
+    .vista--activa .d-prod--toque .d-agregar,
+    .vista--activa .d-barras span {
+      animation: none;
+    }
+
+    .historia__paso {
+      transition:
+        background-color var(--duracion-fundido) ease,
+        color var(--duracion-fundido) ease;
+    }
+  }
+</style>

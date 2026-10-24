@@ -2,15 +2,16 @@
 // Con href es un enlace; sin href, un <button>.
 interface Props {
   href?: string;
-  /** primario: tinta · secundario: transparente con contorno suave · dorado: para fondos oscuros */
-  variante?: 'primario' | 'secundario' | 'dorado';
+  /** primario: tinta · secundario: transparente con contorno suave · dorado: para fondos oscuros · vidrio: chip de vidrio */
+  variante?: 'primario' | 'secundario' | 'dorado' | 'vidrio';
   type?: 'button' | 'submit';
   externo?: boolean;
   class?: string;
 }
 
 const { href, variante = 'primario', type = 'button', externo = false, class: clase } = Astro.props;
-const clases = ['boton', `boton--${variante}`, clase];
+// El vidrio usa la clase global (blur, borde brillante, brillo con el puntero y sus versiones sólidas)
+const clases = ['boton', `boton--${variante}`, variante === 'vidrio' && 'vidrio vidrio--chico', clase];
 ---
 
 {
@@ -37,11 +38,11 @@ const clases = ['boton', `boton--${variante}`, clase];
     align-items: center;
     justify-content: center;
     gap: var(--espacio-2);
-    min-height: 3rem;
-    padding: var(--espacio-3) 1.375rem;
+    min-height: 3.25rem;
+    padding: var(--espacio-3) var(--espacio-6);
     border: 0;
     border-radius: var(--radio-pildora);
-    font-size: 0.9375rem;
+    font-size: var(--texto-md);
     font-weight: 600;
     line-height: 1.2;
     text-align: center;
@@ -51,7 +52,12 @@ const clases = ['boton', `boton--${variante}`, clase];
     -webkit-user-select: none;
     transition:
       transform var(--duracion-toque) var(--ease-out),
-      background-color var(--duracion-fundido) ease;
+      background-color var(--duracion-fundido) ease,
+      box-shadow var(--duracion-fundido) ease;
+  }
+
+  .boton :global(svg) {
+    flex-shrink: 0;
   }
 
   /* Al presionar responde al instante (también en el celular) */
@@ -59,9 +65,31 @@ const clases = ['boton', `boton--${variante}`, clase];
     transform: scale(0.97);
   }
 
+  /* Tinta con un brillo arriba y sombra: el botón se lee como una pieza, no como un rectángulo */
   .boton--primario {
     background: var(--fondo-oscuro);
-    color: var(--texto-sobre-oscuro);
+    color: var(--color-blanco);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.18),
+      0 8px 20px rgb(30 31 34 / 0.25);
+  }
+
+  /* .boton pone border: 0; el vidrio necesita el suyo (y uno visible cuando el vidrio se vuelve sólido) */
+  .boton--vidrio {
+    color: var(--texto);
+    border: 1px solid var(--vidrio-borde);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .boton--vidrio {
+      border-color: var(--color-contorno);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .boton--vidrio {
+      border-color: var(--texto);
+    }
   }
 
   /* Transparente con contorno suave, como en el video */
@@ -85,11 +113,19 @@ const clases = ['boton', `boton--${variante}`, clase];
     .boton--secundario:hover {
       background: rgb(30 31 34 / 0.04);
     }
+
+    .boton--vidrio:hover {
+      box-shadow:
+        inset 0 1px 0 #fff,
+        0 14px 34px rgb(30 31 34 / 0.14);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .boton {
-      transition: background-color var(--duracion-fundido) ease;
+      transition:
+        background-color var(--duracion-fundido) ease,
+        box-shadow var(--duracion-fundido) ease;
     }
   }
 </style>

@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import Boton from '../components/Boton.astro';
 import Logo from '../components/Logo.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
@@ -34,7 +33,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="description" content={descripcion} />
     <meta name="theme-color" content="#f7f4ec" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
       // Las clases se ponen antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos
@@ -65,10 +64,19 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <ClientRouter />
   </head>
   <body>
+    <!-- Luces de la marca detrás del vidrio. transition:persist: no se vuelven a pintar al cambiar de página. -->
+    <div class="luces" aria-hidden="true" transition:persist="luces">
+      <span class="luz luz--1"></span>
+      <span class="luz luz--2"></span>
+      <span class="luz luz--3"></span>
+      <span class="luz luz--4"></span>
+    </div>
+
     <a class="saltar" href="#contenido">Saltar al contenido</a>
 
+    <!-- Header flotante: una píldora de vidrio (más opaca, porque pasa por encima de otros vidrios al bajar) -->
     <header class="cabecera">
-      <div class="contenedor cabecera__fila">
+      <div class="cabecera__pildora vidrio vidrio--fuerte">
         <a class="marca" href="/" aria-label="NissiDev, ir al inicio">
           <Logo class="marca__logo" />
           <span>NissiDev</span>
@@ -76,7 +84,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 
         <div class="cabecera__acciones">
           <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
-            Mi sistema (<span data-mi-sistema-cantidad></span>)
+            Mi sistema <b class="mi-sistema__cuenta" data-mi-sistema-cantidad></b>
           </a>
           <button
             class="menu-boton"
@@ -112,21 +120,21 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Como el cierre del video: logo, NissiDev, WhatsApp y el número -->
+    <!-- Pie corto (TD2): la acción de contacto grande ya está en la tarjeta de Contacto -->
     <footer class="pie">
       <div class="contenedor pie__fila">
-        <Logo class="pie__logo" />
-        <p class="pie__marca">NissiDev</p>
-        <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
-        <p class="pie__numero">{WHATSAPP_VISIBLE}</p>
-        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
+        <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
+        <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+          WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
+        </a>
+        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Este de Lima</p>
       </div>
     </footer>
 
     <script>
       // Menú móvil: sin JavaScript el menú queda siempre visible.
       // Con View Transitions el header es nuevo en cada página: se conecta en cada astro:page-load.
-      const movil = window.matchMedia('(max-width: 47.99rem)');
+      const movil = window.matchMedia('(max-width: 53.74rem)');
 
       const elementosMenu = () => {
         const cabecera = document.querySelector<HTMLElement>('.cabecera');
@@ -165,6 +173,68 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     </script>
 
     <script>
+      // Luces: suben un poco más lento que la página al hacer scroll (parallax), en un rAF por cuadro.
+      // Nada se mueve solo; con movimiento reducido se quedan quietas. Tope de 260 px para que no se vayan.
+      // Brillo del vidrio: sigue al puntero solo con mouse; se actualiza solo el vidrio que está debajo.
+      const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+      let pendiente = 0;
+
+      const moverLuces = () => {
+        pendiente = 0;
+        const luces = document.querySelectorAll<HTMLElement>('.luz');
+        luces.forEach((luz, i) => {
+          const desplazamiento = reducido.matches ? 0 : Math.min(260, window.scrollY * (0.04 + i * 0.03));
+          luz.style.transform = `translate3d(0, ${(-desplazamiento).toFixed(1)}px, 0)`;
+        });
+      };
+      const pedirLuces = () => {
+        if (!pendiente) pendiente = requestAnimationFrame(moverLuces);
+      };
+      window.addEventListener('scroll', pedirLuces, { passive: true });
+      reducido.addEventListener('change', pedirLuces);
+      document.addEventListener('astro:page-load', pedirLuces);
+
+      let brillo = 0;
+      document.addEventListener(
+        'pointermove',
+        (evento) => {
+          if (!conMouse.matches || brillo) return;
+          brillo = requestAnimationFrame(() => {
+            brillo = 0;
+            const vidrio = (evento.target as Element).closest<HTMLElement>('.vidrio');
+            if (!vidrio) return;
+            const caja = vidrio.getBoundingClientRect();
+            vidrio.style.setProperty('--mx', `${evento.clientX - caja.left}px`);
+            vidrio.style.setProperty('--my', `${evento.clientY - caja.top}px`);
+          });
+        },
+        { passive: true },
+      );
+    </script>
+
+    <script>
+      // [data-armar]: recibe la clase .armada la primera vez que entra en pantalla (ilustraciones del bento,
+      // línea del proceso). Las piezas solo se esconden con .js, así que sin JavaScript se ven armadas.
+      document.addEventListener('astro:page-load', () => {
+        const piezas = document.querySelectorAll('[data-armar]');
+        if (!piezas.length) return;
+        const observador = new IntersectionObserver(
+          (entradas) => {
+            for (const e of entradas) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('armada');
+              observador.unobserve(e.target);
+            }
+          },
+          { threshold: 0.25 },
+        );
+        piezas.forEach((pieza) => observador.observe(pieza));
+        document.addEventListener('astro:before-swap', () => observador.disconnect(), { once: true });
+      });
+    </script>
+
+    <script>
       // Acceso "Mi sistema (n)" en el header: solo aparece si hay módulos elegidos. Sin React.
       import { $carrito } from '../carrito/store';
 
@@ -192,7 +262,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     position: absolute;
     top: var(--espacio-2);
     left: var(--espacio-2);
-    z-index: 10;
+    z-index: 30; /* encima del header flotante */
     padding: var(--espacio-2) var(--espacio-4);
     background: var(--fondo-oscuro);
     color: var(--texto-sobre-oscuro);
@@ -208,28 +278,38 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     outline: none;
   }
 
-  .cabecera__fila {
+  /* Píldora flotante y pegada arriba; el contenido pasa por debajo */
+  .cabecera {
+    position: sticky;
+    top: var(--espacio-3);
+    z-index: 20;
+    width: min(100% - 2 * var(--espacio-3), var(--ancho-max));
+    margin: var(--espacio-3) auto 0;
+  }
+
+  .cabecera__pildora {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--espacio-2) var(--espacio-4);
-    min-height: 4.5rem;
+    gap: var(--espacio-2);
+    padding: var(--espacio-2) var(--espacio-2) var(--espacio-2) var(--espacio-4);
+    border-radius: var(--radio-vidrio);
   }
 
   .marca {
     display: inline-flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5625rem;
     min-height: 2.75rem;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     text-decoration: none;
   }
 
   .marca :global(.marca__logo) {
-    width: 1.375rem;
+    width: 1.25rem;
   }
 
   .cabecera__acciones {
@@ -238,22 +318,41 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--espacio-2);
   }
 
+  /* Negro con el contador en dorado (tinta sobre dorado 5.2:1) */
   .mi-sistema {
     display: inline-flex;
     align-items: center;
+    gap: var(--espacio-2);
     min-height: 2.75rem;
-    padding-inline: var(--espacio-4);
-    background: var(--fondo-elevado);
+    padding-inline: var(--espacio-4) var(--espacio-2);
+    background: var(--fondo-oscuro);
+    color: var(--color-blanco);
     border-radius: var(--radio-pildora);
-    box-shadow: var(--borde-sutil);
     font-size: var(--texto-sm);
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
     transition: transform var(--duracion-toque) var(--ease-out);
   }
 
+  .mi-sistema__cuenta {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding-inline: var(--espacio-1);
+    background: var(--acento);
+    color: var(--color-negro);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
   .mi-sistema:active,
-  .menu-boton:active {
+  .menu-boton:active,
+  .menu a:active {
     transform: scale(0.97);
   }
 
@@ -261,14 +360,14 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: none;
   }
 
-  /* Sin JavaScript no hay botón: el menú queda siempre visible. Círculo de 44 px con contorno suave. */
+  /* Sin JavaScript no hay botón: el menú queda siempre visible. Círculo de 44 px. */
   .menu-boton {
     display: none;
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
     padding: 0;
-    background: transparent;
+    background: rgb(255 255 255 / 0.6);
     color: var(--texto);
     border: 0;
     border-radius: var(--radio-pildora);
@@ -293,7 +392,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .menu ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--espacio-1) var(--espacio-6);
+    gap: var(--espacio-1);
     padding: 0;
     list-style: none;
   }
@@ -302,25 +401,62 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: inline-flex;
     align-items: center;
     min-height: 2.75rem;
-    font-weight: 700;
+    padding-inline: 0.875rem;
+    color: var(--tinta-2);
+    border-radius: var(--radio-pildora);
+    font-size: var(--texto-sm);
+    font-weight: 500;
     text-decoration: none;
+    transition:
+      background-color var(--duracion-fundido) ease,
+      transform var(--duracion-toque) var(--ease-out);
   }
 
   .menu a[aria-current='page'] {
-    text-decoration: underline;
-    text-decoration-color: var(--acento);
-    text-decoration-thickness: 3px;
-    text-underline-offset: 6px;
+    background: var(--fondo-elevado);
+    color: var(--texto);
+    font-weight: 600;
+    box-shadow: var(--borde-sutil);
   }
 
-  @media (max-width: 47.99rem) {
+  @media (hover: hover) and (pointer: fine) {
+    .menu a:hover {
+      background: rgb(255 255 255 / 0.7);
+      color: var(--texto);
+    }
+
+    .mi-sistema:hover {
+      background: #2c2d31;
+    }
+  }
+
+  @media (max-width: 53.74rem) {
+    /* Sin JavaScript: el menú va dentro de la píldora, en su propia fila */
     .menu {
+      order: 3;
       flex-basis: 100%;
-      padding: var(--espacio-2) var(--espacio-5);
-      margin-bottom: var(--espacio-4);
+    }
+
+    /* Con JavaScript: panel blanco SÓLIDO debajo de la píldora (no vidrio sobre vidrio) */
+    :global(.js) .menu {
+      position: absolute;
+      top: calc(100% + var(--espacio-2));
+      right: 0;
+      left: 0;
+      padding: var(--espacio-2);
       background: var(--fondo-elevado);
       border-radius: var(--radio-tarjeta);
       box-shadow: var(--sombra-tarjeta);
+      transform-origin: top right;
+    }
+
+    :global(.js) .cabecera:not([data-menu='abierto']) .menu {
+      display: none;
+    }
+
+    /* Se abre desde el botón: escala y fundido cortos, ease-out */
+    :global(.js) .cabecera[data-menu='abierto'] .menu {
+      animation: menu-entra 180ms var(--ease-out);
     }
 
     .menu ul {
@@ -335,21 +471,35 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     .menu a {
       display: flex;
       min-height: 3rem;
-      font-size: var(--texto-lg);
+      font-size: var(--texto-md);
+      color: var(--texto);
     }
 
-    /* Con JavaScript el menú empieza cerrado desde el primer dibujo (la clase "js" se pone en el <head>). */
-    :global(.js) .cabecera:not([data-menu='abierto']) .menu {
-      display: none;
+    .menu a[aria-current='page'] {
+      box-shadow: none;
+      background: var(--fondo);
     }
   }
 
-  @media (min-width: 48rem) {
+  @keyframes menu-entra {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(-4px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .cabecera[data-menu='abierto'] .menu {
+      animation: fundido var(--duracion-fundido) ease;
+    }
+  }
+
+  @media (min-width: 53.75rem) {
     :global(.js) .menu-boton {
       display: none;
     }
 
-    /* En escritorio: logo | menú | Mi sistema */
+    /* En el HTML el menú va después del botón (para el teclado en el celular); en escritorio va al centro */
     .menu {
       order: 1;
     }
@@ -360,38 +510,38 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .pie {
-    margin-top: var(--espacio-24);
-    padding-block: var(--espacio-12) var(--espacio-16);
-    border-top: 1px solid var(--color-linea);
+    margin-top: var(--espacio-16);
+    padding-block: var(--espacio-8) var(--espacio-12);
   }
 
   .pie__fila {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--espacio-3);
-    text-align: center;
-  }
-
-  .pie :global(.pie__logo) {
-    width: 2.75rem;
+    justify-content: space-between;
+    gap: var(--espacio-2) var(--espacio-5);
+    color: var(--texto-nota);
+    font-size: var(--texto-sm);
   }
 
   .pie__marca {
-    margin-bottom: var(--espacio-2);
-    font-size: 1.375rem;
-    font-weight: var(--peso-titulo);
-    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-2);
+    color: var(--texto);
+    font-weight: 700;
   }
 
-  .pie__numero {
+  .pie :global(.pie__logo) {
+    width: 1rem;
+  }
+
+  .pie__whatsapp {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--texto);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-  }
-
-  .pie__nota {
-    margin-top: var(--espacio-4);
-    color: var(--texto-suave);
-    font-size: var(--texto-xs);
   }
 </style>

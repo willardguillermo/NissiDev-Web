@@ -3,16 +3,19 @@
 Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima (demo por rubro + carrito de funcionalidades + cotización por WhatsApp).
 
 ## Leer antes de trabajar
+0. **`docs/ESTADO.md`: dónde está el proyecto HOY y qué sigue. Léelo primero en cada sesión nueva.**
 1. `BRIEF.md`: qué es, para quién, alcance del MVP y lo que va después.
 2. `SPEC.md`: objetivo, comandos, estructura, estilo, tests, límites y criterios de éxito (aprobada).
-3. `docs/decisions/`: decisiones de arquitectura (ADR-001: Astro con islas de React; ADR-002: movimiento con CSS).
-4. `docs/referencias/demo-dulceria.md`: pantallas, estilo y modelo de datos de la demo.
-5. `tasks/plan.md`: plan de tareas (cuando exista).
+3. `docs/decisions/`: ADR-001 (Astro con islas de React), ADR-002 (movimiento con CSS), ADR-003 (vidrio y Geist).
+4. `docs/referencias/td2/`: prototipo del diseño vigente ("Liquid Glass" con Geist) y su LEEME.
+5. `docs/referencias/demo-dulceria.md`: pantallas, estilo y modelo de datos de la plantilla de demo.
+6. `tasks/plan.md`: plan de tareas con su estado y sus commits.
 
 ## Stack
 - Astro + TypeScript; islas de React solo para lo interactivo (demo, carrito, cotización)
 - nanostores (+ `@nanostores/persistent`) para el carrito compartido
 - Animación con CSS (`@keyframes`, transiciones, `animation-timeline: view()`) y View Transitions de Astro; sin GSAP ni Lenis (ADR-002)
+- Diseño "Liquid Glass" con la tipografía **Geist** servida desde `public/fonts/` (ADR-003). La demo de dulcería usa su propio estilo (Shrikhand + Chivo)
 - CSS propio con variables en `src/styles/tokens.css`
 - Vitest, ESLint, `astro check`
 - Cloudflare Pages conectado a GitHub (`willardguillermo/NissiDev-Web`)
@@ -25,10 +28,6 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima 
 - Tests: `npm test` (= `vitest run`)
 - Lint: `npm run lint` (= `eslint .`)
 - Node ≥ 22.23.4 (lo exige Astro 7). TypeScript se queda en 6.0.x: la 7 aún no es compatible con `@astrojs/check` ni con typescript-eslint.
-
-## Primera vez (el repo aún no está creado)
-- La carpeta ya tiene documentos. Si `npm create astro` se niega porque la carpeta no está vacía, crear el proyecto en una carpeta temporal y mover los archivos aquí sin pisar `BRIEF.md`, `SPEC.md`, `AGENTS.md`, `CLAUDE.md` ni `docs/`.
-- `git init` con rama `main`; el `.gitignore` debe incluir `node_modules/`, `dist/`, `.astro/`, `.env*` y `.DS_Store`.
 
 ## Estructura
 Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/layouts`, `src/components` (.astro sin estado), `src/islas` (React), `src/catalogo-servicios`, `src/carrito`, `src/cotizacion`, `src/demo`, `src/rubros/dulceria`.
@@ -51,14 +50,18 @@ Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/l
 - Cerrar cada tarea con `CAMBIOS:` / `NO TOQUÉ (a propósito):` / `VERIFICACIÓN:` (comando y resultado) y 1–3 líneas de "Qué aprender de esta tarea" (Guillermo es estudiante).
 - Decisiones de arquitectura nuevas → ADR en `docs/decisions/`.
 
-## Revisión con Codex
-- Claude Code implementa; Codex revisa con el plugin `/codex`.
-- La revisión de Codex se hace en cada **punto de control** de `tasks/plan.md`, no en cada tarea.
-- Tareas intermedias: implementar → test → verificar → commit.
-- Al llegar a un punto de control: detenerse y escribir "Listo para revisión de Codex". Guillermo elige el comando: `/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar.
-- Junto con "Listo para revisión de Codex", dar el **commit base**: el hash del commit que cerró el punto de control anterior, para usarlo con `--base <hash>`.
-- Cuando Guillermo pegue la revisión de Codex, evaluar cada punto: aplicar lo correcto y explicar por qué se descarta lo demás. Después, hacer el commit.
-- Si se falla dos veces con el mismo error, detenerse y sugerir `/codex:rescue`.
+## Roles y revisión (Claude Code y Codex)
+- Cualquiera de los dos agentes puede implementar. Desde el 2026-10-24, **Codex implementa** la mayor parte.
+- **Quien implementa no revisa su propio trabajo.** Si implementa Codex, revisa Claude Code (o una sesión nueva sin el contexto de la implementación). Si implementa Claude Code, revisa Codex con `/codex:review`.
+- La revisión se hace en cada **punto de control** de `tasks/plan.md` (o al cerrar una rama), no en cada tarea.
+- Al llegar a un punto de control: detenerse y escribir "Listo para revisión" con el **commit base** (el último commit de `main`, o el que cerró el punto de control anterior) para revisar con `--base <hash>`.
+- Cuando Guillermo pegue una revisión, evaluar cada punto: aplicar lo correcto y explicar por qué se descarta lo demás. Después, hacer el commit.
+- Si se falla dos veces con el mismo error, detenerse, dejar el error exacto (archivo:línea + mensaje) y pedir ayuda.
+- Ramas con vista previa: cada rama publicada tiene su enlace `https://<rama-con-guiones>.nissidev-web.pages.dev`. Nada se une a `main` sin la aprobación de Guillermo; se une con Pull Request y **merge commit** (no squash).
+- Al terminar una sesión de trabajo, **actualizar `docs/ESTADO.md`** (qué se hizo, qué sigue) en el último commit.
+
+## Skills de diseño (instaladas de forma global)
+Skills de Emil Kowalski: `emil-design-eng`, `apple-design` (sección 12: materiales y vidrio), `mobile-native`, `animate`, `review-animations`, `break-ui`, `prototype`. Úsalas en todo lo visual.
 
 ## Git
 - Formato `<tipo>: <descripción>` + cuerpo con el porqué. Tipos: feat, fix, refactor, test, docs, style, build, ci, perf.

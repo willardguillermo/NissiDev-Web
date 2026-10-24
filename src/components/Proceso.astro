@@ -1,0 +1,106 @@
+---
+// "Cómo trabajamos": la línea dorada se dibuja de izquierda a derecha (scaleX) al aparecer y debajo van las
+// 4 etapas en vidrio. Textos en catalogo-servicios/proceso.ts (los mismos del Inicio y de /servicios).
+import { PASOS } from '../catalogo-servicios/proceso';
+
+const dos = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="proceso" data-armar>
+  <span class="proceso__linea" aria-hidden="true"></span>
+  <ol class="proceso__etapas" role="list">
+    {
+      PASOS.map((paso, i) => (
+        <li class="etapa vidrio">
+          <span class="etapa__numero" aria-hidden="true">
+            {dos(i + 1)}
+          </span>
+          <b class="etapa__titulo">{paso.titulo}</b>
+          <span class="etapa__texto">{paso.texto}</span>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .proceso {
+    width: 100%;
+    text-align: left;
+  }
+
+  .proceso__linea {
+    display: block;
+    height: 4px;
+    margin-bottom: 0.875rem;
+    background: var(--acento);
+    border-radius: 4px;
+    transform-origin: left;
+  }
+
+  /* Sin JavaScript la línea se ve completa; con él, se dibuja al aparecer */
+  :global(.js) .proceso:not(.armada) .proceso__linea {
+    transform: scaleX(0.02);
+  }
+
+  .armada .proceso__linea {
+    animation: dibuja-linea 1100ms var(--ease-in-out) both;
+  }
+
+  @keyframes dibuja-linea {
+    from {
+      transform: scaleX(0.02);
+    }
+  }
+
+  .proceso__etapas {
+    display: grid;
+    gap: var(--espacio-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 53.75rem) {
+    .proceso__etapas {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .etapa {
+    display: grid;
+    gap: var(--espacio-2);
+    padding: var(--espacio-5);
+  }
+
+  .etapa__numero {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .etapa__titulo {
+    font-size: 1.375rem;
+    font-weight: var(--peso-titulo);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .etapa__texto {
+    color: var(--texto-suave);
+    font-size: 0.9375rem;
+  }
+
+  /* Movimiento reducido: la línea aparece con un fundido, sin dibujarse */
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .proceso:not(.armada) .proceso__linea {
+      transform: none;
+      opacity: 0;
+    }
+
+    .armada .proceso__linea {
+      animation: fundido var(--duracion-fundido) ease both;
+    }
+  }
+</style>
