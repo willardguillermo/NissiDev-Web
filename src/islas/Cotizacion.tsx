@@ -4,8 +4,7 @@ import { $carrito } from '../carrito/store';
 import { crearCotizacion } from '../cotizacion/cotizacion';
 import { fechaLocalDeHoy } from '../cotizacion/fecha';
 import type { Cotizacion as DatosCotizacion } from '../cotizacion/tipos';
-import PapelCotizacion from './cotizacion/PapelCotizacion';
-import AccionesCotizacion from './cotizacion/AccionesCotizacion';
+import CotizacionImpresa from './cotizacion/CotizacionImpresa';
 import Ticketera from './cotizacion/Ticketera';
 import './Cotizacion.css';
 
@@ -38,7 +37,7 @@ export default function Cotizacion() {
   const cotizacion: DatosCotizacion | null = emision ? { ...emision, carrito, negocio } : null;
 
   return (
-    <div className="cotizacion" data-fase={emision ? 'lista' : 'preparando'}>
+    <div className="cotizacion">
       <div className="cotizacion__negocio">
         <label htmlFor={idNegocio}>
           Nombre de tu negocio <span className="cotizacion__opcional">(opcional)</span>
@@ -53,13 +52,7 @@ export default function Cotizacion() {
         />
       </div>
 
-      <Ticketera fase={emision ? 'lista' : 'preparando'} />
-      {cotizacion && (
-        <>
-          <div className="cotizacion__salida"><PapelCotizacion cotizacion={cotizacion} /></div>
-          <AccionesCotizacion cotizacion={cotizacion} />
-        </>
-      )}
+      {cotizacion ? <CotizacionImpresa cotizacion={cotizacion} /> : <Ticketera fase="preparando" />}
     </div>
   );
 }

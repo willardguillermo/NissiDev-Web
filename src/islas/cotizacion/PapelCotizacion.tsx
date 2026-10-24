@@ -1,3 +1,4 @@
+import type { Ref } from 'react';
 import { obtenerModulo } from '../../catalogo-servicios/modulos';
 import { textoPrecio } from '../../catalogo-servicios/precio';
 import { calcularTotales } from '../../carrito/carrito';
@@ -6,11 +7,14 @@ import { formatearFecha } from '../../cotizacion/fecha';
 import type { Cotizacion } from '../../cotizacion/tipos';
 import { WHATSAPP_VISIBLE, ZONA } from '../../config/contacto';
 
-export default function PapelCotizacion({ cotizacion }: { cotizacion: Cotizacion }) {
+export default function PapelCotizacion({ cotizacion, refPapel }: {
+  cotizacion: Cotizacion;
+  refPapel?: Ref<HTMLElement>;
+}) {
   const { carrito, negocio, ...emision } = cotizacion;
   const totales = textoTotales(calcularTotales(carrito));
   return (
-    <article className="cotizacion__papel" aria-labelledby="cotizacion-codigo">
+    <article ref={refPapel} className="cotizacion__papel" aria-labelledby="cotizacion-codigo">
       <header className="cotizacion__cabeza">
         <p className="cotizacion__marca">NissiDev · Cotización referencial</p>
         <h2 id="cotizacion-codigo" className="cotizacion__codigo">

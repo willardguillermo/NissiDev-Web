@@ -46,12 +46,12 @@
     conic-gradient(from -45deg at bottom, transparent, #000 1deg 89deg, transparent 90deg) bottom / 12px 8px repeat-x;
 }
 
-.cotizacion[data-fase='imprimiendo'] .cotizacion__papel {
+.cotizacion__impresa[data-fase='imprimiendo'] .cotizacion__papel {
   transition: transform var(--duracion-impresion, 1200ms) var(--ease-papel);
   transform: translateY(0);
 }
 
-.cotizacion[data-fase='lista'] .cotizacion__papel {
+.cotizacion__impresa[data-fase='lista'] .cotizacion__papel {
   transform: translateY(0);
 }
 
@@ -267,6 +267,17 @@
   margin-top: var(--espacio-6);
 }
 
+.cotizacion__acciones[data-lista='false'] { visibility: hidden; }
+
+.cotizacion__repetir {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--texto-suave);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .cotizacion-boton {
   display: inline-flex;
   align-items: center;
@@ -307,7 +318,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cotizacion-boton,
-  .cotizacion[data-fase] .cotizacion__papel {
+  .cotizacion__impresa[data-fase] .cotizacion__papel {
     transition: none;
     transform: none;
   }
@@ -340,7 +351,7 @@
     overflow: visible;
   }
 
-  .cotizacion[data-fase] .cotizacion__papel {
+  .cotizacion__impresa[data-fase] .cotizacion__papel {
     padding: 0;
     transform: none !important;
     transition: none;
