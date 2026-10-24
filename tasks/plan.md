@@ -142,8 +142,8 @@ Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerp
 | CI2 | M | ✅ Duración y secuencia cancelable fuera de React, sin conectar la interfaz | 18 tests nuevos (384 totales); check, lint y build correctos. Omitir `clearTimeout` hizo fallar la cancelación a 450 ms: 1 timer pendiente en vez de 0; restaurado y verde | `feat: controlar las fases de impresión` |
 | CI3 | S | ✅ Papel y acciones separados; formulario fuera del papel | 384 tests, tipos, lint y build; reutiliza precios y mensaje | `18925e1` |
 | CI4 | M | ✅ Ticketera, ranura, papel, aviso sin pago y token `--ease-papel` | Capturas en 390×844 y 1366×900; sin desborde; CLS 0 de carga/secuencia | `5743e30` |
-| CI5 | M | ✅ Fases, acciones, repetición y movimiento reducido conectados | Reloj falso, repetición y modo reducido verificados; faltan teclado y desmontaje real al recuperar navegador | `e3bf56f` |
-| CI6 | S | A4 ✅ `f2645e9`; evidencia y checklist registradas; cierre pendiente | PDF de 9 módulos: 1 página A4; revisión independiente sin bloqueantes. Faltan tres pruebas de navegador y cierre del vault | `fix: conservar la proforma A4 al imprimir` + documentación |
+| CI5 | M | ✅ Fases, acciones, repetición y movimiento reducido conectados | Reloj falso, repetición, modo reducido y teclado verificados; desmontaje real en ambas fases sin timers ni escrituras posteriores | `e3bf56f` |
+| CI6 | S | ✅ A4 `f2645e9`; evidencia, checklist y cierre de navegador registrados | PDF de 9 módulos: 1 página A4; revisión independiente sin bloqueantes; Playwright cierra teclado, desmontaje y cambios entre pestañas | `fix: conservar la proforma A4 al imprimir` + documentación |
 
 En cada parte: `npm test`, `npm run check`, `npm run lint` y `npm run build`; celular en las visibles.
 **Punto de control al cerrar la rama:** «Listo para revisión», hash base y revisión independiente en cinco ejes.

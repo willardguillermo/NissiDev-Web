@@ -62,14 +62,29 @@ referencial completos. Sin ticketera, acciones, máscara ni recorte. `pdfinfo`: 
 [proforma A4](capturas/impresion-a4.png). Se desactivaron encabezado y pie propios del navegador para
 esa muestra; esta opción corresponde al diálogo de impresión del visitante.
 
-### Pendientes de cierre en navegador
+### Cierre de las tres pruebas pendientes — Playwright
 
-- Teclado y foco visible en las acciones, incluida la repetición.
-- Desmontaje real durante la secuencia y ausencia de temporizadores propios pendientes.
-- Cambio del carrito desde otra pestaña y estado vacío.
+Con autorización explícita de Guillermo, se ejecutó Playwright Core ya disponible en la caché
+local de npx, con Brave headless en contextos aislados. Sin instalar paquetes ni modificar
+package.json o package-lock.json. No se generaron más capturas.
 
-El control nativo falló al retomar con `Sky Computer Use native pipe startup failed`. No se dan por
-pasadas esas tres pruebas. La prueba en el celular físico de Guillermo sigue siendo su aprobación.
+| Prueba | Evidencia / resultado |
+|---|---|
+| Teclado, 390×844 y 1366×900 | Antes de lista, Tab no entra en las acciones. Al terminar: Guardar PDF → WhatsApp → Imprimir otra vez. Los tres controles cumplen :focus-visible y tienen contorno visible. Enter repite y lleva el foco al estado; conserva código y fechas |
+| Desmontaje durante preparación | Salida con clic real al Inicio tras 350 ms, mediante View Transitions. El temporizador propio queda cancelado; después de 3600 ms no hay callbacks sin componente ni cambios en el texto desconectado |
+| Desmontaje durante impresión | Salida 150 ms después de entrar en imprimiendo. Mismo resultado: 0 timers propios activos, 1 cancelación, 0 callbacks ejecutados sin componente y texto anterior intacto |
+| Carrito desde otra pestaña | Cambio real de localStorage en una segunda página del mismo contexto: de 3 módulos a Reservas. La primera pestaña actualiza resumen, totales y mensaje de WhatsApp sin reiniciar la impresión ni cambiar emisión |
+| Vacío y restauración | Desde la otra pestaña: carrito vacío muestra su salida, sin ticketera, acciones ni timers; al agregar Catálogo reaparece la cotización conservando código y fechas |
+| Errores de página | Ninguno en los cinco recorridos |
+
+Para identificar los timers de la impresión se observaron los callbacks reales de la función
+cambiarFase del módulo servido en desarrollo; no se modificaron el código del producto ni su reloj.
+Se verificó un temporizador activo antes de cada salida y cero después; esto evita dar por pasada
+una prueba que no hubiera observado el temporizador real. El test puro con reloj falso y el fallo
+deliberado complementan esta prueba de desmontaje en navegador.
+
+El fallo del control nativo quedó sorteado con esta alternativa autorizada. No hay pruebas de
+navegador pendientes de esta mejora. La aprobación en el celular físico de Guillermo sigue pendiente.
 
 ## Revisión independiente en cinco ejes
 
@@ -85,7 +100,7 @@ sin errores concretos ni bloqueantes. El revisor ejecutó tests y lint, sin edit
 | Rendimiento | Solo `transform`; altura medida una vez por secuencia; movimiento reducido sin esperas |
 
 Observación menor aceptada: la reserva conservadora de 104rem evita mover el pie al hidratar, pero
- deja espacio inferior, especialmente en el carrito vacío. No se cambió durante la revisión.
+deja espacio inferior, especialmente en el carrito vacío. No se cambió durante la revisión.
 La revisión de esta mejora no sustituye el cierre pendiente de la revisión de TD2 ni autoriza merge.
 
 ## Checklist del vault
@@ -97,14 +112,14 @@ frontend estático, sin panel real, login, API ni base de datos.
 |---|---|
 | Tests, tipos, lint y build | Correctos; advertencia conocida de Node registrada arriba |
 | Revisión en cinco ejes | Independiente, sin hallazgos bloqueantes |
-| Depuración / pendientes | Sin console.log ni TODO nuevos en el producto; pruebas de navegador pendientes señaladas arriba |
+| Depuración / pendientes | Sin console.log ni TODO nuevos en el producto; verificaciones de navegador cerradas arriba |
 | Errores esperados | Persistencia segura existente con try/catch; conserva el estado vacío y restauración validada del carrito |
 | Validación en servidor, SQL, contraseñas, cookies, login/CORS y RLS | No aplican: sin servidor, cuentas, sesiones ni base de datos; el nombre es opcional y no se guarda |
 | Secretos / contenido externo | Sin nuevas claves, variables de entorno, eval ni innerHTML; React escapa el nombre y WhatsApp lo codifica |
 | Dependencias | Sin nuevas dependencias; audit sin vulnerabilidades |
 | HTTPS y cabeceras | Cloudflare usa HTTPS y nosniff. Sin CSP/HSTS/X-Frame-Options propios observados; no se cambia la política global de hosting en esta mejora. CORS * corresponde a archivos estáticos, sin API autenticada |
 | Rendimiento / imágenes / consultas | Sin imágenes nuevas en el producto ni consultas; sin trabajo JS por cuadro; CLS medido arriba. Lighthouse/INP globales siguen en T27 |
-| Accesibilidad | Estado polite, barras aria-hidden y acciones inert; contraste existente cubierto por tokens.test.ts. Prueba final de teclado pendiente; no se afirma un audit axe/Lighthouse nuevo |
+| Accesibilidad | Estado polite, barras aria-hidden y acciones inert; contraste existente cubierto por tokens.test.ts. Teclado y foco comprobados con Playwright; no se afirma un audit axe/Lighthouse nuevo |
 | Diseño | Tokens y Geist de TD2, monoespaciada solo en el papel; sin colores ni cobros de la demo |
 | Infraestructura | Sin nuevas variables, migraciones, dominios ni accesos; despliegue de rama por Cloudflare, sin tocar main |
 | Logs | Se conservan los logs de build/hosting; sin nueva telemetría ni datos personales persistidos |

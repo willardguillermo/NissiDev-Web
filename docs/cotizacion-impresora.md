@@ -75,6 +75,6 @@ Sin preguntas abiertas para comenzar; A4, rama base y curva quedaron confirmados
 
 ## Evidencia de implementación
 
-CI3–CI5 implementadas; A4 en `f2645e9`. Resultados, capturas y pendientes de cierre en
+CI3–CI6 implementadas; A4 en `f2645e9`; verificaciones de navegador cerradas con Playwright de la caché, autorizado por Guillermo. Resultados, capturas y pendientes de cierre en
 [VERIFICACION.md](referencias/cotizacion-impresora/VERIFICACION.md). No confundir implementación
-con aprobación de merge: las comprobaciones pendientes y la aprobación de Guillermo deben cerrarse.
+con aprobación de merge: la revisión de los arreglos de TD2 y la aprobación de Guillermo deben cerrarse.
