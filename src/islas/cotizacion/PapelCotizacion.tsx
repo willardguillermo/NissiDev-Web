@@ -57,6 +57,8 @@ export default function PapelCotizacion({ cotizacion }: { cotizacion: Cotizacion
       </dl>
 
       <p className="cotizacion__referencial">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
+      <p className="cotizacion__documento">Cotización referencial · No es un comprobante de pago</p>
+      <div className="cotizacion__barras" aria-hidden="true" />
       <p className="cotizacion__contacto">
         NissiDev · WhatsApp {WHATSAPP_VISIBLE} · {ZONA}
       </p>

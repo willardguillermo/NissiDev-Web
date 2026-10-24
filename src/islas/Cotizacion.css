@@ -1,5 +1,13 @@
-/* Cotización: una tarjeta blanca centrada (Ensamble) que también es la hoja del PDF. */
-.cotizacion,
+/* La reserva también existe antes de hidratar: el pie no salta al leer el carrito local.
+   Las acciones siguen al papel real; el espacio restante queda después de ellas. */
+.cotizacion {
+  --duracion-impresion: 1200ms;
+  width: 100%;
+  max-width: 34rem;
+  min-height: 104rem;
+  margin: var(--espacio-6) auto 0;
+}
+
 .cotizacion-vacia {
   display: grid;
   gap: var(--espacio-5);
@@ -11,13 +19,6 @@
   background: var(--fondo-elevado);
   border-radius: var(--radio-vidrio);
   box-shadow: var(--vidrio-sombra);
-}
-
-.cotizacion-cargando {
-  min-height: 20rem;
-  padding-top: var(--espacio-8);
-  color: var(--texto-suave);
-  text-align: center;
 }
 
 .cotizacion-vacia {
@@ -34,8 +35,86 @@
 
 .cotizacion__papel {
   display: grid;
-  gap: var(--espacio-5);
+  gap: var(--espacio-4);
+  padding: var(--espacio-6) var(--espacio-4) var(--espacio-8);
+  background: var(--fondo-elevado);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+  transform: translateY(-101%);
+  mask: linear-gradient(#000 0 0) top / 100% calc(100% - 8px) no-repeat,
+    conic-gradient(from -45deg at bottom, transparent, #000 1deg 89deg, transparent 90deg) bottom / 12px 8px repeat-x;
 }
+
+.cotizacion[data-fase='imprimiendo'] .cotizacion__papel {
+  transition: transform var(--duracion-impresion, 1200ms) var(--ease-papel);
+  transform: translateY(0);
+}
+
+.cotizacion[data-fase='lista'] .cotizacion__papel {
+  transform: translateY(0);
+}
+
+.ticketera {
+  position: relative;
+  z-index: 2;
+  padding: var(--espacio-5) var(--espacio-5) var(--espacio-8);
+  background: var(--fondo-oscuro);
+  color: var(--texto-sobre-oscuro);
+  border-radius: var(--radio-tarjeta-grande);
+  box-shadow: var(--sombra-tarjeta), inset 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.ticketera__marca {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-4);
+  font-size: var(--texto-sm);
+  font-weight: 600;
+}
+
+.ticketera__marca span:last-child { color: var(--texto-suave-sobre-oscuro); }
+
+.ticketera__estado {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  min-height: 2.75rem;
+  padding: var(--espacio-2) var(--espacio-3);
+  background: var(--color-pantalla);
+  border-radius: var(--radio-md);
+  font-size: var(--texto-sm);
+}
+
+.ticketera__indicador { color: var(--acento-sobre-oscuro); font-size: 1.25rem; }
+
+.ticketera__ranura {
+  position: absolute;
+  inset: auto 1rem 9px;
+  height: 6px;
+  background: var(--color-pantalla);
+  border-radius: var(--radio-pildora);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.15);
+}
+
+.cotizacion__salida {
+  position: relative;
+  z-index: 1;
+  margin: -12px 1rem 0;
+  padding-inline: 0.5rem;
+  overflow: hidden;
+}
+
+.cotizacion__barras {
+  width: 10rem;
+  height: 2rem;
+  margin-inline: auto;
+  background: repeating-linear-gradient(90deg, var(--texto) 0 2px, transparent 2px 4px,
+    var(--texto) 4px 5px, transparent 5px 8px, var(--texto) 8px 12px, transparent 12px 14px);
+}
+
+.cotizacion__documento { text-align: center; font-weight: 700; }
 
 .cotizacion__cabeza {
   display: grid;
@@ -94,6 +173,7 @@
 .cotizacion__negocio {
   display: grid;
   gap: var(--espacio-2);
+  margin-bottom: var(--espacio-6);
 }
 
 .cotizacion__negocio label {
@@ -118,7 +198,8 @@
 
 .cotizacion__negocio-impreso,
 .cotizacion__contacto {
-  display: none;
+  font-size: 0.75rem;
+  text-align: center;
 }
 
 .cotizacion__subtitulo {
@@ -183,6 +264,7 @@
   display: grid;
   gap: var(--espacio-3);
   justify-items: stretch;
+  margin-top: var(--espacio-6);
 }
 
 .cotizacion-boton {
@@ -224,8 +306,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cotizacion-boton {
+  .cotizacion-boton,
+  .cotizacion[data-fase] .cotizacion__papel {
     transition: none;
+    transform: none;
   }
 }
 
@@ -237,16 +321,37 @@
 
   .cotizacion {
     max-width: none;
+    min-height: 0;
     margin: 0;
     padding: 0;
     box-shadow: none;
     border-radius: 0;
   }
 
+  .ticketera,
   .cotizacion__negocio,
   .cotizacion__acciones {
     display: none;
   }
+
+  .cotizacion__salida {
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .cotizacion[data-fase] .cotizacion__papel {
+    padding: 0;
+    transform: none !important;
+    transition: none;
+    mask: none;
+    font-family: var(--fuente-base);
+    font-size: var(--texto-md);
+    background: #fff;
+    color: #000;
+  }
+
+  .cotizacion__barras { display: none; }
 
   .cotizacion__negocio-impreso {
     display: block;

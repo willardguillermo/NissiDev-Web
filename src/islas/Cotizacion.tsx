@@ -6,8 +6,8 @@ import { fechaLocalDeHoy } from '../cotizacion/fecha';
 import type { Cotizacion as DatosCotizacion } from '../cotizacion/tipos';
 import PapelCotizacion from './cotizacion/PapelCotizacion';
 import AccionesCotizacion from './cotizacion/AccionesCotizacion';
+import Ticketera from './cotizacion/Ticketera';
 import './Cotizacion.css';
-
 
 export default function Cotizacion() {
   const carrito = useStore($carrito);
@@ -22,27 +22,23 @@ export default function Cotizacion() {
     setEmision({ codigo, emitida, validaHasta });
   }, []);
 
-  if (!emision) {
-    return <p className="cotizacion-cargando">Preparando tu cotización…</p>;
-  }
-
-  if (carrito.items.length === 0) {
+  if (emision && carrito.items.length === 0) {
     return (
-      <div className="cotizacion-vacia">
+      <div className="cotizacion"><div className="cotizacion-vacia">
         <p className="cotizacion-vacia__titulo">Aún no elegiste módulos.</p>
         <p>Arma tu sistema y aquí verás tu cotización.</p>
         <a className="cotizacion-boton" href="/arma-tu-sistema">
           Ir a Arma tu sistema
         </a>
-      </div>
+      </div></div>
     );
   }
 
   // El carrito puede cambiar en otra pestaña: los módulos y totales siempre son los actuales.
-  const cotizacion: DatosCotizacion = { ...emision, carrito, negocio };
+  const cotizacion: DatosCotizacion | null = emision ? { ...emision, carrito, negocio } : null;
 
   return (
-    <div className="cotizacion">
+    <div className="cotizacion" data-fase={emision ? 'lista' : 'preparando'}>
       <div className="cotizacion__negocio">
         <label htmlFor={idNegocio}>
           Nombre de tu negocio <span className="cotizacion__opcional">(opcional)</span>
@@ -57,8 +53,13 @@ export default function Cotizacion() {
         />
       </div>
 
-      <PapelCotizacion cotizacion={cotizacion} />
-      <AccionesCotizacion cotizacion={cotizacion} />
+      <Ticketera fase={emision ? 'lista' : 'preparando'} />
+      {cotizacion && (
+        <>
+          <div className="cotizacion__salida"><PapelCotizacion cotizacion={cotizacion} /></div>
+          <AccionesCotizacion cotizacion={cotizacion} />
+        </>
+      )}
     </div>
   );
 }
