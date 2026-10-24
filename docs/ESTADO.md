@@ -1,6 +1,34 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (CI2: duración y secuencia cancelable de impresión). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (punto de reanudación antes de reiniciar el control de computadora). Quien termine una sesión de trabajo actualiza este archivo.
+
+## Retomar después del reinicio
+- Guillermo pidió detener el trabajo para reiniciar y recuperar el control de computadora.
+- **Rama activa real: `feature/td2-liquid`**. Se cambió desde `feature/cotizacion-impresora` por su pedido;
+  no se incorporaron los commits de código de la impresora.
+- Primer paso solicitado completado: `23018c9`, **docs: contexto para trabajar con Codex y estado del proyecto**.
+  Incluye el `AGENTS.md` que editó Guillermo y este estado, que antes solo existía en la rama de impresora.
+- **Cambio guardado en disco, SIN commit y SIN verificación visual:** `src/components/HistoriaDemo.astro`.
+  Sustituye `rootMargin` en porcentajes por píxeles (`innerHeight * 0.45`), reconstruye el observador en
+  `resize` y retira el listener en `astro:before-swap`. No perder ni sobrescribir ese diff al reanudar.
+- El control nativo de Brave agotó el tiempo de espera; el navegador integrado no está disponible.
+  **No se verificó todavía el avance en ninguno de los cuatro tamaños.** No declarar resuelto el hallazgo.
+  Se preparó una prueba temporal en `/tmp/nissidev-td2-qa.mjs`, pero su ejecución fue interrumpida antes
+  de obtener resultados. No es dependencia del proyecto ni requisito para retomar; preferir el control
+  de computadora una vez recuperado. El servidor local se inició en `http://127.0.0.1:4321`.
+- **Continuación exacta autorizada por Guillermo:**
+  1. Verificar el arreglo del observador a **1366×768, 1280×800, 390×844 y 375×667**, también al
+     redimensionar; después crear su propio commit `fix:`.
+  2. Mover el sello «Demo · datos de ejemplo» de `index.astro` al bloque sticky de HistoriaDemo;
+     comprobar que permanezca visible durante todo el recorrido; otro commit `fix:`.
+  3. Unir «¿Lo conversamos?» con espacio que no se corta en `ContactoTarjeta.astro`; commit `fix:`.
+  4. Reescribir `docs/diseño.md` para Liquid Glass + Geist según ADR-003; commit `docs:`.
+  5. Actualizar TD2 en `tasks/plan.md` y este archivo con resultados y commits; ejecutar `npm test`,
+     `npm run lint`, `npm run check` y `npm run build`; hacer push de **esta rama**.
+- No unir nada a `main`. Reporte con CAMBIOS / NO TOQUÉ (a propósito) / VERIFICACIÓN / Qué aprender.
+  Al terminar: **«Listo para revisión» con base `c79f5f6`**, para Claude Code o una sesión independiente.
+- Objetivo adicional explícito: dejar instrucciones y estado **en GitHub** para que ChatGPT pueda
+  consultar el contexto y redactar prompts claros. Compartir enlaces a la rama, `AGENTS.md` y este archivo.
 
 ## En una línea
 Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
@@ -25,10 +53,11 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 
 ## En curso: cotización con impresora
 - Rama `feature/cotizacion-impresora`, creada desde `feature/td2-liquid` en `c79f5f6`; PR hacia TD2.
-- Spec, plan y tres supuestos aprobados por Guillermo: `docs/cotizacion-impresora.md` y sección «Cotización con impresora» de `tasks/plan.md`.
+- Spec, plan y tres supuestos aprobados por Guillermo en **esa rama**: `docs/cotizacion-impresora.md`
+  y sección «Cotización con impresora» de `tasks/plan.md`; esos archivos/cambios todavía no están en TD2.
 - CI1: registrados alcance y verificaciones; no se cambió código. A4 explícito con márgenes de 18mm/16mm;
   papel con token `--ease-papel: cubic-bezier(.3, .15, .2, 1)`; máximo total de 3500 ms.
-- CI2 completada: `src/cotizacion/impresion.ts` calcula la duración y comunica las fases con temporizadores
+- CI2 completada en `a564ccc` (rama de impresora): `src/cotizacion/impresion.ts` calcula la duración y comunica las fases con temporizadores
   cancelables; sin React ni DOM. Preparación de 900 ms, impresión de 1200–2600 ms, movimiento reducido
   directo a lista. La limpieza no escribe ni comunica fases y no deja temporizadores pendientes.
 - Verificados los tres ajustes en `8833fff`: PR hacia TD2 con bloqueo indicado para su descripción,
@@ -40,7 +69,8 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
   `npm run lint` y `npm run build`: correctos; persiste la advertencia de Node sobre localStorage.
 - Sigue CI3: separar papel, formulario y acciones reutilizando el resumen actual.
   La lógica de CI2 aún no está conectada a la interfaz; la prueba en celular y el desmontaje real
-  corresponden a las rebanadas visuales. El cambio local de Guillermo en `AGENTS.md` queda fuera del commit.
+  corresponden a las rebanadas visuales. Su commit no incluyó `AGENTS.md`; ese contexto se publicó
+  después en TD2 mediante `23018c9`, por pedido explícito de Guillermo.
 - **No unir el PR hasta resolver los dos hallazgos de TD2** descritos arriba; indicarlo también en el PR.
 - Revisión al cerrar la rama por Claude Code o una sesión independiente; no unir sin aprobación de Guillermo.
 - Bitácora del vault y casilla de mejora se actualizan al terminar la implementación completa.
