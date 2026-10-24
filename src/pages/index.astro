@@ -2,17 +2,10 @@
 import Boton from '../components/Boton.astro';
 import Logo from '../components/Logo.astro';
 import RotadorServicios from '../components/RotadorServicios.astro';
+import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import TelefonoDemo from '../components/TelefonoDemo.astro';
 import Base from '../layouts/Base.astro';
-
-const pasos = [
-  { titulo: 'Maqueta', texto: 'Ves cómo quedaría, sin costo.' },
-  { titulo: 'Propuesta', texto: 'Precio cerrado y qué incluye.' },
-  { titulo: 'Desarrollo', texto: 'Unas 4 semanas, con avances.' },
-  { titulo: 'Soporte', texto: 'Te acompaño después.' },
-];
-const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQL', 'Cloudflare'];
 ---
 
 <Base titulo="NissiDev">
@@ -64,7 +57,7 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
     <h2 id="pasos-titulo" class="titulo-2">Cómo trabajamos</h2>
     <ol class="pasos" role="list">
       {
-        pasos.map((paso, i) => (
+        PASOS.map((paso, i) => (
           <li class="paso">
             <span class="paso__numero" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
@@ -80,7 +73,7 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
   <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
     <h2 id="stack-titulo" class="etiqueta">Con qué construyo</h2>
     <ul class="chips" role="list">
-      {tecnologias.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
+      {TECNOLOGIAS.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
     </ul>
   </section>
 
