@@ -32,6 +32,11 @@
   font-weight: var(--peso-titulo);
 }
 
+.cotizacion__papel {
+  display: grid;
+  gap: var(--espacio-5);
+}
+
 .cotizacion__cabeza {
   display: grid;
   gap: var(--espacio-2);
@@ -238,8 +243,7 @@
     border-radius: 0;
   }
 
-  .cotizacion__negocio label,
-  .cotizacion__negocio input,
+  .cotizacion__negocio,
   .cotizacion__acciones {
     display: none;
   }
