@@ -325,10 +325,12 @@
 }
 
 /* ---------- Hoja impresa / PDF: solo la cotización, en blanco y negro, sin controles ---------- */
+@page {
+  size: A4;
+  margin: 18mm 16mm;
+}
+
 @media print {
-  @page {
-    margin: 18mm 16mm;
-  }
 
   .cotizacion {
     max-width: none;
@@ -363,6 +365,10 @@
   }
 
   .cotizacion__barras { display: none; }
+
+  .cotizacion__modulo,
+  .cotizacion__totales,
+  .cotizacion__fechas { break-inside: avoid; }
 
   .cotizacion__negocio-impreso {
     display: block;
