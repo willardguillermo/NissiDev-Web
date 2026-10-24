@@ -1,8 +1,10 @@
 ---
 import Boton from '../components/Boton.astro';
+import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
 import RotadorServicios from '../components/RotadorServicios.astro';
 import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
+import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import TelefonoDemo from '../components/TelefonoDemo.astro';
 import Base from '../layouts/Base.astro';
@@ -15,14 +17,19 @@ import Base from '../layouts/Base.astro';
       <Logo etiqueta="NissiDev" class="hero__logo" />
     </div>
     <p class="hero__etiqueta entra" style="--n: 0">Webs y sistemas · Este de Lima</p>
-    <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">Software que impulsa tu negocio.</h1>
+    <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">
+      Software que impulsa <span class="hero__acento">tu negocio.</span>
+    </h1>
     <p class="hero__bajada entra" style="--n: 2">
       Prueba cómo quedaría el sistema de tu negocio, elige lo que necesitas y recibe la cotización por WhatsApp.
     </p>
     <div class="hero__acciones entra" style="--n: 3">
       <Boton href="/demos">Ver la demo de mi rubro</Boton>
-      <Boton href={WHATSAPP_ENLACE} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
+      <Boton href={WHATSAPP_ENLACE} variante="vidrio" externo><IconoWhatsApp />Escríbeme</Boton>
     </div>
+    <ul class="hero__servicios entra" style="--n: 4" aria-label="Servicios">
+      {SERVICIOS.map((servicio) => <li class="hero__servicio vidrio vidrio--chico">{servicio.nombre}</li>)}
+    </ul>
   </section>
 
   <div class="contenedor entra" style="--n: 4">
@@ -88,51 +95,74 @@ import Base from '../layouts/Base.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.125rem;
-    padding-block: var(--espacio-8) var(--espacio-6);
+    gap: 1.375rem;
+    padding-block: var(--espacio-12) var(--espacio-8);
     text-align: center;
   }
 
   .hero__escena {
     display: grid;
     place-items: center;
-    width: 8.25rem;
-    height: 10.625rem;
+    width: 7.375rem;
+    height: 9.375rem;
     perspective: 900px;
   }
 
   .hero__escena :global(.hero__logo) {
-    width: 8.25rem;
+    width: 7.375rem;
   }
 
   .hero__etiqueta {
     color: var(--acento-texto);
     font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
+  /* 42 px en el celular, hasta 96 px; espaciado negativo que crece con el tamaño */
   .hero__titulo {
-    max-width: 14ch;
-    font-size: clamp(2rem, 1.2rem + 4.2vw, 3.5rem);
+    max-width: 13ch;
+    font-size: clamp(2.625rem, 11vw, 6rem);
     font-weight: var(--peso-titulo);
     line-height: var(--interlineado-titulo);
-    letter-spacing: -0.035em;
+    letter-spacing: var(--espaciado-titulo-1);
+  }
+
+  .hero__acento {
+    color: var(--acento-texto);
   }
 
   .hero__bajada {
-    max-width: 36ch;
+    max-width: 34ch;
     color: var(--texto-suave);
+    font-size: clamp(1.0625rem, 4.4vw, 1.25rem);
+    line-height: 1.5;
   }
 
   .hero__acciones {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 0.625rem;
-    width: 100%;
-    max-width: 21.25rem;
-    margin-top: 0.375rem;
+  }
+
+  .hero__servicios {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--espacio-2);
+    max-width: 34rem;
+    margin-top: var(--espacio-1);
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__servicio {
+    padding: var(--espacio-2) 0.875rem;
+    color: var(--tinta-2);
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
 
   @media (min-width: 48rem) {
@@ -142,17 +172,11 @@ import Base from '../layouts/Base.astro';
 
     .hero__escena,
     .hero__escena :global(.hero__logo) {
-      width: 10rem;
+      width: 8.75rem;
     }
 
     .hero__escena {
-      height: 12.75rem;
-    }
-
-    .hero__acciones {
-      flex-direction: row;
-      justify-content: center;
-      max-width: none;
+      height: 11.125rem;
     }
   }
 
@@ -215,7 +239,7 @@ import Base from '../layouts/Base.astro';
   /* El texto no espera al logo: empieza a los 300 ms, en paralelo, y termina hacia los 1.1 s.
      Es solo CSS, así que se ve aunque el JavaScript falle. */
   .entra {
-    animation: sube 560ms var(--ease-out) both;
+    animation: sube 640ms var(--ease-out) both;
     animation-delay: calc(var(--inicio-texto, 300ms) + var(--n) * 80ms);
   }
 
