@@ -1,10 +1,10 @@
 @import './tokens.css';
 
-/* Manrope variable (subconjunto latino: incluye á, ñ, ¿, ¡). Licencia en public/fonts/Manrope-OFL.txt */
+/* Geist variable (subconjunto latino: incluye á, ñ, ¿, ¡). Licencia en public/fonts/Geist-OFL.txt */
 @font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/manrope-latin-wght.woff2') format('woff2');
-  font-weight: 200 800;
+  font-family: 'Geist';
+  src: url('/fonts/geist-latin-wght.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -129,8 +129,8 @@ a {
 @keyframes sube {
   from {
     opacity: 0;
-    transform: translateY(10px);
-    filter: blur(4px);
+    transform: translateY(12px);
+    filter: blur(6px);
   }
 }
 
@@ -166,5 +166,122 @@ a {
       animation-timeline: view();
       animation-range: entry 0% entry 70%;
     }
+  }
+}
+
+/* ---------- Luces de fondo (TD2) ----------
+   Manchas de la marca, fijas detrás de todo. No se animan solas: Base.astro las desplaza un poco con
+   el scroll (transform en requestAnimationFrame). El desenfoque es estático, así que se pinta una vez. */
+.luces {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.luz {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.luz--1 {
+  top: -120px;
+  left: -160px;
+  width: 520px;
+  height: 520px;
+  background: var(--luz-1);
+  opacity: var(--luz-1-opacidad);
+}
+
+.luz--2 {
+  top: 160px;
+  right: -140px;
+  width: 440px;
+  height: 440px;
+  background: var(--luz-2);
+  opacity: var(--luz-2-opacidad);
+}
+
+.luz--3 {
+  top: 62%;
+  left: 20%;
+  width: 380px;
+  height: 380px;
+  background: var(--luz-3);
+  opacity: var(--luz-3-opacidad);
+}
+
+.luz--4 {
+  top: 88%;
+  right: 8%;
+  width: 300px;
+  height: 300px;
+  background: var(--luz-4);
+  opacity: var(--luz-4-opacidad);
+}
+
+/* ---------- Vidrio (TD2, apple-design §12) ----------
+   Blur + saturate sobre las luces, borde superior brillante (la luz que toca el material) y sombra suave.
+   El brillo que sigue al puntero (::after, --mx/--my) solo existe con mouse: lo pone Base.astro.
+   Reglas: pocas capas por pantalla, nunca vidrio sobre vidrio, y las cifras van sobre una capa sólida. */
+.vidrio {
+  /* Dónde está el brillo; con mouse lo mueve Base.astro */
+  --mx: 30%;
+  --my: 0%;
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(140deg, var(--vidrio), var(--vidrio-2));
+  -webkit-backdrop-filter: var(--vidrio-filtro);
+  backdrop-filter: var(--vidrio-filtro);
+  border: 1px solid var(--vidrio-borde);
+  border-radius: var(--radio-vidrio);
+  box-shadow: var(--vidrio-sombra);
+}
+
+/* Chips y botones: un vidrio más delgado (menos desenfoque, menos sombra) */
+.vidrio--chico {
+  -webkit-backdrop-filter: var(--vidrio-filtro-chico);
+  backdrop-filter: var(--vidrio-filtro-chico);
+  border-radius: var(--radio-pildora);
+  box-shadow: var(--vidrio-sombra-chica);
+}
+
+.vidrio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgb(255 255 255 / 0.55), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Transparencia reducida: vidrio sólido y sin luces. Más contraste: sólido con borde de tinta. */
+@media (prefers-reduced-transparency: reduce) {
+  .vidrio {
+    background: var(--fondo-elevado);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .vidrio::after,
+  .luces {
+    display: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .vidrio {
+    background: var(--fondo-elevado);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: var(--texto);
+  }
+
+  .vidrio::after {
+    display: none;
   }
 }

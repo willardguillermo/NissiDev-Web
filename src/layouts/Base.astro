@@ -34,7 +34,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <meta name="description" content={descripcion} />
     <meta name="theme-color" content="#f7f4ec" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/manrope-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-latin-wght.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // "js": hay JavaScript, así que el menú móvil empieza cerrado (sin JavaScript queda siempre visible).
       // Las clases se ponen antes de dibujar para que no haya salto (CLS). ClientRouter borra los atributos
@@ -65,6 +65,14 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     <ClientRouter />
   </head>
   <body>
+    <!-- Luces de la marca detrás del vidrio. transition:persist: no se vuelven a pintar al cambiar de página. -->
+    <div class="luces" aria-hidden="true" transition:persist="luces">
+      <span class="luz luz--1"></span>
+      <span class="luz luz--2"></span>
+      <span class="luz luz--3"></span>
+      <span class="luz luz--4"></span>
+    </div>
+
     <a class="saltar" href="#contenido">Saltar al contenido</a>
 
     <header class="cabecera">
@@ -162,6 +170,47 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         }
       });
       movil.addEventListener('change', () => abrir(false));
+    </script>
+
+    <script>
+      // Luces: suben un poco más lento que la página al hacer scroll (parallax), en un rAF por cuadro.
+      // Nada se mueve solo; con movimiento reducido se quedan quietas. Tope de 260 px para que no se vayan.
+      // Brillo del vidrio: sigue al puntero solo con mouse; se actualiza solo el vidrio que está debajo.
+      const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+      let pendiente = 0;
+
+      const moverLuces = () => {
+        pendiente = 0;
+        const luces = document.querySelectorAll<HTMLElement>('.luz');
+        luces.forEach((luz, i) => {
+          const desplazamiento = reducido.matches ? 0 : Math.min(260, window.scrollY * (0.04 + i * 0.03));
+          luz.style.transform = `translate3d(0, ${(-desplazamiento).toFixed(1)}px, 0)`;
+        });
+      };
+      const pedirLuces = () => {
+        if (!pendiente) pendiente = requestAnimationFrame(moverLuces);
+      };
+      window.addEventListener('scroll', pedirLuces, { passive: true });
+      reducido.addEventListener('change', pedirLuces);
+      document.addEventListener('astro:page-load', pedirLuces);
+
+      let brillo = 0;
+      document.addEventListener(
+        'pointermove',
+        (evento) => {
+          if (!conMouse.matches || brillo) return;
+          brillo = requestAnimationFrame(() => {
+            brillo = 0;
+            const vidrio = (evento.target as Element).closest<HTMLElement>('.vidrio');
+            if (!vidrio) return;
+            const caja = vidrio.getBoundingClientRect();
+            vidrio.style.setProperty('--mx', `${evento.clientX - caja.left}px`);
+            vidrio.style.setProperty('--my', `${evento.clientY - caja.top}px`);
+          });
+        },
+        { passive: true },
+      );
     </script>
 
     <script>
