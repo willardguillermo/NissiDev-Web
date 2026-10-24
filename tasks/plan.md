@@ -146,9 +146,9 @@ Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerp
 | CI6 | S | ✅ A4 `f2645e9`; evidencia, checklist y cierre de navegador registrados | PDF de 9 módulos: 1 página A4; revisión independiente sin bloqueantes; Playwright cierra teclado, desmontaje y cambios entre pestañas | `fix: conservar la proforma A4 al imprimir` + documentación |
 
 En cada parte: `npm test`, `npm run check`, `npm run lint` y `npm run build`; celular en las visibles.
-**Punto de control al cerrar la rama:** «Listo para revisión», hash base y revisión independiente en cinco ejes.
+**Punto de control:** revisión independiente en cinco ejes contra `9d164c2`, sin bloqueantes. [PR #4](https://github.com/willardguillermo/NissiDev-Web/pull/4) abierto hacia TD2. Pendientes: aprobación en celular físico y cierre de la revisión de los arreglos de TD2; no unir hasta entonces.
 Abrir PR con resumen, capturas, cómo probar y el bloqueo de TD2; ninguna integración sin OK de Guillermo.
-Evidencia y pendientes: [VERIFICACION.md](../docs/referencias/cotizacion-impresora/VERIFICACION.md).
+Evidencia y resultados: [VERIFICACION.md](../docs/referencias/cotizacion-impresora/VERIFICACION.md).
 
 ## Fase 5 — `demo` (motor)
 

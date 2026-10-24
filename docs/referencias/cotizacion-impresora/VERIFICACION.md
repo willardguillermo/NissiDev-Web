@@ -83,6 +83,8 @@ Se verificó un temporizador activo antes de cada salida y cero después; esto e
 una prueba que no hubiera observado el temporizador real. El test puro con reloj falso y el fallo
 deliberado complementan esta prueba de desmontaje en navegador.
 
+La vista previa publicada de Cloudflare se comprobó a 390×844: 3 módulos, fase lista, acciones disponibles, sin desborde ni errores de página. No se generaron capturas nuevas.
+
 El fallo del control nativo quedó sorteado con esta alternativa autorizada. No hay pruebas de
 navegador pendientes de esta mejora. La aprobación en el celular físico de Guillermo sigue pendiente.
 
@@ -123,6 +125,6 @@ frontend estático, sin panel real, login, API ni base de datos.
 | Diseño | Tokens y Geist de TD2, monoespaciada solo en el papel; sin colores ni cobros de la demo |
 | Infraestructura | Sin nuevas variables, migraciones, dominios ni accesos; despliegue de rama por Cloudflare, sin tocar main |
 | Logs | Se conservan los logs de build/hosting; sin nueva telemetría ni datos personales persistidos |
-| Documentación / entrega | Spec, plan, evidencia y pasos de prueba en el PR. Falta README global del proyecto: pendiente previo de T27, fuera de esta mejora |
+| Documentación / entrega | Spec, plan, evidencia y pasos de prueba en el [PR #4](https://github.com/willardguillermo/NissiDev-Web/pull/4). Falta README global del proyecto: pendiente previo de T27, fuera de esta mejora |
 | Guía del panel y entrega de accesos | No aplican: no se entrega un panel real ni se crean credenciales |
 | Rollback | Procedimiento definido al principio de este documento |
