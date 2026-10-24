@@ -3,8 +3,10 @@ import Boton from '../components/Boton.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
 import ArmaInicio from '../components/ArmaInicio.astro';
+import ContactoTarjeta from '../components/ContactoTarjeta.astro';
+import Proceso from '../components/Proceso.astro';
 import ServiciosBento from '../components/ServiciosBento.astro';
-import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
+import { TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import HistoriaDemo from '../components/HistoriaDemo.astro';
@@ -58,32 +60,24 @@ import { DULCERIA } from '../rubros/dulceria/config';
     <ArmaInicio />
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="pasos-titulo" data-aparecer>
-    <h2 id="pasos-titulo" class="titulo-2">Cómo trabajamos</h2>
-    <ol class="pasos" role="list">
-      {
-        PASOS.map((paso, i) => (
-          <li class="paso">
-            <span class="paso__numero" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span class="paso__titulo">{paso.titulo}</span>
-            <span class="paso__texto">{paso.texto}</span>
-          </li>
-        ))
-      }
-    </ol>
+  <section class="contenedor seccion" aria-labelledby="pasos-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <p class="etiqueta">Cómo trabajamos</p>
+      <h2 id="pasos-titulo" class="titulo-2">De la idea a tu sistema, <span class="acento">sin sorpresas.</span></h2>
+    </div>
+    <Proceso />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
     <h2 id="stack-titulo" class="etiqueta">Con qué construyo</h2>
     <ul class="chips" role="list">
-      {TECNOLOGIAS.map((tecnologia) => <li class="chip">{tecnologia}</li>)}
+      {TECNOLOGIAS.map((tecnologia) => <li class="chip vidrio vidrio--chico">{tecnologia}</li>)}
     </ul>
+    <p class="casos">Casos: próximamente.</p>
   </section>
 
-  <section class="contenedor seccion" data-aparecer>
-    <p class="casos">Casos: próximamente.</p>
+  <section id="contacto" class="contenedor seccion" aria-labelledby="contacto-titulo" data-aparecer>
+    <ContactoTarjeta id="contacto-titulo" />
   </section>
 </Base>
 
@@ -313,43 +307,6 @@ import { DULCERIA } from '../rubros/dulceria/config';
     font-size: var(--texto-xs);
   }
 
-  .pasos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--espacio-3);
-    width: 100%;
-    max-width: 30rem;
-    padding: 0;
-    list-style: none;
-  }
-
-  .paso {
-    display: grid;
-    align-content: start;
-    justify-items: center;
-    gap: var(--espacio-1);
-    padding: var(--espacio-5) var(--espacio-3);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-tarjeta);
-  }
-
-  .paso__numero {
-    color: var(--acento-texto);
-    font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .paso__titulo {
-    font-weight: var(--peso-titulo);
-  }
-
-  .paso__texto {
-    color: var(--texto-suave);
-    font-size: var(--texto-sm);
-  }
-
   .chips {
     display: flex;
     flex-wrap: wrap;
@@ -362,8 +319,6 @@ import { DULCERIA } from '../rubros/dulceria/config';
 
   .chip {
     padding: var(--espacio-2) var(--espacio-4);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-pildora);
     font-size: var(--texto-sm);
     font-weight: 600;
   }
@@ -383,9 +338,5 @@ import { DULCERIA } from '../rubros/dulceria/config';
       padding-top: var(--espacio-24);
     }
 
-    .pasos {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      max-width: 56rem;
-    }
   }
 </style>

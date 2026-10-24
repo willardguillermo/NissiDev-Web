@@ -1,11 +1,11 @@
 ---
 import Boton from '../components/Boton.astro';
 import IntroPagina from '../components/IntroPagina.astro';
+import Proceso from '../components/Proceso.astro';
 import ServiciosBento from '../components/ServiciosBento.astro';
-import { PASOS, STACK } from '../catalogo-servicios/proceso';
+import { STACK } from '../catalogo-servicios/proceso';
 import Base from '../layouts/Base.astro';
 
-const dos = (n: number) => String(n).padStart(2, '0');
 ---
 
 <Base
@@ -27,19 +27,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
       <h2 id="proceso-titulo" class="titulo-2">Cómo trabajamos</h2>
       <p class="seccion__bajada">De la maqueta al sistema funcionando, sin sorpresas.</p>
     </div>
-    <ol class="pasos" role="list">
-      {
-        PASOS.map((paso, i) => (
-          <li class="paso" data-aparecer>
-            <span class="paso__numero" aria-hidden="true">
-              {dos(i + 1)}
-            </span>
-            <span class="paso__titulo">{paso.titulo}</span>
-            <span class="paso__texto">{paso.texto}</span>
-          </li>
-        ))
-      }
-    </ol>
+    <Proceso />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="stack-titulo">
@@ -75,14 +63,6 @@ const dos = (n: number) => String(n).padStart(2, '0');
     margin-top: var(--espacio-6);
   }
 
-  .paso__numero {
-    color: var(--acento-texto);
-    font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    font-variant-numeric: tabular-nums;
-  }
-
   .seccion {
     display: flex;
     flex-direction: column;
@@ -101,35 +81,6 @@ const dos = (n: number) => String(n).padStart(2, '0');
   .seccion__bajada {
     max-width: 36ch;
     color: var(--texto-suave);
-  }
-
-  .pasos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--espacio-3);
-    width: 100%;
-    max-width: 30rem;
-    padding: 0;
-    list-style: none;
-  }
-
-  .paso {
-    display: grid;
-    align-content: start;
-    justify-items: center;
-    gap: var(--espacio-1);
-    padding: var(--espacio-5) var(--espacio-3);
-    background: var(--fondo-elevado);
-    border-radius: var(--radio-tarjeta);
-  }
-
-  .paso__titulo {
-    font-weight: var(--peso-titulo);
-  }
-
-  .paso__texto {
-    color: var(--texto-suave);
-    font-size: var(--texto-sm);
   }
 
   .stack {
@@ -179,11 +130,6 @@ const dos = (n: number) => String(n).padStart(2, '0');
   @media (min-width: 48rem) {
     .seccion {
       padding-top: var(--espacio-24);
-    }
-
-    .pasos {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      max-width: 56rem;
     }
 
     .stack {

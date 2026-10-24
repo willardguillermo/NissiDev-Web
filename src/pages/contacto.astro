@@ -1,76 +1,18 @@
 ---
-import Boton from '../components/Boton.astro';
-import IntroPagina from '../components/IntroPagina.astro';
-import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE, ZONA } from '../config/contacto';
+import ContactoTarjeta from '../components/ContactoTarjeta.astro';
+import { WHATSAPP_VISIBLE, ZONA } from '../config/contacto';
 import Base from '../layouts/Base.astro';
 ---
 
 <Base titulo="Contacto" descripcion={`Escríbeme por WhatsApp al ${WHATSAPP_VISIBLE}. Trabajo con negocios del ${ZONA}.`}>
-  <section class="contenedor" aria-labelledby="contacto-titulo">
-    <IntroPagina etiqueta="Contacto" titulo="Conversemos por WhatsApp." id="contacto-titulo">
-      Cuéntame de tu negocio y te respondo con una idea de cómo sería tu sistema.
-    </IntroPagina>
-
-    <div class="contacto" data-aparecer>
-      <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
-      <dl class="datos">
-        <div class="dato">
-          <dt>WhatsApp</dt>
-          <!-- Texto, no enlace: se puede seleccionar y copiar para guardarlo en los contactos -->
-          <dd class="dato__numero">{WHATSAPP_VISIBLE}</dd>
-        </div>
-        <div class="dato">
-          <dt>Zona</dt>
-          <dd>{ZONA}</dd>
-        </div>
-      </dl>
-    </div>
+  <section class="contenedor contacto-pagina" aria-labelledby="contacto-titulo">
+    <ContactoTarjeta nivel={1} id="contacto-titulo" />
   </section>
 </Base>
 
 <style>
-  .contacto {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--espacio-6);
-    max-width: 30rem;
-    padding: var(--espacio-8) var(--espacio-6);
-    margin: var(--espacio-6) auto 0;
-    background: var(--fondo-elevado);
-    border-radius: 1.5rem;
-    box-shadow: var(--sombra-tarjeta);
-  }
-
-  .datos {
-    display: grid;
-    gap: var(--espacio-4);
-    width: 100%;
-    text-align: center;
-  }
-
-  .dato + .dato {
-    padding-top: var(--espacio-4);
-    border-top: 1px solid var(--color-linea);
-  }
-
-  dt {
-    color: var(--acento-texto);
-    font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  dd {
-    margin-top: var(--espacio-1);
-    font-size: var(--texto-xl);
-    font-weight: var(--peso-titulo);
-  }
-
-  .dato__numero {
-    font-variant-numeric: tabular-nums;
-    user-select: all;
-    -webkit-user-select: all;
+  .contacto-pagina {
+    max-width: 48rem;
+    padding-top: var(--espacio-8);
   }
 </style>

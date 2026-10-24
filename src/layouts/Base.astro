@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import Boton from '../components/Boton.astro';
 import Logo from '../components/Logo.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
@@ -121,14 +120,14 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Como el cierre del video: logo, NissiDev, WhatsApp y el número -->
+    <!-- Pie corto (TD2): la acción de contacto grande ya está en la tarjeta de Contacto -->
     <footer class="pie">
       <div class="contenedor pie__fila">
-        <Logo class="pie__logo" />
-        <p class="pie__marca">NissiDev</p>
-        <Boton href={WHATSAPP_ENLACE} externo>Escríbeme por WhatsApp</Boton>
-        <p class="pie__numero">{WHATSAPP_VISIBLE}</p>
-        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Lima, Perú</p>
+        <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
+        <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+          WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
+        </a>
+        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Este de Lima</p>
       </div>
     </footer>
 
@@ -212,6 +211,27 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         },
         { passive: true },
       );
+    </script>
+
+    <script>
+      // [data-armar]: recibe la clase .armada la primera vez que entra en pantalla (ilustraciones del bento,
+      // línea del proceso). Las piezas solo se esconden con .js, así que sin JavaScript se ven armadas.
+      document.addEventListener('astro:page-load', () => {
+        const piezas = document.querySelectorAll('[data-armar]');
+        if (!piezas.length) return;
+        const observador = new IntersectionObserver(
+          (entradas) => {
+            for (const e of entradas) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('armada');
+              observador.unobserve(e.target);
+            }
+          },
+          { threshold: 0.25 },
+        );
+        piezas.forEach((pieza) => observador.observe(pieza));
+        document.addEventListener('astro:before-swap', () => observador.disconnect(), { once: true });
+      });
     </script>
 
     <script>
@@ -490,38 +510,38 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .pie {
-    margin-top: var(--espacio-24);
-    padding-block: var(--espacio-12) var(--espacio-16);
-    border-top: 1px solid var(--color-linea);
+    margin-top: var(--espacio-16);
+    padding-block: var(--espacio-8) var(--espacio-12);
   }
 
   .pie__fila {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--espacio-3);
-    text-align: center;
-  }
-
-  .pie :global(.pie__logo) {
-    width: 2.75rem;
+    justify-content: space-between;
+    gap: var(--espacio-2) var(--espacio-5);
+    color: var(--texto-nota);
+    font-size: var(--texto-sm);
   }
 
   .pie__marca {
-    margin-bottom: var(--espacio-2);
-    font-size: 1.375rem;
-    font-weight: var(--peso-titulo);
-    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacio-2);
+    color: var(--texto);
+    font-weight: 700;
   }
 
-  .pie__numero {
+  .pie :global(.pie__logo) {
+    width: 1rem;
+  }
+
+  .pie__whatsapp {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--texto);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-  }
-
-  .pie__nota {
-    margin-top: var(--espacio-4);
-    color: var(--texto-suave);
-    font-size: var(--texto-xs);
   }
 </style>

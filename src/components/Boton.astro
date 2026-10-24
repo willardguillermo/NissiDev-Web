@@ -74,8 +74,22 @@ const clases = ['boton', `boton--${variante}`, variante === 'vidrio' && 'vidrio 
       0 8px 20px rgb(30 31 34 / 0.25);
   }
 
+  /* .boton pone border: 0; el vidrio necesita el suyo (y uno visible cuando el vidrio se vuelve sólido) */
   .boton--vidrio {
     color: var(--texto);
+    border: 1px solid var(--vidrio-borde);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .boton--vidrio {
+      border-color: var(--color-contorno);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .boton--vidrio {
+      border-color: var(--texto);
+    }
   }
 
   /* Transparente con contorno suave, como en el video */

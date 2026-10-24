@@ -1,6 +1,7 @@
 ---
 // Los 4 servicios en bento: tarjetas de vidrio con una mini ilustración que se arma al aparecer en pantalla
 // (web, barras, app, gráfico). Textos del video de marca (SERVICIOS). Lo usan el Inicio y /servicios.
+// data-armar: Base.astro le pone la clase .armada la primera vez que entra en pantalla.
 // Sin JavaScript las ilustraciones se ven armadas desde el inicio.
 import { SERVICIOS } from '../catalogo-servicios/servicios';
 
@@ -50,26 +51,6 @@ const ILUSTRACIONES = ['web', 'barras', 'app', 'grafico'] as const;
     ))
   }
 </ul>
-
-<script>
-  // Arma cada ilustración la primera vez que su tarjeta entra en pantalla
-  document.addEventListener('astro:page-load', () => {
-    const tarjetas = document.querySelectorAll('[data-armar]');
-    if (!tarjetas.length) return;
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const e of entradas) {
-          if (!e.isIntersecting) continue;
-          e.target.classList.add('armada');
-          observador.unobserve(e.target);
-        }
-      },
-      { threshold: 0.25 },
-    );
-    tarjetas.forEach((t) => observador.observe(t));
-    document.addEventListener('astro:before-swap', () => observador.disconnect(), { once: true });
-  });
-</script>
 
 <style>
   .bento {
