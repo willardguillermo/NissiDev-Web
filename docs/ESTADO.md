@@ -1,6 +1,14 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (pausa explícita durante cotización con impresora; ver recordatorio de limpieza). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (sesión retomada; evidencia reducida a tres capturas antes del PR). Quien termine una sesión de trabajo actualiza este archivo.
+
+## Retomado — limpieza y evidencia antes del PR
+- Rama activa: `feature/cotizacion-impresora`. A4 local conservado y guardado en `f2645e9`; PDF inspeccionado con Poppler: 1 página A4 con los 9 módulos completos.
+- Tests finales repetidos: 384 tests, tipos, lint y build correctos; persiste la advertencia conocida de Node sobre localStorage.
+- Limpieza solicitada: eliminadas de Videos las 8 capturas descargadas y el PDF de QA, verificando su identidad con las copias de evidencia. Los archivos ajenos no se tocaron. Temporales de /tmp pendientes de limpieza al cerrar QA.
+- Guillermo pidió rehacer `ccc144d`: conservar solo `movil-lista.png`, `escritorio-lista.png` e `impresion-a4.png`; eliminar las otras 6 y corregir sus enlaces. Se publica la sustitución con force-with-lease exclusivamente a esta rama.
+- PR todavía sin abrir. Pendientes de navegador y cierre del vault detallados en `docs/referencias/cotizacion-impresora/VERIFICACION.md`. El control nativo falla con `Sky Computer Use native pipe startup failed`; se preguntó si autoriza Playwright ya disponible, sin dependencias nuevas. No se ha usado ese reemplazo sin respuesta.
+- Las notas de pausa siguientes son históricas; el pedido de continuar ya revocó la pausa.
 
 ## Pausa solicitada por Guillermo — cotización con impresora (2026-10-24)
 - **Pausado por pedido explícito. No continuar hasta que Guillermo retome.**

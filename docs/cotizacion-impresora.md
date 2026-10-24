@@ -10,8 +10,9 @@ Se mantienen Astro + React, CSS propio y los ADR-002/003; no se agregan dependen
 
 ## Rama y condición de integración
 - Rama: `feature/cotizacion-impresora`, desde `feature/td2-liquid` en `c79f5f6b80ab6565663946ca8a8fcbb741797f91`.
+- Base actualizada con TD2 en `a08e449`; comparación y revisión de esta mejora contra **`9d164c2`**.
 - PR hacia `feature/td2-liquid`, con resumen, capturas y pasos para probar; sin unirlo automáticamente.
-- La descripción del PR debe indicar: **No unir hasta resolver los dos hallazgos pendientes de TD2**:
+- La descripción del PR debe indicar: **No unir hasta cerrar la revisión de los dos arreglos de TD2**:
   `rootMargin` de HistoriaDemo en ventanas apaisadas y sello «Demo · datos de ejemplo» fuera del sticky.
 - Al cerrar la rama: «Listo para revisión» con el commit base; revisa Claude Code o una sesión independiente.
   Para aislar esta mejora se compara con la base TD2; el último `main` observado es `7c9eb67`.
@@ -71,3 +72,9 @@ Sin preguntas abiertas para comenzar; A4, rama base y curva quedaron confirmados
 - Al terminar la mejora: bitácora fechada con commits, tests y lecciones en «Web NissiDev.md» del vault;
   marcar «Cotización que sale de la impresora» en «Mejoras de diseño.md». No marcar antes de implementarla.
 - Actualizar `docs/ESTADO.md` al terminar cada sesión, en su último commit.
+
+## Evidencia de implementación
+
+CI3–CI5 implementadas; A4 en `f2645e9`. Resultados, capturas y pendientes de cierre en
+[VERIFICACION.md](referencias/cotizacion-impresora/VERIFICACION.md). No confundir implementación
+con aprobación de merge: las comprobaciones pendientes y la aprobación de Guillermo deben cerrarse.

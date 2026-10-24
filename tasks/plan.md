@@ -132,22 +132,23 @@ Además de los criterios de cada tarea:
 ## Cotización con impresora
 
 Spec y supuestos aprobados el 2026-10-24: [docs/cotizacion-impresora.md](../docs/cotizacion-impresora.md).
-Rama `feature/cotizacion-impresora` desde TD2 (`c79f5f6`); PR hacia `feature/td2-liquid`.
-**No unir el PR hasta resolver los dos hallazgos pendientes de TD2** (HistoriaDemo y sello sticky).
+Rama `feature/cotizacion-impresora` desde TD2 (`c79f5f6`), actualizada mediante `a08e449`; base de revisión actual `9d164c2`. PR hacia `feature/td2-liquid`.
+**No unir el PR hasta cerrar la revisión de los dos arreglos de TD2** (HistoriaDemo y sello sticky).
 Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerpo que explique el porqué.
 
 | Parte | Tamaño | Estado / alcance | Verificación específica | Commit previsto |
 |---|---|---|---|---|
 | CI1 | S | ✅ Spec y plan registrados; implementación pendiente | Aprobación contrastada; 366 tests, check y lint en verde; build correcto (advertencia de Node 26 sobre localStorage) | `docs: definir la cotización con impresora` |
 | CI2 | M | ✅ Duración y secuencia cancelable fuera de React, sin conectar la interfaz | 18 tests nuevos (384 totales); check, lint y build correctos. Omitir `clearTimeout` hizo fallar la cancelación a 450 ms: 1 timer pendiente en vez de 0; restaurado y verde | `feat: controlar las fases de impresión` |
-| CI3 | S | Pendiente: separar papel, formulario y acciones; reutilizar resumen | Tests existentes; PDF y WhatsApp conservan los datos | `refactor: separar el resumen de cotización` |
-| CI4 | M | Pendiente: ticketera, ranura, papel y token `--ease-papel` | Capturas por fase en 390 px y escritorio; sin desbordamiento; medir CLS | `feat: mostrar la cotización saliendo de la impresora` |
-| CI5 | M | Pendiente: conectar fases, acciones y accesibilidad | Reloj falso, desmontaje real, teclado, repetición y movimiento reducido | `feat: conectar las acciones de la cotización impresa` |
-| CI6 | S | Pendiente: A4 explícito y documentación de entrega | Vista previa A4, capturas, checklist del vault, bitácora y mejora marcada al completar | `docs: registrar la verificación de la cotización` |
+| CI3 | S | ✅ Papel y acciones separados; formulario fuera del papel | 384 tests, tipos, lint y build; reutiliza precios y mensaje | `18925e1` |
+| CI4 | M | ✅ Ticketera, ranura, papel, aviso sin pago y token `--ease-papel` | Capturas en 390×844 y 1366×900; sin desborde; CLS 0 de carga/secuencia | `5743e30` |
+| CI5 | M | ✅ Fases, acciones, repetición y movimiento reducido conectados | Reloj falso, repetición y modo reducido verificados; faltan teclado y desmontaje real al recuperar navegador | `e3bf56f` |
+| CI6 | S | A4 ✅ `f2645e9`; evidencia y checklist registradas; cierre pendiente | PDF de 9 módulos: 1 página A4; revisión independiente sin bloqueantes. Faltan tres pruebas de navegador y cierre del vault | `fix: conservar la proforma A4 al imprimir` + documentación |
 
 En cada parte: `npm test`, `npm run check`, `npm run lint` y `npm run build`; celular en las visibles.
 **Punto de control al cerrar la rama:** «Listo para revisión», hash base y revisión independiente en cinco ejes.
 Abrir PR con resumen, capturas, cómo probar y el bloqueo de TD2; ninguna integración sin OK de Guillermo.
+Evidencia y pendientes: [VERIFICACION.md](../docs/referencias/cotizacion-impresora/VERIFICACION.md).
 
 ## Fase 5 — `demo` (motor)
 
