@@ -259,6 +259,11 @@ a {
   pointer-events: none;
 }
 
+/* Lo que flota encima de otros vidrios al hacer scroll (el header): más opaco para no apilar vidrio sobre vidrio */
+.vidrio--fuerte {
+  background: var(--vidrio-fuerte);
+}
+
 /* Transparencia reducida: vidrio sólido y sin luces. Más contraste: sólido con borde de tinta. */
 @media (prefers-reduced-transparency: reduce) {
   .vidrio {
