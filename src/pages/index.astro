@@ -27,7 +27,7 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
       Prueba cómo quedaría el sistema de tu negocio, elige lo que necesitas y recibe la cotización por WhatsApp.
     </p>
     <div class="hero__acciones entra" style="--n: 3">
-      <Boton href="#demo">Ver la demo de mi rubro</Boton>
+      <Boton href="/demos/dulceria/">Ver la demo de mi rubro</Boton>
       <Boton href={WHATSAPP_ENLACE} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
     </div>
   </section>
@@ -45,11 +45,7 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
       <TelefonoDemo />
     </div>
     <p class="demo__sello">Demo · datos de ejemplo</p>
-    <!-- Aún no hay demo que abrir: es un aviso (texto), no un botón, así que no recibe foco.
-         Un lector de pantalla lee "Abrir la demo: muy pronto". -->
-    <p class="demo__aviso">
-      Abrir la demo<span class="solo-lector">:</span> <span class="demo__pronto">Muy pronto</span>
-    </p>
+    <Boton href="/demos/dulceria/">Abrir la demo</Boton>
   </section>
 
   <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
@@ -333,28 +329,6 @@ const tecnologias = ['Astro', 'React', 'Kotlin · Android', 'Spring Boot', 'MySQ
   .demo__sello {
     color: var(--texto-suave);
     font-size: var(--texto-xs);
-  }
-
-  /* Aviso, no botón: borde punteado y texto suave para que no parezca algo que se puede tocar */
-  .demo__aviso {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--espacio-2);
-    min-height: 3rem;
-    padding-inline: 1.375rem var(--espacio-2);
-    color: var(--texto-suave);
-    border: 1px dashed var(--color-punteado);
-    border-radius: var(--radio-pildora);
-    font-weight: 600;
-  }
-
-  .demo__pronto {
-    padding: var(--espacio-1) var(--espacio-3);
-    background: var(--fondo);
-    color: var(--acento-texto);
-    border-radius: var(--radio-pildora);
-    font-size: var(--texto-xs);
-    font-weight: 700;
   }
 
   .arma {
