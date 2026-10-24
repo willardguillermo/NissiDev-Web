@@ -2,6 +2,7 @@
 import Boton from '../components/Boton.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
+import ArmaInicio from '../components/ArmaInicio.astro';
 import ServiciosBento from '../components/ServiciosBento.astro';
 import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { SERVICIOS } from '../catalogo-servicios/servicios';
@@ -53,16 +54,8 @@ import { DULCERIA } from '../rubros/dulceria/config';
     <ServiciosBento />
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
-    <div class="arma">
-      <p class="etiqueta">Precios referenciales</p>
-      <h2 id="arma-titulo" class="titulo-2">Arma tu sistema</h2>
-      <span class="linea-dorada" aria-hidden="true"></span>
-      <p class="seccion__bajada">
-        Elige las funciones que necesita tu negocio y mira cuánto costaría. Puedes empezar con poco y sumar después.
-      </p>
-      <Boton href="/arma-tu-sistema">Elegir funciones</Boton>
-    </div>
+  <section id="armar" class="contenedor seccion" aria-labelledby="armar-titulo" data-aparecer>
+    <ArmaInicio />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="pasos-titulo" data-aparecer>
@@ -307,13 +300,6 @@ import { DULCERIA } from '../rubros/dulceria/config';
     text-transform: uppercase;
   }
 
-  .linea-dorada {
-    width: 1.75rem;
-    height: 2px;
-    background: var(--acento);
-    border-radius: 2px;
-  }
-
   .demo {
     scroll-margin-top: var(--espacio-4);
   }
@@ -325,23 +311,6 @@ import { DULCERIA } from '../rubros/dulceria/config';
   .demo__sello {
     color: var(--texto-suave);
     font-size: var(--texto-xs);
-  }
-
-  .arma {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--espacio-3);
-    width: 100%;
-    max-width: 30rem;
-    padding: var(--espacio-8) var(--espacio-6);
-    background: var(--fondo-elevado);
-    border-radius: 1.5rem;
-    box-shadow: var(--sombra-tarjeta);
-  }
-
-  .arma :global(.boton) {
-    margin-top: var(--espacio-2);
   }
 
   .pasos {
