@@ -110,12 +110,12 @@ Además de los criterios de cada tarea:
 - **Bloqueaba:** la T11 y todas las tareas con pantallas (T14, T16–T19, T20b, T21–T23). Desbloqueadas al unirse a `main`.
 - **Terminado cuando:** Guillermo aprueba los bocetos y los tokens/componentes quedan actualizados.
 
-### T11 · feat: página de cotización imprimible
+### T11 · feat: página de cotización imprimible — ✅ `3b1e992` (en `feature/paginas-mvp`)
 - **Qué:** página `cotizacion.astro` + isla `Cotizacion.tsx`: resumen del carrito, campo opcional "Nombre de tu negocio" (con label; no se guarda), botón "Enviar por WhatsApp" y botón "Guardar como PDF" (`window.print()`), hoja de estilos de impresión. Si el carrito está vacío, lleva a Arma tu sistema.
 - **Terminado cuando:** la vista de impresión sale en una hoja limpia (sin header, menú ni botones) con "precios referenciales" y la validez; no hay nada que parezca un cobro.
 - **Verificación:** vista previa de impresión en Chrome (guardar PDF); botón de WhatsApp probado en el celular.
 
-**Punto de control 4:** flujo carrito → cotización → WhatsApp completo.
+**Punto de control 4:** flujo carrito → cotización → WhatsApp completo. ⏳ Pendiente de revisión de Codex junto con la T22 y la T23 (base `83b8b0e`). PDF de ejemplo en `docs/referencias/cotizacion-ejemplo.pdf`.
 
 ## Fase 5 — `demo` (motor)
 
@@ -184,16 +184,17 @@ Además de los criterios de cada tarea:
 ## Fase 7 — `sitio`
 
 ### T21 · feat: Inicio de NissiDev — en parte adelantada en la TD1
+- **Arreglo en `main` (2026-10-24, `710b195`):** «Ver la demo de mi rubro» y «Abrir la demo» llevan a `/demos/dulceria/` (antes: ancla `#demo` y aviso «Muy pronto»). En `feature/paginas-mvp`, «Ver la demo de mi rubro» pasa a `/demos`.
 - **Qué:** hero 5-10-15, botón "Ver la demo de mi rubro", WhatsApp secundario, resumen de servicios, llamado al carrito y sección "Casos: próximamente" (P4). Textos en borrador para que Guillermo los corrija.
 - **Terminado cuando:** criterio de éxito 1: qué hago, por qué elegirme y WhatsApp visibles sin bajar más de una pantalla en 375 px.
 - **Verificación:** captura en 375 px.
 
-### T22 · feat: Servicios y stack
+### T22 · feat: Servicios y stack — ✅ `daa20ad` (en `feature/paginas-mvp`)
 - **Qué:** proceso (maqueta → propuesta → ≈4 semanas → soporte) y tecnologías.
 - **Terminado cuando:** página enlazada desde el menú; textos en borrador marcados para revisión.
 - **Verificación:** prueba manual en 375 px.
 
-### T23 · feat: Demos y Contacto
+### T23 · feat: Demos y Contacto — ✅ `2d44b4a` (en `feature/paginas-mvp`)
 - **Qué:** tarjetas por rubro (Dulcería activa; Hospedaje y Restaurante campestre "Próximamente") y página de Contacto con WhatsApp.
 - **Terminado cuando:** todas las páginas del BRIEF existen y están enlazadas.
 - **Verificación:** recorrer el menú en 375 px.
