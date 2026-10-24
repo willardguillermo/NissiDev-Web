@@ -1,6 +1,21 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (arreglos de TD2 verificados, listos para revisión independiente). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (pausa explícita durante cotización con impresora; ver recordatorio de limpieza). Quien termine una sesión de trabajo actualiza este archivo.
+
+## Pausa solicitada por Guillermo — cotización con impresora (2026-10-24)
+- **Pausado por pedido explícito. No continuar hasta que Guillermo retome.**
+- **RECORDATORIO PARA RETOMAR:** Guillermo pidió eliminar después todas las descargas/capturas creadas para estas pruebas. Hay **8 PNG** en `~/Movies/` (carpeta «Videos»), llamados `127.0.0.1_4323_cotizacion.png` y `127.0.0.1_4323_cotizacion (1).png`…`(7).png`. Solo son esos archivos de QA, no otros archivos del usuario. No se borraron durante la pausa. Fuera de las raíces editables: su eliminación requerirá la autorización del sandbox correspondiente.
+- También se copiaron 8 capturas a `docs/referencias/cotizacion-impresora/capturas/` (sin seguimiento todavía); decidir con su pedido de limpieza cuáles conservar como evidencia del PR. Hay temporales de QA en `/tmp/nissidev-*`; revisar solo los creados en esta sesión. No se encontró un PDF descargado con los nombres previstos en Movies; no darlo por guardado.
+- **Rama activa:** `feature/cotizacion-impresora`. Base TD2 actualizada mediante merge `a08e449`; base de revisión/PR: `9d164c2` en `feature/td2-liquid`. Nada unido a main.
+- **Implementado:** CI3 `18925e1` (papel y acciones separados), CI4 `5743e30` (ticketera, ranura, papel, aviso sin pago y reserva de altura), CI5 `e3bf56f` (fases, acciones, repetición, cancelación y movimiento reducido). Código y fechas siguen creándose en useEffect; no hay dependencias nuevas.
+- **CAMBIO LOCAL A CONSERVAR:** `src/islas/Cotizacion.css`, A4 explícito fuera de @media y evitar partir módulos/totales/fechas. Sin commit todavía; no sobrescribir.
+- Últimos comandos: 384 tests / 35 archivos, check sin errores/advertencias/hints, lint y build correctos; advertencia conocida de Node sobre localStorage. `npm audit`: 0 vulnerabilidades.
+- Fallo deliberado repetido: quitar clearTimeout hizo fallar la cancelación a 450 ms en `impresion.test.ts:67`, con 1 timer pendiente en vez de 0. Restaurado; 18 tests de impresión pasan.
+- QA en Brave local `http://127.0.0.1:4323/cotizacion`: 390×844 y 1366×900; capturas por fase y con movimiento reducido en ambos tamaños. Secuencia corta medida: 0 → 904 → 2104 ms; acciones inert hasta lista; repetir conserva el código; CLS de carga/secuencia 0. Cotización de 9 módulos sin desborde; papel de 1139 px en móvil. Nombre largo con etiquetas como texto, enlace WhatsApp codificado y sin reinicio. Una edición sintética de nombre produjo layout shift (sin entrada real de usuario); no confundirlo con la medición de carga.
+- Revisión independiente por sesión nueva sin contexto de implementación: cinco ejes, sin errores concretos/bloqueantes; 384 tests y lint comprobados por el revisor. Observación menor aceptada: la reserva conservadora de 104rem deja vacío al final, especialmente con carrito vacío. No sustituye el cierre de revisión de TD2.
+- Impresión abierta a los 1300 ms de la secuencia: vista previa de **1 página** con los nueve módulos y totales completos, sin ticketera ni controles/recorte. Se quitó el encabezado/pie del navegador para la evidencia. **Pendiente exportar/inspeccionar el PDF**, no afirmar que ya se guardó. Poppler está disponible.
+- **Falta antes de entregar:** cerrar QA (PDF A4, teclado, desmontaje real durante la animación, carrito actualizado desde otra pestaña/vacío), evidencia y checklist completa; actualizar CI3–CI6 en tasks/plan.md y spec según base nueva; bitácora del vault y casilla de mejora cuando esté completo; commit final de estado; push de esta rama, comprobar Cloudflare, abrir PR a feature/td2-liquid con capturas y pasos. No se hizo push ni PR de la impresora todavía.
+- Servidor de pruebas 4323 puede seguir activo; en esta sesión hubo que reiniciarlo tras editar para evitar versiones viejas. La emulación de movimiento reducido quedó desactivada al abrir la prueba de impresión. Confirmar estado de Brave antes de operar.
 
 ## Retomar después del reinicio — completado
 - **Rama activa: `feature/td2-liquid`**. Se conservó el cambio local de `HistoriaDemo.astro` y quedó en `472fc37`; no se incorporó código de `feature/cotizacion-impresora`.
