@@ -1,6 +1,21 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (CI2: duración y secuencia cancelable de impresión). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (arreglos de TD2 verificados, listos para revisión independiente). Quien termine una sesión de trabajo actualiza este archivo.
+
+## Retomar después del reinicio — completado
+- **Rama activa: `feature/td2-liquid`**. Se conservó el cambio local de `HistoriaDemo.astro` y quedó en `472fc37`; no se incorporó código de `feature/cotizacion-impresora`.
+- Continuación autorizada completada en commits separados:
+  1. `472fc37` — observador con márgenes en píxeles según la altura, reconstrucción al redimensionar y limpieza al salir.
+  2. `7f13f49` — sello «Demo · datos de ejemplo» dentro del bloque sticky. Se reservó altura para la leyenda y el sello en el teléfono pequeño.
+  3. `8659341` — espacio inseparable en «¿Lo conversamos?».
+  4. `a13a3c8` — guía `docs/diseño.md` reescrita para Liquid Glass + Geist según ADR-003.
+  5. Plan y estado actualizados en el commit de cierre de esta sesión.
+- **Verificación visual local en Brave:** los cuatro pasos y el sello a **1366×768, 1280×800, 390×844 y 375×667**, también tras redimensionar. Barrido de 21 posiciones durante el bloque sticky a 1366×768 y 375×667: sin ocultamientos del sello. Contacto en Inicio y `/contacto` a 375 px: título en una línea, sin desborde horizontal.
+- Control nativo de Brave recuperado. El servidor de 4321 conservaba una versión anterior; se comprobó el resultado actual en `http://127.0.0.1:4322`. En esta sesión hubo que reiniciar el servidor después de editar para que sirviera la versión nueva. La prueba temporal de `/tmp` no es parte del proyecto.
+- **Comandos finales:** `npm test` → 366 tests / 34 archivos; `npm run lint` → correcto; `npm run check` → 0 errores, advertencias e hints; `npm run build` → 7 páginas, correcto. Persiste `ExperimentalWarning: localStorage is not available because --localstorage-file was not provided` de Node. No se repitió Lighthouse tras estos arreglos.
+- Se publica **solo esta rama**, por la autorización de reanudación; no se une nada a `main`. La aprobación visual en un celular real de Guillermo sigue pendiente.
+- **Siguiente acción:** revisión independiente con **`--base c79f5f6`** (Claude Code o una sesión nueva sin el contexto de implementación). Después: evaluar sus hallazgos, aprobación de Guillermo en celular y PR con merge commit.
+- Contexto para ChatGPT en GitHub: [rama](https://github.com/willardguillermo/NissiDev-Web/tree/feature/td2-liquid) · [AGENTS.md](https://github.com/willardguillermo/NissiDev-Web/blob/feature/td2-liquid/AGENTS.md) · [estado](https://github.com/willardguillermo/NissiDev-Web/blob/feature/td2-liquid/docs/ESTADO.md).
 
 ## En una línea
 Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
@@ -14,21 +29,20 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 - Vista previa: https://feature-td2-liquid.nissidev-web.pages.dev
 - Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/` · Decisión: `docs/decisions/ADR-003-vidrio-y-geist.md`.
 - Hecho (commits `0d7c714` → `c79f5f6`): Geist, tokens y contraste nuevos, luces de fondo, vidrio, header flotante, hero, **historia de la demo con scroll**, servicios en bento (sin rotador ni botón de pausa), carrito del Inicio sin React, Cómo trabajamos, Contacto con "Copiar número" y el estilo nuevo en Arma tu sistema, Demos y Cotización. Lighthouse móvil del Inicio: LCP 1.7 s, CLS 0, 14.7 KB de JS. 366 tests.
-- Revisión de Codex (base `7c9eb67`): **2 hallazgos, PENDIENTES**:
-  1. `src/components/HistoriaDemo.astro:156-159`: los porcentajes de `rootMargin` del IntersectionObserver se resuelven con el ancho; en ventanas apaisadas (1366×768) la zona de intersección queda vacía y la historia nunca avanza del paso Catálogo. Calcular los márgenes en píxeles con la altura del viewport y recalcularlos al redimensionar. Probar a 1366×768, 1280×800, 390×844 y 375×667.
-  2. `src/pages/index.astro:46-47`: el sello "Demo · datos de ejemplo" quedó después de los espacios de scroll, fuera de pantalla durante el recorrido. Debe ir **dentro del bloque sticky**, visible mientras se muestran precios, pedidos y ventas ficticias.
-- Otros pendientes de la rama:
-  - En Contacto, "¿Lo" queda solo en una línea a 375 px: unir "¿Lo conversamos?" con un espacio que no se corta.
-  - `docs/diseño.md` todavía describe Ensamble: reescribirlo para la TD2.
-  - Actualizar la TD2 en `tasks/plan.md` con la revisión y sus arreglos.
+- Revisión de Codex (base `7c9eb67`): **2 hallazgos con arreglos implementados**, pendientes de revisión independiente:
+  1. Observador de HistoriaDemo vacío en apaisado → `472fc37`, márgenes calculados con la altura y reconstruidos en `resize`.
+  2. Sello fuera de pantalla durante el recorrido → `7f13f49`, dentro del bloque sticky, con reserva de altura en móvil.
+- Otros pendientes implementados: título de Contacto unido en `8659341`; guía de diseño actualizada en `a13a3c8`; TD2 actualizada en `tasks/plan.md`.
+- Verificaciones detalladas arriba. **Listo para revisión con base `c79f5f6`**; revisión y aprobación en celular real pendientes.
 - Para cerrar la rama: arreglos → revisión de los arreglos (quien implementó no se revisa a sí mismo) → aprobación de Guillermo en su celular → PR "feat: rediseño Liquid Glass con Geist (TD2)" con **merge commit** → borrar la rama → comprobar producción.
 
 ## En curso: cotización con impresora
 - Rama `feature/cotizacion-impresora`, creada desde `feature/td2-liquid` en `c79f5f6`; PR hacia TD2.
-- Spec, plan y tres supuestos aprobados por Guillermo: `docs/cotizacion-impresora.md` y sección «Cotización con impresora» de `tasks/plan.md`.
+- Spec, plan y tres supuestos aprobados por Guillermo en **esa rama**: `docs/cotizacion-impresora.md`
+  y sección «Cotización con impresora» de `tasks/plan.md`; esos archivos/cambios todavía no están en TD2.
 - CI1: registrados alcance y verificaciones; no se cambió código. A4 explícito con márgenes de 18mm/16mm;
   papel con token `--ease-papel: cubic-bezier(.3, .15, .2, 1)`; máximo total de 3500 ms.
-- CI2 completada: `src/cotizacion/impresion.ts` calcula la duración y comunica las fases con temporizadores
+- CI2 completada en `a564ccc` (rama de impresora): `src/cotizacion/impresion.ts` calcula la duración y comunica las fases con temporizadores
   cancelables; sin React ni DOM. Preparación de 900 ms, impresión de 1200–2600 ms, movimiento reducido
   directo a lista. La limpieza no escribe ni comunica fases y no deja temporizadores pendientes.
 - Verificados los tres ajustes en `8833fff`: PR hacia TD2 con bloqueo indicado para su descripción,
@@ -40,8 +54,9 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
   `npm run lint` y `npm run build`: correctos; persiste la advertencia de Node sobre localStorage.
 - Sigue CI3: separar papel, formulario y acciones reutilizando el resumen actual.
   La lógica de CI2 aún no está conectada a la interfaz; la prueba en celular y el desmontaje real
-  corresponden a las rebanadas visuales. El cambio local de Guillermo en `AGENTS.md` queda fuera del commit.
-- **No unir el PR hasta resolver los dos hallazgos de TD2** descritos arriba; indicarlo también en el PR.
+  corresponden a las rebanadas visuales. Su commit no incluyó `AGENTS.md`; ese contexto se publicó
+  después en TD2 mediante `23018c9`, por pedido explícito de Guillermo.
+- **No unir el PR hasta cerrar la revisión de los dos arreglos de TD2** descritos arriba; indicarlo también en el PR.
 - Revisión al cerrar la rama por Claude Code o una sesión independiente; no unir sin aprobación de Guillermo.
 - Bitácora del vault y casilla de mejora se actualizan al terminar la implementación completa.
 - Verificación CI1: `npm test` (366 tests), `npm run check` (0 errores/advertencias), `npm run lint`
