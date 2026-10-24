@@ -2,7 +2,7 @@
 import Boton from '../components/Boton.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import RotadorServicios from '../components/RotadorServicios.astro';
+import ServiciosBento from '../components/ServiciosBento.astro';
 import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
@@ -33,9 +33,6 @@ import { DULCERIA } from '../rubros/dulceria/config';
     </ul>
   </section>
 
-  <div class="contenedor entra" style="--n: 4">
-    <RotadorServicios />
-  </div>
 
   <section id="demo" class="contenedor seccion demo" aria-labelledby="demo-titulo">
     <div class="seccion__cabeza" data-aparecer>
@@ -46,6 +43,14 @@ import { DULCERIA } from '../rubros/dulceria/config';
     <HistoriaDemo config={DULCERIA} />
     <p class="demo__sello">Demo · datos de ejemplo</p>
     <Boton href="/demos/dulceria/">Abrir la demo completa</Boton>
+  </section>
+
+  <section id="servicios" class="contenedor seccion" aria-labelledby="servicios-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <p class="etiqueta">Lo que hago</p>
+      <h2 id="servicios-titulo" class="titulo-2">Cuatro formas de <span class="acento">impulsar</span> tu negocio.</h2>
+    </div>
+    <ServiciosBento />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
