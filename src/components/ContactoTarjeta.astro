@@ -69,7 +69,8 @@ const Titulo = `h${nivel}` as const;
   }
 
   .contacto__titulo {
-    font-size: clamp(2.25rem, 9vw, 4.5rem);
+    /* El título inseparable también debe caber dentro del padding a 320 px. */
+    font-size: clamp(1.625rem, 8vw, 4.5rem);
     font-weight: var(--peso-titulo);
     letter-spacing: var(--espaciado-titulo-1);
   }
