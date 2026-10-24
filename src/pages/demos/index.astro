@@ -17,7 +17,7 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
     <ul class="rubros" role="list">
       {
         RUBROS.map((rubro) => (
-          <li class:list={['rubro', { 'rubro--pronto': rubro.estado === 'proximamente' }]} data-aparecer>
+          <li class:list={['rubro', rubro.estado === 'activa' ? 'vidrio' : 'rubro--pronto']} data-aparecer>
             <p class="rubro__estado">{rubro.estado === 'activa' ? 'Demo disponible' : 'Próximamente'}</p>
             <h2 class="rubro__nombre">{rubro.nombre}</h2>
             <span class="rubro__linea" aria-hidden="true" />
@@ -59,17 +59,14 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
     align-items: center;
     gap: var(--espacio-3);
     padding: var(--espacio-8) var(--espacio-6);
-    background: var(--fondo-elevado);
-    border-radius: 1.5rem;
-    box-shadow: var(--sombra-tarjeta);
     text-align: center;
   }
 
-  /* Próximamente: sin sombra y con borde punteado, como un espacio reservado (no se puede tocar) */
+  /* Próximamente: sin vidrio y con borde punteado, como un espacio reservado (no se puede tocar).
+     La única tarjeta de vidrio es la demo activa. */
   .rubro--pronto {
-    background: transparent;
     border: 1px dashed var(--color-punteado);
-    box-shadow: none;
+    border-radius: var(--radio-vidrio);
   }
 
   .rubro__estado {
@@ -81,7 +78,7 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
   }
 
   .rubro--pronto .rubro__estado {
-    color: var(--texto-suave);
+    color: var(--texto-nota);
   }
 
   .rubro__nombre {

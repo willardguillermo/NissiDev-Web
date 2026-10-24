@@ -53,14 +53,17 @@
   }
 }
 
+/* TD2: blanco sólido, no vidrio. Son 9 tarjetas y el resumen negro fijo pasa por encima: el vidrio
+   aquí serían muchas capas de backdrop-filter en el celular. Toman el radio y la sombra del vidrio. */
 .carrito-modulo {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--espacio-3) var(--espacio-4);
-  padding: var(--espacio-4);
+  padding: 1.125rem;
   background: var(--fondo-elevado);
-  border-radius: var(--radio-tarjeta);
+  border-radius: 1.375rem;
+  box-shadow: var(--vidrio-sombra-chica);
 }
 
 .carrito-modulo__info {
@@ -71,9 +74,10 @@
 }
 
 .carrito-modulo__nombre {
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: var(--peso-titulo);
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .carrito-modulo__precio {
@@ -84,12 +88,12 @@
 
 .carrito-modulo__descripcion {
   color: var(--texto-suave);
-  font-size: 0.8125rem;
+  font-size: var(--texto-sm);
   line-height: 1.45;
 }
 
 .carrito-modulo__nota {
-  color: var(--texto-suave);
+  color: var(--texto-nota);
   font-size: var(--texto-xs);
 }
 
@@ -154,8 +158,8 @@
   padding: var(--espacio-4) var(--espacio-5);
   background: var(--fondo-oscuro);
   color: var(--texto-sobre-oscuro);
-  border-radius: 1.5rem;
-  box-shadow: var(--sombra-flotante);
+  border-radius: var(--radio-vidrio);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), var(--sombra-flotante);
 }
 
 .carrito-resumen__totales {

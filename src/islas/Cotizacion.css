@@ -7,9 +7,10 @@
   max-width: 34rem;
   margin: var(--espacio-6) auto 0;
   padding: var(--espacio-8) var(--espacio-6);
+  /* Hoja sólida (las cifras nunca van sobre vidrio) con el radio y la sombra de la TD2 */
   background: var(--fondo-elevado);
-  border-radius: 1.5rem;
-  box-shadow: var(--sombra-tarjeta);
+  border-radius: var(--radio-vidrio);
+  box-shadow: var(--vidrio-sombra);
 }
 
 .cotizacion-cargando {
