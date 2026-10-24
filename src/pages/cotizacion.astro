@@ -1,0 +1,46 @@
+---
+import IntroPagina from '../components/IntroPagina.astro';
+import Cotizacion from '../islas/Cotizacion';
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  titulo="Tu cotización"
+  descripcion="Resumen de los módulos que elegiste, con precios referenciales, para enviarlo por WhatsApp o guardarlo en PDF."
+>
+  <section class="contenedor" aria-labelledby="cotizacion-titulo">
+    <div class="sin-imprimir">
+      <IntroPagina etiqueta="Precios referenciales" titulo="Tu cotización." id="cotizacion-titulo">
+        Revísala, agrega el nombre de tu negocio si quieres y envíamela por WhatsApp.
+      </IntroPagina>
+    </div>
+    <!-- client:load: debe estar lista al abrir la página (no hay nada más que ver aquí) -->
+    <Cotizacion client:load />
+  </section>
+</Base>
+
+<style is:global>
+  /* La hoja impresa lleva solo la cotización: sin header, menú, pie ni la cabecera de la página. */
+  @media print {
+    .saltar,
+    .cabecera,
+    .pie,
+    .sin-imprimir {
+      display: none !important;
+    }
+
+    html,
+    body {
+      background: #fff !important;
+    }
+
+    .contenedor {
+      width: 100%;
+    }
+
+    /* Sin entradas animadas en la hoja */
+    * {
+      animation: none !important;
+    }
+  }
+</style>

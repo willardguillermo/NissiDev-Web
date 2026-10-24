@@ -183,6 +183,11 @@ export default function Carrito() {
           {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales; la cotización final se confirma
           por WhatsApp.
         </p>
+        {cantidad > 0 && (
+          <a className="carrito-resumen__cotizacion" href="/cotizacion">
+            Ver mi cotización
+          </a>
+        )}
       </section>
     </div>
   );

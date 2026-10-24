@@ -142,7 +142,7 @@
 
 /* Lo que recibe el foco no debe quedar detrás del resumen fijo (WCAG 2.4.11) */
 :root:has(.carrito-resumen) {
-  scroll-padding-bottom: 11rem;
+  scroll-padding-bottom: 15.5rem; /* alto del resumen con "Ver mi cotización" (~226 px) + su margen */
 }
 
 /* Resumen negro fijo abajo */
@@ -200,4 +200,24 @@
 .carrito-resumen__referencial {
   color: var(--nota-sobre-oscuro);
   font-size: var(--texto-xs);
+}
+
+/* Dorado sobre negro (5.2:1), como el botón dorado de Boton.astro */
+.carrito-resumen__cotizacion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  margin-top: var(--espacio-1);
+  background: var(--acento);
+  color: var(--color-negro);
+  border-radius: var(--radio-pildora);
+  font-size: var(--texto-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--duracion-toque) var(--ease-out);
+}
+
+.carrito-resumen__cotizacion:active {
+  transform: scale(0.97);
 }
