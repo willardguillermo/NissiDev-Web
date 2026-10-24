@@ -6,8 +6,9 @@ import RotadorServicios from '../components/RotadorServicios.astro';
 import { PASOS, TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
-import TelefonoDemo from '../components/TelefonoDemo.astro';
+import HistoriaDemo from '../components/HistoriaDemo.astro';
 import Base from '../layouts/Base.astro';
+import { DULCERIA } from '../rubros/dulceria/config';
 ---
 
 <Base titulo="NissiDev">
@@ -38,14 +39,13 @@ import Base from '../layouts/Base.astro';
 
   <section id="demo" class="contenedor seccion demo" aria-labelledby="demo-titulo">
     <div class="seccion__cabeza" data-aparecer>
-      <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="demo__tu">tu</span> sistema.</h2>
-      <p class="seccion__bajada">Una dulcería de ejemplo, funcionando.</p>
+      <p class="etiqueta">Demo en vivo</p>
+      <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="acento">tu</span> sistema.</h2>
+      <p class="seccion__bajada">Baja despacio: es una dulcería de ejemplo, de principio a fin.</p>
     </div>
-    <div class="demo__telefono">
-      <TelefonoDemo />
-    </div>
+    <HistoriaDemo config={DULCERIA} />
     <p class="demo__sello">Demo · datos de ejemplo</p>
-    <Boton href="/demos/dulceria/">Abrir la demo</Boton>
+    <Boton href="/demos/dulceria/">Abrir la demo completa</Boton>
   </section>
 
   <section class="contenedor seccion" aria-labelledby="arma-titulo" data-aparecer>
@@ -313,34 +313,8 @@ import Base from '../layouts/Base.astro';
     scroll-margin-top: var(--espacio-4);
   }
 
-  .demo__tu {
+  .acento {
     color: var(--acento-texto);
-  }
-
-  .demo__telefono {
-    margin-top: var(--espacio-4);
-  }
-
-  /* "Producto dentro del dispositivo": el celular sube y se agranda mientras entra en pantalla.
-     Solo CSS, atado al scroll; sin soporte o con movimiento reducido queda quieto en su lugar. */
-  @keyframes telefono-entra {
-    from {
-      transform: translateY(80px) scale(0.86);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: view()) {
-      .demo__telefono {
-        /* Propiedades sueltas: animation-timeline no puede ir dentro del atajo "animation" (el minificador
-           las juntaría y el navegador descartaría la regla). */
-        animation-name: telefono-entra;
-        animation-fill-mode: both;
-        animation-timing-function: var(--ease-out);
-        animation-timeline: view();
-        animation-range: entry 0% cover 45%;
-      }
-    }
   }
 
   .demo__sello {
