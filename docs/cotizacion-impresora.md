@@ -12,8 +12,9 @@ Se mantienen Astro + React, CSS propio y los ADR-002/003; no se agregan dependen
 - Rama: `feature/cotizacion-impresora`, desde `feature/td2-liquid` en `c79f5f6b80ab6565663946ca8a8fcbb741797f91`.
 - Base actualizada con TD2 en `a08e449`; comparación y revisión de esta mejora contra **`9d164c2`**.
 - PR hacia `feature/td2-liquid`, con resumen, capturas y pasos para probar; sin unirlo automáticamente.
-- La descripción del PR debe indicar: **No unir hasta cerrar la revisión de los dos arreglos de TD2**:
+- Condición original del PR: **No unir hasta cerrar la revisión de los dos arreglos de TD2**:
   `rootMargin` de HistoriaDemo en ventanas apaisadas y sello «Demo · datos de ejemplo» fuera del sticky.
+  Cumplida el 2026-10-24 por revisión independiente, incluido el ajuste final de Contacto a 320 px. Guillermo autorizó integrar todo en main; PR #4 unido a TD2 en `b575d9e`, entrega conjunta en PR #5.
 - Al cerrar la rama: «Listo para revisión» con el commit base; revisa Claude Code o una sesión independiente.
   Para aislar esta mejora se compara con la base TD2; el último `main` observado es `7c9eb67`.
   Toda integración necesita aprobación de Guillermo y merge commit, sin squash.
@@ -77,4 +78,4 @@ Sin preguntas abiertas para comenzar; A4, rama base y curva quedaron confirmados
 
 CI3–CI6 implementadas; A4 en `f2645e9`; verificaciones de navegador cerradas con Playwright de la caché, autorizado por Guillermo. Resultados y capturas en
 [VERIFICACION.md](referencias/cotizacion-impresora/VERIFICACION.md). No confundir implementación
-con aprobación de merge: la revisión de los arreglos de TD2 y la aprobación de Guillermo deben cerrarse.
+con aprobación de merge: la revisión independiente se cerró y Guillermo autorizó la integración el 2026-10-24.

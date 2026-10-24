@@ -103,7 +103,7 @@ sin errores concretos ni bloqueantes. El revisor ejecutó tests y lint, sin edit
 
 Observación menor aceptada: la reserva conservadora de 104rem evita mover el pie al hidratar, pero
 deja espacio inferior, especialmente en el carrito vacío. No se cambió durante la revisión.
-La revisión de esta mejora no sustituye el cierre pendiente de la revisión de TD2 ni autoriza merge.
+La revisión de los arreglos de TD2 se cerró después en otra sesión independiente. Detectó un P2 de Contacto a 320 px, corregido en `421848f`, verificado con la compilación real a 320/375/390/1366 px y revisado de nuevo sin pendientes. Historia y sello pasan en los cuatro tamaños. Guillermo autorizó integrar todo en main el 2026-10-24; PR #4 unido a TD2 y entrega conjunta en PR #5.
 
 ## Checklist del vault
 

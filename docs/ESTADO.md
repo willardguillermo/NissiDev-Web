@@ -1,47 +1,41 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (cotización con impresora implementada y verificada; PR #4 abierto).
+> Última actualización: 2026-10-24 (entrega Liquid Glass + impresora aprobada para main, PR #5).
 
-## Retomar — cotización con impresora lista para aprobación
-- **Rama activa:** `feature/cotizacion-impresora`, publicada. PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) hacia `feature/td2-liquid`; base de revisión `9d164c2`. **No se unió nada a main.**
-- Vista previa comprobada: https://feature-cotizacion-impresora.nissidev-web.pages.dev/arma-tu-sistema . Cargar «Sugerido: Dulcería» y abrir «Ver mi cotización»; el carrito es independiente del dominio de TD2.
-- **Implementación completa:** CI2 `a564ccc` (lógica temporal), actualización de TD2 `a08e449`, CI3 `18925e1` (resumen y acciones separados), CI4 `5743e30` (ticketera y papel), CI5 `e3bf56f` (fases y accesibilidad), A4 `f2645e9` y cierre de pruebas `dfe3ee0`.
-- `ccc144d` se sustituyó, por pedido de Guillermo, por `e2161c6` con force-with-lease solo a esta rama. Se conservaron únicamente `movil-lista.png`, `escritorio-lista.png` e `impresion-a4.png`. Los enlaces de evidencia quedaron corregidos.
-- **Verificación:** 384 tests / 35 archivos, tipos sin diagnósticos, lint y build correctos; audit sin vulnerabilidades. Persiste la advertencia previa de Node sobre localStorage. Fallo deliberado de clearTimeout detectado y revertido.
-- Brave local: 390×844 y 1366×900; fases y movimiento reducido correctos, CLS de carga/secuencia 0, nombre largo y 9 módulos sin desborde. PDF exportado a mitad de secuencia: 1 página A4 con los 9 módulos completos, inspeccionada con Poppler.
-- Control nativo indisponible (`Sky Computer Use native pipe startup failed`). Guillermo autorizó Playwright Core de la caché de npx, sin instalarlo: teclado/foco en ambos tamaños; desmontaje real en preparando e imprimiendo con 0 timers activos, sin callbacks ni escrituras posteriores; cambios desde otra pestaña con resumen y WhatsApp actuales, vacío y restauración. Cinco recorridos sin errores de página. Sin cambios en package.json ni package-lock.json.
-- Vista previa de Cloudflare verificada también con Playwright a 390 px: 3 módulos, lista, acciones disponibles, sin desborde ni errores. No se crearon más capturas.
-- Revisión independiente en cinco ejes contra `9d164c2`, incluido A4: sin hallazgos bloqueantes. Observación menor aceptada: la reserva de 104rem deja espacio inferior adicional, especialmente en el estado vacío.
-- Evidencia y checklist: `docs/referencias/cotizacion-impresora/VERIFICACION.md`. La bitácora del vault se actualizó y la mejora se marcó como implementada, pendiente de aprobación en celular e integración.
-- **Limpieza completada:** 8 capturas descargadas y PDF de QA eliminados de Videos tras comprobar su identidad; 15 temporales propios de QA eliminados de /tmp. Se conservaron solo las 3 capturas versionadas del PR. No se tocó la caché de npx ni archivos ajenos.
-- **Qué sigue:** Guillermo prueba la vista previa en su celular. No unir el PR #4 hasta cerrar la revisión de los arreglos de TD2 (HistoriaDemo y sello sticky) y obtener su aprobación. Después, integrar mediante PR y merge commit; no squash.
+## Entrega aprobada — Liquid Glass y cotización con impresora
+- Guillermo autorizó integrar todo en main el 2026-10-24. La entrega se integra mediante PR y merge commit, sin squash.
+- PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e`; PR [#5](https://github.com/willardguillermo/NissiDev-Web/pull/5) reúne el rediseño y la impresora para main.
+- Sitio: https://nissidev-web.pages.dev . Para probar la impresora, abrir `/arma-tu-sistema`, cargar «Sugerido: Dulcería» y entrar en «Ver mi cotización».
+- **Revisiones independientes cerradas:** impresora en cinco ejes contra `9d164c2`, sin bloqueantes; arreglos de TD2 (observador, sello y Contacto) cerrados. El P2 de Contacto a 320 px se confirmó (documento de 343 px), se corrigió en `421848f` y se volvió a revisar.
+- **Compilación actual comprobada con Playwright:** Contacto sin desborde y dentro del padding a 320, 375, 390 y 1366 px; historia con 4 pasos y sello visible a 1366×768, 1280×800, 390×844 y 375×667; sin errores de página.
+- **Comandos:** 384 tests / 35 archivos, tipos sin diagnósticos, lint y build correctos. Persiste la advertencia previa de Node sobre localStorage. Audit de la entrega sin vulnerabilidades.
+- **Impresora:** teclado/foco, desmontaje real en ambas fases sin timers ni escrituras posteriores, cambios del carrito entre pestañas, vacío/restauración, movimiento reducido y PDF de 9 módulos en una página A4 verificados. Evidencia en `docs/referencias/cotizacion-impresora/VERIFICACION.md`.
+- Playwright se usó desde la caché de npx con autorización, sin nuevas dependencias. No se añadieron más capturas: se conservan solo móvil lista, escritorio lista y proforma A4. Descargas de Videos y temporales propios de QA limpiados.
+- **Qué sigue:** T26 (Guillermo activa Web Analytics en Cloudflare), T27 (verificación global del MVP, incluido celular físico, INP/Lighthouse y README) y punto de control 7. La autorización de integración no se registra como una prueba física del celular.
 
 ## En una línea
 Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
 
 ## Publicado (rama `main` → https://nissidev-web.pages.dev)
-- Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto (diseño TD1 "Ensamble").
+- Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto con **Liquid Glass + Geist (TD2)**.
+- Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
 - Demo de dulcería: `/demos/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
-- Pull Requests unidos: #1 (diseño Ensamble), #2 (plantilla de demo), #3 (Demos, Contacto, Cotización y Servicios).
+- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2) y #5 (entrega TD2 + impresora hacia main).
 
-## En curso: rama `feature/td2-liquid` (rediseño "Liquid Glass" con Geist)
-- Vista previa: https://feature-td2-liquid.nissidev-web.pages.dev
-- Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/` · Decisión: `docs/decisions/ADR-003-vidrio-y-geist.md`.
-- Hecho (commits `0d7c714` → `c79f5f6`): Geist, tokens y contraste nuevos, luces de fondo, vidrio, header flotante, hero, **historia de la demo con scroll**, servicios en bento (sin rotador ni botón de pausa), carrito del Inicio sin React, Cómo trabajamos, Contacto con "Copiar número" y el estilo nuevo en Arma tu sistema, Demos y Cotización. Lighthouse móvil del Inicio: LCP 1.7 s, CLS 0, 14.7 KB de JS. 366 tests.
-- Revisión de Codex (base `7c9eb67`): **2 hallazgos con arreglos implementados**, pendientes de revisión independiente:
-  1. Observador de HistoriaDemo vacío en apaisado → `472fc37`, márgenes calculados con la altura y reconstruidos en `resize`.
-  2. Sello fuera de pantalla durante el recorrido → `7f13f49`, dentro del bloque sticky, con reserva de altura en móvil.
-- Otros pendientes implementados: título de Contacto unido en `8659341`; guía de diseño actualizada en `a13a3c8`; TD2 actualizada en `tasks/plan.md`.
-- Verificaciones detalladas arriba. **Listo para revisión con base `c79f5f6`**; revisión y aprobación en celular real pendientes.
-- Para cerrar la rama: arreglos → revisión de los arreglos (quien implementó no se revisa a sí mismo) → aprobación de Guillermo en su celular → PR "feat: rediseño Liquid Glass con Geist (TD2)" con **merge commit** → borrar la rama → comprobar producción.
+## Liquid Glass + Geist — TD2
+- Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/`; ADR-003.
+- Geist, vidrio, luces, header flotante, hero, historia por scroll, servicios en bento, funciones del Inicio sin React, proceso y páginas internas renovados. Guía actualizada en `docs/diseño.md`.
+- Hallazgos del observador y del sello corregidos en `472fc37` y `7f13f49`; revisión independiente cerrada. Ajuste final de Contacto para 320 px en `421848f`.
+- Lighthouse móvil del Inicio durante TD2, mediana de tres: LCP 1.7 s, CLS 0 y 14.7 KB de JS. No son mediciones nuevas de la cotización; la evaluación global de producción queda en T27.
+- Entrega reunida en [PR #5](https://github.com/willardguillermo/NissiDev-Web/pull/5) hacia main, con integración autorizada por Guillermo.
 
-## Cotización con impresora — implementada, PR #4 abierto
+## Cotización con impresora — integrada con TD2
 - Rama `feature/cotizacion-impresora`, creada desde TD2 en `c79f5f6` y actualizada a `9d164c2` mediante `a08e449`.
 - Spec y supuestos aprobados en `docs/cotizacion-impresora.md`; CI1–CI6 y commits en `tasks/plan.md`.
 - Preparación 900 ms → impresión de 1200–2600 ms según el alto → lista con acciones. Sin espera con movimiento reducido, sin pago ni dependencias nuevas. Repetir conserva código y fechas.
 - PDF A4 explícito con márgenes de 18mm/16mm; impresión completa aunque se abra durante la animación. Resumen, precios y WhatsApp reutilizan la lógica existente.
-- Verificaciones y limpieza completadas arriba. Revisión independiente sin bloqueantes; aprobación en celular físico pendiente.
-- PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4), hacia TD2, indica el bloqueo de integración. No se ha unido nada.
+- Verificaciones y limpieza completadas arriba. Revisión independiente sin bloqueantes; integración autorizada.
+- PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
 1. **T26**: Cloudflare Web Analytics. Guillermo debe activarla primero en su panel de Cloudflare.
