@@ -1,34 +1,21 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (punto de reanudación antes de reiniciar el control de computadora). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (arreglos de TD2 verificados, listos para revisión independiente). Quien termine una sesión de trabajo actualiza este archivo.
 
-## Retomar después del reinicio
-- Guillermo pidió detener el trabajo para reiniciar y recuperar el control de computadora.
-- **Rama activa real: `feature/td2-liquid`**. Se cambió desde `feature/cotizacion-impresora` por su pedido;
-  no se incorporaron los commits de código de la impresora.
-- Primer paso solicitado completado: `23018c9`, **docs: contexto para trabajar con Codex y estado del proyecto**.
-  Incluye el `AGENTS.md` que editó Guillermo y este estado, que antes solo existía en la rama de impresora.
-- **Cambio guardado en disco, SIN commit y SIN verificación visual:** `src/components/HistoriaDemo.astro`.
-  Sustituye `rootMargin` en porcentajes por píxeles (`innerHeight * 0.45`), reconstruye el observador en
-  `resize` y retira el listener en `astro:before-swap`. No perder ni sobrescribir ese diff al reanudar.
-- El control nativo de Brave agotó el tiempo de espera; el navegador integrado no está disponible.
-  **No se verificó todavía el avance en ninguno de los cuatro tamaños.** No declarar resuelto el hallazgo.
-  Se preparó una prueba temporal en `/tmp/nissidev-td2-qa.mjs`, pero su ejecución fue interrumpida antes
-  de obtener resultados. No es dependencia del proyecto ni requisito para retomar; preferir el control
-  de computadora una vez recuperado. El servidor local se inició en `http://127.0.0.1:4321`.
-- **Continuación exacta autorizada por Guillermo:**
-  1. Verificar el arreglo del observador a **1366×768, 1280×800, 390×844 y 375×667**, también al
-     redimensionar; después crear su propio commit `fix:`.
-  2. Mover el sello «Demo · datos de ejemplo» de `index.astro` al bloque sticky de HistoriaDemo;
-     comprobar que permanezca visible durante todo el recorrido; otro commit `fix:`.
-  3. Unir «¿Lo conversamos?» con espacio que no se corta en `ContactoTarjeta.astro`; commit `fix:`.
-  4. Reescribir `docs/diseño.md` para Liquid Glass + Geist según ADR-003; commit `docs:`.
-  5. Actualizar TD2 en `tasks/plan.md` y este archivo con resultados y commits; ejecutar `npm test`,
-     `npm run lint`, `npm run check` y `npm run build`; hacer push de **esta rama**.
-- No unir nada a `main`. Reporte con CAMBIOS / NO TOQUÉ (a propósito) / VERIFICACIÓN / Qué aprender.
-  Al terminar: **«Listo para revisión» con base `c79f5f6`**, para Claude Code o una sesión independiente.
-- Objetivo adicional explícito: dejar instrucciones y estado **en GitHub** para que ChatGPT pueda
-  consultar el contexto y redactar prompts claros. Compartir enlaces a la rama, `AGENTS.md` y este archivo.
+## Retomar después del reinicio — completado
+- **Rama activa: `feature/td2-liquid`**. Se conservó el cambio local de `HistoriaDemo.astro` y quedó en `472fc37`; no se incorporó código de `feature/cotizacion-impresora`.
+- Continuación autorizada completada en commits separados:
+  1. `472fc37` — observador con márgenes en píxeles según la altura, reconstrucción al redimensionar y limpieza al salir.
+  2. `7f13f49` — sello «Demo · datos de ejemplo» dentro del bloque sticky. Se reservó altura para la leyenda y el sello en el teléfono pequeño.
+  3. `8659341` — espacio inseparable en «¿Lo conversamos?».
+  4. `a13a3c8` — guía `docs/diseño.md` reescrita para Liquid Glass + Geist según ADR-003.
+  5. Plan y estado actualizados en el commit de cierre de esta sesión.
+- **Verificación visual local en Brave:** los cuatro pasos y el sello a **1366×768, 1280×800, 390×844 y 375×667**, también tras redimensionar. Barrido de 21 posiciones durante el bloque sticky a 1366×768 y 375×667: sin ocultamientos del sello. Contacto en Inicio y `/contacto` a 375 px: título en una línea, sin desborde horizontal.
+- Control nativo de Brave recuperado. El servidor de 4321 conservaba una versión anterior; se comprobó el resultado actual en `http://127.0.0.1:4322`. En esta sesión hubo que reiniciar el servidor después de editar para que sirviera la versión nueva. La prueba temporal de `/tmp` no es parte del proyecto.
+- **Comandos finales:** `npm test` → 366 tests / 34 archivos; `npm run lint` → correcto; `npm run check` → 0 errores, advertencias e hints; `npm run build` → 7 páginas, correcto. Persiste `ExperimentalWarning: localStorage is not available because --localstorage-file was not provided` de Node. No se repitió Lighthouse tras estos arreglos.
+- Se publica **solo esta rama**, por la autorización de reanudación; no se une nada a `main`. La aprobación visual en un celular real de Guillermo sigue pendiente.
+- **Siguiente acción:** revisión independiente con **`--base c79f5f6`** (Claude Code o una sesión nueva sin el contexto de implementación). Después: evaluar sus hallazgos, aprobación de Guillermo en celular y PR con merge commit.
+- Contexto para ChatGPT en GitHub: [rama](https://github.com/willardguillermo/NissiDev-Web/tree/feature/td2-liquid) · [AGENTS.md](https://github.com/willardguillermo/NissiDev-Web/blob/feature/td2-liquid/AGENTS.md) · [estado](https://github.com/willardguillermo/NissiDev-Web/blob/feature/td2-liquid/docs/ESTADO.md).
 
 ## En una línea
 Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
@@ -42,13 +29,11 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 - Vista previa: https://feature-td2-liquid.nissidev-web.pages.dev
 - Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/` · Decisión: `docs/decisions/ADR-003-vidrio-y-geist.md`.
 - Hecho (commits `0d7c714` → `c79f5f6`): Geist, tokens y contraste nuevos, luces de fondo, vidrio, header flotante, hero, **historia de la demo con scroll**, servicios en bento (sin rotador ni botón de pausa), carrito del Inicio sin React, Cómo trabajamos, Contacto con "Copiar número" y el estilo nuevo en Arma tu sistema, Demos y Cotización. Lighthouse móvil del Inicio: LCP 1.7 s, CLS 0, 14.7 KB de JS. 366 tests.
-- Revisión de Codex (base `7c9eb67`): **2 hallazgos, PENDIENTES**:
-  1. `src/components/HistoriaDemo.astro:156-159`: los porcentajes de `rootMargin` del IntersectionObserver se resuelven con el ancho; en ventanas apaisadas (1366×768) la zona de intersección queda vacía y la historia nunca avanza del paso Catálogo. Calcular los márgenes en píxeles con la altura del viewport y recalcularlos al redimensionar. Probar a 1366×768, 1280×800, 390×844 y 375×667.
-  2. `src/pages/index.astro:46-47`: el sello "Demo · datos de ejemplo" quedó después de los espacios de scroll, fuera de pantalla durante el recorrido. Debe ir **dentro del bloque sticky**, visible mientras se muestran precios, pedidos y ventas ficticias.
-- Otros pendientes de la rama:
-  - En Contacto, "¿Lo" queda solo en una línea a 375 px: unir "¿Lo conversamos?" con un espacio que no se corta.
-  - `docs/diseño.md` todavía describe Ensamble: reescribirlo para la TD2.
-  - Actualizar la TD2 en `tasks/plan.md` con la revisión y sus arreglos.
+- Revisión de Codex (base `7c9eb67`): **2 hallazgos con arreglos implementados**, pendientes de revisión independiente:
+  1. Observador de HistoriaDemo vacío en apaisado → `472fc37`, márgenes calculados con la altura y reconstruidos en `resize`.
+  2. Sello fuera de pantalla durante el recorrido → `7f13f49`, dentro del bloque sticky, con reserva de altura en móvil.
+- Otros pendientes implementados: título de Contacto unido en `8659341`; guía de diseño actualizada en `a13a3c8`; TD2 actualizada en `tasks/plan.md`.
+- Verificaciones detalladas arriba. **Listo para revisión con base `c79f5f6`**; revisión y aprobación en celular real pendientes.
 - Para cerrar la rama: arreglos → revisión de los arreglos (quien implementó no se revisa a sí mismo) → aprobación de Guillermo en su celular → PR "feat: rediseño Liquid Glass con Geist (TD2)" con **merge commit** → borrar la rama → comprobar producción.
 
 ## En curso: cotización con impresora
@@ -71,7 +56,7 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
   La lógica de CI2 aún no está conectada a la interfaz; la prueba en celular y el desmontaje real
   corresponden a las rebanadas visuales. Su commit no incluyó `AGENTS.md`; ese contexto se publicó
   después en TD2 mediante `23018c9`, por pedido explícito de Guillermo.
-- **No unir el PR hasta resolver los dos hallazgos de TD2** descritos arriba; indicarlo también en el PR.
+- **No unir el PR hasta cerrar la revisión de los dos arreglos de TD2** descritos arriba; indicarlo también en el PR.
 - Revisión al cerrar la rama por Claude Code o una sesión independiente; no unir sin aprobación de Guillermo.
 - Bitácora del vault y casilla de mejora se actualizan al terminar la implementación completa.
 - Verificación CI1: `npm test` (366 tests), `npm run check` (0 errores/advertencias), `npm run lint`

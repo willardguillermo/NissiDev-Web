@@ -110,11 +110,17 @@ Además de los criterios de cada tarea:
 - **Bloqueaba:** la T11 y todas las tareas con pantallas (T14, T16–T19, T20b, T21–T23). Desbloqueadas al unirse a `main`.
 - **Terminado cuando:** Guillermo aprueba los bocetos y los tokens/componentes quedan actualizados.
 
-### TD2 · Rediseño "Liquid Glass" con Geist — en `feature/td2-liquid` (pendiente de revisión)
+### TD2 · Rediseño "Liquid Glass" con Geist — en `feature/td2-liquid` (arreglos listos para revisión)
 - **Aprobado (2026-10-24):** prototipo `docs/referencias/td2/prototipo-liquid.html` (versión 1, Geist). Decisión en `docs/decisions/ADR-003-vidrio-y-geist.md`.
 - **Partes y commits:** referencias `0d7c714` · L1 base (Geist, tokens, luces, vidrio) `5c17881` · ADR-003 `af24fe1` · L2 header `27ce1db` · L3 hero `7cfbf73` · L4 historia de la demo `03291a7` · L5 servicios en bento `beaa69e` · L6 Arma tu sistema en el Inicio `3ffca5e` · L7 proceso y contacto `aeaa147` · L8 páginas internas `373d443`.
 - **Lighthouse móvil del Inicio (mediana de 3, publicado):** LCP 1.5 s → 1.7 s · CLS 0 → 0 · JS 10.2 KB → 14.7 KB.
-- **Pendiente:** reescribir `docs/diseño.md` para la TD2 (hoy describe Ensamble).
+- **Revisión de Codex (base `7c9eb67`):** 2 hallazgos. Implementados los arreglos; falta su revisión independiente con **base `c79f5f6`**.
+  - `472fc37`: conserva el cambio local del observador, con márgenes en píxeles según la altura, reconstrucción en `resize` y limpieza al salir.
+  - `7f13f49`: sello «Demo · datos de ejemplo» dentro del bloque sticky; el teléfono reserva altura para que quepan sello y leyenda en 375×667.
+- **Otros ajustes autorizados:** `8659341` une «¿Lo conversamos?» con espacio inseparable; `a13a3c8` reescribe `docs/diseño.md` para Liquid Glass + Geist según ADR-003.
+- **Verificación (2026-10-24, Brave local):** Catálogo → Pedido → WhatsApp → Panel y sello visible a 1366×768, 1280×800, 390×844 y 375×667, también tras redimensionar. Barrido adicional de 21 posiciones del bloque sticky a 1366×768 y 375×667: sin ocultamientos del sello. Contacto en Inicio y `/contacto`, a 375 px: una línea y sin desborde horizontal.
+- **Comandos finales:** `npm test` (366 tests, 34 archivos), `npm run lint`, `npm run check` (0 errores/advertencias/hints) y `npm run build`: correctos. Persiste la advertencia de Node sobre `localStorage` durante el build; no se añadieron dependencias.
+- **Siguiente:** revisión por Claude Code o una sesión independiente (`--base c79f5f6`), aprobación de Guillermo en celular real y PR hacia `main` con merge commit. No se ha unido nada a `main`. Lighthouse de arriba corresponde a la medición previa a estos arreglos.
 
 ### T11 · feat: página de cotización imprimible — ✅ `3b1e992` (PR #3)
 - **Qué:** página `cotizacion.astro` + isla `Cotizacion.tsx`: resumen del carrito, campo opcional "Nombre de tu negocio" (con label; no se guarda), botón "Enviar por WhatsApp" y botón "Guardar como PDF" (`window.print()`), hoja de estilos de impresión. Si el carrito está vacío, lleva a Arma tu sistema.
