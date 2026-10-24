@@ -110,6 +110,12 @@ Además de los criterios de cada tarea:
 - **Bloqueaba:** la T11 y todas las tareas con pantallas (T14, T16–T19, T20b, T21–T23). Desbloqueadas al unirse a `main`.
 - **Terminado cuando:** Guillermo aprueba los bocetos y los tokens/componentes quedan actualizados.
 
+### TD2 · Rediseño "Liquid Glass" con Geist — en `feature/td2-liquid` (pendiente de revisión)
+- **Aprobado (2026-10-24):** prototipo `docs/referencias/td2/prototipo-liquid.html` (versión 1, Geist). Decisión en `docs/decisions/ADR-003-vidrio-y-geist.md`.
+- **Partes y commits:** referencias `0d7c714` · L1 base (Geist, tokens, luces, vidrio) `5c17881` · ADR-003 `af24fe1` · L2 header `27ce1db` · L3 hero `7cfbf73` · L4 historia de la demo `03291a7` · L5 servicios en bento `beaa69e` · L6 Arma tu sistema en el Inicio `3ffca5e` · L7 proceso y contacto `aeaa147` · L8 páginas internas `373d443`.
+- **Lighthouse móvil del Inicio (mediana de 3, publicado):** LCP 1.5 s → 1.7 s · CLS 0 → 0 · JS 10.2 KB → 14.7 KB.
+- **Pendiente:** reescribir `docs/diseño.md` para la TD2 (hoy describe Ensamble).
+
 ### T11 · feat: página de cotización imprimible — ✅ `3b1e992` (PR #3)
 - **Qué:** página `cotizacion.astro` + isla `Cotizacion.tsx`: resumen del carrito, campo opcional "Nombre de tu negocio" (con label; no se guarda), botón "Enviar por WhatsApp" y botón "Guardar como PDF" (`window.print()`), hoja de estilos de impresión. Si el carrito está vacío, lleva a Arma tu sistema.
 - **Terminado cuando:** la vista de impresión sale en una hoja limpia (sin header, menú ni botones) con "precios referenciales" y la validez; no hay nada que parezca un cobro.
