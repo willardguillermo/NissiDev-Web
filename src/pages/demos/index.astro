@@ -1,0 +1,139 @@
+---
+import Boton from '../../components/Boton.astro';
+import IntroPagina from '../../components/IntroPagina.astro';
+import { whatsappConMensaje } from '../../config/contacto';
+import Base from '../../layouts/Base.astro';
+import { RUBROS } from '../../rubros/rubros';
+
+const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos. Me gustaría ver cómo sería mi sistema.');
+---
+
+<Base titulo="Demos" descripcion="Prueba cómo quedaría el sistema de tu negocio con una demo por rubro. Datos de ejemplo.">
+  <section class="contenedor" aria-labelledby="demos-titulo">
+    <IntroPagina etiqueta="Demo por rubro" titulo="Prueba el sistema de tu rubro." id="demos-titulo">
+      Cada demo funciona de verdad, con un negocio y datos de ejemplo.
+    </IntroPagina>
+
+    <ul class="rubros" role="list">
+      {
+        RUBROS.map((rubro) => (
+          <li class:list={['rubro', { 'rubro--pronto': rubro.estado === 'proximamente' }]} data-aparecer>
+            <p class="rubro__estado">{rubro.estado === 'activa' ? 'Demo disponible' : 'Próximamente'}</p>
+            <h2 class="rubro__nombre">{rubro.nombre}</h2>
+            <span class="rubro__linea" aria-hidden="true" />
+            <p class="rubro__texto">{rubro.descripcion}</p>
+            {rubro.estado === 'activa' ? (
+              <>
+                <p class="rubro__negocio">Negocio de ejemplo: {rubro.negocio}</p>
+                <Boton href={rubro.ruta}>
+                  Probar la demo<span class="solo-lector"> de {rubro.nombre}</span>
+                </Boton>
+              </>
+            ) : null}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="otro" data-aparecer>
+      <h2 class="otro__titulo">¿Tu rubro no está?</h2>
+      <p class="otro__texto">Escríbeme y te muestro cómo sería.</p>
+      <Boton href={enlaceOtroRubro} variante="secundario" externo>Escríbeme por WhatsApp</Boton>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rubros {
+    display: grid;
+    gap: var(--espacio-4);
+    max-width: 30rem;
+    padding: 0;
+    margin: var(--espacio-6) auto 0;
+    list-style: none;
+  }
+
+  .rubro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-3);
+    padding: var(--espacio-8) var(--espacio-6);
+    background: var(--fondo-elevado);
+    border-radius: 1.5rem;
+    box-shadow: var(--sombra-tarjeta);
+    text-align: center;
+  }
+
+  /* Próximamente: sin sombra y con borde punteado, como un espacio reservado (no se puede tocar) */
+  .rubro--pronto {
+    background: transparent;
+    border: 1px dashed var(--color-punteado);
+    box-shadow: none;
+  }
+
+  .rubro__estado {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .rubro--pronto .rubro__estado {
+    color: var(--texto-suave);
+  }
+
+  .rubro__nombre {
+    font-size: var(--texto-xl);
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.02em;
+  }
+
+  .rubro__linea {
+    width: 1.75rem;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+  }
+
+  .rubro__texto {
+    max-width: 32ch;
+    color: var(--texto-suave);
+  }
+
+  .rubro__negocio {
+    font-size: var(--texto-sm);
+    font-weight: 600;
+  }
+
+  .rubro :global(.boton) {
+    margin-top: var(--espacio-2);
+  }
+
+  .otro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-3);
+    padding-top: var(--espacio-16);
+    text-align: center;
+  }
+
+  .otro__titulo {
+    font-size: var(--titulo-2);
+    font-weight: var(--peso-titulo);
+    letter-spacing: var(--espaciado-titulo-2);
+  }
+
+  .otro__texto {
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 48rem) {
+    .rubros {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: none;
+    }
+  }
+</style>
