@@ -129,6 +129,27 @@ Además de los criterios de cada tarea:
 
 **Punto de control 4:** flujo carrito → cotización → WhatsApp completo. ✅ Revisión de Codex junto con la T22 y la T23 (base `83b8b0e`): sin hallazgos. Publicado con el PR #3 (merge `5ff3eb9`). PDF de ejemplo en `docs/referencias/cotizacion-ejemplo.pdf`.
 
+## Cotización con impresora
+
+Spec y supuestos aprobados el 2026-10-24: [docs/cotizacion-impresora.md](../docs/cotizacion-impresora.md).
+Rama `feature/cotizacion-impresora` desde TD2 (`c79f5f6`), actualizada mediante `a08e449`; base de revisión actual `9d164c2`. PR hacia `feature/td2-liquid`.
+**No unir el PR hasta cerrar la revisión de los dos arreglos de TD2** (HistoriaDemo y sello sticky).
+Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerpo que explique el porqué.
+
+| Parte | Tamaño | Estado / alcance | Verificación específica | Commit previsto |
+|---|---|---|---|---|
+| CI1 | S | ✅ Spec y plan registrados; implementación pendiente | Aprobación contrastada; 366 tests, check y lint en verde; build correcto (advertencia de Node 26 sobre localStorage) | `docs: definir la cotización con impresora` |
+| CI2 | M | ✅ Duración y secuencia cancelable fuera de React, sin conectar la interfaz | 18 tests nuevos (384 totales); check, lint y build correctos. Omitir `clearTimeout` hizo fallar la cancelación a 450 ms: 1 timer pendiente en vez de 0; restaurado y verde | `feat: controlar las fases de impresión` |
+| CI3 | S | ✅ Papel y acciones separados; formulario fuera del papel | 384 tests, tipos, lint y build; reutiliza precios y mensaje | `18925e1` |
+| CI4 | M | ✅ Ticketera, ranura, papel, aviso sin pago y token `--ease-papel` | Capturas en 390×844 y 1366×900; sin desborde; CLS 0 de carga/secuencia | `5743e30` |
+| CI5 | M | ✅ Fases, acciones, repetición y movimiento reducido conectados | Reloj falso, repetición, modo reducido y teclado verificados; desmontaje real en ambas fases sin timers ni escrituras posteriores | `e3bf56f` |
+| CI6 | S | ✅ A4 `f2645e9`; evidencia, checklist y cierre de navegador registrados | PDF de 9 módulos: 1 página A4; revisión independiente sin bloqueantes; Playwright cierra teclado, desmontaje y cambios entre pestañas | `fix: conservar la proforma A4 al imprimir` + documentación |
+
+En cada parte: `npm test`, `npm run check`, `npm run lint` y `npm run build`; celular en las visibles.
+**Punto de control:** revisión independiente en cinco ejes contra `9d164c2`, sin bloqueantes. [PR #4](https://github.com/willardguillermo/NissiDev-Web/pull/4) abierto hacia TD2. Pendientes: aprobación en celular físico y cierre de la revisión de los arreglos de TD2; no unir hasta entonces.
+Abrir PR con resumen, capturas, cómo probar y el bloqueo de TD2; ninguna integración sin OK de Guillermo.
+Evidencia y resultados: [VERIFICACION.md](../docs/referencias/cotizacion-impresora/VERIFICACION.md).
+
 ## Fase 5 — `demo` (motor)
 
 ### T12a · feat: modelo, conversiones y precios del pedido — ✅ `8969a4a`

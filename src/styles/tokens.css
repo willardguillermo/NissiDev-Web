@@ -118,6 +118,7 @@
   /* Movimiento (reglas de Emil Kowalski, ver docs/diseño.md): solo transform, opacity y blur ≤ 6 px */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* entradas y respuesta a la interfaz */
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* lo que se mueve en pantalla: el logo que se endereza */
+  --ease-papel: cubic-bezier(0.3, 0.15, 0.2, 1); /* avance de la proforma desde la ranura */
   --duracion-toque: 160ms; /* scale(0.97) al presionar */
   --duracion-fundido: 200ms; /* fundidos cortos, también con "movimiento reducido" */
 
