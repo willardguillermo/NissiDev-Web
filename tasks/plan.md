@@ -133,7 +133,7 @@ Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerp
 | Parte | Tamaño | Estado / alcance | Verificación específica | Commit previsto |
 |---|---|---|---|---|
 | CI1 | S | ✅ Spec y plan registrados; implementación pendiente | Aprobación contrastada; 366 tests, check y lint en verde; build correcto (advertencia de Node 26 sobre localStorage) | `docs: definir la cotización con impresora` |
-| CI2 | M | Pendiente: duración y secuencia cancelable fuera de React | Vitest: límites, fases, movimiento reducido y cancelación; introducir error, ver fallo y revertir | `feat: controlar las fases de impresión` |
+| CI2 | M | ✅ Duración y secuencia cancelable fuera de React, sin conectar la interfaz | 18 tests nuevos (384 totales); check, lint y build correctos. Omitir `clearTimeout` hizo fallar la cancelación a 450 ms: 1 timer pendiente en vez de 0; restaurado y verde | `feat: controlar las fases de impresión` |
 | CI3 | S | Pendiente: separar papel, formulario y acciones; reutilizar resumen | Tests existentes; PDF y WhatsApp conservan los datos | `refactor: separar el resumen de cotización` |
 | CI4 | M | Pendiente: ticketera, ranura, papel y token `--ease-papel` | Capturas por fase en 390 px y escritorio; sin desbordamiento; medir CLS | `feat: mostrar la cotización saliendo de la impresora` |
 | CI5 | M | Pendiente: conectar fases, acciones y accesibilidad | Reloj falso, desmontaje real, teclado, repetición y movimiento reducido | `feat: conectar las acciones de la cotización impresa` |

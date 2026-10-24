@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (primera rebanada de cotización con impresora). Quien termine una sesión de trabajo actualiza este archivo.
+> Última actualización: 2026-10-24 (CI2: duración y secuencia cancelable de impresión). Quien termine una sesión de trabajo actualiza este archivo.
 
 ## En una línea
 Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
@@ -28,7 +28,19 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 - Spec, plan y tres supuestos aprobados por Guillermo: `docs/cotizacion-impresora.md` y sección «Cotización con impresora» de `tasks/plan.md`.
 - CI1: registrados alcance y verificaciones; no se cambió código. A4 explícito con márgenes de 18mm/16mm;
   papel con token `--ease-papel: cubic-bezier(.3, .15, .2, 1)`; máximo total de 3500 ms.
-- Sigue CI2: duración y secuencia cancelable fuera de React, con Vitest y prueba de error deliberado.
+- CI2 completada: `src/cotizacion/impresion.ts` calcula la duración y comunica las fases con temporizadores
+  cancelables; sin React ni DOM. Preparación de 900 ms, impresión de 1200–2600 ms, movimiento reducido
+  directo a lista. La limpieza no escribe ni comunica fases y no deja temporizadores pendientes.
+- Verificados los tres ajustes en `8833fff`: PR hacia TD2 con bloqueo indicado para su descripción,
+  A4 explícito con márgenes y curva del papel como token; no hizo falta corregir la spec.
+- Vitest CI2: 18 tests nuevos (384 totales). Fallo deliberado: omitir `clearTimeout(temporizador)` hizo
+  fallar «cancelar a los 450 ms no escribe ni deja callbacks o timers» con
+  `AssertionError: expected 1 to be +0` en `expect(vi.getTimerCount()).toBe(0)`.
+  Restaurada la limpieza, todos pasan. `npm run check`: 0 errores/advertencias/hints;
+  `npm run lint` y `npm run build`: correctos; persiste la advertencia de Node sobre localStorage.
+- Sigue CI3: separar papel, formulario y acciones reutilizando el resumen actual.
+  La lógica de CI2 aún no está conectada a la interfaz; la prueba en celular y el desmontaje real
+  corresponden a las rebanadas visuales. El cambio local de Guillermo en `AGENTS.md` queda fuera del commit.
 - **No unir el PR hasta resolver los dos hallazgos de TD2** descritos arriba; indicarlo también en el PR.
 - Revisión al cerrar la rama por Claude Code o una sesión independiente; no unir sin aprobación de Guillermo.
 - Bitácora del vault y casilla de mejora se actualizan al terminar la implementación completa.
