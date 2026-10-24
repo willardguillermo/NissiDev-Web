@@ -123,6 +123,26 @@ Además de los criterios de cada tarea:
 
 **Punto de control 4:** flujo carrito → cotización → WhatsApp completo. ✅ Revisión de Codex junto con la T22 y la T23 (base `83b8b0e`): sin hallazgos. Publicado con el PR #3 (merge `5ff3eb9`). PDF de ejemplo en `docs/referencias/cotizacion-ejemplo.pdf`.
 
+## Cotización con impresora
+
+Spec y supuestos aprobados el 2026-10-24: [docs/cotizacion-impresora.md](../docs/cotizacion-impresora.md).
+Rama `feature/cotizacion-impresora` desde TD2 (`c79f5f6`); PR hacia `feature/td2-liquid`.
+**No unir el PR hasta resolver los dos hallazgos pendientes de TD2** (HistoriaDemo y sello sticky).
+Cada rebanada: unas 100 líneas, máximo 300; verificación → commit con cuerpo que explique el porqué.
+
+| Parte | Tamaño | Estado / alcance | Verificación específica | Commit previsto |
+|---|---|---|---|---|
+| CI1 | S | ✅ Spec y plan registrados; implementación pendiente | Aprobación contrastada; 366 tests, check y lint en verde; build correcto (advertencia de Node 26 sobre localStorage) | `docs: definir la cotización con impresora` |
+| CI2 | M | Pendiente: duración y secuencia cancelable fuera de React | Vitest: límites, fases, movimiento reducido y cancelación; introducir error, ver fallo y revertir | `feat: controlar las fases de impresión` |
+| CI3 | S | Pendiente: separar papel, formulario y acciones; reutilizar resumen | Tests existentes; PDF y WhatsApp conservan los datos | `refactor: separar el resumen de cotización` |
+| CI4 | M | Pendiente: ticketera, ranura, papel y token `--ease-papel` | Capturas por fase en 390 px y escritorio; sin desbordamiento; medir CLS | `feat: mostrar la cotización saliendo de la impresora` |
+| CI5 | M | Pendiente: conectar fases, acciones y accesibilidad | Reloj falso, desmontaje real, teclado, repetición y movimiento reducido | `feat: conectar las acciones de la cotización impresa` |
+| CI6 | S | Pendiente: A4 explícito y documentación de entrega | Vista previa A4, capturas, checklist del vault, bitácora y mejora marcada al completar | `docs: registrar la verificación de la cotización` |
+
+En cada parte: `npm test`, `npm run check`, `npm run lint` y `npm run build`; celular en las visibles.
+**Punto de control al cerrar la rama:** «Listo para revisión», hash base y revisión independiente en cinco ejes.
+Abrir PR con resumen, capturas, cómo probar y el bloqueo de TD2; ninguna integración sin OK de Guillermo.
+
 ## Fase 5 — `demo` (motor)
 
 ### T12a · feat: modelo, conversiones y precios del pedido — ✅ `8969a4a`
