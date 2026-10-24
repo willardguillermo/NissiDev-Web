@@ -119,6 +119,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
       <strong data-leyenda-titulo>{PASOS_HISTORIA[0].titulo}</strong>
       <span data-leyenda-texto>{PASOS_HISTORIA[0].texto}</span>
     </p>
+    <p class="historia__sello">Demo · datos de ejemplo</p>
   </div>
 
   <!-- Un espacio por paso: al pasar por el centro de la pantalla, el celular cambia -->
@@ -237,6 +238,12 @@ const dos = (n: number) => String(n).padStart(2, '0');
     gap: 0.375rem;
   }
 
+  .historia__sello {
+    grid-column: 1 / -1;
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+
   .historia__paso {
     min-height: 2.75rem;
     padding: 0 var(--espacio-3);
@@ -281,9 +288,9 @@ const dos = (n: number) => String(n).padStart(2, '0');
     perspective: 1200px;
   }
 
-  /* Alto según la pantalla: el celular, los pasos y la leyenda caben a la vez en un celular de 667 px */
+  /* Reserva también el sello: todo el bloque sticky cabe en un celular de 667 px de alto. */
   .fono {
-    width: min(15.625rem, 54vw, calc((100svh - 15rem) * 0.486));
+    width: min(15.625rem, 54vw, calc((100svh - 18rem) * 0.486));
     aspect-ratio: 9 / 18.5;
     padding: 0.5625rem;
     background: linear-gradient(160deg, #2a2b30, #121315);
