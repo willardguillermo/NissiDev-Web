@@ -153,11 +153,19 @@ const dos = (n: number) => String(n).padStart(2, '0');
     };
 
     botones.forEach((b, i) => b.addEventListener('click', () => ir(i)));
-    const observador = new IntersectionObserver(
-      (entradas) => entradas.forEach((e) => e.isIntersecting && ir(Number((e.target as HTMLElement).dataset.espacio))),
-      { rootMargin: '-45% 0px -45% 0px' },
-    );
-    historia.querySelectorAll('[data-espacio]').forEach((espacio) => observador.observe(espacio));
+    let observador: IntersectionObserver;
+    const observarPasos = () => {
+      observador?.disconnect();
+      // Los porcentajes de rootMargin usan el ancho: en apaisado vaciarían la zona central.
+      const margen = window.innerHeight * 0.45;
+      observador = new IntersectionObserver(
+        (entradas) => entradas.forEach((e) => e.isIntersecting && ir(Number((e.target as HTMLElement).dataset.espacio))),
+        { rootMargin: `-${margen}px 0px -${margen}px 0px` },
+      );
+      historia.querySelectorAll('[data-espacio]').forEach((espacio) => observador.observe(espacio));
+    };
+    observarPasos();
+    window.addEventListener('resize', observarPasos);
 
     // Inclinación: llega inclinado y se endereza mientras la historia entra en pantalla
     let pendiente = 0;
@@ -194,6 +202,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
       'astro:before-swap',
       () => {
         observador.disconnect();
+        window.removeEventListener('resize', observarPasos);
         cancelAnimationFrame(pendiente);
         window.removeEventListener('scroll', pedir);
         window.removeEventListener('pointermove', alMover);
