@@ -1,0 +1,68 @@
+---
+// Cabecera de las páginas internas (Demos, Contacto, Servicios, Cotización), como la de Arma tu sistema:
+// etiqueta, título, línea dorada y bajada, todo centrado. Entra con el mismo "sube" del hero.
+interface Props {
+  etiqueta: string;
+  titulo: string;
+  id?: string;
+}
+
+const { etiqueta, titulo, id } = Astro.props;
+---
+
+<header class="intro">
+  <p class="intro__etiqueta entra" style="--n: 0">{etiqueta}</p>
+  <h1 class="intro__titulo entra" style="--n: 1" id={id}>{titulo}</h1>
+  <span class="intro__linea entra" style="--n: 2" aria-hidden="true"></span>
+  {Astro.slots.has('default') && <p class="intro__bajada entra" style="--n: 3"><slot /></p>}
+</header>
+
+<style>
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-3);
+    padding-block: var(--espacio-8) var(--espacio-4);
+    text-align: center;
+  }
+
+  .intro__etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .intro__titulo {
+    max-width: 16ch;
+    font-size: clamp(2.25rem, 1.8rem + 2.4vw, 3.5rem);
+    font-weight: var(--peso-titulo);
+    line-height: var(--interlineado-titulo);
+    letter-spacing: -0.035em;
+  }
+
+  .intro__linea {
+    width: 1.75rem;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+  }
+
+  .intro__bajada {
+    max-width: 36ch;
+    color: var(--texto-suave);
+  }
+
+  .entra {
+    animation: sube 560ms var(--ease-out) both;
+    animation-delay: calc(var(--n) * 70ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entra {
+      animation: fundido var(--duracion-fundido) ease both;
+    }
+  }
+</style>

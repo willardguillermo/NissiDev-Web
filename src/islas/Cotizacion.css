@@ -1,0 +1,268 @@
+/* Cotización: una tarjeta blanca centrada (Ensamble) que también es la hoja del PDF. */
+.cotizacion,
+.cotizacion-vacia {
+  display: grid;
+  gap: var(--espacio-5);
+  width: 100%;
+  max-width: 34rem;
+  margin: var(--espacio-6) auto 0;
+  padding: var(--espacio-8) var(--espacio-6);
+  background: var(--fondo-elevado);
+  border-radius: 1.5rem;
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.cotizacion-cargando {
+  min-height: 20rem;
+  padding-top: var(--espacio-8);
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.cotizacion-vacia {
+  justify-items: center;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.cotizacion-vacia__titulo {
+  color: var(--texto);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+}
+
+.cotizacion__cabeza {
+  display: grid;
+  gap: var(--espacio-2);
+  justify-items: center;
+  padding-bottom: var(--espacio-5);
+  border-bottom: 1px solid var(--color-linea);
+  text-align: center;
+}
+
+.cotizacion__marca {
+  color: var(--acento-texto);
+  font-size: var(--texto-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cotizacion__codigo {
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  user-select: all;
+  -webkit-user-select: all;
+}
+
+.cotizacion__fechas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--espacio-2) var(--espacio-6);
+  font-size: var(--texto-sm);
+}
+
+.cotizacion__fechas div {
+  display: flex;
+  gap: var(--espacio-1);
+}
+
+.cotizacion__fechas dt {
+  color: var(--texto-suave);
+}
+
+.cotizacion__fechas dt::after {
+  content: ':';
+}
+
+.cotizacion__fechas dd,
+.cotizacion__totales dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cotizacion__negocio {
+  display: grid;
+  gap: var(--espacio-2);
+}
+
+.cotizacion__negocio label {
+  font-size: var(--texto-sm);
+  font-weight: 700;
+}
+
+.cotizacion__opcional {
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+/* 16 px: en iPhone un campo de menos de 16 px hace zoom a la página al tocarlo */
+.cotizacion__negocio input {
+  min-height: 3rem;
+  padding: var(--espacio-2) var(--espacio-4);
+  background: var(--fondo);
+  border: 1px solid var(--color-contorno);
+  border-radius: var(--radio-md);
+  font-size: 1rem;
+}
+
+.cotizacion__negocio-impreso,
+.cotizacion__contacto {
+  display: none;
+}
+
+.cotizacion__subtitulo {
+  font-size: var(--texto-sm);
+  font-weight: 700;
+}
+
+.cotizacion__modulos {
+  display: grid;
+  margin-top: calc(-1 * var(--espacio-3));
+  padding: 0;
+  list-style: none;
+}
+
+.cotizacion__modulo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--espacio-1) var(--espacio-4);
+  padding-block: var(--espacio-3);
+  border-bottom: 1px solid var(--color-linea);
+}
+
+.cotizacion__precio {
+  color: var(--texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.cotizacion__totales {
+  display: grid;
+  gap: var(--espacio-2);
+}
+
+.cotizacion__totales div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-1) var(--espacio-3);
+}
+
+.cotizacion__totales div:first-child dd {
+  font-size: 1.375rem;
+}
+
+.cotizacion__nota {
+  color: var(--texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 500;
+}
+
+.cotizacion__referencial {
+  padding: var(--espacio-3) var(--espacio-4);
+  background: var(--fondo);
+  border-radius: var(--radio-md);
+  color: var(--texto-suave);
+  font-size: var(--texto-sm);
+  text-align: center;
+}
+
+.cotizacion__acciones {
+  display: grid;
+  gap: var(--espacio-3);
+  justify-items: stretch;
+}
+
+.cotizacion-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: var(--espacio-3) 1.375rem;
+  background: var(--fondo-oscuro);
+  color: var(--texto-sobre-oscuro);
+  border: 0;
+  border-radius: var(--radio-pildora);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform var(--duracion-toque) var(--ease-out);
+}
+
+.cotizacion-boton:active {
+  transform: scale(0.97);
+}
+
+.cotizacion-boton--secundario {
+  background: transparent;
+  color: var(--texto);
+  box-shadow: inset 0 0 0 1px rgb(30 31 34 / 0.18);
+}
+
+.cotizacion__cambiar {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: var(--texto-sm);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cotizacion-boton {
+    transition: none;
+  }
+}
+
+/* ---------- Hoja impresa / PDF: solo la cotización, en blanco y negro, sin controles ---------- */
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  .cotizacion {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .cotizacion__negocio label,
+  .cotizacion__negocio input,
+  .cotizacion__acciones {
+    display: none;
+  }
+
+  .cotizacion__negocio-impreso {
+    display: block;
+    font-weight: 700;
+  }
+
+  .cotizacion__contacto {
+    display: block;
+    font-size: var(--texto-sm);
+    text-align: center;
+  }
+
+  .cotizacion__referencial {
+    border: 1px solid #ccc;
+    background: none;
+    color: #000;
+  }
+
+  .cotizacion__precio,
+  .cotizacion__nota,
+  .cotizacion__fechas dt {
+    color: #333;
+  }
+}
