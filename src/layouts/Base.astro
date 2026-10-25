@@ -11,7 +11,7 @@ interface Props {
 
 const {
   titulo,
-  descripcion = 'NissiDev: webs y sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
+  descripcion = 'NissiDev: webs y sistemas para negocios de todo rubro. Prueba la demo de tu rubro y arma tu cotización.',
 } = Astro.props;
 const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
 
@@ -127,7 +127,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
           WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
         </a>
-        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Este de Lima</p>
+        <p class="pie__nota">© {new Date().getFullYear()} NissiDev</p>
       </div>
     </footer>
 

@@ -1,9 +1,9 @@
 ---
 // Tarjeta grande de contacto (Inicio y /contacto): WhatsApp como acción principal, el número como texto
-// seleccionable, la zona y "Copiar número" (portapapeles; si no se puede, deja el número seleccionado).
+// seleccionable y "Copiar número" (portapapeles; si no se puede, deja el número seleccionado).
 import Boton from './Boton.astro';
 import IconoWhatsApp from './IconoWhatsApp.astro';
-import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE, ZONA } from '../config/contacto';
+import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 
 interface Props {
   /** h1 en /contacto (es el título de la página); h2 en el Inicio. */
@@ -23,7 +23,6 @@ const Titulo = `h${nivel}` as const;
   <p class="contacto__numero" data-numero>{WHATSAPP_VISIBLE}</p>
   <Boton variante="vidrio" class="contacto__copiar">Copiar número</Boton>
   <p class="contacto__estado" role="status" data-estado></p>
-  <p class="contacto__zona">Trabajo con negocios del {ZONA}.</p>
 </div>
 
 <script>
@@ -104,10 +103,5 @@ const Titulo = `h${nivel}` as const;
     color: var(--acento-texto);
     font-size: 0.8125rem;
     font-weight: 600;
-  }
-
-  .contacto__zona {
-    color: var(--texto-nota);
-    font-size: var(--texto-sm);
   }
 </style>
