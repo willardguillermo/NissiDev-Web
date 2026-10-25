@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
 import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
@@ -21,6 +22,7 @@ const enlaces = [
   { href: '/sobre-mi', texto: 'Sobre mí' },
   { href: '/contacto', texto: 'Contacto' },
 ];
+const pieEnlaces = [{ href: '/', texto: 'Inicio' }, ...enlaces, { href: '/cotizar', texto: 'Cotizar' }];
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
@@ -119,13 +121,27 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Pie corto (TD2): la acción de contacto grande ya está en la tarjeta de Contacto -->
+    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto; abajo, el © tras una línea fina -->
     <footer class="pie">
-      <div class="contenedor pie__fila">
-        <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
-        <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
-          WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
-        </a>
+      <div class="contenedor">
+        <div class="pie__grilla">
+          <div class="pie__columna">
+            <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
+            <p class="pie__frase">Webs y sistemas a medida para negocios de todo rubro.</p>
+          </div>
+          <nav class="pie__columna" aria-labelledby="pie-web">
+            <h2 id="pie-web" class="pie__titulo">La web</h2>
+            <ul class="pie__lista">
+              {pieEnlaces.map(({ href, texto }) => <li><a href={href}>{texto}</a></li>)}
+            </ul>
+          </nav>
+          <div class="pie__columna">
+            <h2 class="pie__titulo">Contacto</h2>
+            <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+              <IconoWhatsApp />WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
+            </a>
+          </div>
+        </div>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev</p>
       </div>
     </footer>
@@ -517,16 +533,27 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .pie {
     margin-top: var(--espacio-16);
     padding-block: var(--espacio-8) var(--espacio-12);
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
   }
 
-  .pie__fila {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--espacio-2) var(--espacio-5);
-    color: var(--texto-nota);
-    font-size: var(--texto-sm);
+  /* Celular: todo apilado y a la izquierda. Escritorio: tres columnas alineadas arriba. */
+  .pie__grilla {
+    display: grid;
+    gap: var(--espacio-6);
+  }
+
+  @media (min-width: 48rem) {
+    .pie__grilla {
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--espacio-8);
+    }
+  }
+
+  .pie__columna {
+    display: grid;
+    align-content: start;
+    gap: var(--espacio-2);
   }
 
   .pie__marca {
@@ -534,6 +561,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     align-items: center;
     gap: var(--espacio-2);
     color: var(--texto);
+    font-size: var(--texto-md);
     font-weight: 700;
   }
 
@@ -541,12 +569,61 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     width: 1rem;
   }
 
+  .pie__frase {
+    max-width: 30ch;
+  }
+
+  .pie__titulo {
+    color: var(--texto-nota);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .pie__lista {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Enlaces con área táctil de 44 px, pero sin separar de más la lista */
+  .pie__lista a,
   .pie__whatsapp {
     display: inline-flex;
     align-items: center;
+    gap: var(--espacio-2);
     min-height: 2.75rem;
     color: var(--texto);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  /* Con mouse no hace falta el área táctil: la lista queda más junta */
+  @media (min-width: 48rem) and (pointer: fine) {
+    .pie__lista a,
+    .pie__whatsapp {
+      min-height: 2rem;
+    }
+  }
+
+  .pie__whatsapp {
     font-weight: 600;
     font-variant-numeric: tabular-nums;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pie__lista a:hover,
+    .pie__whatsapp:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  .pie__nota {
+    margin-top: var(--espacio-8);
+    padding-top: var(--espacio-4);
+    color: var(--texto-nota);
+    border-top: 1px solid var(--color-linea);
   }
 </style>
