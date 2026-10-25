@@ -3,15 +3,18 @@ import Logo from '../components/Logo.astro';
 import { STACK } from '../catalogo-servicios/proceso';
 import { PERFILES } from '../config/contacto';
 import Base from '../layouts/Base.astro';
-import { ICONOS_TECNOLOGIAS } from '../ui/iconos-tecnologias';
+import { ICONOS_TECNOLOGIAS, medidasIcono, PLACA_ICONOS } from '../ui/iconos-tecnologias';
 
 // Quién está detrás: solo la marca NissiDev (sin nombre personal, foto, estudios ni ubicación) y el texto de
-// Guillermo tal cual. Debajo, el stack agrupado por uso con íconos de Simple Icons (CC0).
+// Guillermo tal cual. Debajo, el stack agrupado por uso con íconos de Simple Icons (CC0) en su color de marca.
 // --i numera cada tecnología para la entrada escalonada.
 let n = 0;
 const grupos = STACK.map((grupo) => ({
   ...grupo,
-  tecnologias: grupo.tecnologias.map((nombre) => ({ nombre, ...ICONOS_TECNOLOGIAS[nombre], i: n++ })),
+  tecnologias: grupo.tecnologias.map((nombre) => {
+    const icono = ICONOS_TECNOLOGIAS[nombre];
+    return { nombre, ...icono, ...medidasIcono(icono.caja), i: n++ };
+  }),
 }));
 ---
 
@@ -52,10 +55,18 @@ const grupos = STACK.map((grupo) => ({
           <div class="stack__grupo vidrio">
             <dt class="stack__para">{grupo.para}</dt>
             {grupo.tecnologias.map((t) => (
-              <dd class="tec" style={`--marca: ${t.color}; --i: ${t.i}`}>
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-                  <path d={t.d} />
-                </svg>
+              <dd class="tec" style={`--i: ${t.i}`}>
+                <span class="tec__placa" style={`background: ${PLACA_ICONOS}`}>
+                  <svg
+                    viewBox={t.caja}
+                    style={`width: ${t.ancho}rem; height: ${t.alto}rem`}
+                    fill={t.color}
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d={t.d} />
+                  </svg>
+                </span>
                 {t.nombre}
               </dd>
             ))}
@@ -170,27 +181,29 @@ const grupos = STACK.map((grupo) => ({
   .tec {
     display: inline-flex;
     align-items: center;
-    gap: var(--espacio-2);
+    gap: 0.625rem;
     min-height: 2.75rem;
     margin: 0;
     color: var(--texto);
     font-weight: 600;
   }
 
-  .tec svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--tinta-2);
-    transition:
-      color var(--duracion-fundido) ease,
-      transform var(--duracion-toque) var(--ease-out);
+  /* Ícono en su color de marca sobre una placa oscura (todos pasan 3:1); el nombre va en tinta al lado */
+  .tec__placa {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding-inline: 0.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 14px rgb(30 31 34 / 0.18);
+    transition: transform var(--duracion-toque) var(--ease-out);
   }
 
-  /* Realce con su color, solo con mouse */
+  /* Con mouse, un realce extra: la placa sube un poco */
   @media (hover: hover) and (pointer: fine) {
-    .tec:hover svg {
-      color: var(--marca);
-      transform: scale(1.12);
+    .tec:hover .tec__placa {
+      transform: translateY(-2px) scale(1.06);
     }
   }
 
@@ -229,11 +242,11 @@ const grupos = STACK.map((grupo) => ({
       animation: none;
     }
 
-    .tec svg {
-      transition: color var(--duracion-fundido) ease;
+    .tec__placa {
+      transition: none;
     }
 
-    .tec:hover svg {
+    .tec:hover .tec__placa {
       transform: none;
     }
   }
