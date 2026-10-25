@@ -1,6 +1,7 @@
 // Rubros que muestra la web, en el mismo orden en el celular del Inicio, sus tarjetas y Soluciones (ADR-004:
 // ninguno es protagonista). Una demo activa enlaza a su página; los demás se piden por WhatsApp.
 // Para activar un rubro: crear su config y su página, y cambiar aquí el estado.
+import { whatsappConMensaje } from '../config/contacto';
 import { DULCERIA } from './dulceria/config';
 
 interface RubroBase {
@@ -55,3 +56,8 @@ export const RUBROS: readonly RubroDemo[] = [
     estado: 'proximamente',
   },
 ];
+
+/** WhatsApp para pedir la demo de un rubro que aún no la tiene; el mensaje nombra el rubro. */
+export function enlacePedirDemo(rubro: Pick<RubroDemo, 'nombre'>): string {
+  return whatsappConMensaje(`Hola, me interesa un sistema para mi rubro: ${rubro.nombre}. ¿Me muestras cómo sería la demo?`);
+}

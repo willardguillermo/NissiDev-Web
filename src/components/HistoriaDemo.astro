@@ -6,11 +6,10 @@
 import Boton from './Boton.astro';
 import DibujoRubro from './DibujoRubro.astro';
 import IconoWhatsApp from './IconoWhatsApp.astro';
-import { whatsappConMensaje } from '../config/contacto';
 import { variablesDeTema } from '../demo/tema';
 import { PASOS_HISTORIA } from '../rubros/historia';
 import { HISTORIAS } from '../rubros/historias';
-import { RUBROS } from '../rubros/rubros';
+import { enlacePedirDemo, RUBROS } from '../rubros/rubros';
 
 // Empieza en el primer rubro (Dulcería): es el único con demo completa.
 const rubros = RUBROS.map((rubro) => ({
@@ -22,7 +21,7 @@ const rubros = RUBROS.map((rubro) => ({
   enlace:
     rubro.estado === 'activa'
       ? rubro.ruta
-      : whatsappConMensaje(`Hola, me interesa un sistema para mi rubro: ${rubro.nombre}. ¿Me muestras cómo sería la demo?`),
+      : enlacePedirDemo(rubro),
 }));
 const inicial = rubros[0];
 const dos = (n: number) => String(n).padStart(2, '0');

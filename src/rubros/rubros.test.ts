@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RUBROS } from './rubros';
+import { enlacePedirDemo, RUBROS } from './rubros';
 
 // Solo los nombres de archivo (sin cargarlos): las páginas de demo que existen.
 const paginasDeDemo = Object.keys(import.meta.glob('../pages/soluciones/*.astro'));
@@ -24,5 +24,10 @@ describe('rubros de la página Soluciones', () => {
 
   it('son los 5 rubros de ADR-004, en orden', () => {
     expect(RUBROS.map((r) => r.nombre)).toEqual(['Dulcería', 'Restaurante', 'Salón de belleza', 'Clínica', 'Negocio por mayor']);
+  });
+
+  it('pedir la demo por WhatsApp nombra el rubro', () => {
+    const enlace = new URL(enlacePedirDemo({ nombre: 'Salón de belleza' }));
+    expect(enlace.searchParams.get('text')).toContain('Salón de belleza');
   });
 });

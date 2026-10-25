@@ -66,7 +66,6 @@ export default function Carrito() {
               Sugerido: {SUGERIDO.nombre}
             </button>
           )}
-          <span className="carrito-sugerido__pronto">Hospedaje · pronto</span>
         </div>
         <p id="sugerido-detalle" className="carrito-sugerido__detalle">
           Carga {unirNombres([...SUGERIDO.modulos])}.

@@ -15,18 +15,6 @@
   gap: var(--espacio-2);
 }
 
-.carrito-sugerido__pronto {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding-inline: var(--espacio-4);
-  color: var(--texto-suave);
-  border-radius: var(--radio-pildora);
-  box-shadow: var(--borde-sutil);
-  font-size: var(--texto-sm);
-  font-weight: 600;
-}
-
 .carrito-sugerido__detalle {
   color: var(--texto-suave);
   font-size: var(--texto-sm);

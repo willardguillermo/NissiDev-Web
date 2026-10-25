@@ -1,24 +1,25 @@
 ---
 import Boton from '../../components/Boton.astro';
+import IconoWhatsApp from '../../components/IconoWhatsApp.astro';
 import IntroPagina from '../../components/IntroPagina.astro';
 import { whatsappConMensaje } from '../../config/contacto';
 import Base from '../../layouts/Base.astro';
-import { RUBROS } from '../../rubros/rubros';
+import { enlacePedirDemo, RUBROS } from '../../rubros/rubros';
 
-const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos. Me gustaría ver cómo sería mi sistema.');
+const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en la lista. Me gustaría ver cómo sería mi sistema.');
 ---
 
-<Base titulo="Soluciones" descripcion="Prueba cómo quedaría el sistema de tu negocio con una demo por rubro. Datos de ejemplo.">
-  <section class="contenedor" aria-labelledby="demos-titulo">
-    <IntroPagina etiqueta="Demo por rubro" titulo="Prueba el sistema de tu rubro." id="demos-titulo">
-      Cada demo funciona de verdad, con un negocio y datos de ejemplo.
+<Base titulo="Soluciones" descripcion="Sistemas para dulcerías, restaurantes, salones de belleza, clínicas y negocios por mayor. Prueba la demo de tu rubro o pídela por WhatsApp.">
+  <section class="contenedor" aria-labelledby="soluciones-titulo">
+    <IntroPagina etiqueta="Soluciones" titulo="Un sistema para tu rubro." id="soluciones-titulo">
+      Prueba la demo de tu rubro con un negocio y datos de ejemplo. Si aún no está lista, pídela por WhatsApp.
     </IntroPagina>
 
     <ul class="rubros" role="list">
       {
         RUBROS.map((rubro) => (
-          <li class:list={['rubro', rubro.estado === 'activa' ? 'vidrio' : 'rubro--pronto']} data-aparecer>
-            <p class="rubro__estado">{rubro.estado === 'activa' ? 'Demo disponible' : 'Próximamente'}</p>
+          <li id={rubro.id} class:list={['rubro', rubro.estado === 'activa' ? 'vidrio' : 'rubro--pronto']} data-aparecer>
+            <p class="rubro__estado">{rubro.estado === 'activa' ? 'Demo disponible' : 'Próximamente · pídela por WhatsApp'}</p>
             <h2 class="rubro__nombre">{rubro.nombre}</h2>
             <span class="rubro__linea" aria-hidden="true" />
             <p class="rubro__texto">{rubro.descripcion}</p>
@@ -29,7 +30,12 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
                   Probar la demo<span class="solo-lector"> de {rubro.nombre}</span>
                 </Boton>
               </>
-            ) : null}
+            ) : (
+              <Boton href={enlacePedirDemo(rubro)} variante="secundario" externo>
+                <IconoWhatsApp />
+                Pedir la demo<span class="solo-lector"> de {rubro.nombre}</span>
+              </Boton>
+            )}
           </li>
         ))
       }
@@ -54,6 +60,7 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
   }
 
   .rubro {
+    scroll-margin-top: 6rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,7 +69,7 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en las demos
     text-align: center;
   }
 
-  /* Próximamente: sin vidrio y con borde punteado, como un espacio reservado (no se puede tocar).
+  /* Próximamente: sin vidrio y con borde punteado, como un espacio reservado; su botón pide la demo.
      La única tarjeta de vidrio es la demo activa. */
   .rubro--pronto {
     border: 1px dashed var(--color-punteado);
