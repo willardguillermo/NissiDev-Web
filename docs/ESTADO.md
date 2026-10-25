@@ -1,12 +1,18 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-25 (estructura por rubros en `feature/estructura-rubros`, lista para revisión).
+> Última actualización: 2026-10-25 (arreglos de la revisión de la estructura por rubros, lista para revisión con base `37a7544`).
 
 ## En curso — Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
 - Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; **falta la revisión de Codex** (`--base de7743d`) y la aprobación de Guillermo en su celular. Nada unido a main.
 - Vista previa: https://feature-estructura-rubros.nissidev-web.pages.dev
 - Hecho: sin ubicación (test en `src/sin-ubicacion.test.ts`); rutas `/soluciones`, `/cotizar`, `/sobre-mi` con 301 desde `/demos`, `/demos/dulceria/` (conserva la query) y `/arma-tu-sistema`; menú Soluciones · Servicios · Sobre mí · Contacto + botón «Cotizar (n)»; footer en columnas; Inicio reordenado; celular con selector de 5 rubros (`src/rubros/<id>/historia.ts`); Soluciones; Servicios con funciones, precios y preguntas frecuentes; Sobre mí con el texto de Guillermo, GitHub/LinkedIn y el stack con íconos de Simple Icons (CC0).
-- Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS externo del Inicio igual (6.0 KB gzip) y +0.5 KB de script en línea; HTML del Inicio 13.2 KB gzip. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
+- Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS del Inicio: externo igual (6.0 KB gzip) y scripts en línea 2.29 KB gzip frente a 2.17 KB en main; HTML del Inicio 13.8 KB gzip (9.6 KB en main), por las pantallas de los 5 rubros. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
+- **Arreglos de la revisión (2026-10-25), un commit `fix:` por punto:**
+  1. `22f5c66` la pantalla del celular escala como una unidad (`--u = 100cqw / 12`; a 390 px se ve igual que lo aprobado) y en celulares bajos las filas de arriba se compactan con 44 px de área táctil: el teléfono pasa de ~161 a ~180 px a 375×667. Verificado 4 pasos × 5 rubros × 4 tamaños sin nada recortado.
+  2. `21d3e40` la Vitrina muestra «Lo más pedido» (2 items del rubro; «Próximos horarios» en la clínica).
+  3. `22f1cec` íconos de Sobre mí siempre en su color de marca sobre placa oscura (los 7 pasan 3:1) y cajas ajustadas: MySQL se lee.
+  4. `acef661` el rubro elegido se desliza a la vista en su fila (scrollBy, sin mover la página) y sin el salto de 7 px por anclaje de scroll.
+  5. Soluciones en 2 + 3 sin huecos.
 - Pendiente de Guillermo: revisar en el celular y corregir los textos nuevos (lista en el reporte de la sesión).
 
 
