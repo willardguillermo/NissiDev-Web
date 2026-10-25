@@ -1,4 +1,4 @@
-// Cómo trabajo y con qué: lo usan el Inicio (versión corta) y Servicios. Un solo lugar para los textos.
+// Cómo trabajo (Inicio en versión corta y Servicios) y con qué (Sobre mí). Un solo lugar para los textos.
 
 export interface Paso {
   titulo: string;
@@ -25,6 +25,3 @@ export const STACK: readonly GrupoTecnologias[] = [
   { para: 'Sistemas y datos', tecnologias: ['Spring Boot', 'MySQL'] },
   { para: 'Publicación', tecnologias: ['Cloudflare'] },
 ];
-
-/** Lista plana para los chips del Inicio. */
-export const TECNOLOGIAS: readonly string[] = STACK.flatMap((grupo) => grupo.tecnologias);

@@ -22,8 +22,7 @@ describe('rubros de la página Soluciones', () => {
     }
   });
 
-  it('anuncia Hospedaje y Restaurante campestre como próximos', () => {
-    const proximos = RUBROS.filter((r) => r.estado === 'proximamente').map((r) => r.nombre);
-    expect(proximos).toEqual(['Hospedaje', 'Restaurante campestre']);
+  it('son los 5 rubros de ADR-004, en orden', () => {
+    expect(RUBROS.map((r) => r.nombre)).toEqual(['Dulcería', 'Restaurante', 'Salón de belleza', 'Clínica', 'Negocio por mayor']);
   });
 });

@@ -1,11 +1,14 @@
-// Rubros que muestra la página Soluciones. Una demo activa enlaza a su página; las próximas solo se anuncian
-// (llegan en la etapa 2, ver BRIEF). Para activar un rubro: crear su config y su página, y cambiar aquí el estado.
+// Rubros que muestra la web, en el mismo orden en el celular del Inicio, sus tarjetas y Soluciones (ADR-004:
+// ninguno es protagonista). Una demo activa enlaza a su página; los demás se piden por WhatsApp.
+// Para activar un rubro: crear su config y su página, y cambiar aquí el estado.
 import { DULCERIA } from './dulceria/config';
 
 interface RubroBase {
   id: string;
   nombre: string;
-  /** Qué trae la demo, en palabras del dueño (borrador para revisar). */
+  /** Una línea para la tarjeta del Inicio (borrador para revisar). */
+  resumen: string;
+  /** Qué traería su sistema, en palabras del dueño (borrador para revisar). */
   descripcion: string;
 }
 
@@ -18,20 +21,37 @@ export const RUBROS: readonly RubroDemo[] = [
     id: DULCERIA.id,
     nombre: DULCERIA.rubro,
     negocio: DULCERIA.negocio,
+    resumen: 'Catálogo con precios por mayor y vencimientos.',
     descripcion: 'Catálogo con precios por mayor, pedidos por WhatsApp y el panel del dueño con ventas y vencimientos.',
     estado: 'activa',
     ruta: `/soluciones/${DULCERIA.id}/`,
   },
   {
-    id: 'hospedaje',
-    nombre: 'Hospedaje',
-    descripcion: 'Habitaciones, disponibilidad del día y reservas por WhatsApp.',
+    id: 'restaurante',
+    nombre: 'Restaurante',
+    resumen: 'Carta, pedidos para llevar y reservas.',
+    descripcion: 'Tu carta con precios, pedidos para llevar por WhatsApp, reservas de mesa y las ventas del día.',
     estado: 'proximamente',
   },
   {
-    id: 'restaurante-campestre',
-    nombre: 'Restaurante campestre',
-    descripcion: 'Carta, reservas para el fin de semana y eventos.',
+    id: 'belleza',
+    nombre: 'Salón de belleza',
+    resumen: 'Citas por servicio y la agenda del día.',
+    descripcion: 'Para barberías y estéticas: tus servicios con precios, citas sin llamadas y la agenda del día.',
+    estado: 'proximamente',
+  },
+  {
+    id: 'clinica',
+    nombre: 'Clínica',
+    resumen: 'Citas y horarios sin llamadas.',
+    descripcion: 'Tus pacientes eligen especialidad y horario, la cita te llega por WhatsApp y ves los horarios del día.',
+    estado: 'proximamente',
+  },
+  {
+    id: 'mayorista',
+    nombre: 'Negocio por mayor',
+    resumen: 'Precios por volumen y stock al día.',
+    descripcion: 'Precios por unidad, paquete o saco, pedidos de tus clientes por WhatsApp y el stock que se acaba.',
     estado: 'proximamente',
   },
 ];

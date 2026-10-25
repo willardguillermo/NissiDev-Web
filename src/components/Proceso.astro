@@ -1,7 +1,14 @@
 ---
 // "Cómo trabajamos": la línea dorada se dibuja de izquierda a derecha (scaleX) al aparecer y debajo van las
-// 4 etapas en vidrio. Textos en catalogo-servicios/proceso.ts (los mismos del Inicio y de /servicios).
+// 4 etapas en vidrio. Textos en catalogo-servicios/proceso.ts. En el Inicio va corto (solo los nombres);
+// el detalle de cada etapa vive en /servicios.
 import { PASOS } from '../catalogo-servicios/proceso';
+
+interface Props {
+  corto?: boolean;
+}
+
+const { corto = false } = Astro.props;
 
 const dos = (n: number) => String(n).padStart(2, '0');
 ---
@@ -16,7 +23,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
             {dos(i + 1)}
           </span>
           <b class="etapa__titulo">{paso.titulo}</b>
-          <span class="etapa__texto">{paso.texto}</span>
+          {!corto && <span class="etapa__texto">{paso.texto}</span>}
         </li>
       ))
     }
