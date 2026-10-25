@@ -466,7 +466,11 @@ const dos = (n: number) => String(n).padStart(2, '0');
     transition: transform 400ms var(--ease-out);
   }
 
+  /* La pantalla escala como una unidad: todo lo de adentro se mide en --u, que vale 1 rem cuando la pantalla
+     mide 12 rem (192 px, la del celular de 390 px aprobada) y crece o se achica en proporción. Nada se recorta. */
   .fono__pantalla {
+    --u: calc(100cqw / 12);
+    container-type: inline-size;
     position: relative;
     height: 100%;
     overflow: hidden;
@@ -486,11 +490,11 @@ const dos = (n: number) => String(n).padStart(2, '0');
 
   .fono__isla {
     position: absolute;
-    top: 0.5rem;
+    top: calc(0.5 * var(--u));
     left: 50%;
     z-index: 3;
-    width: 4.375rem;
-    height: 1.25rem;
+    width: calc(4.375 * var(--u));
+    height: calc(1.25 * var(--u));
     margin-left: -2.1875rem;
     background: #0c0d0e;
     border-radius: var(--radio-pildora);
@@ -509,9 +513,9 @@ const dos = (n: number) => String(n).padStart(2, '0');
     background: var(--d-fondo);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 2.375rem 0.75rem 0.75rem;
-    font-size: 0.5rem;
+    gap: calc(0.5 * var(--u));
+    padding: calc(2.375 * var(--u)) calc(0.75 * var(--u)) calc(0.75 * var(--u));
+    font-size: calc(0.5 * var(--u));
     line-height: 1.35;
     opacity: 0;
     transform: scale(0.97);
@@ -535,17 +539,17 @@ const dos = (n: number) => String(n).padStart(2, '0');
   }
 
   .d-anuncio {
-    padding: 0.3rem;
+    padding: calc(0.3 * var(--u));
     background: var(--d-marca);
     color: var(--d-sobre-marca);
-    border-radius: 0.5rem;
+    border-radius: calc(0.5 * var(--u));
     font-weight: 700;
     text-align: center;
   }
 
   .d-negocio {
     color: var(--d-marca-texto);
-    font-size: 0.875rem;
+    font-size: calc(0.875 * var(--u));
     font-weight: 800;
     line-height: 1.1;
   }
@@ -555,7 +559,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
   }
 
   .d-buscar {
-    padding: 0.4rem 0.625rem;
+    padding: calc(0.4 * var(--u)) calc(0.625 * var(--u));
     background: var(--d-fondo-suave);
     color: var(--d-texto-suave);
     border-radius: var(--radio-pildora);
@@ -563,19 +567,19 @@ const dos = (n: number) => String(n).padStart(2, '0');
 
   .d-hero {
     display: grid;
-    gap: 0.375rem;
-    padding: 0.75rem;
+    gap: calc(0.375 * var(--u));
+    padding: calc(0.75 * var(--u));
     background: #1a1a1a;
     color: var(--d-amarillo);
-    border-radius: 0.875rem;
-    font-size: 0.875rem;
+    border-radius: calc(0.875 * var(--u));
+    font-size: calc(0.875 * var(--u));
     font-weight: 800;
     line-height: 1.1;
   }
 
   .d-hero small {
     color: #fff;
-    font-size: 0.5rem;
+    font-size: calc(0.5 * var(--u));
     font-weight: 500;
     line-height: 1.35;
   }
@@ -583,16 +587,16 @@ const dos = (n: number) => String(n).padStart(2, '0');
   .d-cats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.375rem;
+    gap: calc(0.375 * var(--u));
   }
 
   .d-cat {
     display: grid;
     justify-items: center;
-    gap: 0.125rem;
-    padding: 0.375rem 0.125rem;
+    gap: calc(0.125 * var(--u));
+    padding: calc(0.375 * var(--u)) calc(0.125 * var(--u));
     border: 2px solid var(--d-marca);
-    border-radius: 0.75rem;
+    border-radius: calc(0.75 * var(--u));
     font-weight: 700;
   }
 
@@ -605,44 +609,44 @@ const dos = (n: number) => String(n).padStart(2, '0');
   }
 
   .d-cat :global(.d-ilu) {
-    width: 1.625rem;
+    width: calc(1.625 * var(--u));
   }
 
   .d-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.375rem;
+    gap: calc(0.375 * var(--u));
   }
 
   .d-prod {
     display: grid;
-    gap: 0.125rem;
-    padding: 0.4rem;
+    gap: calc(0.125 * var(--u));
+    padding: calc(0.4 * var(--u));
     background: var(--d-fondo-suave);
-    border-radius: 0.75rem;
+    border-radius: calc(0.75 * var(--u));
   }
 
   .d-prod :global(.d-ilu) {
     width: 100%;
-    height: 2.25rem;
+    height: calc(2.25 * var(--u));
     background: var(--d-fondo);
-    border-radius: 0.5rem;
+    border-radius: calc(0.5 * var(--u));
   }
 
   .d-prod b {
     overflow: hidden;
-    font-size: 0.5625rem;
+    font-size: calc(0.5625 * var(--u));
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   .d-precio {
-    font-size: 0.625rem;
+    font-size: calc(0.625 * var(--u));
     font-weight: 800;
   }
 
   .d-agregar {
-    padding: 0.2rem;
+    padding: calc(0.2 * var(--u));
     background: var(--d-marca);
     color: var(--d-sobre-marca);
     border-radius: var(--radio-pildora);
@@ -665,11 +669,11 @@ const dos = (n: number) => String(n).padStart(2, '0');
     display: flex;
     justify-content: space-between;
     margin-top: auto;
-    padding: 0.5rem 0.625rem;
+    padding: calc(0.5 * var(--u)) calc(0.625 * var(--u));
     background: #1a1a1a;
     color: #fff;
-    border-radius: 0.75rem;
-    font-size: 0.5625rem;
+    border-radius: calc(0.75 * var(--u));
+    font-size: calc(0.5625 * var(--u));
     font-weight: 600;
   }
 
@@ -678,34 +682,34 @@ const dos = (n: number) => String(n).padStart(2, '0');
     flex: 1;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 0.375rem;
-    padding: 0.625rem;
+    gap: calc(0.375 * var(--u));
+    padding: calc(0.625 * var(--u));
     background: #ede6da;
-    border-radius: 0.875rem;
+    border-radius: calc(0.875 * var(--u));
   }
 
   .d-burbuja {
     display: grid;
     align-self: flex-end;
     max-width: 92%;
-    padding: 0.5rem;
+    padding: calc(0.5 * var(--u));
     background: #dcf7c5;
-    border-radius: 0.75rem 0.75rem 0.25rem 0.75rem;
+    border-radius: calc(0.75 * var(--u)) calc(0.75 * var(--u)) calc(0.25 * var(--u)) calc(0.75 * var(--u));
     box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
   }
 
   .d-burbuja--resp {
     align-self: flex-start;
     background: #fff;
-    border-radius: 0.75rem 0.75rem 0.75rem 0.25rem;
+    border-radius: calc(0.75 * var(--u)) calc(0.75 * var(--u)) calc(0.75 * var(--u)) calc(0.25 * var(--u));
   }
 
   .d-kpi {
     display: grid;
-    gap: 0.125rem;
-    padding: 0.5625rem;
+    gap: calc(0.125 * var(--u));
+    padding: calc(0.5625 * var(--u));
     background: var(--d-fondo-suave);
-    border-radius: 0.75rem;
+    border-radius: calc(0.75 * var(--u));
   }
 
   .d-kpi small {
@@ -714,32 +718,32 @@ const dos = (n: number) => String(n).padStart(2, '0');
   }
 
   .d-kpi b {
-    font-size: 1.125rem;
+    font-size: calc(1.125 * var(--u));
     font-weight: 800;
     letter-spacing: -0.02em;
   }
 
   .d-kpi .d-vence {
-    font-size: 0.6875rem;
+    font-size: calc(0.6875 * var(--u));
   }
 
   .d-barras {
     display: grid;
-    gap: 0.375rem;
-    margin-top: 0.375rem;
+    gap: calc(0.375 * var(--u));
+    margin-top: calc(0.375 * var(--u));
   }
 
   .d-barras div {
     display: grid;
-    grid-template-columns: 2.75rem 1fr;
+    grid-template-columns: calc(2.75 * var(--u)) 1fr;
     align-items: center;
-    gap: 0.375rem;
+    gap: calc(0.375 * var(--u));
   }
 
   .d-barras span {
-    height: 0.4375rem;
+    height: calc(0.4375 * var(--u));
     background: var(--d-marca);
-    border-radius: 0.5rem;
+    border-radius: calc(0.5 * var(--u));
     transform: scaleX(var(--v));
     transform-origin: left;
   }
@@ -832,6 +836,57 @@ const dos = (n: number) => String(n).padStart(2, '0');
     .historia__leyenda {
       justify-self: start;
       text-align: left;
+    }
+  }
+
+  /* Celular bajo (375×667): las filas de rubros y pasos se ven más bajas (36 px) para que el teléfono crezca,
+     pero el área táctil sigue en 44 px con una franja invisible arriba y abajo. */
+  @media (max-width: 56.24rem) and (max-height: 44rem) {
+    .historia__pegado {
+      gap: var(--espacio-2);
+    }
+
+    .historia__rubros {
+      padding-block: 0.25rem;
+    }
+
+    .historia__rubro input {
+      inset: -0.25rem 0;
+    }
+
+    .historia__rubro span,
+    .historia__paso {
+      min-height: 2.25rem;
+    }
+
+    .historia__pasos {
+      margin-top: -0.25rem;
+    }
+
+    .historia__paso {
+      position: relative;
+    }
+
+    .historia__paso::before {
+      content: '';
+      position: absolute;
+      inset: -0.25rem 0;
+    }
+
+    .historia__leyenda {
+      min-height: 4.25rem;
+    }
+
+    .historia__leyenda strong {
+      font-size: 1.125rem;
+    }
+
+    .historia__leyenda span {
+      font-size: 0.875rem;
+    }
+
+    .fono {
+      --reserva: 18.5rem;
     }
   }
 
