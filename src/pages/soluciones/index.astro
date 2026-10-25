@@ -134,10 +134,19 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en la lista.
     color: var(--texto-suave);
   }
 
+  /* 5 rubros sin huecos: 2 arriba (más anchos, la demo disponible primero) y 3 abajo, sobre 6 columnas */
   @media (min-width: 48rem) {
     .rubros {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       max-width: none;
+    }
+
+    .rubro {
+      grid-column: span 2;
+    }
+
+    .rubro:nth-child(-n + 2) {
+      grid-column: span 3;
     }
   }
 </style>
