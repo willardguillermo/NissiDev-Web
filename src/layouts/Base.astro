@@ -16,10 +16,9 @@ const {
 const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
 
 const enlaces = [
-  { href: '/', texto: 'Inicio' },
+  { href: '/soluciones', texto: 'Soluciones' },
   { href: '/servicios', texto: 'Servicios' },
-  { href: '/demos', texto: 'Demos' },
-  { href: '/arma-tu-sistema', texto: 'Arma tu sistema' },
+  { href: '/sobre-mi', texto: 'Sobre mí' },
   { href: '/contacto', texto: 'Contacto' },
 ];
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -83,8 +82,8 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         </a>
 
         <div class="cabecera__acciones">
-          <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
-            Mi sistema <b class="mi-sistema__cuenta" data-mi-sistema-cantidad></b>
+          <a class="cotizar" href="/cotizar" data-cotizar aria-current={rutaActual === '/cotizar' ? 'page' : undefined}>
+            Cotizar <b class="cotizar__cuenta" data-cotizar-cantidad hidden></b>
           </a>
           <button
             class="menu-boton"
@@ -235,19 +234,21 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     </script>
 
     <script>
-      // Acceso "Mi sistema (n)" en el header: solo aparece si hay módulos elegidos. Sin React.
+      // Botón "Cotizar (n)" del header: siempre visible; el contador aparece si hay funciones elegidas. Sin React.
       import { $carrito } from '../carrito/store';
 
       const pintar = ({ items }: { items: unknown[] }) => {
-        const enlace = document.querySelector<HTMLElement>('[data-mi-sistema]');
-        const cantidad = document.querySelector<HTMLElement>('[data-mi-sistema-cantidad]');
+        const enlace = document.querySelector<HTMLElement>('[data-cotizar]');
+        const cantidad = document.querySelector<HTMLElement>('[data-cotizar-cantidad]');
         if (!enlace || !cantidad) return;
-        enlace.hidden = items.length === 0;
+        cantidad.hidden = items.length === 0;
         cantidad.textContent = String(items.length);
-        enlace.setAttribute(
-          'aria-label',
-          `Mi sistema: ${items.length} ${items.length === 1 ? 'módulo elegido' : 'módulos elegidos'}`,
-        );
+        if (items.length === 0) enlace.removeAttribute('aria-label');
+        else
+          enlace.setAttribute(
+            'aria-label',
+            `Cotizar: ${items.length} ${items.length === 1 ? 'función elegida' : 'funciones elegidas'}`,
+          );
       };
 
       $carrito.subscribe(pintar);
@@ -318,13 +319,13 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--espacio-2);
   }
 
-  /* Negro con el contador en dorado (tinta sobre dorado 5.2:1) */
-  .mi-sistema {
+  /* Botón destacado: negro con el contador en dorado (tinta sobre dorado 5.2:1) */
+  .cotizar {
     display: inline-flex;
     align-items: center;
     gap: var(--espacio-2);
     min-height: 2.75rem;
-    padding-inline: var(--espacio-4) var(--espacio-2);
+    padding-inline: var(--espacio-4);
     background: var(--fondo-oscuro);
     color: var(--color-blanco);
     border-radius: var(--radio-pildora);
@@ -336,7 +337,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     transition: transform var(--duracion-toque) var(--ease-out);
   }
 
-  .mi-sistema__cuenta {
+  .cotizar__cuenta {
     display: inline-grid;
     place-items: center;
     min-width: 1.5rem;
@@ -350,13 +351,17 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     font-variant-numeric: tabular-nums;
   }
 
-  .mi-sistema:active,
+  .cotizar:has(.cotizar__cuenta:not([hidden])) {
+    padding-right: var(--espacio-2);
+  }
+
+  .cotizar:active,
   .menu-boton:active,
   .menu a:active {
     transform: scale(0.97);
   }
 
-  .mi-sistema[hidden] {
+  .cotizar__cuenta[hidden] {
     display: none;
   }
 
@@ -425,7 +430,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       color: var(--texto);
     }
 
-    .mi-sistema:hover {
+    .cotizar:hover {
       background: #2c2d31;
     }
   }

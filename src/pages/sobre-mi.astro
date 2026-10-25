@@ -1,0 +1,38 @@
+---
+import IntroPagina from '../components/IntroPagina.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base titulo="Sobre mí" descripcion="Quién está detrás de NissiDev y con qué construye cada sistema.">
+  <section class="contenedor" aria-labelledby="sobre-mi-titulo">
+    <IntroPagina etiqueta="Sobre mí" titulo="Quién está detrás de NissiDev." id="sobre-mi-titulo" />
+
+    <!-- Texto de Guillermo pendiente: no inventar datos personales (AGENTS.md). -->
+    <div class="pendiente" data-aparecer>
+      <p class="pendiente__etiqueta">Texto de Guillermo pendiente</p>
+      <p>Aquí va quién soy, qué estudio y por qué hago sistemas para negocios.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pendiente {
+    display: grid;
+    gap: var(--espacio-2);
+    max-width: 36rem;
+    margin: var(--espacio-6) auto 0;
+    padding: var(--espacio-6);
+    color: var(--texto-suave);
+    border: 1px dashed var(--color-punteado);
+    border-radius: var(--radio-tarjeta);
+    text-align: center;
+  }
+
+  .pendiente__etiqueta {
+    color: var(--texto-nota);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+</style>

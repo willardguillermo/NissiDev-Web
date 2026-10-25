@@ -18,7 +18,7 @@ export default function AccionesCotizacion({ cotizacion, lista, repetir }: {
       <button type="button" className="cotizacion__cambiar cotizacion__repetir" onClick={repetir}>
         Imprimir otra vez
       </button>
-      <a className="cotizacion__cambiar" href="/arma-tu-sistema">Cambiar módulos</a>
+      <a className="cotizacion__cambiar" href="/cotizar">Cambiar módulos</a>
     </div>
   );
 }

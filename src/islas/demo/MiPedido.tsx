@@ -255,7 +255,7 @@ export function MiPedido({ config, pedido, cambiarPedido, ir, volver, ilustracio
         <pre className="demo-dialogo__mensaje">{mensajePedido(config, pedido, datos).replaceAll('S/ ', 'S/\u00a0')}</pre>
         <p className="demo-dialogo__aviso">{AVISO_PEDIDO}</p>
         <div className="demo-dialogo__acciones">
-          <a className="demo-boton" href="/arma-tu-sistema">
+          <a className="demo-boton" href="/cotizar">
             Quiero esto para mi negocio
           </a>
           <button type="button" className="demo-boton demo-boton--claro" onClick={() => dialogo.current?.close()}>
