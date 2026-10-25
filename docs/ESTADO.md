@@ -1,6 +1,14 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (entrega Liquid Glass + impresora aprobada para main, PR #5).
+> Última actualización: 2026-10-25 (estructura por rubros en `feature/estructura-rubros`, lista para revisión).
+
+## En curso — Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
+- Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; **falta la revisión de Codex** (`--base de7743d`) y la aprobación de Guillermo en su celular. Nada unido a main.
+- Vista previa: https://feature-estructura-rubros.nissidev-web.pages.dev
+- Hecho: sin ubicación (test en `src/sin-ubicacion.test.ts`); rutas `/soluciones`, `/cotizar`, `/sobre-mi` con 301 desde `/demos`, `/demos/dulceria/` (conserva la query) y `/arma-tu-sistema`; menú Soluciones · Servicios · Sobre mí · Contacto + botón «Cotizar (n)»; footer en columnas; Inicio reordenado; celular con selector de 5 rubros (`src/rubros/<id>/historia.ts`); Soluciones; Servicios con funciones, precios y preguntas frecuentes; Sobre mí con el texto de Guillermo, GitHub/LinkedIn y el stack con íconos de Simple Icons (CC0).
+- Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS externo del Inicio igual (6.0 KB gzip) y +0.5 KB de script en línea; HTML del Inicio 13.2 KB gzip. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
+- Pendiente de Guillermo: revisar en el celular y corregir los textos nuevos (lista en el reporte de la sesión).
+
 
 ## Entrega aprobada — Liquid Glass y cotización con impresora
 - Guillermo autorizó integrar todo en main el 2026-10-24. La entrega se integra mediante PR y merge commit, sin squash.
@@ -14,7 +22,7 @@
 - **Qué sigue:** T26 (Guillermo activa Web Analytics en Cloudflare), T27 (verificación global del MVP, incluido celular físico, INP/Lighthouse y README) y punto de control 7. La autorización de integración no se registra como una prueba física del celular.
 
 ## En una línea
-Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
+Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
 
 ## Publicado (rama `main` → https://nissidev-web.pages.dev)
 - Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto con **Liquid Glass + Geist (TD2)**.
@@ -42,7 +50,7 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 2. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 3. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
-- Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos de hospedaje y restaurante campestre. Etapa 3: chatbot con n8n.
+- Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos completas de los rubros que hoy son «Próximamente» (Restaurante, Salón de belleza, Clínica, Negocio por mayor). Etapa 3: chatbot con n8n.
 
 ## Decisiones vigentes (no reabrir sin preguntar a Guillermo)
 - **Ningún rubro es protagonista** (ADR-004, 2026-10-25): la web muestra sistemas para distintos rubros; la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos, nunca en los textos generales.
@@ -51,6 +59,7 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 - Precios: Catálogo web desde S/ 700 · Panel desde S/ 500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 80/mes · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales".
 - Cotización: código `NSD-AAAA-XXXX` al azar (sin correlativo, no hay servidor), válida 15 días, enviada a WhatsApp **+51 913 351 627**; PDF con `window.print()`.
 - Demo: negocio ficticio "Dulcería La Golosa", marcas ficticias, sello "Demo · datos de ejemplo" siempre visible, nada cobra ni abre WhatsApp de verdad (muestra el mensaje y "Quiero esto para mi negocio").
+- Selector de rubro del celular: empieza en Dulcería, la única con demo completa (decisión pequeña, 2026-10-25).
 - Movimiento: ease-out en entradas, `scale(0.97)` al tocar, hover solo con mouse, nada se mueve solo (sin carruseles automáticos), movimiento reducido = menos y más suave, transparencia reducida = superficies sólidas.
 - Texto: contraste ≥ 4.5:1 (lo vigila `tokens.test.ts`); nunca texto gris claro sobre vidrio.
 - Continental Hydraulic no se muestra como caso hasta tener permiso del cliente. Dominio nissidev.com por comprar.
