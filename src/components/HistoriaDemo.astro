@@ -244,8 +244,27 @@ const dos = (n: number) => String(n).padStart(2, '0');
       ctas.forEach((c) => (c.hidden = c.dataset.cta !== rubro));
     };
 
+    // En el celular la fila de rubros se desliza: el elegido queda entero a la vista, como scrollIntoView con
+    // inline: 'nearest', pero sin mover la página en vertical (scrollIntoView también la movía unos px).
+    const fila = historia.querySelector<HTMLElement>('.historia__rubros')!;
+    const mostrarEnFila = (etiqueta: HTMLElement) => {
+      const margen = parseFloat(getComputedStyle(fila).paddingLeft);
+      const caja = etiqueta.getBoundingClientRect();
+      const visible = fila.getBoundingClientRect();
+      const izquierda = caja.left - (visible.left + margen);
+      const derecha = caja.right - (visible.right - margen);
+      const mover = izquierda < 0 ? izquierda : derecha > 0 ? derecha : 0;
+      if (mover) fila.scrollBy({ left: mover, behavior: reducido.matches ? 'instant' : 'smooth' });
+    };
+
     botones.forEach((b, i) => b.addEventListener('click', () => ir(rubro, i)));
-    opciones.forEach((o) => o.addEventListener('change', () => o.checked && ir(o.value, paso)));
+    opciones.forEach((o) =>
+      o.addEventListener('change', () => {
+        if (!o.checked) return;
+        ir(o.value, paso);
+        mostrarEnFila(o.closest('label')!);
+      }),
+    );
     // El navegador puede recordar otro rubro al volver atrás
     const elegido = opciones.find((o) => o.checked);
     if (elegido) ir(elegido.value, paso);
@@ -314,9 +333,12 @@ const dos = (n: number) => String(n).padStart(2, '0');
 </script>
 
 <style>
+  /* Las leyendas de cada rubro tienen distinto largo: sin esto, al cambiar de rubro el navegador corregía el
+     scroll unos px (anclaje) y la página saltaba. */
   .historia {
     position: relative;
     width: 100%;
+    overflow-anchor: none;
   }
 
   /* Debajo del header flotante (~4.5 rem) */
