@@ -7,7 +7,6 @@ import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import HistoriaDemo from '../components/HistoriaDemo.astro';
 import Base from '../layouts/Base.astro';
-import { DULCERIA } from '../rubros/dulceria/config';
 import { RUBROS } from '../rubros/rubros';
 ---
 
@@ -38,10 +37,9 @@ import { RUBROS } from '../rubros/rubros';
     <div class="seccion__cabeza" data-aparecer>
       <p class="etiqueta">Demo en vivo</p>
       <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="acento">tu</span> sistema.</h2>
-      <p class="seccion__bajada">Baja despacio: así funciona, de principio a fin.</p>
+      <p class="seccion__bajada">Elige tu rubro y baja despacio.</p>
     </div>
-    <HistoriaDemo config={DULCERIA} />
-    <Boton href="/soluciones/dulceria/">Abrir la demo completa</Boton>
+    <HistoriaDemo />
   </section>
 
   <section class="contenedor seccion" aria-labelledby="rubros-titulo">

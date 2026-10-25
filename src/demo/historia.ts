@@ -5,17 +5,9 @@ import { agregarLinea, PEDIDO_VACIO, presentacionesEnPedido, totalPedido } from 
 import { precioPorMayor, precioUnidad } from './precios';
 import type { Pedido, Producto, RubroConfig } from './tipos';
 
-// La historia de la demo en el Inicio: cuatro mini pantallas de un celular (Catálogo → Pedido →
-// WhatsApp → Panel). Todo sale de la configuración del rubro con las mismas funciones que la demo
-// completa; la vista solo dibuja lo que devuelve historiaDeLaDemo.
-
-/** Los pasos que se recorren al bajar. Son textos de NissiDev (no datos del negocio). */
-export const PASOS_HISTORIA = [
-  { corto: 'Catálogo', titulo: 'Tu catálogo, siempre a mano', texto: 'Tus clientes ven tus productos, precios y ofertas desde su celular.' },
-  { corto: 'Pedido', titulo: 'Arman su pedido', texto: 'Eligen unidad, bolsa o caja; el precio por mayor se aplica solo.' },
-  { corto: 'WhatsApp', titulo: 'Te llega por WhatsApp', texto: 'El pedido completo, con el total y dónde lo recogen.' },
-  { corto: 'Panel', titulo: 'Tú ves tu negocio', texto: 'Ventas del día, cobros por Yape y Plin, y lo que está por vencer.' },
-] as const;
+// La historia de un rubro con demo completa en el celular del Inicio: cuatro mini pantallas (Catálogo →
+// Pedido → WhatsApp → Panel). Todo sale de la configuración del rubro con las mismas funciones que la demo
+// completa; rubros/<id>/historia.ts lo pasa al formato común de rubros/historia.ts.
 
 /** Nombre del cliente del mensaje de ejemplo y respuesta del negocio en el chat. */
 const CLIENTE_DE_EJEMPLO = 'Ana';

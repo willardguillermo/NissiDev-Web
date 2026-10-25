@@ -1,166 +1,251 @@
 ---
-// Historia de la demo con scroll: un celular fijo (sticky) que pasa por Catálogo → Pedido → WhatsApp → Panel
-// mientras bajas. Los botones de paso también cambian la pantalla (con teclado). Nada avanza solo.
-// Las mini pantallas salen de la configuración del rubro (demo/historia.ts); este archivo solo las dibuja.
-// Ilustracion es un componente de React sin estado: aquí se dibuja como HTML estático, sin enviar React.
-import { historiaDeLaDemo, PASOS_HISTORIA } from '../demo/historia';
+// Historia del celular con scroll (ADR-004: ningún rubro protagonista). Arriba, un selector de rubro (radios
+// nativos: flechas del teclado); debajo, un celular fijo (sticky) que pasa por los 4 pasos generales mientras
+// bajas. Al elegir otro rubro cambian el tema y las pantallas con la misma transición. Nada avanza solo.
+// Las pantallas salen de rubros/historias.ts; este archivo solo las dibuja. Sin React: los dibujos son HTML.
+import Boton from './Boton.astro';
+import DibujoRubro from './DibujoRubro.astro';
+import IconoWhatsApp from './IconoWhatsApp.astro';
+import { whatsappConMensaje } from '../config/contacto';
 import { variablesDeTema } from '../demo/tema';
-import type { RubroConfig } from '../demo/tipos';
-import { Ilustracion } from '../islas/demo/Ilustracion';
+import { PASOS_HISTORIA } from '../rubros/historia';
+import { HISTORIAS } from '../rubros/historias';
+import { RUBROS } from '../rubros/rubros';
 
-interface Props {
-  config: RubroConfig;
-}
-
-const { config } = Astro.props;
-const { negocio, catalogo, pedido, whatsapp, panel } = historiaDeLaDemo(config);
-const tema = Object.entries(variablesDeTema(config.tema))
-  .map(([nombre, valor]) => `${nombre}: ${valor}`)
-  .join('; ');
+// Empieza en el primer rubro (Dulcería): es el único con demo completa.
+const rubros = RUBROS.map((rubro) => ({
+  ...rubro,
+  pantallas: HISTORIAS[rubro.id],
+  estilo: Object.entries(variablesDeTema(HISTORIAS[rubro.id].tema))
+    .map(([nombre, valor]) => `${nombre}: ${valor}`)
+    .join('; '),
+  enlace:
+    rubro.estado === 'activa'
+      ? rubro.ruta
+      : whatsappConMensaje(`Hola, me interesa un sistema para mi rubro: ${rubro.nombre}. ¿Me muestras cómo sería la demo?`),
+}));
+const inicial = rubros[0];
 const dos = (n: number) => String(n).padStart(2, '0');
 ---
 
 <div class="historia" data-historia>
-  <div class="historia__pegado">
-    <div class="historia__pasos" role="group" aria-label="Pasos de la demo">
-      {
-        PASOS_HISTORIA.map((paso, i) => (
-          <button
-            type="button"
-            class="historia__paso"
-            data-paso={i}
-            data-titulo={paso.titulo}
-            data-texto={paso.texto}
-            aria-current={i === 0 ? 'step' : undefined}
-          >
-            <span class="historia__numero">{dos(i + 1)}</span> {paso.corto}
-          </button>
-        ))
-      }
-    </div>
+  <!-- El celular queda fijo solo mientras se recorren los pasos; el botón del rubro va después -->
+  <div class="historia__recorrido">
+    <div class="historia__pegado">
+      <fieldset class="historia__rubros">
+        <legend class="solo-lector">Elige tu rubro</legend>
+        {
+          rubros.map((rubro, i) => (
+            <label class="historia__rubro">
+              <input type="radio" name="historia-rubro" value={rubro.id} checked={i === 0} data-rubro-opcion />
+              <span>{rubro.nombre}</span>
+            </label>
+          ))
+        }
+      </fieldset>
 
-    <div class="historia__marco">
-      <!-- Imagen ilustrativa: lo que cuenta cada paso va en la leyenda (aria-live) -->
-      <div class="fono" data-fono aria-hidden="true">
-        <div class="fono__pantalla" style={tema}>
-          <span class="fono__isla"></span>
+      <div class="historia__pasos" role="group" aria-label="Pasos de la demo">
+        {
+          PASOS_HISTORIA.map((paso, i) => (
+            <button type="button" class="historia__paso" data-paso={i} aria-current={i === 0 ? 'step' : undefined}>
+              <span class="historia__numero">{dos(i + 1)}</span>{" "}
+              <span class="historia__corto">{paso.corto}</span>
+              <span class="historia__nombre">{paso.nombre}</span>
+            </button>
+          ))
+        }
+      </div>
 
-          <div class="vista vista--activa" data-vista="0">
-            <p class="d-anuncio">{catalogo.anuncio}</p>
-            <p class="d-negocio">{negocio}</p>
-            <p class="d-buscar">{catalogo.buscador}</p>
-            <div class="d-hero">{catalogo.titular}<small>{catalogo.bajada}</small></div>
-            <div class="d-cats">
-              {
-                catalogo.categorias.map((c) => (
-                  <div class="d-cat">
-                    <Ilustracion nombre={c.ilustracion} className="d-ilu" />
-                    {c.nombre}
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-
-          <div class="vista" data-vista="1">
-            <p class="d-negocio">Catálogo</p>
-            <div class="d-grid">
-              {
-                pedido.productos.map((p, i) => (
-                  <div class:list={['d-prod', { 'd-prod--toque': i === 1 }]}>
-                    <Ilustracion nombre={p.ilustracion} className="d-ilu" />
-                    <b>{p.nombre}</b>
-                    <span>{p.presentacion}</span>
-                    <span class="d-precio">{p.precio}</span>
-                    <span class="d-agregar">Agregar</span>
-                  </div>
-                ))
-              }
-            </div>
-            <div class="d-aviso"><span>Mi pedido ({pedido.cantidad})</span><span>{pedido.total}</span></div>
-          </div>
-
-          <div class="vista" data-vista="2">
-            <p class="d-negocio d-negocio--chat">WhatsApp · {negocio}</p>
-            <div class="d-chat">
-              <p class="d-burbuja">{whatsapp.mensaje.map((linea) => <span>{linea}</span>)}</p>
-              <p class="d-burbuja d-burbuja--resp">{whatsapp.respuesta}</p>
-            </div>
-          </div>
-
-          <div class="vista" data-vista="3">
-            <p class="d-negocio d-negocio--chat">Panel del dueño</p>
-            <div class="d-kpi">
-              <small>Ventas de hoy</small><b>{panel.ventasHoy}</b>
-              <div class="d-barras">
-                {panel.puestos.map((b) => <div>{b.nombre}<span style={`--v: ${b.proporcion}`} /></div>)}
-              </div>
-            </div>
-            <div class="d-kpi">
-              <small>Cobros de hoy</small>
-              <div class="d-barras">
-                {panel.cobros.map((b) => <div>{b.nombre}<span style={`--v: ${b.proporcion}`} /></div>)}
-              </div>
-            </div>
+      <div class="historia__marco">
+        <!-- Imagen ilustrativa: lo que cuenta cada paso va en la leyenda (aria-live) -->
+        <div class="fono" data-fono aria-hidden="true">
+          <div class="fono__pantalla">
+            <span class="fono__isla"></span>
             {
-              panel.porVencer && (
-                <div class="d-kpi">
-                  <small>Por vencer</small>
-                  <b class="d-vence">{panel.porVencer.nombre} · {panel.porVencer.cuando.toLowerCase()}</b>
+              rubros.map(({ id, estilo, pantallas: { negocio, vitrina, pedido, whatsapp, panel, leyendas } }, r) => (
+                <div class="fono__rubro" style={estilo} data-rubro={id} data-leyendas={JSON.stringify(leyendas)}>
+                  <div class:list={['vista', { 'vista--activa': r === 0 }]} data-vista="0">
+                    <p class="d-anuncio">{vitrina.anuncio}</p>
+                    <p class="d-negocio">{negocio}</p>
+                    <p class="d-buscar">{vitrina.buscador}</p>
+                    <div class="d-hero">
+                      {vitrina.titular}
+                      <small>{vitrina.bajada}</small>
+                    </div>
+                    <div class="d-cats">
+                      {vitrina.categorias.map((c) => (
+                        <div class="d-cat">
+                          <DibujoRubro nombre={c.ilustracion} class="d-ilu" />
+                          {c.nombre}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div class="vista" data-vista="1">
+                    <p class="d-negocio">{pedido.titulo}</p>
+                    <div class="d-grid">
+                      {pedido.items.map((item, i) => (
+                        <div class:list={['d-prod', { 'd-prod--toque': i === 1 }]}>
+                          <DibujoRubro nombre={item.ilustracion} class="d-ilu" />
+                          <b>{item.nombre}</b>
+                          <span>{item.detalle}</span>
+                          <span class="d-precio">{item.precio}</span>
+                          <span class="d-agregar">{pedido.accion}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div class="d-aviso">
+                      <span>{pedido.resumen}</span>
+                      <span>{pedido.total}</span>
+                    </div>
+                  </div>
+
+                  <div class="vista" data-vista="2">
+                    <p class="d-negocio d-negocio--chat">WhatsApp · {negocio}</p>
+                    <div class="d-chat">
+                      <p class="d-burbuja">{whatsapp.mensaje.map((linea) => <span>{linea}</span>)}</p>
+                      <p class="d-burbuja d-burbuja--resp">{whatsapp.respuesta}</p>
+                    </div>
+                  </div>
+
+                  <div class="vista" data-vista="3">
+                    <p class="d-negocio d-negocio--chat">Panel del dueño</p>
+                    <div class="d-kpi">
+                      <small>{panel.principal.etiqueta}</small>
+                      <b>{panel.principal.valor}</b>
+                      <div class="d-barras">
+                        {panel.principal.barras.map((b) => (
+                          <div>
+                            {b.nombre}
+                            <span style={`--v: ${b.proporcion}`} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div class="d-kpi">
+                      <small>{panel.secundario.etiqueta}</small>
+                      <div class="d-barras">
+                        {panel.secundario.barras.map((b) => (
+                          <div>
+                            {b.nombre}
+                            <span style={`--v: ${b.proporcion}`} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {panel.aviso && (
+                      <div class="d-kpi">
+                        <small>{panel.aviso.etiqueta}</small>
+                        <b class="d-vence">{panel.aviso.texto}</b>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )
+              ))
             }
           </div>
         </div>
       </div>
+
+      <p class="historia__leyenda" aria-live="polite">
+        <strong data-leyenda-titulo>{inicial.pantallas.leyendas[0].titulo}</strong>
+        <span data-leyenda-texto>{inicial.pantallas.leyendas[0].texto}</span>
+      </p>
+      <p class="historia__sello">Demo · datos de ejemplo</p>
     </div>
 
-    <p class="historia__leyenda" aria-live="polite">
-      <strong data-leyenda-titulo>{PASOS_HISTORIA[0].titulo}</strong>
-      <span data-leyenda-texto>{PASOS_HISTORIA[0].texto}</span>
-    </p>
-    <p class="historia__sello">Demo · datos de ejemplo</p>
+    <!-- Un espacio por paso: al pasar por el centro de la pantalla, el celular cambia -->
+    <div class="historia__espacios" aria-hidden="true">
+      {PASOS_HISTORIA.map((_, i) => <div data-espacio={i} />)}
+    </div>
   </div>
 
-  <!-- Un espacio por paso: al pasar por el centro de la pantalla, el celular cambia -->
-  <div class="historia__espacios" aria-hidden="true">
-    {PASOS_HISTORIA.map((_, i) => <div data-espacio={i} />)}
+  <!-- Botón del rubro elegido: su demo completa o pedirla por WhatsApp. Sin JavaScript, el del primero. -->
+  <div class="historia__cta">
+    {
+      rubros.map((rubro, r) => (
+        <div data-cta={rubro.id} hidden={r !== 0}>
+          {rubro.estado === 'activa' ? (
+            <Boton href={rubro.enlace}>
+              Abrir la demo completa<span class="solo-lector"> de {rubro.nombre}</span>
+            </Boton>
+          ) : (
+            <Boton href={rubro.enlace} externo>
+              <IconoWhatsApp />
+              Pide la demo de tu rubro<span class="solo-lector">: {rubro.nombre}</span>
+            </Boton>
+          )}
+        </div>
+      ))
+    }
   </div>
 </div>
 
 <script>
-  // Cambia la pantalla según el paso (scroll o botón) e inclina el celular según el scroll
-  // (y el puntero, solo con mouse). Con movimiento reducido no hay inclinación. Nada avanza solo.
+  // Cambia la pantalla según el rubro (selector) y el paso (scroll o botón), e inclina el celular según el
+  // scroll (y el puntero, solo con mouse). Con movimiento reducido no hay inclinación y el cambio de rubro es
+  // directo. Nada avanza solo.
   const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
   const conMouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  interface Leyenda {
+    titulo: string;
+    texto: string;
+  }
 
   function iniciar() {
     const historia = document.querySelector<HTMLElement>('[data-historia]');
     if (!historia) return;
     const fono = historia.querySelector<HTMLElement>('[data-fono]')!;
-    const vistas = [...historia.querySelectorAll<HTMLElement>('[data-vista]')];
+    const grupos = [...historia.querySelectorAll<HTMLElement>('[data-rubro]')];
+    const opciones = [...historia.querySelectorAll<HTMLInputElement>('[data-rubro-opcion]')];
     const botones = [...historia.querySelectorAll<HTMLButtonElement>('[data-paso]')];
+    const ctas = [...historia.querySelectorAll<HTMLElement>('[data-cta]')];
     const titulo = historia.querySelector<HTMLElement>('[data-leyenda-titulo]')!;
     const texto = historia.querySelector<HTMLElement>('[data-leyenda-texto]')!;
-    let actual = 0;
+    // El HTML llega con el primer rubro en el paso 0
+    let rubro = grupos[0].dataset.rubro!;
+    let paso = 0;
 
-    const ir = (i: number) => {
-      if (i === actual) return;
-      actual = i;
-      vistas.forEach((v, j) => v.classList.toggle('vista--activa', j === i));
-      botones.forEach((b, j) => (j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')));
-      titulo.textContent = botones[i].dataset.titulo ?? '';
-      texto.textContent = botones[i].dataset.texto ?? '';
+    const ir = (nuevoRubro: string, nuevoPaso: number) => {
+      if (nuevoRubro === rubro && nuevoPaso === paso) return;
+      // Movimiento reducido: el cambio de rubro es directo, sin fundido
+      if (nuevoRubro !== rubro && reducido.matches) {
+        historia.dataset.directo = '';
+        requestAnimationFrame(() => requestAnimationFrame(() => delete historia.dataset.directo));
+      }
+      rubro = nuevoRubro;
+      paso = nuevoPaso;
+      for (const grupo of grupos) {
+        const activo = grupo.dataset.rubro === rubro;
+        grupo.querySelectorAll<HTMLElement>('[data-vista]').forEach((v) => {
+          v.classList.toggle('vista--activa', activo && Number(v.dataset.vista) === paso);
+        });
+        if (activo) {
+          const leyenda = (JSON.parse(grupo.dataset.leyendas ?? '[]') as Leyenda[])[paso];
+          titulo.textContent = leyenda.titulo;
+          texto.textContent = leyenda.texto;
+        }
+      }
+      botones.forEach((b, j) => (j === paso ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')));
+      ctas.forEach((c) => (c.hidden = c.dataset.cta !== rubro));
     };
 
-    botones.forEach((b, i) => b.addEventListener('click', () => ir(i)));
+    botones.forEach((b, i) => b.addEventListener('click', () => ir(rubro, i)));
+    opciones.forEach((o) => o.addEventListener('change', () => o.checked && ir(o.value, paso)));
+    // El navegador puede recordar otro rubro al volver atrás
+    const elegido = opciones.find((o) => o.checked);
+    if (elegido) ir(elegido.value, paso);
+
     let observador: IntersectionObserver;
     const observarPasos = () => {
       observador?.disconnect();
       // Los porcentajes de rootMargin usan el ancho: en apaisado vaciarían la zona central.
       const margen = window.innerHeight * 0.45;
       observador = new IntersectionObserver(
-        (entradas) => entradas.forEach((e) => e.isIntersecting && ir(Number((e.target as HTMLElement).dataset.espacio))),
+        (entradas) =>
+          entradas.forEach((e) => e.isIntersecting && ir(rubro, Number((e.target as HTMLElement).dataset.espacio))),
         { rootMargin: `-${margen}px 0px -${margen}px 0px` },
       );
       historia.querySelectorAll('[data-espacio]').forEach((espacio) => observador.observe(espacio));
@@ -228,7 +313,82 @@ const dos = (n: number) => String(n).padStart(2, '0');
     top: 5.25rem;
     display: grid;
     justify-items: center;
-    gap: var(--espacio-4);
+    gap: var(--espacio-3);
+  }
+
+  /* Selector de rubro: radios nativos con forma de píldora. En el celular, una fila con scroll horizontal
+     que llega hasta los bordes de la pantalla. */
+  .historia__rubros {
+    display: flex;
+    gap: 0.375rem;
+    min-width: 0;
+    max-width: calc(100% + 2 * var(--espacio-4));
+    margin: 0 calc(-1 * var(--espacio-4));
+    padding: 0.125rem var(--espacio-4);
+    overflow-x: auto;
+    border: 0;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .historia__rubros::-webkit-scrollbar {
+    display: none;
+  }
+
+  .historia__rubro {
+    position: relative;
+    flex: none;
+  }
+
+  /* El radio queda encima de la píldora (invisible): se toca y se enfoca de verdad */
+  .historia__rubro input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .historia__rubro span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 var(--espacio-4);
+    background: rgb(255 255 255 / 0.7);
+    color: var(--tinta-2);
+    border-radius: var(--radio-pildora);
+    box-shadow: inset 0 0 0 1px rgb(30 31 34 / 0.14);
+    font-size: var(--texto-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    transition:
+      background-color var(--duracion-fundido) ease,
+      color var(--duracion-fundido) ease,
+      transform var(--duracion-toque) var(--ease-out);
+  }
+
+  .historia__rubro input:checked + span {
+    background: var(--fondo-oscuro);
+    color: var(--color-blanco);
+    box-shadow: none;
+  }
+
+  .historia__rubro input:active + span {
+    transform: scale(0.97);
+  }
+
+  .historia__rubro input:focus-visible + span {
+    outline: 3px solid var(--foco);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .historia__rubro input:not(:checked):hover + span {
+      background: #fff;
+      color: var(--texto);
+    }
   }
 
   .historia__pasos {
@@ -273,12 +433,14 @@ const dos = (n: number) => String(n).padStart(2, '0');
     box-shadow: none;
   }
 
-  /* En el celular no caben los números: solo el nombre del paso */
-  .historia__numero {
+  /* En el celular no caben los números ni el nombre entero: solo la palabra corta del paso */
+  .historia__numero,
+  .historia__nombre {
     display: none;
   }
 
-  /* Sin JavaScript: no hay pasos que tocar ni espacios que recorrer; queda el celular con la portada */
+  /* Sin JavaScript: no hay rubros ni pasos que tocar ni espacios que recorrer; queda el celular con la portada */
+  :global(html:not(.js)) .historia__rubros,
   :global(html:not(.js)) .historia__pasos,
   :global(html:not(.js)) .historia__espacios {
     display: none;
@@ -288,9 +450,11 @@ const dos = (n: number) => String(n).padStart(2, '0');
     perspective: 1200px;
   }
 
-  /* Reserva también el sello: todo el bloque sticky cabe en un celular de 667 px de alto. */
+  /* Reserva el selector, los pasos, la leyenda y el sello: todo el bloque sticky cabe en un celular de
+     667 px de alto. En escritorio pasos y leyenda van al costado, así que reserva menos. */
   .fono {
-    width: min(15.625rem, 54vw, calc((100svh - 18rem) * 0.486));
+    --reserva: 21rem;
+    width: min(15.625rem, 54vw, calc((100svh - var(--reserva)) * 0.486));
     aspect-ratio: 9 / 18.5;
     padding: 0.5625rem;
     background: linear-gradient(160deg, #2a2b30, #121315);
@@ -307,8 +471,7 @@ const dos = (n: number) => String(n).padStart(2, '0');
     position: relative;
     height: 100%;
     overflow: hidden;
-    background: var(--d-fondo);
-    color: var(--d-texto);
+    background: #fff;
     border-radius: 2.125rem;
     text-align: left;
   }
@@ -334,9 +497,17 @@ const dos = (n: number) => String(n).padStart(2, '0');
     border-radius: var(--radio-pildora);
   }
 
+  /* Cada rubro es una capa con su tema; solo se ve la vista activa del rubro elegido */
+  .fono__rubro {
+    position: absolute;
+    inset: 0;
+    color: var(--d-texto);
+  }
+
   .vista {
     position: absolute;
     inset: 0;
+    background: var(--d-fondo);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -353,9 +524,15 @@ const dos = (n: number) => String(n).padStart(2, '0');
   }
 
   .vista--activa {
+    z-index: 1;
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  /* Movimiento reducido al cambiar de rubro: sin fundido (lo pone el script por dos cuadros) */
+  [data-directo] .vista {
+    transition: none;
   }
 
   .d-anuncio {
@@ -601,6 +778,20 @@ const dos = (n: number) => String(n).padStart(2, '0');
     height: 72svh;
   }
 
+  .historia__recorrido {
+    position: relative;
+  }
+
+  .historia__cta {
+    display: flex;
+    margin-top: var(--espacio-4);
+    justify-content: center;
+  }
+
+  .historia__cta [hidden] {
+    display: none;
+  }
+
   @media (min-width: 56.25rem) {
     .historia__pegado {
       grid-template-columns: 1fr auto 1fr;
@@ -614,8 +805,29 @@ const dos = (n: number) => String(n).padStart(2, '0');
       justify-self: end;
     }
 
-    .historia__numero {
+    .historia__pegado {
+      gap: var(--espacio-4);
+    }
+
+    .fono {
+      --reserva: 18rem;
+    }
+
+    .historia__rubros {
+      grid-column: 1 / -1;
+      justify-self: center;
+      max-width: 100%;
+      margin: 0;
+      padding-inline: 0.125rem;
+    }
+
+    .historia__numero,
+    .historia__nombre {
       display: inline;
+    }
+
+    .historia__corto {
+      display: none;
     }
 
     .historia__leyenda {

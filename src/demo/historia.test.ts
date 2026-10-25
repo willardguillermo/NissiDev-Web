@@ -1,17 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { DULCERIA } from '../rubros/dulceria/config';
 import { formatearSoles } from '../ui/formato';
-import { historiaDeLaDemo, PASOS_HISTORIA } from './historia';
+import { historiaDeLaDemo } from './historia';
 import { cobrosPorMedio, porVencer, ventasDelDiaPorPuesto } from './panel';
 import { RUBRO_DE_PRUEBA } from './rubro-de-prueba';
 
 const historia = historiaDeLaDemo(DULCERIA);
 
 describe('historia de la demo en el Inicio', () => {
-  it('tiene los 4 pasos: Catálogo → Pedido → WhatsApp → Panel', () => {
-    expect(PASOS_HISTORIA.map((p) => p.corto)).toEqual(['Catálogo', 'Pedido', 'WhatsApp', 'Panel']);
-  });
-
   it('el catálogo usa los textos y la campaña activa del negocio', () => {
     const campana = DULCERIA.campanas.find((c) => c.id === DULCERIA.campanaActiva);
     expect(historia.negocio).toBe(DULCERIA.negocio);
