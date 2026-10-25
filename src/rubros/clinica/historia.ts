@@ -33,6 +33,7 @@ export const HISTORIA_CLINICA = armarHistoria({
       { nombre: 'Odontología', ilustracion: 'diente' },
       { nombre: 'Pediatría', ilustracion: 'globo' },
     ],
+    destacados: 'Próximos horarios',
   },
   pedido: {
     titulo: 'Horarios',

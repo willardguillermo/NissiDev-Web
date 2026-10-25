@@ -79,6 +79,19 @@ const dos = (n: number) => String(n).padStart(2, '0');
                         </div>
                       ))}
                     </div>
+                    <div class="d-mas">
+                      <p class="d-mas__titulo">{vitrina.destacados}</p>
+                      {pedido.items.slice(0, 2).map((item) => (
+                        <div class="d-fila">
+                          <DibujoRubro nombre={item.ilustracion} class="d-ilu" />
+                          <span class="d-fila__texto">
+                            <b>{item.nombre}</b>
+                            {item.detalle}
+                          </span>
+                          <span class="d-precio">{item.precio}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   <div class="vista" data-vista="1">
@@ -610,6 +623,48 @@ const dos = (n: number) => String(n).padStart(2, '0');
 
   .d-cat :global(.d-ilu) {
     width: calc(1.625 * var(--u));
+  }
+
+  /* «Lo más pedido» de la vitrina: dos filas con dibujo, nombre y precio */
+  .d-mas {
+    display: grid;
+    gap: calc(0.375 * var(--u));
+  }
+
+  .d-mas__titulo {
+    font-size: calc(0.625 * var(--u));
+    font-weight: 800;
+  }
+
+  .d-fila {
+    display: grid;
+    grid-template-columns: calc(2 * var(--u)) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: calc(0.5 * var(--u));
+    padding: calc(0.375 * var(--u));
+    background: var(--d-fondo-suave);
+    border-radius: calc(0.75 * var(--u));
+  }
+
+  .d-fila :global(.d-ilu) {
+    width: 100%;
+    height: calc(2 * var(--u));
+    background: var(--d-fondo);
+    border-radius: calc(0.5 * var(--u));
+  }
+
+  .d-fila__texto {
+    display: grid;
+    min-width: 0;
+    color: var(--d-texto-suave);
+  }
+
+  .d-fila__texto b {
+    overflow: hidden;
+    color: var(--d-texto);
+    font-size: calc(0.5625 * var(--u));
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .d-grid {

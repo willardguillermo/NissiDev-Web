@@ -14,7 +14,7 @@ export const HISTORIA_DULCERIA: PantallasRubro = {
     { titulo: 'Te llega por WhatsApp', texto: 'El pedido completo, con el total y dónde lo recogen.' },
     { titulo: 'Tú ves tu negocio', texto: 'Ventas del día, cobros por Yape y Plin, y lo que está por vencer.' },
   ],
-  vitrina: demo.catalogo,
+  vitrina: { ...demo.catalogo, destacados: 'Lo más vendido' },
   pedido: {
     titulo: 'Catálogo',
     accion: 'Agregar',

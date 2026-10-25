@@ -32,6 +32,7 @@ export const HISTORIA_RESTAURANTE = armarHistoria({
       { nombre: 'Bebidas', ilustracion: 'bebida' },
       { nombre: 'Postres', ilustracion: 'postre' },
     ],
+    destacados: 'Lo más pedido',
   },
   pedido: {
     titulo: 'Carta',

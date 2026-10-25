@@ -45,6 +45,8 @@ export interface PantallasRubro {
     titular: string;
     bajada: string;
     categorias: { nombre: string; ilustracion: string }[];
+    /** Título de la lista corta de la vitrina («Lo más pedido»); muestra los 2 primeros items del pedido. */
+    destacados: string;
   };
   pedido: { titulo: string; accion: string; items: ItemMini[]; resumen: string; total: string };
   whatsapp: { mensaje: string[]; respuesta: string };

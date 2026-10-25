@@ -32,6 +32,7 @@ export const HISTORIA_MAYORISTA = armarHistoria({
       { nombre: 'Aceites', ilustracion: 'aceite' },
       { nombre: 'Paquetes', ilustracion: 'caja' },
     ],
+    destacados: 'Lo más pedido',
   },
   pedido: {
     titulo: 'Catálogo',

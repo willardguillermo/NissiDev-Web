@@ -32,6 +32,7 @@ export const HISTORIA_BELLEZA = armarHistoria({
       { nombre: 'Barba', ilustracion: 'peine' },
       { nombre: 'Uñas', ilustracion: 'esmalte' },
     ],
+    destacados: 'Lo más pedido',
   },
   pedido: {
     titulo: 'Servicios',

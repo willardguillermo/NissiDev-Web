@@ -18,7 +18,7 @@ const datos: DatosHistoria = {
     { titulo: 'c', texto: 'c' },
     { titulo: 'd', texto: 'd' },
   ],
-  vitrina: { anuncio: '', buscador: '', titular: '', bajada: '', categorias: [] },
+  vitrina: { anuncio: '', buscador: '', titular: '', bajada: '', categorias: [], destacados: 'Lo más pedido' },
   pedido: {
     titulo: 'Carta',
     accion: 'Agregar',
@@ -75,6 +75,7 @@ describe('historias de los 5 rubros', () => {
       it('llena las 4 pantallas', () => {
         expect(h.leyendas).toHaveLength(4);
         expect(h.vitrina.categorias).toHaveLength(3);
+        expect(h.vitrina.destacados).not.toBe('');
         expect(h.pedido.items).toHaveLength(4);
         expect(h.panel.principal.barras.length).toBeGreaterThan(0);
         expect(h.panel.secundario.barras.length).toBeGreaterThan(0);
