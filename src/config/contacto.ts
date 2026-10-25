@@ -7,3 +7,9 @@ export const WHATSAPP_ENLACE = `https://wa.me/${WHATSAPP_NUMERO}`;
 export function whatsappConMensaje(texto: string): string {
   return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(texto)}`;
 }
+
+/** Perfiles de Guillermo: en Sobre mí y en el footer, junto a WhatsApp. */
+export const PERFILES = [
+  { nombre: 'GitHub', enlace: 'https://github.com/willardguillermo' },
+  { nombre: 'LinkedIn', enlace: 'https://www.linkedin.com/in/guillermowillard/' },
+] as const;

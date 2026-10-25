@@ -21,7 +21,7 @@ funciones elegidas. El botón reemplaza la píldora «Mi sistema» y la pestaña
 | `/servicios` | Todo sobre crear el sistema | 4 tipos · qué hace cada función (datos de `MODULOS`) · proceso · precios «desde» · preguntas frecuentes · botón Cotizar. Sin stack |
 | `/cotizar` | Elegir funciones | El carrito (antes `/arma-tu-sistema`), que lleva a `/cotizacion` |
 | `/cotizacion` | Cotización con impresora | Sin cambios |
-| `/sobre-mi` | Quién está detrás | Texto de Guillermo (pendiente) + «Con qué construyo» con íconos |
+| `/sobre-mi` | Quién está detrás | NissiDev, «Desarrollador full stack», texto de Guillermo, GitHub y LinkedIn + «Con qué construyo» con íconos |
 | `/contacto` | Contactar | Igual que hoy, sin zona |
 
 Salen del Inicio: el carrito (`ArmaInicio`), el bento de servicios, «Con qué construyo» y la tarjeta de contacto.
@@ -59,7 +59,7 @@ Restaurante campestre salen de la lista. Solo la dulcería tiene demo completa.
 - Empieza en Dulcería (única con demo completa).
 
 ## Footer
-Grilla en columnas: marca + una frase · enlaces de la web · contacto (solo WhatsApp). Abajo, una línea fina con
+Grilla en columnas: marca + una frase · enlaces de la web · contacto (WhatsApp, GitHub y LinkedIn). Abajo, una línea fina con
 el ©. En el celular, todo apilado y alineado a la izquierda.
 
 ## Sobre mí
@@ -68,7 +68,8 @@ el ©. En el celular, todo apilado y alineado a la izquierda.
   `docs/diseño.md`. Sin el paquete npm.
 - Entrada escalonada al aparecer y realce con su color en hover/focus. Sin bucles. Movimiento reducido: estáticos.
   Nombres con contraste ≥ 4.5:1.
-- Textos personales: bloque marcado «Texto de Guillermo pendiente».
+- Identidad: solo NissiDev con su logo; sin nombre personal, foto, estudios ni ubicación. Título «Desarrollador full stack» y descripción de Guillermo tal cual (2026-10-25).
+- GitHub y LinkedIn como enlaces de texto en Sobre mí y en la columna de contacto del footer; URLs en `src/config/contacto.ts`.
 
 ## Criterios de aceptación
 1. Ningún archivo de `src/` contiene «Este de Lima» (test) ni otra zona en textos públicos.
@@ -81,7 +82,7 @@ el ©. En el celular, todo apilado y alineado a la izquierda.
    visible en los 4 pasos; CLS 0.
 7. Soluciones lista los 5 rubros; solo Dulcería con «Probar la demo».
 8. Servicios tiene los 6 bloques pedidos y ningún texto de módulo copiado (sale de `MODULOS`).
-9. Sobre mí tiene el bloque pendiente y los 7 íconos con licencia anotada.
+9. Sobre mí tiene el texto de Guillermo, sus perfiles y los 7 íconos con licencia anotada.
 10. Footer en columnas en escritorio y apilado a la izquierda en el celular.
 
 ## Verificación

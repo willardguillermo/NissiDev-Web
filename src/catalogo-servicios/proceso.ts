@@ -21,7 +21,7 @@ export interface GrupoTecnologias {
 /** Agrupadas por para qué sirven: el dueño entiende el "para qué"; el reclutador ve el stack. */
 export const STACK: readonly GrupoTecnologias[] = [
   { para: 'Páginas web', tecnologias: ['Astro', 'React'] },
-  { para: 'Apps móviles', tecnologias: ['Kotlin · Android'] },
+  { para: 'Apps móviles', tecnologias: ['Kotlin', 'Android'] },
   { para: 'Sistemas y datos', tecnologias: ['Spring Boot', 'MySQL'] },
   { para: 'Publicación', tecnologias: ['Cloudflare'] },
 ];

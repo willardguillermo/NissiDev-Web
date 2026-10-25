@@ -284,7 +284,7 @@ Spec: `docs/estructura-rubros.md` · ADR-004 · rama `feature/estructura-rubros`
 - **Qué:** 4 tipos, qué hace cada función (`MODULOS`), proceso, precios «desde», preguntas frecuentes y Cotizar. Sin stack.
 
 ### ER-h · feat: Sobre mí
-- **Qué:** bloque «Texto de Guillermo pendiente» + «Con qué construyo» con íconos de Simple Icons (CC0) en un componente propio.
+- **Qué:** NissiDev con su logo, «Desarrollador full stack», texto de Guillermo, GitHub y LinkedIn (también en el footer) + «Con qué construyo» con íconos de Simple Icons (CC0) copiados a mano.
 
 **Punto de control ER-2:** «Listo para revisión» con base `de7743d`.
 

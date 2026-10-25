@@ -82,6 +82,11 @@ El `IntersectionObserver` usa márgenes en píxeles calculados con `innerHeight 
 | 03 | Aplicaciones móviles | Tu negocio en el bolsillo de tus clientes. |
 | 04 | Paneles de administración | Decide con datos, no con suposiciones. |
 
+## Sobre mí: íconos de tecnologías
+- **Fuente:** [Simple Icons](https://simpleicons.org) 13.21.0, licencia **CC0-1.0** (dominio público). Se copiaron a mano solo el `<path>` (viewBox 24×24) y el color de marca de Astro, React, Kotlin, Android, Spring Boot, MySQL y Cloudflare a `src/ui/iconos-tecnologias.ts`. No se instaló el paquete npm.
+- Las marcas son de sus dueños; se usan solo para decir con qué se construye. GitHub y LinkedIn van como enlaces de texto, sin sus logos.
+- En reposo, los íconos van en tinta; con mouse, se realzan con su color de marca y una escala corta. El nombre siempre va en tinta (contraste del texto de siempre, ≥ 4.5:1). Entrada escalonada la primera vez que aparecen; con movimiento reducido, estáticos.
+
 ## Movimiento y accesibilidad
 - CSS para entradas, transiciones y apariciones con `animation-timeline: view()`; scripts pequeños con `IntersectionObserver` y `requestAnimationFrame` cuando hacen falta. Sin GSAP ni Lenis (ADR-002).
 - Movimiento nuevo solo con `transform` y `opacity`. Evitar `transition: all`, entradas desde `scale(0)` y `ease-in` para responder a una acción.

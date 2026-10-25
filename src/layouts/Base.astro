@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
+import { PERFILES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
 interface Props {
@@ -121,7 +121,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto; abajo, el © tras una línea fina -->
+    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto (WhatsApp y perfiles); abajo, el © tras una línea fina -->
     <footer class="pie">
       <div class="contenedor">
         <div class="pie__grilla">
@@ -140,6 +140,18 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
             <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
               <IconoWhatsApp />WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
             </a>
+            <ul class="pie__lista">
+              {
+                PERFILES.map(({ nombre, enlace }) => (
+                  <li>
+                    <a href={enlace} target="_blank" rel="noopener noreferrer">
+                      {nombre}
+                      <span class="solo-lector"> (se abre en otra pestaña)</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
           </div>
         </div>
         <p class="pie__nota">© {new Date().getFullYear()} NissiDev</p>
