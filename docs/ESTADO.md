@@ -45,6 +45,8 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 - Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos de hospedaje y restaurante campestre. Etapa 3: chatbot con n8n.
 
 ## Decisiones vigentes (no reabrir sin preguntar a Guillermo)
+- **Ningún rubro es protagonista** (ADR-004, 2026-10-25): la web muestra sistemas para distintos rubros; la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos, nunca en los textos generales.
+- **Sin ubicación** (ADR-004, 2026-10-25): ningún texto público menciona «Este de Lima» ni otra zona. La zona es estrategia interna y solo puede quedar como nota interna en BRIEF/SPEC.
 - Stack: Astro + islas de React (ADR-001), movimiento solo con CSS (ADR-002), vidrio + Geist (ADR-003). Cloudflare Pages desde GitHub.
 - Precios: Catálogo web desde S/ 700 · Panel desde S/ 500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 80/mes · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales".
 - Cotización: código `NSD-AAAA-XXXX` al azar (sin correlativo, no hay servidor), válida 15 días, enviada a WhatsApp **+51 913 351 627**; PDF con `window.print()`.

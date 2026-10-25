@@ -16,7 +16,7 @@ Orden de construcción: `ui` → `catalogo-servicios` → `carrito` → `cotizac
 
 ## Objetivo
 **Qué:** la web de NissiDev con (1) mi presentación como desarrollador, (2) una demo funcional de sistema para una **dulcería con puestos** y (3) un **carrito de funcionalidades** que termina en una cotización por WhatsApp.
-**Para quién:** dueños de negocios del Este de Lima (llegan desde mi mensaje de WhatsApp) y, en segundo lugar, reclutadores de prácticas (sección de stack).
+**Para quién:** dueños de negocios de distintos rubros (nota interna: la prospección empieza por el Este de Lima; nunca en textos públicos, ADR-004) (llegan desde mi mensaje de WhatsApp) y, en segundo lugar, reclutadores de prácticas (sección de stack).
 **Por qué:** mostrar cómo quedaría *su* sistema antes de hablar de precio, y que el dueño arme lo que necesita.
 **Cómo sabré que funcionó:** un dueño entra desde el celular, prueba la demo y me envía una cotización por WhatsApp sin ayuda.
 

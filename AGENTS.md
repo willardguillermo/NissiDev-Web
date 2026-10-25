@@ -1,12 +1,16 @@
 # nissidev-web
 
-Web de la marca NissiDev: *showroom* de sistemas para negocios del Este de Lima (demo por rubro + carrito de funcionalidades + cotización por WhatsApp).
+Web de la marca NissiDev: *showroom* de sistemas para negocios de distintos rubros (demo por rubro + carrito de funcionalidades + cotización por WhatsApp).
+
+## Decisiones vigentes (ADR-004, 2026-10-25)
+- **Ningún rubro es protagonista:** la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos (`src/rubros/<id>/`), nunca en los textos generales.
+- **Sin ubicación:** ningún texto público menciona «Este de Lima» ni otra zona (un test lo vigila). La zona es estrategia interna: solo como nota interna en BRIEF/SPEC.
 
 ## Leer antes de trabajar
 0. **`docs/ESTADO.md`: dónde está el proyecto HOY y qué sigue. Léelo primero en cada sesión nueva.**
 1. `BRIEF.md`: qué es, para quién, alcance del MVP y lo que va después.
 2. `SPEC.md`: objetivo, comandos, estructura, estilo, tests, límites y criterios de éxito (aprobada).
-3. `docs/decisions/`: ADR-001 (Astro con islas de React), ADR-002 (movimiento con CSS), ADR-003 (vidrio y Geist).
+3. `docs/decisions/`: ADR-001 (Astro con islas de React), ADR-002 (movimiento con CSS), ADR-003 (vidrio y Geist), ADR-004 (ningún rubro protagonista y sin ubicación).
 4. `docs/referencias/td2/`: prototipo del diseño vigente ("Liquid Glass" con Geist) y su LEEME.
 5. `docs/referencias/demo-dulceria.md`: pantallas, estilo y modelo de datos de la plantilla de demo.
 6. `tasks/plan.md`: plan de tareas con su estado y sus commits.

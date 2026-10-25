@@ -254,6 +254,40 @@ Evidencia y resultados: [VERIFICACION.md](../docs/referencias/cotizacion-impreso
 - **Terminado cuando:** todos los criterios de éxito de la SPEC están marcados.
 - **Verificación:** informe con capturas; Lighthouse: LCP ≤ 2.5 s y CLS ≤ 0.1; Performance: INP ≤ 200 ms en cada una de las 4 interacciones. Se registran dispositivo, navegador, condiciones (limitación de CPU y red) y resultados.
 
+## Estructura por rubros (2026-10-25)
+Spec: `docs/estructura-rubros.md` · ADR-004 · rama `feature/estructura-rubros` desde `de7743d`. Implementa Claude Code; revisa Codex.
+
+### ER-a · feat: quitar la ubicación
+- **Qué:** sin «Este de Lima» en hero, footer, descripciones de Base y Servicios, Contacto y la proforma; se borra `ZONA`.
+- **Terminado cuando:** un test recorre `src/` y falla si vuelve «Este de Lima».
+
+### ER-b · feat: rutas, redirecciones y menú con Cotizar
+- **Qué:** `/demos` → `/soluciones`, `/arma-tu-sistema` → `/cotizar`, `/sobre-mi` nuevo; 301 en `public/_redirects`; menú Soluciones · Servicios · Sobre mí · Contacto + botón Cotizar (n).
+- **Terminado cuando:** ningún enlace interno apunta a una ruta vieja; el carrito sigue en `/cotizar`.
+
+### ER-c · feat: footer en columnas
+- **Terminado cuando:** grilla de 3 columnas + línea del © en escritorio; apilado a la izquierda en el celular.
+
+### ER-d · feat: Inicio reordenado
+- **Qué:** hero → celular → tarjetas de rubros → proceso corto → CTA final. Salen el carrito, el bento, el stack y la tarjeta de contacto.
+
+**Punto de control ER-1:** push y comprobar `https://feature-estructura-rubros.nissidev-web.pages.dev`.
+
+### ER-e · feat: historia por rubro
+- **Qué:** selector de 5 rubros sobre el celular, pasos generales, leyendas por rubro, `src/rubros/<id>/historia.ts` con tipo común y tests; botón «Abrir la demo completa» o «Pide la demo de tu rubro».
+- **Terminado cuando:** cambia con mouse, toque y teclado; sello en los 4 pasos; CLS 0; JS del Inicio cerca de 14.7 KB.
+
+### ER-f · feat: Soluciones
+- **Qué:** galería de los 5 rubros; demo o «Próximamente · pídela por WhatsApp».
+
+### ER-g · feat: Servicios
+- **Qué:** 4 tipos, qué hace cada función (`MODULOS`), proceso, precios «desde», preguntas frecuentes y Cotizar. Sin stack.
+
+### ER-h · feat: Sobre mí
+- **Qué:** bloque «Texto de Guillermo pendiente» + «Con qué construyo» con íconos de Simple Icons (CC0) en un componente propio.
+
+**Punto de control ER-2:** «Listo para revisión» con base `de7743d`.
+
 ## Supuestos de este plan
 1. `formatearSoles` vive en `src/ui/formato.ts` (la SPEC no tiene carpeta para utilidades compartidas, y lo usan tanto el carrito como la demo).
 2. Las dependencias se instalan en la tarea que las usa, no todas en la T01, y cada una se pide antes.

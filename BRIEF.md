@@ -7,7 +7,7 @@
 
 ## 2. Problema que resuelve y para quién
 - **Para quién:**
-  - Dueños de negocios pequeños y medianos del Este de Lima (corredor Lurigancho-Chosica → Santa Anita), por ejemplo dulcerías con puestos, hospedajes y restaurantes campestres. La mayoría llega desde un mensaje de WhatsApp y abre la web en el celular.
+  - Dueños de negocios pequeños y medianos de distintos rubros. *Nota interna (ADR-004): la prospección empieza por el Este de Lima, nunca en textos públicos* (corredor Lurigancho-Chosica → Santa Anita), por ejemplo dulcerías con puestos, hospedajes y restaurantes campestres. La mayoría llega desde un mensaje de WhatsApp y abre la web en el celular.
   - En segundo lugar, reclutadores de prácticas pre-profesionales (portafolio).
 - **Problema:** al dueño le cuesta imaginar qué es "un sistema" y cuánto le costaría. Una conversación abstracta o una cotización sin nada que ver no lo convence.
 - **Solución:** que vea y use **cómo quedaría el sistema de su negocio** antes de hablar de precio, y que elija las funcionalidades él mismo.
