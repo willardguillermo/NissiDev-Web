@@ -7,7 +7,7 @@
 
 ## 2. Problema que resuelve y para quién
 - **Para quién:**
-  - Dueños de negocios pequeños y medianos del Este de Lima (corredor Lurigancho-Chosica → Santa Anita), por ejemplo dulcerías con puestos, hospedajes y restaurantes campestres. La mayoría llega desde un mensaje de WhatsApp y abre la web en el celular.
+  - Dueños de negocios pequeños y medianos de distintos rubros. *Nota interna (ADR-004): la prospección empieza por el Este de Lima, nunca en textos públicos* (corredor Lurigancho-Chosica → Santa Anita), por ejemplo dulcerías con puestos, hospedajes y restaurantes campestres. La mayoría llega desde un mensaje de WhatsApp y abre la web en el celular.
   - En segundo lugar, reclutadores de prácticas pre-profesionales (portafolio).
 - **Problema:** al dueño le cuesta imaginar qué es "un sistema" y cuánto le costaría. Una conversación abstracta o una cotización sin nada que ver no lo convence.
 - **Solución:** que vea y use **cómo quedaría el sistema de su negocio** antes de hablar de precio, y que elija las funcionalidades él mismo.
@@ -138,8 +138,8 @@ Regla: el stock y las cantidades se piensan en unidad base, y el pedido guarda e
 ## 7. Restricciones
 - **Plazo:** sin fecha fija; se avanza al ritmo de Guillermo, entre clases.
 - **Tipo de proyecto:** propio de NissiDev (no es para un curso ni para un cliente). Sirve para conseguir clientes y como portafolio.
-- **Despliegue:** Cloudflare Pages desde GitHub; dominio **nissidev.com** (disponibilidad por verificar). Mientras tanto, la dirección `*.pages.dev`.
-- **Presupuesto:** hosting S/ 0; el único gasto del MVP es el dominio .com (precio por confirmar al comprarlo). El servidor de n8n (etapa 3) queda por decidir.
+- **Despliegue:** Cloudflare Pages desde GitHub; dominio oficial **nissidev.dev**, comprado en Cloudflare (nissidev.com estaba ocupado). Las vistas previas por rama siguen en `*.nissidev-web.pages.dev`.
+- **Presupuesto:** hosting S/ 0; el único gasto del MVP es el dominio nissidev.dev. El servidor de n8n (etapa 3) queda por decidir.
 - **Forma de trabajo:** spec y plan aprobados antes del código; tareas pequeñas con un commit cada una; verificar con tests, build y prueba en celular.
 - **Git:** formato `<tipo>: <descripción>`; **nunca** `chore` (ni en commits ni en ramas); **nunca** `Co-Authored-By` de IA ni "Generated with…".
 - **Límites:**
@@ -164,5 +164,4 @@ Regla: el stock y las cantidades se piensan en unidad base, y el pedido guarda e
 
 **Pendientes (no bloquean el inicio):**
 1. **Continental Hydraulic como caso:** Guillermo pide permiso al cliente. Mientras no lo tenga, no se publica.
-2. **Dominio nissidev.com:** Guillermo verifica que esté libre y lo compra. Mientras tanto se usa `*.pages.dev`.
-3. **Hosting de n8n:** se decide en la etapa 3.
+2. **Hosting de n8n:** se decide en la etapa 3.

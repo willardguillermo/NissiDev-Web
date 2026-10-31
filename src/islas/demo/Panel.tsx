@@ -155,7 +155,7 @@ export function Panel({ config }: Props) {
 
       <div className="demo-panel__cierre">
         <p>¿Te sirve ver tu negocio así?</p>
-        <a className="demo-boton" href="/arma-tu-sistema">
+        <a className="demo-boton" href="/cotizar">
           Quiero esto para mi negocio
         </a>
       </div>

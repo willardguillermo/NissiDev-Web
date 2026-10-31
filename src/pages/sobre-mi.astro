@@ -1,0 +1,253 @@
+---
+import Logo from '../components/Logo.astro';
+import { STACK } from '../catalogo-servicios/proceso';
+import { PERFILES } from '../config/contacto';
+import Base from '../layouts/Base.astro';
+import { ICONOS_TECNOLOGIAS, medidasIcono, PLACA_ICONOS } from '../ui/iconos-tecnologias';
+
+// Quién está detrás: solo la marca NissiDev (sin nombre personal, foto, estudios ni ubicación) y el texto de
+// Guillermo tal cual. Debajo, el stack agrupado por uso con íconos de Simple Icons (CC0) en su color de marca.
+// --i numera cada tecnología para la entrada escalonada.
+let n = 0;
+const grupos = STACK.map((grupo) => ({
+  ...grupo,
+  tecnologias: grupo.tecnologias.map((nombre) => {
+    const icono = ICONOS_TECNOLOGIAS[nombre];
+    return { nombre, ...icono, ...medidasIcono(icono.caja), i: n++ };
+  }),
+}));
+---
+
+<Base
+  titulo="Sobre mí"
+  descripcion="Desarrollador full stack: webs, sistemas y apps completas, desde la pantalla hasta la base de datos."
+>
+  <section class="contenedor sobre" aria-labelledby="sobre-mi-titulo">
+    <Logo etiqueta="NissiDev" class="sobre__logo entra" />
+    <p class="sobre__etiqueta entra" style="--n: 1">Sobre mí</p>
+    <h1 id="sobre-mi-titulo" class="sobre__titulo entra" style="--n: 2">Desarrollador full stack</h1>
+    <span class="sobre__linea entra" style="--n: 3" aria-hidden="true"></span>
+    <!-- Texto de Guillermo: no reescribirlo -->
+    <p class="sobre__texto entra" style="--n: 4">
+      Soy desarrollador full stack: diseño y programo webs, sistemas y apps completas, desde la pantalla que ven
+      tus clientes hasta la base de datos que guarda tus ventas. Trabajo directo contigo: primero ves cómo
+      quedaría tu sistema y recién después hablamos de precio.
+    </p>
+    <ul class="sobre__perfiles entra" style="--n: 5" role="list">
+      {
+        PERFILES.map(({ nombre, enlace }) => (
+          <li>
+            <a href={enlace} target="_blank" rel="noopener noreferrer">
+              {nombre}
+              <span class="solo-lector"> (se abre en otra pestaña)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="stack-titulo">
+    <h2 id="stack-titulo" class="titulo-2" data-aparecer>Con qué construyo</h2>
+    <dl class="stack" data-armar>
+      {
+        grupos.map((grupo) => (
+          <div class="stack__grupo vidrio">
+            <dt class="stack__para">{grupo.para}</dt>
+            {grupo.tecnologias.map((t) => (
+              <dd class="tec" style={`--i: ${t.i}`}>
+                <span class="tec__placa" style={`background: ${PLACA_ICONOS}`}>
+                  <svg
+                    viewBox={t.caja}
+                    style={`width: ${t.ancho}rem; height: ${t.alto}rem`}
+                    fill={t.color}
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d={t.d} />
+                  </svg>
+                </span>
+                {t.nombre}
+              </dd>
+            ))}
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+</Base>
+
+<style>
+  .sobre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-3);
+    padding-block: var(--espacio-8) var(--espacio-4);
+    text-align: center;
+  }
+
+  .sobre :global(.sobre__logo) {
+    width: 3.5rem;
+    margin-bottom: var(--espacio-2);
+  }
+
+  .sobre__etiqueta {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .sobre__titulo {
+    max-width: 14ch;
+    font-size: clamp(2.25rem, 1.8rem + 2.4vw, 3.5rem);
+    font-weight: var(--peso-titulo);
+    line-height: var(--interlineado-titulo);
+    letter-spacing: -0.035em;
+  }
+
+  .sobre__linea {
+    width: 1.75rem;
+    height: 2px;
+    background: var(--acento);
+    border-radius: 2px;
+  }
+
+  .sobre__texto {
+    max-width: 44ch;
+    color: var(--texto-suave);
+    font-size: 1.0625rem;
+  }
+
+  .sobre__perfiles {
+    display: flex;
+    gap: var(--espacio-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .sobre__perfiles a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: var(--espacio-3);
+    color: var(--texto);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+  }
+
+  .entra {
+    animation: sube 560ms var(--ease-out) both;
+    animation-delay: calc(var(--n, 0) * 70ms);
+  }
+
+  .seccion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espacio-6);
+    padding-top: var(--espacio-16);
+    text-align: center;
+  }
+
+  .stack {
+    display: grid;
+    gap: var(--espacio-3);
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  .stack__grupo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacio-2) var(--espacio-5);
+    padding: var(--espacio-5);
+  }
+
+  .stack__para {
+    flex-basis: 100%;
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Nombre en tinta (contraste del texto de siempre); el color de marca es solo para el ícono */
+  .tec {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    margin: 0;
+    color: var(--texto);
+    font-weight: 600;
+  }
+
+  /* Ícono en su color de marca sobre una placa oscura (todos pasan 3:1); el nombre va en tinta al lado */
+  .tec__placa {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding-inline: 0.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 14px rgb(30 31 34 / 0.18);
+    transition: transform var(--duracion-toque) var(--ease-out);
+  }
+
+  /* Con mouse, un realce extra: la placa sube un poco */
+  @media (hover: hover) and (pointer: fine) {
+    .tec:hover .tec__placa {
+      transform: translateY(-2px) scale(1.06);
+    }
+  }
+
+  /* Entrada escalonada la primera vez que el bloque aparece (Base.astro pone .armada). Sin JavaScript, visibles. */
+  :global(.js) .stack:not(:global(.armada)) .tec {
+    opacity: 0;
+  }
+
+  :global(.armada) .tec {
+    animation: sube 480ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+
+  @media (min-width: 48rem) {
+    .seccion {
+      padding-top: var(--espacio-24);
+    }
+
+    .stack {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 48rem;
+    }
+  }
+
+  /* Movimiento reducido: íconos y textos estáticos, sin entrada ni escala */
+  @media (prefers-reduced-motion: reduce) {
+    .entra {
+      animation: fundido var(--duracion-fundido) ease both;
+    }
+
+    :global(.js) .stack:not(:global(.armada)) .tec {
+      opacity: 1;
+    }
+
+    :global(.armada) .tec {
+      animation: none;
+    }
+
+    .tec__placa {
+      transition: none;
+    }
+
+    .tec:hover .tec__placa {
+      transform: none;
+    }
+  }
+</style>

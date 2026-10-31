@@ -2,9 +2,14 @@
 export const WHATSAPP_VISIBLE = '+51 913 351 627';
 export const WHATSAPP_NUMERO = '51913351627';
 export const WHATSAPP_ENLACE = `https://wa.me/${WHATSAPP_NUMERO}`;
-export const ZONA = 'Este de Lima';
 
 /** WhatsApp con un primer mensaje ya escrito (el dueño puede cambiarlo antes de enviar). */
 export function whatsappConMensaje(texto: string): string {
   return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(texto)}`;
 }
+
+/** Perfiles de Guillermo: en Sobre mí y en el footer, junto a WhatsApp. */
+export const PERFILES = [
+  { nombre: 'GitHub', enlace: 'https://github.com/willardguillermo' },
+  { nombre: 'LinkedIn', enlace: 'https://www.linkedin.com/in/guillermowillard/' },
+] as const;

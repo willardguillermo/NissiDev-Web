@@ -1,10 +1,10 @@
 ---
 import ContactoTarjeta from '../components/ContactoTarjeta.astro';
-import { WHATSAPP_VISIBLE, ZONA } from '../config/contacto';
+import { WHATSAPP_VISIBLE } from '../config/contacto';
 import Base from '../layouts/Base.astro';
 ---
 
-<Base titulo="Contacto" descripcion={`Escríbeme por WhatsApp al ${WHATSAPP_VISIBLE}. Trabajo con negocios del ${ZONA}.`}>
+<Base titulo="Contacto" descripcion={`Escríbeme por WhatsApp al ${WHATSAPP_VISIBLE}. Cuéntame de tu negocio y te muestro cómo sería tu sistema.`}>
   <section class="contenedor contacto-pagina" aria-labelledby="contacto-titulo">
     <ContactoTarjeta nivel={1} id="contacto-titulo" />
   </section>

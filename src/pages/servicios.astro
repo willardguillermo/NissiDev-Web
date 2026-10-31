@@ -3,14 +3,19 @@ import Boton from '../components/Boton.astro';
 import IntroPagina from '../components/IntroPagina.astro';
 import Proceso from '../components/Proceso.astro';
 import ServiciosBento from '../components/ServiciosBento.astro';
-import { STACK } from '../catalogo-servicios/proceso';
+import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
+import { textoPrecio } from '../catalogo-servicios/precio';
+import { PREGUNTAS } from '../catalogo-servicios/preguntas';
 import Base from '../layouts/Base.astro';
 
+// Todo sobre crear el sistema: tipos, funciones, proceso, precios y preguntas. Los textos de cada función y
+// sus precios salen de MODULOS (los mismos del carrito y de la cotización).
+const necesita = (ids: readonly Parameters<typeof obtenerModulo>[0][]) => ids.map((id) => obtenerModulo(id).nombre).join(', ');
 ---
 
 <Base
   titulo="Servicios"
-  descripcion="Páginas web, sistemas a medida, aplicaciones móviles y paneles de administración para negocios del Este de Lima."
+  descripcion="Páginas web, sistemas a medida, aplicaciones móviles y paneles de administración: qué hace cada función, cómo trabajamos y precios desde."
 >
   <section class="contenedor" aria-labelledby="servicios-titulo">
     <IntroPagina etiqueta="Servicios" titulo="Software que impulsa tu negocio." id="servicios-titulo">
@@ -22,6 +27,24 @@ import Base from '../layouts/Base.astro';
     </div>
   </section>
 
+  <section class="contenedor seccion" aria-labelledby="funciones-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <h2 id="funciones-titulo" class="titulo-2">Qué hace cada función</h2>
+      <p class="seccion__bajada">Tu sistema se arma con estas piezas. Elige solo las que necesitas.</p>
+    </div>
+    <ul class="funciones" role="list">
+      {
+        MODULOS.map((modulo) => (
+          <li class="funcion vidrio" data-aparecer>
+            <h3 class="funcion__nombre">{modulo.nombre}</h3>
+            <p class="funcion__texto">{modulo.descripcion}</p>
+            {modulo.dependencias.length > 0 && <p class="funcion__nota">Necesita: {necesita(modulo.dependencias)}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
   <section class="contenedor seccion" aria-labelledby="proceso-titulo">
     <div class="seccion__cabeza" data-aparecer>
       <h2 id="proceso-titulo" class="titulo-2">Cómo trabajamos</h2>
@@ -30,31 +53,43 @@ import Base from '../layouts/Base.astro';
     <Proceso />
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="stack-titulo">
+  <section class="contenedor seccion" aria-labelledby="precios-titulo">
     <div class="seccion__cabeza" data-aparecer>
-      <h2 id="stack-titulo" class="titulo-2">Con qué construyo</h2>
-      <p class="seccion__bajada">Tecnologías actuales, elegidas para que tu sistema sea rápido y fácil de mantener.</p>
+      <h2 id="precios-titulo" class="titulo-2">Precios desde</h2>
+      <p class="seccion__bajada">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
     </div>
-    <dl class="stack" data-aparecer>
+    <dl class="precios" data-aparecer>
       {
-        STACK.map((grupo) => (
-          <div class="stack__grupo">
-            <dt class="stack__para">{grupo.para}</dt>
-            {grupo.tecnologias.map((tecnologia) => (
-              <dd class="chip">{tecnologia}</dd>
-            ))}
+        MODULOS.map((modulo) => (
+          <div class="precios__fila">
+            <dt>{modulo.nombre}</dt>
+            <dd>{textoPrecio(modulo)}</dd>
           </div>
         ))
       }
     </dl>
   </section>
 
+  <section class="contenedor seccion" aria-labelledby="preguntas-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <h2 id="preguntas-titulo" class="titulo-2">Preguntas frecuentes</h2>
+    </div>
+    <div class="preguntas" data-aparecer>
+      {
+        PREGUNTAS.map(({ pregunta, respuesta }) => (
+          <details class="pregunta">
+            <summary>{pregunta}</summary>
+            <p>{respuesta}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
   <section class="contenedor seccion" aria-labelledby="siguiente-titulo" data-aparecer>
     <h2 id="siguiente-titulo" class="titulo-2">¿Empezamos?</h2>
-    <div class="acciones">
-      <Boton href="/demos">Ver la demo de mi rubro</Boton>
-      <Boton href="/arma-tu-sistema" variante="secundario">Arma tu sistema</Boton>
-    </div>
+    <p class="seccion__bajada">Elige tus funciones y recibe la cotización al momento.</p>
+    <Boton href="/cotizar">Cotizar mi sistema</Boton>
   </section>
 </Base>
 
@@ -83,48 +118,127 @@ import Base from '../layouts/Base.astro';
     color: var(--texto-suave);
   }
 
-  .stack {
+  .funciones {
     display: grid;
     gap: var(--espacio-3);
     width: 100%;
-    max-width: 30rem;
+    padding: 0;
+    list-style: none;
+    text-align: left;
   }
 
-  .stack__grupo {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+  .funcion {
+    display: grid;
+    align-content: start;
     gap: var(--espacio-2);
-    padding: var(--espacio-4);
+    padding: var(--espacio-5);
+  }
+
+  .funcion__nombre {
+    font-size: 1.125rem;
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.015em;
+  }
+
+  .funcion__texto {
+    color: var(--texto-suave);
+    font-size: 0.9375rem;
+  }
+
+  .funcion__nota {
+    color: var(--texto-nota);
+    font-size: var(--texto-sm);
+  }
+
+  /* Precios sobre una capa sólida (las cifras no van sobre vidrio, ADR-003) */
+  .precios {
+    display: grid;
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--espacio-2) var(--espacio-5);
     background: var(--fondo-elevado);
     border-radius: var(--radio-tarjeta);
+    box-shadow: var(--sombra-tarjeta);
+    text-align: left;
   }
 
-  .stack__para {
-    flex-basis: 100%;
-    color: var(--acento-texto);
-    font-size: var(--texto-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .precios__fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--espacio-1) var(--espacio-4);
+    padding-block: var(--espacio-3);
   }
 
-  .chip {
-    margin: 0;
-    padding: var(--espacio-2) var(--espacio-4);
-    background: var(--fondo);
-    border-radius: var(--radio-pildora);
-    font-size: var(--texto-sm);
+  .precios__fila + .precios__fila {
+    border-top: 1px solid var(--color-linea);
+  }
+
+  .precios dt {
     font-weight: 600;
   }
 
-  .acciones {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
+  .precios dd {
+    margin: 0;
+    color: var(--acento-texto);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .preguntas {
+    display: grid;
+    gap: var(--espacio-2);
     width: 100%;
-    max-width: 21.25rem;
+    max-width: 40rem;
+    text-align: left;
+  }
+
+  .pregunta {
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-tarjeta);
+    box-shadow: var(--borde-sutil);
+  }
+
+  .pregunta summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espacio-3);
+    min-height: 3.25rem;
+    padding: var(--espacio-3) var(--espacio-5);
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .pregunta summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Signo + que gira a × al abrir: solo transform */
+  .pregunta summary::after {
+    content: '+';
+    flex: none;
+    color: var(--acento-texto);
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform var(--duracion-fundido) var(--ease-out);
+  }
+
+  .pregunta[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .pregunta p {
+    padding: 0 var(--espacio-5) var(--espacio-5);
+    color: var(--texto-suave);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pregunta summary::after {
+      transition: none;
+    }
   }
 
   @media (min-width: 48rem) {
@@ -132,15 +246,8 @@ import Base from '../layouts/Base.astro';
       padding-top: var(--espacio-24);
     }
 
-    .stack {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 56rem;
-    }
-
-    .acciones {
-      flex-direction: row;
-      justify-content: center;
-      max-width: none;
+    .funciones {
+      grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     }
   }
 </style>

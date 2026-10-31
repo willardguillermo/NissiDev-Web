@@ -1,11 +1,27 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-24 (entrega Liquid Glass + impresora aprobada para main, PR #5).
+> Última actualización: 2026-10-31 (estructura por rubros aprobada; dominio nissidev.dev).
+
+## Dominio
+- **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
+- **Pendiente de Guillermo:** las redirecciones de dominio. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
+
+## Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
+- Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; Codex aprobó (2 revisiones, la última con base `37a7544`, sin hallazgos) y Guillermo aprobó en su celular.
+- Vista previa: https://feature-estructura-rubros.nissidev-web.pages.dev
+- Hecho: sin ubicación (test en `src/sin-ubicacion.test.ts`); rutas `/soluciones`, `/cotizar`, `/sobre-mi` con 301 desde `/demos`, `/demos/dulceria/` (conserva la query) y `/arma-tu-sistema`; menú Soluciones · Servicios · Sobre mí · Contacto + botón «Cotizar (n)»; footer en columnas; Inicio reordenado; celular con selector de 5 rubros (`src/rubros/<id>/historia.ts`); Soluciones; Servicios con funciones, precios y preguntas frecuentes; Sobre mí con el texto de Guillermo, GitHub/LinkedIn y el stack con íconos de Simple Icons (CC0).
+- Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS del Inicio: externo igual (6.0 KB gzip) y scripts en línea 2.29 KB gzip frente a 2.17 KB en main; HTML del Inicio 13.8 KB gzip (9.6 KB en main), por las pantallas de los 5 rubros. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
+- **Arreglos de la revisión (2026-10-25), un commit `fix:` por punto:**
+  1. `22f5c66` la pantalla del celular escala como una unidad (`--u = 100cqw / 12`; a 390 px se ve igual que lo aprobado) y en celulares bajos las filas de arriba se compactan con 44 px de área táctil: el teléfono pasa de ~161 a ~180 px a 375×667. Verificado 4 pasos × 5 rubros × 4 tamaños sin nada recortado.
+  2. `21d3e40` la Vitrina muestra «Lo más pedido» (2 items del rubro; «Próximos horarios» en la clínica).
+  3. `22f1cec` íconos de Sobre mí siempre en su color de marca sobre placa oscura (los 7 pasan 3:1) y cajas ajustadas: MySQL se lee.
+  4. `acef661` el rubro elegido se desliza a la vista en su fila (scrollBy, sin mover la página) y sin el salto de 7 px por anclaje de scroll.
+  5. Soluciones en 2 + 3 sin huecos.
 
 ## Entrega aprobada — Liquid Glass y cotización con impresora
 - Guillermo autorizó integrar todo en main el 2026-10-24. La entrega se integra mediante PR y merge commit, sin squash.
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e`; PR [#5](https://github.com/willardguillermo/NissiDev-Web/pull/5) reúne el rediseño y la impresora para main.
-- Sitio: https://nissidev-web.pages.dev . Para probar la impresora, abrir `/arma-tu-sistema`, cargar «Sugerido: Dulcería» y entrar en «Ver mi cotización».
+- Sitio: https://nissidev.dev . Para probar la impresora, abrir `/cotizar/`, cargar «Sugerido: Dulcería» y entrar en «Ver mi cotización».
 - **Revisiones independientes cerradas:** impresora en cinco ejes contra `9d164c2`, sin bloqueantes; arreglos de TD2 (observador, sello y Contacto) cerrados. El P2 de Contacto a 320 px se confirmó (documento de 343 px), se corrigió en `421848f` y se volvió a revisar.
 - **Compilación actual comprobada con Playwright:** Contacto sin desborde y dentro del padding a 320, 375, 390 y 1366 px; historia con 4 pasos y sello visible a 1366×768, 1280×800, 390×844 y 375×667; sin errores de página.
 - **Comandos:** 384 tests / 35 archivos, tipos sin diagnósticos, lint y build correctos. Persiste la advertencia previa de Node sobre localStorage. Audit de la entrega sin vulnerabilidades.
@@ -14,9 +30,9 @@
 - **Qué sigue:** T26 (Guillermo activa Web Analytics en Cloudflare), T27 (verificación global del MVP, incluido celular físico, INP/Lighthouse y README) y punto de control 7. La autorización de integración no se registra como una prueba física del celular.
 
 ## En una línea
-Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de un negocio del Este de Lima prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
+Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
 
-## Publicado (rama `main` → https://nissidev-web.pages.dev)
+## Publicado (rama `main` → https://nissidev.dev)
 - Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto con **Liquid Glass + Geist (TD2)**.
 - Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
 - Demo de dulcería: `/demos/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
@@ -42,16 +58,19 @@ Web de NissiDev (marca de Guillermo Willard): un *showroom* donde el dueño de u
 2. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 3. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
-- Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos de hospedaje y restaurante campestre. Etapa 3: chatbot con n8n.
+- Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos completas de los rubros que hoy son «Próximamente» (Restaurante, Salón de belleza, Clínica, Negocio por mayor). Etapa 3: chatbot con n8n.
 
 ## Decisiones vigentes (no reabrir sin preguntar a Guillermo)
+- **Ningún rubro es protagonista** (ADR-004, 2026-10-25): la web muestra sistemas para distintos rubros; la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos, nunca en los textos generales.
+- **Sin ubicación** (ADR-004, 2026-10-25): ningún texto público menciona «Este de Lima» ni otra zona. La zona es estrategia interna y solo puede quedar como nota interna en BRIEF/SPEC.
 - Stack: Astro + islas de React (ADR-001), movimiento solo con CSS (ADR-002), vidrio + Geist (ADR-003). Cloudflare Pages desde GitHub.
 - Precios: Catálogo web desde S/ 700 · Panel desde S/ 500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 80/mes · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales".
 - Cotización: código `NSD-AAAA-XXXX` al azar (sin correlativo, no hay servidor), válida 15 días, enviada a WhatsApp **+51 913 351 627**; PDF con `window.print()`.
 - Demo: negocio ficticio "Dulcería La Golosa", marcas ficticias, sello "Demo · datos de ejemplo" siempre visible, nada cobra ni abre WhatsApp de verdad (muestra el mensaje y "Quiero esto para mi negocio").
+- Selector de rubro del celular: empieza en Dulcería, la única con demo completa (decisión pequeña, 2026-10-25).
 - Movimiento: ease-out en entradas, `scale(0.97)` al tocar, hover solo con mouse, nada se mueve solo (sin carruseles automáticos), movimiento reducido = menos y más suave, transparencia reducida = superficies sólidas.
 - Texto: contraste ≥ 4.5:1 (lo vigila `tokens.test.ts`); nunca texto gris claro sobre vidrio.
-- Continental Hydraulic no se muestra como caso hasta tener permiso del cliente. Dominio nissidev.com por comprar.
+- Continental Hydraulic no se muestra como caso hasta tener permiso del cliente.
 
 ## Cómo trabaja Guillermo
 - Es estudiante (Tecsup, Diseño y Desarrollo de Software) y está construyendo su portafolio: cada tarea cierra con "Qué aprender".

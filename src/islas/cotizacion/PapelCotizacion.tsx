@@ -5,7 +5,7 @@ import { calcularTotales } from '../../carrito/carrito';
 import { textoTotales } from '../../carrito/textos';
 import { formatearFecha } from '../../cotizacion/fecha';
 import type { Cotizacion } from '../../cotizacion/tipos';
-import { WHATSAPP_VISIBLE, ZONA } from '../../config/contacto';
+import { WHATSAPP_VISIBLE } from '../../config/contacto';
 
 export default function PapelCotizacion({ cotizacion, refPapel }: {
   cotizacion: Cotizacion;
@@ -64,7 +64,7 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
       <p className="cotizacion__documento">Cotización referencial · No es un comprobante de pago</p>
       <div className="cotizacion__barras" aria-hidden="true" />
       <p className="cotizacion__contacto">
-        NissiDev · WhatsApp {WHATSAPP_VISIBLE} · {ZONA}
+        NissiDev · WhatsApp {WHATSAPP_VISIBLE}
       </p>
 
     </article>

@@ -26,7 +26,7 @@ export default function Cotizacion() {
       <div className="cotizacion"><div className="cotizacion-vacia">
         <p className="cotizacion-vacia__titulo">Aún no elegiste módulos.</p>
         <p>Arma tu sistema y aquí verás tu cotización.</p>
-        <a className="cotizacion-boton" href="/arma-tu-sistema">
+        <a className="cotizacion-boton" href="/cotizar">
           Ir a Arma tu sistema
         </a>
       </div></div>

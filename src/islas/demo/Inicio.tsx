@@ -171,7 +171,7 @@ export function Inicio({ config, ir, agregar, avisar, ilustracionDe }: Props) {
           <p>{config.puestos[0].horario}</p>
           <p>{config.redes.join(' · ')}</p>
           <p className="demo-pie__nissidev">
-            Demo hecha por NissiDev con datos de ejemplo. <a href="/arma-tu-sistema">Quiero esto para mi negocio</a>
+            Demo hecha por NissiDev con datos de ejemplo. <a href="/cotizar">Quiero esto para mi negocio</a>
           </p>
         </div>
       </footer>

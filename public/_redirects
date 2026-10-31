@@ -1,1 +1,11 @@
+# Este archivo solo admite rutas: Cloudflare ignora los orígenes con dominio (comprobado el 2026-10-31).
+# pages.dev → nissidev.dev y www → nissidev.dev se configuran con Bulk Redirects en el panel de Cloudflare.
 /favicon.ico /favicon.svg 301
+
+# Rutas viejas ya compartidas por WhatsApp (ADR-004). Cloudflare Pages conserva la query (?puestos=3).
+/demos /soluciones/ 301
+/demos/ /soluciones/ 301
+/demos/dulceria /soluciones/dulceria/ 301
+/demos/dulceria/ /soluciones/dulceria/ 301
+/arma-tu-sistema /cotizar/ 301
+/arma-tu-sistema/ /cotizar/ 301

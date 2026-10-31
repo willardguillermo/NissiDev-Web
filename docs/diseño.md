@@ -59,17 +59,18 @@ Geist variable (OFL), subconjunto latino servido y precargado desde `public/font
 Tarjetas de vidrio de 28 px de radio; bloques internos de 16 px. Botones principales en píldora de al menos 52 px de alto, tinta con texto blanco; secundarios de vidrio. Controles pequeños con área táctil mínima de 44 × 44 px. Los bordes y sombras separan superficies sin endurecer el conjunto.
 
 ## Composición del Inicio
-- **Header flotante:** marca, navegación y acceso al sistema elegido; menú en celular. Fondo más opaco y espacio suficiente para no tapar el contenido al navegar.
-- **Hero:** logo, frase principal, explicación y acciones «Ver la demo de mi rubro» / «Escríbeme», con los cuatro servicios en chips.
-- **Historia de la demo:** teléfono sticky con Catálogo → Pedido → WhatsApp → Panel. Las mini pantallas salen de `src/demo/historia.ts` y de la configuración del rubro, sin React en el Inicio.
-- **Servicios:** bento de cuatro tarjetas. Los servicios se pueden leer sin esperar un cambio automático.
-- **Arma tu sistema:** chips seleccionables y resumen de inversión sobre una capa sólida. Mantiene la lógica compartida de dependencias y precios referenciales.
-- **Proceso, stack y contacto:** cuatro pasos, tecnologías y tarjeta de WhatsApp con número seleccionable y «Copiar número».
+- **Header flotante:** marca, Soluciones · Servicios · Sobre mí · Contacto y el botón destacado «Cotizar (n)»; menú en celular. Fondo más opaco y espacio suficiente para no tapar el contenido al navegar.
+- **Hero:** logo, frase principal, explicación y acciones «Ver la demo de mi rubro» / «Escríbeme», con los cuatro servicios en chips. Sin ubicación (ADR-004).
+- **Historia por rubro:** selector de 5 rubros sobre un teléfono sticky con los pasos generales Tu vitrina → Tu cliente pide o reserva → Te llega por WhatsApp → Tu panel. Las pantallas salen de `src/rubros/historias.ts` (la dulcería, de su demo completa), sin React en el Inicio.
+- **Tarjetas de rubros**, **cómo trabajamos** (solo los nombres de las etapas) y **CTA final** a Cotizar y WhatsApp.
+- El carrito vive en `/cotizar`, el bento y el proceso completo en `/servicios`, el stack en `/sobre-mi` y la tarjeta de WhatsApp en `/contacto` (spec: `docs/estructura-rubros.md`).
 
 ### Historia con scroll
+El selector de rubro son radios nativos con forma de píldora (flechas del teclado, `fieldset` con leyenda para el lector); en el celular, una fila con scroll horizontal hasta los bordes. Cada rubro es una capa con su tema (`variablesDeTema`) y sus 4 vistas; cambiar de rubro usa la misma transición que cambiar de paso, y con movimiento reducido es directo. El botón bajo el celular cambia con el rubro: «Abrir la demo completa» o «Pide la demo de tu rubro» por WhatsApp.
+
 Los botones también permiten cambiar de paso con teclado; `aria-current="step"` identifica el activo y una leyenda `aria-live="polite"` explica la mini pantalla. Sin JavaScript quedan la portada, la leyenda y el sello, sin controles ni espacios vacíos de scroll.
 
-El sello **«Demo · datos de ejemplo» vive dentro del bloque sticky**, debajo de la leyenda, y acompaña todos los pasos. El tamaño del teléfono reserva altura para los controles, la leyenda y el sello, incluido el viewport de 375×667.
+El sello **«Demo · datos de ejemplo» vive dentro del bloque sticky**, debajo de la leyenda, y acompaña todos los pasos. El tamaño del teléfono reserva altura (`--reserva`) para el selector, los pasos, la leyenda y el sello, incluido el viewport de 375×667.
 
 El `IntersectionObserver` usa márgenes en píxeles calculados con `innerHeight * 0.45`; los porcentajes de `rootMargin` se resuelven respecto al ancho y pueden vaciar la zona en apaisado. Se reconstruye al redimensionar y se desconecta, junto con sus listeners, al salir mediante View Transitions. Verificar a 1366×768, 1280×800, 390×844 y 375×667, también al redimensionar.
 
@@ -80,6 +81,13 @@ El `IntersectionObserver` usa márgenes en píxeles calculados con `innerHeight 
 | 02 | Sistemas a medida | Tu negocio, bajo control. |
 | 03 | Aplicaciones móviles | Tu negocio en el bolsillo de tus clientes. |
 | 04 | Paneles de administración | Decide con datos, no con suposiciones. |
+
+## Sobre mí: íconos de tecnologías
+- **Fuente:** [Simple Icons](https://simpleicons.org) 13.21.0, licencia **CC0-1.0** (dominio público). Se copiaron a mano solo el `<path>` (viewBox 24×24) y el color de marca de Astro, React, Kotlin, Android, Spring Boot, MySQL y Cloudflare a `src/ui/iconos-tecnologias.ts`. No se instaló el paquete npm.
+- Las marcas son de sus dueños; se usan solo para decir con qué se construye. GitHub y LinkedIn van como enlaces de texto, sin sus logos.
+- Cada ícono va **siempre en su color de marca** sobre una placa oscura (`PLACA_ICONOS`, la tinta del sitio): es la única placa en la que los 7 colores pasan 3:1 (con placa blanca, React, Spring Boot y Cloudflare no llegan). El nombre va en tinta al lado (≥ 4.5:1). Lo vigila `src/ui/iconos-tecnologias.test.ts`.
+- La caja (`viewBox`) de cada ícono está ajustada a su dibujo y su ancho es proporcional (máx. 3.25 rem): así MySQL, que es el delfín con la palabra, se lee, y Cloudflare llena su placa.
+- Entrada escalonada la primera vez que aparecen; con mouse, la placa sube un poco como realce extra. Con movimiento reducido, estáticos.
 
 ## Movimiento y accesibilidad
 - CSS para entradas, transiciones y apariciones con `animation-timeline: view()`; scripts pequeños con `IntersectionObserver` y `requestAnimationFrame` cuando hacen falta. Sin GSAP ni Lenis (ADR-002).

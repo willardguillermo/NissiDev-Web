@@ -2,16 +2,12 @@
 import Boton from '../components/Boton.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import ArmaInicio from '../components/ArmaInicio.astro';
-import ContactoTarjeta from '../components/ContactoTarjeta.astro';
 import Proceso from '../components/Proceso.astro';
-import ServiciosBento from '../components/ServiciosBento.astro';
-import { TECNOLOGIAS } from '../catalogo-servicios/proceso';
 import { SERVICIOS } from '../catalogo-servicios/servicios';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import HistoriaDemo from '../components/HistoriaDemo.astro';
 import Base from '../layouts/Base.astro';
-import { DULCERIA } from '../rubros/dulceria/config';
+import { RUBROS } from '../rubros/rubros';
 ---
 
 <Base titulo="NissiDev">
@@ -20,7 +16,7 @@ import { DULCERIA } from '../rubros/dulceria/config';
     <div class="hero__escena" data-logo-armado>
       <Logo etiqueta="NissiDev" class="hero__logo" />
     </div>
-    <p class="hero__etiqueta entra" style="--n: 0">Webs y sistemas · Este de Lima</p>
+    <p class="hero__etiqueta entra" style="--n: 0">Webs y sistemas para tu negocio</p>
     <h1 id="hero-titulo" class="hero__titulo entra" style="--n: 1">
       Software que impulsa <span class="hero__acento">tu negocio.</span>
     </h1>
@@ -28,7 +24,7 @@ import { DULCERIA } from '../rubros/dulceria/config';
       Prueba cómo quedaría el sistema de tu negocio, elige lo que necesitas y recibe la cotización por WhatsApp.
     </p>
     <div class="hero__acciones entra" style="--n: 3">
-      <Boton href="/demos">Ver la demo de mi rubro</Boton>
+      <Boton href="/soluciones">Ver la demo de mi rubro</Boton>
       <Boton href={WHATSAPP_ENLACE} variante="vidrio" externo><IconoWhatsApp />Escríbeme</Boton>
     </div>
     <ul class="hero__servicios entra" style="--n: 4" aria-label="Servicios">
@@ -41,22 +37,29 @@ import { DULCERIA } from '../rubros/dulceria/config';
     <div class="seccion__cabeza" data-aparecer>
       <p class="etiqueta">Demo en vivo</p>
       <h2 id="demo-titulo" class="titulo-2">Así se vería <span class="acento">tu</span> sistema.</h2>
-      <p class="seccion__bajada">Baja despacio: es una dulcería de ejemplo, de principio a fin.</p>
+      <p class="seccion__bajada">Elige tu rubro y baja despacio.</p>
     </div>
-    <HistoriaDemo config={DULCERIA} />
-    <Boton href="/demos/dulceria/">Abrir la demo completa</Boton>
+    <HistoriaDemo />
   </section>
 
-  <section id="servicios" class="contenedor seccion" aria-labelledby="servicios-titulo">
+  <section class="contenedor seccion" aria-labelledby="rubros-titulo">
     <div class="seccion__cabeza" data-aparecer>
-      <p class="etiqueta">Lo que hago</p>
-      <h2 id="servicios-titulo" class="titulo-2">Cuatro formas de <span class="acento">impulsar</span> tu negocio.</h2>
+      <p class="etiqueta">Soluciones</p>
+      <h2 id="rubros-titulo" class="titulo-2">Un sistema para <span class="acento">cada rubro.</span></h2>
     </div>
-    <ServiciosBento />
-  </section>
-
-  <section id="armar" class="contenedor seccion" aria-labelledby="armar-titulo" data-aparecer>
-    <ArmaInicio />
+    <ul class="rubros" role="list">
+      {
+        RUBROS.map((rubro) => (
+          <li data-aparecer>
+            <a class="rubro vidrio" href={`/soluciones#${rubro.id}`}>
+              <span class="rubro__estado">{rubro.estado === 'activa' ? 'Demo disponible' : 'Próximamente'}</span>
+              <b class="rubro__nombre">{rubro.nombre}</b>
+              <span class="rubro__resumen">{rubro.resumen}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section class="contenedor seccion" aria-labelledby="pasos-titulo">
@@ -64,19 +67,19 @@ import { DULCERIA } from '../rubros/dulceria/config';
       <p class="etiqueta">Cómo trabajamos</p>
       <h2 id="pasos-titulo" class="titulo-2">De la idea a tu sistema, <span class="acento">sin sorpresas.</span></h2>
     </div>
-    <Proceso />
+    <Proceso corto />
+    <a class="seccion__mas" href="/servicios">Ver cómo se crea tu sistema</a>
   </section>
 
-  <section class="contenedor seccion" aria-labelledby="stack-titulo" data-aparecer>
-    <h2 id="stack-titulo" class="etiqueta">Con qué construyo</h2>
-    <ul class="chips" role="list">
-      {TECNOLOGIAS.map((tecnologia) => <li class="chip vidrio vidrio--chico">{tecnologia}</li>)}
-    </ul>
-    <p class="casos">Casos: próximamente.</p>
-  </section>
-
-  <section id="contacto" class="contenedor seccion" aria-labelledby="contacto-titulo" data-aparecer>
-    <ContactoTarjeta id="contacto-titulo" />
+  <section class="contenedor seccion" aria-labelledby="cta-titulo" data-aparecer>
+    <div class="cta vidrio">
+      <h2 id="cta-titulo" class="titulo-2">Arma tu sistema y recibe <span class="acento">tu cotización.</span></h2>
+      <p class="seccion__bajada">Elige las funciones que necesitas. Los precios son referenciales y la cotización te llega lista para WhatsApp.</p>
+      <div class="cta__acciones">
+        <Boton href="/cotizar">Cotizar mi sistema</Boton>
+        <Boton href={WHATSAPP_ENLACE} variante="vidrio" externo><IconoWhatsApp />Escríbeme</Boton>
+      </div>
+    </div>
   </section>
 </Base>
 
@@ -301,30 +304,75 @@ import { DULCERIA } from '../rubros/dulceria/config';
     color: var(--acento-texto);
   }
 
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--espacio-2);
-    max-width: 30rem;
+  .rubros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--espacio-3);
+    width: 100%;
     padding: 0;
     list-style: none;
   }
 
-  .chip {
-    padding: var(--espacio-2) var(--espacio-4);
-    font-size: var(--texto-sm);
-    font-weight: 600;
+  .rubros li {
+    display: grid;
   }
 
-  .casos {
-    width: 100%;
-    max-width: 30rem;
+  .rubro {
+    display: grid;
+    align-content: start;
+    gap: var(--espacio-2);
     padding: var(--espacio-5);
+    color: var(--texto);
+    text-align: left;
+    text-decoration: none;
+    transition: transform var(--duracion-toque) var(--ease-out);
+  }
+
+  .rubro:active {
+    transform: scale(0.97);
+  }
+
+  .rubro__estado {
+    color: var(--acento-texto);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .rubro__nombre {
+    font-size: 1.25rem;
+    font-weight: var(--peso-titulo);
+    letter-spacing: -0.02em;
+  }
+
+  .rubro__resumen {
     color: var(--texto-suave);
-    border: 1px dashed var(--color-punteado);
-    border-radius: var(--radio-tarjeta);
-    font-size: var(--texto-sm);
+    font-size: 0.9375rem;
+  }
+
+  .seccion__mas {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--texto);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+  }
+
+  .cta {
+    display: grid;
+    justify-items: center;
+    gap: var(--espacio-4);
+    width: 100%;
+    padding: var(--espacio-8) var(--espacio-6);
+  }
+
+  .cta__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.625rem;
   }
 
   @media (min-width: 48rem) {

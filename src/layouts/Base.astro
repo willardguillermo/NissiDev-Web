@@ -1,7 +1,8 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import { WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
+import { PERFILES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
 interface Props {
@@ -11,17 +12,17 @@ interface Props {
 
 const {
   titulo,
-  descripcion = 'NissiDev: webs y sistemas para negocios del Este de Lima. Prueba la demo de tu rubro y arma tu cotización.',
+  descripcion = 'NissiDev: webs y sistemas para negocios de todo rubro. Prueba la demo de tu rubro y arma tu cotización.',
 } = Astro.props;
 const tituloCompleto = titulo === 'NissiDev' ? titulo : `${titulo} · NissiDev`;
 
 const enlaces = [
-  { href: '/', texto: 'Inicio' },
+  { href: '/soluciones', texto: 'Soluciones' },
   { href: '/servicios', texto: 'Servicios' },
-  { href: '/demos', texto: 'Demos' },
-  { href: '/arma-tu-sistema', texto: 'Arma tu sistema' },
+  { href: '/sobre-mi', texto: 'Sobre mí' },
   { href: '/contacto', texto: 'Contacto' },
 ];
+const pieEnlaces = [{ href: '/', texto: 'Inicio' }, ...enlaces, { href: '/cotizar', texto: 'Cotizar' }];
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
@@ -83,8 +84,8 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         </a>
 
         <div class="cabecera__acciones">
-          <a class="mi-sistema" href="/arma-tu-sistema" data-mi-sistema hidden>
-            Mi sistema <b class="mi-sistema__cuenta" data-mi-sistema-cantidad></b>
+          <a class="cotizar" href="/cotizar" data-cotizar aria-current={rutaActual === '/cotizar' ? 'page' : undefined}>
+            Cotizar <b class="cotizar__cuenta" data-cotizar-cantidad hidden></b>
           </a>
           <button
             class="menu-boton"
@@ -120,14 +121,40 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Pie corto (TD2): la acción de contacto grande ya está en la tarjeta de Contacto -->
+    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto (WhatsApp y perfiles); abajo, el © tras una línea fina -->
     <footer class="pie">
-      <div class="contenedor pie__fila">
-        <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
-        <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
-          WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
-        </a>
-        <p class="pie__nota">© {new Date().getFullYear()} NissiDev · Este de Lima</p>
+      <div class="contenedor">
+        <div class="pie__grilla">
+          <div class="pie__columna">
+            <p class="pie__marca"><Logo class="pie__logo" />NissiDev</p>
+            <p class="pie__frase">Webs y sistemas a medida para negocios de todo rubro.</p>
+          </div>
+          <nav class="pie__columna" aria-labelledby="pie-web">
+            <h2 id="pie-web" class="pie__titulo">La web</h2>
+            <ul class="pie__lista">
+              {pieEnlaces.map(({ href, texto }) => <li><a href={href}>{texto}</a></li>)}
+            </ul>
+          </nav>
+          <div class="pie__columna">
+            <h2 class="pie__titulo">Contacto</h2>
+            <a class="pie__whatsapp" href={WHATSAPP_ENLACE} target="_blank" rel="noopener noreferrer">
+              <IconoWhatsApp />WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
+            </a>
+            <ul class="pie__lista">
+              {
+                PERFILES.map(({ nombre, enlace }) => (
+                  <li>
+                    <a href={enlace} target="_blank" rel="noopener noreferrer">
+                      {nombre}
+                      <span class="solo-lector"> (se abre en otra pestaña)</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        <p class="pie__nota">© {new Date().getFullYear()} NissiDev</p>
       </div>
     </footer>
 
@@ -235,19 +262,21 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     </script>
 
     <script>
-      // Acceso "Mi sistema (n)" en el header: solo aparece si hay módulos elegidos. Sin React.
+      // Botón "Cotizar (n)" del header: siempre visible; el contador aparece si hay funciones elegidas. Sin React.
       import { $carrito } from '../carrito/store';
 
       const pintar = ({ items }: { items: unknown[] }) => {
-        const enlace = document.querySelector<HTMLElement>('[data-mi-sistema]');
-        const cantidad = document.querySelector<HTMLElement>('[data-mi-sistema-cantidad]');
+        const enlace = document.querySelector<HTMLElement>('[data-cotizar]');
+        const cantidad = document.querySelector<HTMLElement>('[data-cotizar-cantidad]');
         if (!enlace || !cantidad) return;
-        enlace.hidden = items.length === 0;
+        cantidad.hidden = items.length === 0;
         cantidad.textContent = String(items.length);
-        enlace.setAttribute(
-          'aria-label',
-          `Mi sistema: ${items.length} ${items.length === 1 ? 'módulo elegido' : 'módulos elegidos'}`,
-        );
+        if (items.length === 0) enlace.removeAttribute('aria-label');
+        else
+          enlace.setAttribute(
+            'aria-label',
+            `Cotizar: ${items.length} ${items.length === 1 ? 'función elegida' : 'funciones elegidas'}`,
+          );
       };
 
       $carrito.subscribe(pintar);
@@ -318,13 +347,13 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--espacio-2);
   }
 
-  /* Negro con el contador en dorado (tinta sobre dorado 5.2:1) */
-  .mi-sistema {
+  /* Botón destacado: negro con el contador en dorado (tinta sobre dorado 5.2:1) */
+  .cotizar {
     display: inline-flex;
     align-items: center;
     gap: var(--espacio-2);
     min-height: 2.75rem;
-    padding-inline: var(--espacio-4) var(--espacio-2);
+    padding-inline: var(--espacio-4);
     background: var(--fondo-oscuro);
     color: var(--color-blanco);
     border-radius: var(--radio-pildora);
@@ -336,7 +365,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     transition: transform var(--duracion-toque) var(--ease-out);
   }
 
-  .mi-sistema__cuenta {
+  .cotizar__cuenta {
     display: inline-grid;
     place-items: center;
     min-width: 1.5rem;
@@ -350,13 +379,17 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     font-variant-numeric: tabular-nums;
   }
 
-  .mi-sistema:active,
+  .cotizar:has(.cotizar__cuenta:not([hidden])) {
+    padding-right: var(--espacio-2);
+  }
+
+  .cotizar:active,
   .menu-boton:active,
   .menu a:active {
     transform: scale(0.97);
   }
 
-  .mi-sistema[hidden] {
+  .cotizar__cuenta[hidden] {
     display: none;
   }
 
@@ -425,7 +458,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       color: var(--texto);
     }
 
-    .mi-sistema:hover {
+    .cotizar:hover {
       background: #2c2d31;
     }
   }
@@ -512,16 +545,27 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
   .pie {
     margin-top: var(--espacio-16);
     padding-block: var(--espacio-8) var(--espacio-12);
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
   }
 
-  .pie__fila {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--espacio-2) var(--espacio-5);
-    color: var(--texto-nota);
-    font-size: var(--texto-sm);
+  /* Celular: todo apilado y a la izquierda. Escritorio: tres columnas alineadas arriba. */
+  .pie__grilla {
+    display: grid;
+    gap: var(--espacio-6);
+  }
+
+  @media (min-width: 48rem) {
+    .pie__grilla {
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--espacio-8);
+    }
+  }
+
+  .pie__columna {
+    display: grid;
+    align-content: start;
+    gap: var(--espacio-2);
   }
 
   .pie__marca {
@@ -529,6 +573,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     align-items: center;
     gap: var(--espacio-2);
     color: var(--texto);
+    font-size: var(--texto-md);
     font-weight: 700;
   }
 
@@ -536,12 +581,61 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     width: 1rem;
   }
 
+  .pie__frase {
+    max-width: 30ch;
+  }
+
+  .pie__titulo {
+    color: var(--texto-nota);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .pie__lista {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Enlaces con área táctil de 44 px, pero sin separar de más la lista */
+  .pie__lista a,
   .pie__whatsapp {
     display: inline-flex;
     align-items: center;
+    gap: var(--espacio-2);
     min-height: 2.75rem;
     color: var(--texto);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  /* Con mouse no hace falta el área táctil: la lista queda más junta */
+  @media (min-width: 48rem) and (pointer: fine) {
+    .pie__lista a,
+    .pie__whatsapp {
+      min-height: 2rem;
+    }
+  }
+
+  .pie__whatsapp {
     font-weight: 600;
     font-variant-numeric: tabular-nums;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pie__lista a:hover,
+    .pie__whatsapp:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  .pie__nota {
+    margin-top: var(--espacio-8);
+    padding-top: var(--espacio-4);
+    color: var(--texto-nota);
+    border-top: 1px solid var(--color-linea);
   }
 </style>

@@ -16,7 +16,7 @@ Orden de construcción: `ui` → `catalogo-servicios` → `carrito` → `cotizac
 
 ## Objetivo
 **Qué:** la web de NissiDev con (1) mi presentación como desarrollador, (2) una demo funcional de sistema para una **dulcería con puestos** y (3) un **carrito de funcionalidades** que termina en una cotización por WhatsApp.
-**Para quién:** dueños de negocios del Este de Lima (llegan desde mi mensaje de WhatsApp) y, en segundo lugar, reclutadores de prácticas (sección de stack).
+**Para quién:** dueños de negocios de distintos rubros (nota interna: la prospección empieza por el Este de Lima; nunca en textos públicos, ADR-004) (llegan desde mi mensaje de WhatsApp) y, en segundo lugar, reclutadores de prácticas (sección de stack).
 **Por qué:** mostrar cómo quedaría *su* sistema antes de hablar de precio, y que el dueño arme lo que necesita.
 **Cómo sabré que funcionó:** un dueño entra desde el celular, prueba la demo y me envía una cotización por WhatsApp sin ayuda.
 
@@ -97,7 +97,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - [ ] **Rendimiento (móvil, publicado):** LCP ≤ 2.5 s · CLS ≤ 0.1 · INP ≤ 200 ms.
 - [ ] **Accesibilidad:** todo se usa con teclado, contraste ≥ 4.5:1, campos con label, respeta "movimiento reducido".
 - [ ] `npm run build`, `npm test` y `npm run lint` pasan sin errores.
-- [ ] Publicado en Cloudflare Pages (`*.pages.dev`).
+- [ ] Publicado en Cloudflare Pages con el dominio oficial `https://nissidev.dev`; las vistas previas por rama siguen en `*.nissidev-web.pages.dev`.
 
 ## Supuestos
 1. Es un sitio **solo frontend**; no hay base de datos ni login en el MVP.
@@ -118,4 +118,4 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - Textos: borrador de Claude Code, corregido por Guillermo.
 
 ## Preguntas abiertas
-- No bloquean: permiso para mostrar Continental Hydraulic, compra de nissidev.com y hosting de n8n (etapa 3). Ver `BRIEF.md`.
+- No bloquean: permiso para mostrar Continental Hydraulic y hosting de n8n (etapa 3). Ver `BRIEF.md`.
