@@ -243,9 +243,9 @@ Evidencia y resultados: [VERIFICACION.md](../docs/referencias/cotizacion-impreso
 - **Verificación:** prueba manual con ambas preferencias; Lighthouse local sin aumento de CLS.
 
 ### T26 · feat: Cloudflare Web Analytics
-- **Antes:** permiso de Guillermo; él activa la analítica en su panel.
-- **Qué:** script de analítica en `Base.astro`.
-- **Verificación:** visitas visibles en el panel de Cloudflare.
+- **Antes:** Guillermo la activó en Pages (Metrics → Enable).
+- **Qué:** Cloudflare Pages inyecta el script al publicar; no hay código propio. No agregar otro script en `Base.astro`: contaría doble.
+- **Verificación:** el beacon de Cloudflare Insights aparece una sola vez en el HTML publicado (vista previa y producción) y las visitas se ven en el panel de Cloudflare.
 
 **Punto de control 7:** sitio completo antes de darlo por publicado (buen momento para `/codex:adversarial-review`).
 
