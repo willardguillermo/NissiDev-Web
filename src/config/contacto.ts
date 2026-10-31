@@ -8,6 +8,10 @@ export function whatsappConMensaje(texto: string): string {
   return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(texto)}`;
 }
 
+/** Correo de contacto: secundario, WhatsApp sigue siendo el contacto principal. */
+export const CORREO = 'hola@nissidev.dev';
+export const CORREO_ENLACE = `mailto:${CORREO}`;
+
 /** Perfiles de Guillermo: en Sobre mí y en el footer, junto a WhatsApp. */
 export const PERFILES = [
   { nombre: 'GitHub', enlace: 'https://github.com/willardguillermo' },

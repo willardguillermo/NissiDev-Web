@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import { PERFILES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
+import { CORREO, CORREO_ENLACE, PERFILES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
 interface Props {
@@ -121,7 +121,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
       <slot />
     </main>
 
-    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto (WhatsApp y perfiles); abajo, el © tras una línea fina -->
+    <!-- Pie en columnas sobre una grilla: marca · enlaces · contacto (WhatsApp, correo y perfiles); abajo, el © tras una línea fina -->
     <footer class="pie">
       <div class="contenedor">
         <div class="pie__grilla">
@@ -141,6 +141,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
               <IconoWhatsApp />WhatsApp {WHATSAPP_VISIBLE}<span class="solo-lector"> (se abre en otra pestaña)</span>
             </a>
             <ul class="pie__lista">
+              <li><a href={CORREO_ENLACE}>{CORREO}</a></li>
               {
                 PERFILES.map(({ nombre, enlace }) => (
                   <li>
