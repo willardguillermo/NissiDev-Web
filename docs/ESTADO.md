@@ -1,14 +1,14 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-31 (estructura por rubros aprobada; dominio nissidev.dev).
+> Última actualización: 2026-10-31 (rama de estructura por rubros cerrada con el PR #6; producción en nissidev.dev. Sigue: redirecciones de dominio, T26 y T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
-- **Pendiente de Guillermo:** las redirecciones de dominio. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
+- Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
+- **Pendiente de Guillermo:** las redirecciones de dominio; hoy `nissidev-web.pages.dev` y `www.nissidev.dev` responden 200 sin redirigir. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
 
-## Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
+## Estructura por rubros — cerrada ([PR #6](https://github.com/willardguillermo/NissiDev-Web/pull/6), merge commit `0d75934`; rama borrada)
 - Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; Codex aprobó (2 revisiones, la última con base `37a7544`, sin hallazgos) y Guillermo aprobó en su celular.
-- Vista previa: https://feature-estructura-rubros.nissidev-web.pages.dev
 - Hecho: sin ubicación (test en `src/sin-ubicacion.test.ts`); rutas `/soluciones`, `/cotizar`, `/sobre-mi` con 301 desde `/demos`, `/demos/dulceria/` (conserva la query) y `/arma-tu-sistema`; menú Soluciones · Servicios · Sobre mí · Contacto + botón «Cotizar (n)»; footer en columnas; Inicio reordenado; celular con selector de 5 rubros (`src/rubros/<id>/historia.ts`); Soluciones; Servicios con funciones, precios y preguntas frecuentes; Sobre mí con el texto de Guillermo, GitHub/LinkedIn y el stack con íconos de Simple Icons (CC0).
 - Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS del Inicio: externo igual (6.0 KB gzip) y scripts en línea 2.29 KB gzip frente a 2.17 KB en main; HTML del Inicio 13.8 KB gzip (9.6 KB en main), por las pantallas de los 5 rubros. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
 - **Arreglos de la revisión (2026-10-25), un commit `fix:` por punto:**
@@ -33,10 +33,10 @@
 Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
 
 ## Publicado (rama `main` → https://nissidev.dev)
-- Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto con **Liquid Glass + Geist (TD2)**.
+- Inicio, Soluciones, Servicios, Cotizar, Cotización, Sobre mí y Contacto con **Liquid Glass + Geist (TD2)**.
 - Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
-- Demo de dulcería: `/demos/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
-- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2) y #5 (entrega TD2 + impresora hacia main).
+- Demo de dulcería: `/soluciones/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
+- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2), #5 (entrega TD2 + impresora hacia main) y #6 (estructura por rubros y dominio).
 
 ## Liquid Glass + Geist — TD2
 - Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/`; ADR-003.
