@@ -1,9 +1,13 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-25 (arreglos de la revisión de la estructura por rubros, lista para revisión con base `37a7544`).
+> Última actualización: 2026-10-31 (estructura por rubros aprobada; dominio nissidev.dev).
 
-## En curso — Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
-- Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; **falta la revisión de Codex** (`--base de7743d`) y la aprobación de Guillermo en su celular. Nada unido a main.
+## Dominio
+- **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
+- **Pendiente de Guillermo:** las redirecciones de dominio. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
+
+## Estructura por rubros (rama `feature/estructura-rubros`, desde `de7743d`)
+- Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; Codex aprobó (2 revisiones, la última con base `37a7544`, sin hallazgos) y Guillermo aprobó en su celular.
 - Vista previa: https://feature-estructura-rubros.nissidev-web.pages.dev
 - Hecho: sin ubicación (test en `src/sin-ubicacion.test.ts`); rutas `/soluciones`, `/cotizar`, `/sobre-mi` con 301 desde `/demos`, `/demos/dulceria/` (conserva la query) y `/arma-tu-sistema`; menú Soluciones · Servicios · Sobre mí · Contacto + botón «Cotizar (n)»; footer en columnas; Inicio reordenado; celular con selector de 5 rubros (`src/rubros/<id>/historia.ts`); Soluciones; Servicios con funciones, precios y preguntas frecuentes; Sobre mí con el texto de Guillermo, GitHub/LinkedIn y el stack con íconos de Simple Icons (CC0).
 - Verificado: 413 tests, tipos, lint y build en verde; Playwright a 390×844, 375×667, 1366×768 y 1280×800 sin desborde ni errores; sello visible en los 4 pasos; CLS 0; JS del Inicio: externo igual (6.0 KB gzip) y scripts en línea 2.29 KB gzip frente a 2.17 KB en main; HTML del Inicio 13.8 KB gzip (9.6 KB en main), por las pantallas de los 5 rubros. En la vista previa: 301 correctas y carrito conservado de `/arma-tu-sistema` a `/cotizar/` con la impresora intacta.
@@ -13,13 +17,11 @@
   3. `22f1cec` íconos de Sobre mí siempre en su color de marca sobre placa oscura (los 7 pasan 3:1) y cajas ajustadas: MySQL se lee.
   4. `acef661` el rubro elegido se desliza a la vista en su fila (scrollBy, sin mover la página) y sin el salto de 7 px por anclaje de scroll.
   5. Soluciones en 2 + 3 sin huecos.
-- Pendiente de Guillermo: revisar en el celular y corregir los textos nuevos (lista en el reporte de la sesión).
-
 
 ## Entrega aprobada — Liquid Glass y cotización con impresora
 - Guillermo autorizó integrar todo en main el 2026-10-24. La entrega se integra mediante PR y merge commit, sin squash.
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e`; PR [#5](https://github.com/willardguillermo/NissiDev-Web/pull/5) reúne el rediseño y la impresora para main.
-- Sitio: https://nissidev-web.pages.dev . Para probar la impresora, abrir `/arma-tu-sistema`, cargar «Sugerido: Dulcería» y entrar en «Ver mi cotización».
+- Sitio: https://nissidev.dev . Para probar la impresora, abrir `/cotizar/`, cargar «Sugerido: Dulcería» y entrar en «Ver mi cotización».
 - **Revisiones independientes cerradas:** impresora en cinco ejes contra `9d164c2`, sin bloqueantes; arreglos de TD2 (observador, sello y Contacto) cerrados. El P2 de Contacto a 320 px se confirmó (documento de 343 px), se corrigió en `421848f` y se volvió a revisar.
 - **Compilación actual comprobada con Playwright:** Contacto sin desborde y dentro del padding a 320, 375, 390 y 1366 px; historia con 4 pasos y sello visible a 1366×768, 1280×800, 390×844 y 375×667; sin errores de página.
 - **Comandos:** 384 tests / 35 archivos, tipos sin diagnósticos, lint y build correctos. Persiste la advertencia previa de Node sobre localStorage. Audit de la entrega sin vulnerabilidades.
@@ -30,7 +32,7 @@
 ## En una línea
 Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
 
-## Publicado (rama `main` → https://nissidev-web.pages.dev)
+## Publicado (rama `main` → https://nissidev.dev)
 - Inicio, Servicios, Demos, Arma tu sistema, Cotización y Contacto con **Liquid Glass + Geist (TD2)**.
 - Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
 - Demo de dulcería: `/demos/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
@@ -68,7 +70,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - Selector de rubro del celular: empieza en Dulcería, la única con demo completa (decisión pequeña, 2026-10-25).
 - Movimiento: ease-out en entradas, `scale(0.97)` al tocar, hover solo con mouse, nada se mueve solo (sin carruseles automáticos), movimiento reducido = menos y más suave, transparencia reducida = superficies sólidas.
 - Texto: contraste ≥ 4.5:1 (lo vigila `tokens.test.ts`); nunca texto gris claro sobre vidrio.
-- Continental Hydraulic no se muestra como caso hasta tener permiso del cliente. Dominio nissidev.com por comprar.
+- Continental Hydraulic no se muestra como caso hasta tener permiso del cliente.
 
 ## Cómo trabaja Guillermo
 - Es estudiante (Tecsup, Diseño y Desarrollo de Software) y está construyendo su portafolio: cada tarea cierra con "Qué aprender".

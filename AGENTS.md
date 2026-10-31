@@ -22,7 +22,7 @@ Web de la marca NissiDev: *showroom* de sistemas para negocios de distintos rubr
 - Diseño "Liquid Glass" con la tipografía **Geist** servida desde `public/fonts/` (ADR-003). La demo de dulcería usa su propio estilo (Shrikhand + Chivo)
 - CSS propio con variables en `src/styles/tokens.css`
 - Vitest, ESLint, `astro check`
-- Cloudflare Pages conectado a GitHub (`willardguillermo/NissiDev-Web`)
+- Cloudflare Pages conectado a GitHub (`willardguillermo/NissiDev-Web`). Producción: **https://nissidev.dev** (nissidev.com estaba ocupado); las vistas previas siguen en `*.nissidev-web.pages.dev`. `public/_redirects` solo admite rutas: las redirecciones de dominio van en Bulk Redirects, sin «Include subdomains» para no capturar las vistas previas
 
 ## Comandos
 - Instalar: `npm install`
