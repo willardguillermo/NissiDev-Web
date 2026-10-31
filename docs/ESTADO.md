@@ -1,11 +1,16 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-31 (rama de estructura por rubros cerrada con el PR #6; producción en nissidev.dev. Sigue: redirecciones de dominio, T26 y T27).
+> Última actualización: 2026-10-31 (rama `feature/correo-analitica` lista para revisión: correo y T26. Sigue: unirla a main, comprobar el beacon en producción, redirecciones de dominio y T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Pendiente de Guillermo:** las redirecciones de dominio; hoy `nissidev-web.pages.dev` y `www.nissidev.dev` responden 200 sin redirigir. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
+
+## Correo y analítica — rama `feature/correo-analitica`, sin unir a main
+- **Correo:** `hola@nissidev.dev` (Email Routing de Cloudflare, reenvía al Gmail de Guillermo), con enlace `mailto:` en el footer y en `/contacto`, debajo de WhatsApp.
+- **T26:** Guillermo activó Web Analytics en Pages (Metrics → Enable). Cloudflare inyecta el script y no hay código propio. Vista previa: 1 beacon, y sigue siendo 1 tras navegar con View Transitions. Producción: **0 beacons** porque `main` aún no se ha vuelto a publicar.
+- **Pendiente al unir a main:** comprobar en `https://nissidev.dev/contacto/` que haya 1 beacon y que el `mailto:` siga intacto (la ofuscación de correo de Cloudflare podría reescribirlo en el dominio propio), y ver las visitas en el panel.
 
 ## Estructura por rubros — cerrada ([PR #6](https://github.com/willardguillermo/NissiDev-Web/pull/6), merge commit `0d75934`; rama borrada)
 - Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; Codex aprobó (2 revisiones, la última con base `37a7544`, sin hallazgos) y Guillermo aprobó en su celular.
@@ -27,7 +32,7 @@
 - **Comandos:** 384 tests / 35 archivos, tipos sin diagnósticos, lint y build correctos. Persiste la advertencia previa de Node sobre localStorage. Audit de la entrega sin vulnerabilidades.
 - **Impresora:** teclado/foco, desmontaje real en ambas fases sin timers ni escrituras posteriores, cambios del carrito entre pestañas, vacío/restauración, movimiento reducido y PDF de 9 módulos en una página A4 verificados. Evidencia en `docs/referencias/cotizacion-impresora/VERIFICACION.md`.
 - Playwright se usó desde la caché de npx con autorización, sin nuevas dependencias. No se añadieron más capturas: se conservan solo móvil lista, escritorio lista y proforma A4. Descargas de Videos y temporales propios de QA limpiados.
-- **Qué sigue:** T26 (Guillermo activa Web Analytics en Cloudflare), T27 (verificación global del MVP, incluido celular físico, INP/Lighthouse y README) y punto de control 7. La autorización de integración no se registra como una prueba física del celular.
+- **Qué sigue:** cerrar T26 en producción, T27 (verificación global del MVP, incluido celular físico, INP/Lighthouse y README) y punto de control 7. La autorización de integración no se registra como una prueba física del celular.
 
 ## En una línea
 Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro prueba la **demo de su rubro**, arma su sistema en un **carrito de funcionalidades** y envía la **cotización por WhatsApp**. Las demos son **plantillas generales por rubro**, no maquetas de un cliente concreto.
@@ -54,7 +59,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
-1. **T26**: Cloudflare Web Analytics. Guillermo debe activarla primero en su panel de Cloudflare.
+1. **T26**: Cloudflare Web Analytics ya activada; falta comprobar el beacon en producción al unir `feature/correo-analitica`.
 2. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 3. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
