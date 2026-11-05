@@ -242,10 +242,11 @@ Evidencia y resultados: [VERIFICACION.md](../docs/referencias/cotizacion-impreso
 - **Terminado cuando:** con "movimiento reducido", menos y más suave, no cero (sin desplazamientos ni giros, con fundidos cortos); sin saltos de diseño (CLS).
 - **Verificación:** prueba manual con ambas preferencias; Lighthouse local sin aumento de CLS.
 
-### T26 · feat: Cloudflare Web Analytics
+### T26 · feat: Cloudflare Web Analytics — ✅ sin código propio; unida en el PR #7 (`4b7051c`)
 - **Antes:** Guillermo la activó en Pages (Metrics → Enable).
 - **Qué:** Cloudflare Pages inyecta el script al publicar; no hay código propio. No agregar otro script en `Base.astro`: contaría doble.
 - **Verificación:** el beacon de Cloudflare Insights aparece una sola vez en el HTML publicado (vista previa y producción) y las visitas se ven en el panel de Cloudflare.
+- **Comprobado en producción (2026-11-04):** 1 script del beacon en `/contacto/`, cargando directo y tras navegar Inicio → Servicios → Contacto con View Transitions (el script no se duplica; Cloudflare manda sus envíos de RUM por cada cambio de ruta, como corresponde a una SPA).
 
 **Punto de control 7:** sitio completo antes de darlo por publicado (buen momento para `/codex:adversarial-review`).
 
