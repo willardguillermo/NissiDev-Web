@@ -17,3 +17,9 @@ export const PERFILES = [
   { nombre: 'GitHub', enlace: 'https://github.com/willardguillermo' },
   { nombre: 'LinkedIn', enlace: 'https://www.linkedin.com/in/guillermowillard/' },
 ] as const;
+
+/** Redes de la marca NissiDev: enlaces de texto, sin logos de las marcas. */
+export const REDES = [
+  { nombre: 'Instagram', enlace: 'https://www.instagram.com/nissidev.dev/' },
+  { nombre: 'Facebook', enlace: 'https://www.facebook.com/nissidev.dev' },
+] as const;

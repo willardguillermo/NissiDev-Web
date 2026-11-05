@@ -1,7 +1,7 @@
 ---
 import Logo from '../components/Logo.astro';
 import { STACK } from '../catalogo-servicios/proceso';
-import { PERFILES } from '../config/contacto';
+import { PERFILES, REDES } from '../config/contacto';
 import Base from '../layouts/Base.astro';
 import { ICONOS_TECNOLOGIAS, medidasIcono, PLACA_ICONOS } from '../ui/iconos-tecnologias';
 
@@ -35,7 +35,7 @@ const grupos = STACK.map((grupo) => ({
     </p>
     <ul class="sobre__perfiles entra" style="--n: 5" role="list">
       {
-        PERFILES.map(({ nombre, enlace }) => (
+        [...PERFILES, ...REDES].map(({ nombre, enlace }) => (
           <li>
             <a href={enlace} target="_blank" rel="noopener noreferrer">
               {nombre}
@@ -123,6 +123,8 @@ const grupos = STACK.map((grupo) => ({
 
   .sobre__perfiles {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--espacio-2);
     padding: 0;
     list-style: none;

@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Logo from '../components/Logo.astro';
-import { CORREO, CORREO_ENLACE, PERFILES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
+import { CORREO, CORREO_ENLACE, PERFILES, REDES, WHATSAPP_ENLACE, WHATSAPP_VISIBLE } from '../config/contacto';
 import '../styles/global.css';
 
 interface Props {
@@ -143,7 +143,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
             <ul class="pie__lista">
               <li><a href={CORREO_ENLACE}>{CORREO}</a></li>
               {
-                PERFILES.map(({ nombre, enlace }) => (
+                [...PERFILES, ...REDES].map(({ nombre, enlace }) => (
                   <li>
                     <a href={enlace} target="_blank" rel="noopener noreferrer">
                       {nombre}
