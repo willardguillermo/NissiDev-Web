@@ -1,14 +1,15 @@
 # Estado del proyecto
 
-> Última actualización: 2026-10-31 (rama `feature/correo-analitica` lista para revisión: correo y T26. Sigue: unirla a main, comprobar el beacon en producción, redirecciones de dominio y T27).
+> Última actualización: 2026-11-04 (rama `feature/correo-analitica` lista para revisión: correo, redes de NissiDev y T26. Sigue: unirla a main, comprobar el beacon en producción y T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
-- **Pendiente de Guillermo:** las redirecciones de dominio; hoy `nissidev-web.pages.dev` y `www.nissidev.dev` responden 200 sin redirigir. `public/_redirects` no admite orígenes con dominio: se probó con una rama desechable y Cloudflare las ignora (responde 200). Hay que crearlas en Bulk Redirects, 301, con «Preserve query string», «Subpath matching» y «Preserve path suffix», **sin** «Include subdomains» para no capturar las vistas previas: `nissidev-web.pages.dev` → `https://nissidev.dev` y `www.nissidev.dev` → `https://nissidev.dev`.
+- **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
 
 ## Correo y analítica — rama `feature/correo-analitica`, sin unir a main
 - **Correo:** `hola@nissidev.dev` (Email Routing de Cloudflare, reenvía al Gmail de Guillermo), con enlace `mailto:` en el footer y en `/contacto`, debajo de WhatsApp.
+- **Redes de NissiDev:** Instagram y Facebook en `REDES` (`src/config/contacto.ts`), como enlaces de texto sin logos en la columna Contacto del footer y en `/sobre-mi`, junto a GitHub y LinkedIn. TikTok queda fuera hasta que Guillermo confirme que la cuenta existe.
 - **T26:** Guillermo activó Web Analytics en Pages (Metrics → Enable). Cloudflare inyecta el script y no hay código propio. Vista previa: 1 beacon, y sigue siendo 1 tras navegar con View Transitions. Producción: **0 beacons** porque `main` aún no se ha vuelto a publicar.
 - **Pendiente al unir a main:** comprobar en `https://nissidev.dev/contacto/` que haya 1 beacon y que el `mailto:` siga intacto (la ofuscación de correo de Cloudflare podría reescribirlo en el dominio propio), y ver las visitas en el panel.
 
