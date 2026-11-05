@@ -8,8 +8,18 @@ export function whatsappConMensaje(texto: string): string {
   return `${WHATSAPP_ENLACE}?text=${encodeURIComponent(texto)}`;
 }
 
+/** Correo de contacto: secundario, WhatsApp sigue siendo el contacto principal. */
+export const CORREO = 'hola@nissidev.dev';
+export const CORREO_ENLACE = `mailto:${CORREO}`;
+
 /** Perfiles de Guillermo: en Sobre mí y en el footer, junto a WhatsApp. */
 export const PERFILES = [
   { nombre: 'GitHub', enlace: 'https://github.com/willardguillermo' },
   { nombre: 'LinkedIn', enlace: 'https://www.linkedin.com/in/guillermowillard/' },
+] as const;
+
+/** Redes de la marca NissiDev: enlaces de texto, sin logos de las marcas. */
+export const REDES = [
+  { nombre: 'Instagram', enlace: 'https://www.instagram.com/nissidev.dev/' },
+  { nombre: 'Facebook', enlace: 'https://www.facebook.com/nissidev.dev' },
 ] as const;
