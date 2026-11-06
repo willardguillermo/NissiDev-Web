@@ -1,4 +1,5 @@
 import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
+import { TEXTO_PAGO } from '../catalogo-servicios/pago';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { lanzamientoActivo, LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
 import { calcularTotales } from '../carrito/carrito';
@@ -184,6 +185,7 @@ export default function Carrito() {
           </dl>
         )}
         {cantidad > 0 && totales.notaCotizar && <p className="carrito-resumen__cotizar">Incluye módulos a cotizar.</p>}
+        {cantidad > 0 && <p className="carrito-resumen__pago">{TEXTO_PAGO}</p>}
         <p className="carrito-resumen__referencial">
           {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales; la cotización final se confirma
           por WhatsApp.

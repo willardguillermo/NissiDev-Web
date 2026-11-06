@@ -1,3 +1,4 @@
+import { LANZAMIENTO, type Lanzamiento } from '../catalogo-servicios/lanzamiento';
 import { obtenerModulo } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { calcularTotales } from '../carrito/carrito';
@@ -35,9 +36,12 @@ function textoBienFormado(texto: string): string {
 }
 
 /** Texto plano para WhatsApp: líneas cortas, sin tablas ni emojis, fácil de leer en el celular. */
-export function mensajeWhatsApp({ codigo, emitida, validaHasta, carrito, negocio }: Cotizacion): string {
+export function mensajeWhatsApp(
+  { codigo, emitida, validaHasta, carrito, negocio }: Cotizacion,
+  lanzamiento: Lanzamiento = LANZAMIENTO,
+): string {
   const modulos = carrito.items.map(obtenerModulo);
-  const { inicial, mensual } = calcularTotales(carrito);
+  const { inicial, mensual } = calcularTotales(carrito, lanzamiento);
   const porCotizar = modulos.filter((m) => m.precioInicial.tipo === 'cotizar');
   const nombreNegocio = limpiarNegocio(negocio);
 
@@ -57,7 +61,7 @@ export function mensajeWhatsApp({ codigo, emitida, validaHasta, carrito, negocio
     ...(nombreNegocio ? [`Negocio: ${nombreNegocio}`] : []),
     '',
     'Módulos:',
-    ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m, { items: carrito.items })}`),
+    ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m, { items: carrito.items, lanzamiento })}`),
     '',
     lineaInicial,
     ...(faltaCotizar.length > 0 ? [`Falta cotizar: ${unirTextos(faltaCotizar)}`] : []),

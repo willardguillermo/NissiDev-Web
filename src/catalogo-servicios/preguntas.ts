@@ -1,6 +1,7 @@
 import { DIAS_VALIDEZ } from '../cotizacion/cotizacion';
 import { formatearSoles } from '../ui/formato';
 import { LANZAMIENTO } from './lanzamiento';
+import { TEXTO_PAGO } from './pago';
 import { obtenerModulo } from './modulos';
 import { precioAplicado, textoPrecio } from './precio';
 import { PASOS } from './proceso';
@@ -33,6 +34,10 @@ export const PREGUNTAS: readonly Pregunta[] = [
   {
     pregunta: '¿Cuánto cuesta?',
     respuesta: `Depende de las funciones que elijas. Por ejemplo, el ${obtenerModulo('catalogo-web').nombre} va ${desdeCatalogo()} y el ${obtenerModulo('panel-dueno').nombre} ${desde('panel-dueno')}. Son precios referenciales: en la propuesta recibes el precio cerrado y qué incluye.`,
+  },
+  {
+    pregunta: '¿Cómo se paga?',
+    respuesta: `${TEXTO_PAGO} Antes de empezar recibes la propuesta con el precio cerrado.`,
   },
   {
     pregunta: '¿Cuánto demora?',

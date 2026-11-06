@@ -15,6 +15,11 @@ describe('preguntas frecuentes de Servicios', () => {
     expect(respuesta('¿Hay pagos')).toContain('S/ 60/mes');
   });
 
+  it('la forma de pago: 50% y 50%, con la maqueta gratis', () => {
+    expect(respuesta('¿Cómo se paga')).toContain('Pagas 50% al empezar y 50% al entregar.');
+    expect(respuesta('¿Cómo se paga')).toContain('La maqueta es gratis: la ves antes de pagar nada.');
+  });
+
   it('el plazo y la validez salen del proceso y de la cotización', () => {
     expect(respuesta('¿Cuánto demora')).toContain('4 semanas');
     expect(respuesta('¿Cómo recibo')).toContain('15 días');

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
 import { agregarModulo, CARRITO_VACIO, type Carrito } from '../carrito/carrito';
 import { cargarSugerido } from '../carrito/sugeridos';
 import { enlaceWhatsApp, mensajeWhatsApp } from './mensajeWhatsApp';
@@ -29,6 +30,25 @@ describe('mensajeWhatsApp', () => {
     expect(texto).toContain('- Panel del dueño: Desde S/ 1,500');
     expect(texto).toContain('- Inventario con vencimientos: Cotizar');
     expect(texto).toContain('- Caja con Yape/Plin: S/ 60/mes + instalación (Cotizar)');
+  });
+
+  it('dice el precio aplicado del Catálogo: lanzamiento con cupos, normal sin cupos', () => {
+    const conCupos = mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')));
+    expect(conCupos).toContain('- Catálogo web: Desde S/ 700 · precio de lanzamiento (normal S/ 900)');
+    expect(conCupos).toContain('Inversión inicial: desde S/ 2,200');
+
+    const lleno = { ...LANZAMIENTO, usados: LANZAMIENTO.cupos };
+    const sinCupos = mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')), lleno);
+    expect(sinCupos).toContain('- Catálogo web: Desde S/ 900\n');
+    expect(sinCupos).not.toContain('lanzamiento');
+    expect(sinCupos).toContain('Inversión inicial: desde S/ 2,400');
+  });
+
+  it('Mantenimiento lleva la mensualidad según la selección', () => {
+    const conPanel = agregarModulo(cargarSugerido('dulceria'), 'mantenimiento').carrito;
+    expect(mensajeWhatsApp(cotizacion(conPanel))).toContain('- Mantenimiento: S/ 180/mes');
+    const sinPanel = agregarModulo({ items: ['catalogo-web'] }, 'mantenimiento').carrito;
+    expect(mensajeWhatsApp(cotizacion(sinPanel))).toContain('- Mantenimiento: S/ 120/mes');
   });
 
   it('separa inversión inicial y mensualidad, y nombra lo que falta cotizar', () => {
