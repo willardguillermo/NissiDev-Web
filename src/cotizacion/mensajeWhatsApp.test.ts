@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
+import type { Lanzamiento } from '../catalogo-servicios/lanzamiento';
+import { LANZAMIENTO_ACTIVO, LANZAMIENTO_AGOTADO } from '../catalogo-servicios/lanzamiento.prueba';
 import { agregarModulo, CARRITO_VACIO, type Carrito } from '../carrito/carrito';
 import { cargarSugerido } from '../carrito/sugeridos';
-import { enlaceWhatsApp, mensajeWhatsApp } from './mensajeWhatsApp';
+import { enlaceWhatsApp, mensajeWhatsApp as mensajeConLanzamiento } from './mensajeWhatsApp';
 import type { Cotizacion } from './tipos';
+
+/** Siempre con una configuración fija de lanzamiento, nunca con el contador real. */
+const mensajeWhatsApp = (c: Cotizacion, lanzamiento: Lanzamiento = LANZAMIENTO_ACTIVO) =>
+  mensajeConLanzamiento(c, lanzamiento);
 
 const cotizacion = (carrito: Carrito, negocio?: string): Cotizacion => ({
   codigo: 'NSD-2026-K7Q3',
@@ -37,8 +42,7 @@ describe('mensajeWhatsApp', () => {
     expect(conCupos).toContain('- Catálogo web: Desde S/ 700 · precio de lanzamiento (normal S/ 900)');
     expect(conCupos).toContain('Inversión inicial: desde S/ 2,200');
 
-    const lleno = { ...LANZAMIENTO, usados: LANZAMIENTO.cupos };
-    const sinCupos = mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')), lleno);
+    const sinCupos = mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')), LANZAMIENTO_AGOTADO);
     expect(sinCupos).toContain('- Catálogo web: Desde S/ 900\n');
     expect(sinCupos).not.toContain('lanzamiento');
     expect(sinCupos).toContain('Inversión inicial: desde S/ 2,400');

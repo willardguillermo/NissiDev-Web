@@ -18,3 +18,13 @@ export const lanzamientoActivo = (lanzamiento: Lanzamiento = LANZAMIENTO) => lan
 
 export const cuposDisponibles = (lanzamiento: Lanzamiento = LANZAMIENTO) =>
   Math.max(0, lanzamiento.cupos - lanzamiento.usados);
+
+/** cupos es un entero > 0 y usados un entero entre 0 y cupos. Un test lo exige a la configuración real. */
+export const lanzamientoValido = ({ cupos, usados, precioCentimos }: Lanzamiento) =>
+  Number.isSafeInteger(cupos) &&
+  cupos > 0 &&
+  Number.isSafeInteger(usados) &&
+  usados >= 0 &&
+  usados <= cupos &&
+  Number.isSafeInteger(precioCentimos) &&
+  precioCentimos > 0;

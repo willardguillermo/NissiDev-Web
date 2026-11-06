@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { PREGUNTAS } from './preguntas';
+import { LANZAMIENTO_ACTIVO, LANZAMIENTO_AGOTADO } from './lanzamiento.prueba';
+import { crearPreguntas } from './preguntas';
 
-const respuesta = (inicio: string) => PREGUNTAS.find((p) => p.pregunta.startsWith(inicio))!.respuesta;
+const PREGUNTAS = crearPreguntas(LANZAMIENTO_ACTIVO);
+const respuesta = (inicio: string, preguntas = PREGUNTAS) => preguntas.find((p) => p.pregunta.startsWith(inicio))!.respuesta;
 
 describe('preguntas frecuentes de Servicios', () => {
   it('los precios salen del catálogo, siempre como referenciales', () => {
     expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 900 (S/ 700 de lanzamiento para los primeros 5 proyectos)');
     expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 1,500');
     expect(respuesta('¿Cuánto cuesta')).toContain('referenciales');
+  });
+
+  it('con los cupos agotados, el Catálogo va desde S/ 900 sin hablar de lanzamiento', () => {
+    const agotado = respuesta('¿Cuánto cuesta', crearPreguntas(LANZAMIENTO_AGOTADO));
+    expect(agotado).toContain('va desde S/ 900 y');
+    expect(agotado).not.toContain('lanzamiento');
   });
 
   it('las mensualidades son las decididas', () => {

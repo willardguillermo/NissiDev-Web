@@ -1,6 +1,6 @@
+import { LANZAMIENTO_ACTIVO, LANZAMIENTO_AGOTADO, LANZAMIENTO_UNO_USADO } from '../catalogo-servicios/lanzamiento.prueba';
 import { describe, expect, it } from 'vitest';
 import type { ModuloId } from '../catalogo-servicios/modulos';
-import { LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
 import { agregarModulo, calcularTotales, CARRITO_VACIO, quitarModulo, type Carrito } from './carrito';
 
 const carritoCon = (...items: ModuloId[]): Carrito => ({ items });
@@ -158,29 +158,29 @@ describe('quitarModulo', () => {
 
 describe('calcularTotales', () => {
   it('carrito vacío: todo en cero', () => {
-    expect(calcularTotales(CARRITO_VACIO)).toEqual({ inicial: 0, mensual: 0, incluyeCotizar: false });
+    expect(calcularTotales(CARRITO_VACIO, LANZAMIENTO_ACTIVO)).toEqual({ inicial: 0, mensual: 0, incluyeCotizar: false });
   });
 
   it('separa la inversión inicial de la mensualidad (Catálogo a precio de lanzamiento, Mantenimiento con Panel)', () => {
     const carrito = carritoCon('catalogo-web', 'pedidos-whatsapp', 'panel-dueno', 'mantenimiento');
-    expect(calcularTotales(carrito)).toEqual({ inicial: 220000, mensual: 18000, incluyeCotizar: false });
+    expect(calcularTotales(carrito, LANZAMIENTO_ACTIVO)).toEqual({ inicial: 220000, mensual: 18000, incluyeCotizar: false });
   });
 
   it('con los cupos de lanzamiento llenos, el Catálogo suma S/ 900', () => {
     const carrito = carritoCon('catalogo-web', 'pedidos-whatsapp', 'panel-dueno', 'mantenimiento');
-    const lleno = { ...LANZAMIENTO, usados: LANZAMIENTO.cupos };
-    expect(calcularTotales(carrito, lleno)).toEqual({ inicial: 240000, mensual: 18000, incluyeCotizar: false });
-    expect(calcularTotales(carritoCon('catalogo-web'), lleno).inicial).toBe(90000);
-    expect(calcularTotales(carritoCon('catalogo-web')).inicial).toBe(70000);
+    expect(calcularTotales(carrito, LANZAMIENTO_AGOTADO)).toEqual({ inicial: 240000, mensual: 18000, incluyeCotizar: false });
+    expect(calcularTotales(carritoCon('catalogo-web'), LANZAMIENTO_AGOTADO).inicial).toBe(90000);
+    expect(calcularTotales(carritoCon('catalogo-web'), LANZAMIENTO_ACTIVO).inicial).toBe(70000);
+    expect(calcularTotales(carritoCon('catalogo-web'), LANZAMIENTO_UNO_USADO).inicial).toBe(70000);
   });
 
   it('sin Panel del dueño, Mantenimiento suma S/ 120/mes', () => {
     const carrito = carritoCon('catalogo-web', 'mantenimiento');
-    expect(calcularTotales(carrito)).toEqual({ inicial: 70000, mensual: 12000, incluyeCotizar: false });
+    expect(calcularTotales(carrito, LANZAMIENTO_ACTIVO)).toEqual({ inicial: 70000, mensual: 12000, incluyeCotizar: false });
   });
 
   it('marca si hay módulos "Cotizar" y suma su mensualidad', () => {
     const carrito = agregarModulo(CARRITO_VACIO, 'caja').carrito;
-    expect(calcularTotales(carrito)).toEqual({ inicial: 220000, mensual: 6000, incluyeCotizar: true });
+    expect(calcularTotales(carrito, LANZAMIENTO_ACTIVO)).toEqual({ inicial: 220000, mensual: 6000, incluyeCotizar: true });
   });
 });
