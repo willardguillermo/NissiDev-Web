@@ -289,6 +289,33 @@ Spec: `docs/estructura-rubros.md` · ADR-004 · rama `feature/estructura-rubros`
 
 **Punto de control ER-2:** «Listo para revisión» con base `de7743d`.
 
+## Precios de lanzamiento (2026-11-05)
+Rama `feature/precios-lanzamiento` desde `16b0b1e`. Implementa Claude Code; revisa Codex.
+
+**Decisiones de Guillermo (2026-11-05):** Catálogo web desde S/ 900, con precio de lanzamiento S/ 700 para los primeros 5 proyectos · Panel del dueño desde S/ 1,500 · Mantenimiento S/ 120/mes, o S/ 180/mes si el sistema incluye Panel del dueño · se paga 50% al empezar y 50% al entregar · la maqueta es gratis y se ve antes de pagar nada. No cambia: Caja S/ 60/mes + instalación, módulos «Cotizar», céntimos, validez de 15 días.
+
+**Regla: el contador de cupos muestra SOLO proyectos reales.** `usados` sube únicamente cuando se cierra un proyecto real a precio de lanzamiento. No se inventa escasez: nada de cupos que bajan solos, temporizadores ni números de relleno.
+
+### PL-1 · docs: spec de precios de lanzamiento
+- **Qué:** esta sección; SPEC.md y «Decisiones vigentes» de ESTADO.md con los precios nuevos.
+
+### PL-2 · feat: datos del lanzamiento y precio aplicado
+- **Qué:** `LANZAMIENTO = { cupos: 5, usados: 0, precioCentimos: 70000 }` en `src/catalogo-servicios/lanzamiento.ts` (el único lugar que se toca al cerrar un proyecto). `MODULOS` guarda los precios normales (Catálogo 90000, Panel 150000, Mantenimiento 12000 y 18000 con Panel). `precioAplicado(modulo, items)` decide el precio: el de lanzamiento mientras `usados < cupos`; la mensualidad con Panel si `panel-dueno` está en la selección. Totales, carrito, cotización y WhatsApp usan ese precio.
+- **Terminado cuando:** tests de cupos llenos/no llenos, con y sin Panel, y de los totales.
+
+### PL-3 · feat: barra de cupos
+- **Qué:** en /servicios (precios) y en /cotizar junto al Catálogo web: «Precio de lanzamiento · quedan N de 5 cupos», barra de 5 segmentos (los disponibles resaltados), S/ 700 destacado y S/ 900 tachado. Con los cupos llenos, sin barra: «Desde S/ 900».
+- **Terminado cuando:** el texto es real (la barra es decorativa, `aria-hidden`), contraste ≥ 4.5:1 y sin JS extra en /servicios.
+
+### PL-4 · feat: pago en partes y maqueta gratis
+- **Qué:** «Pagas 50% al empezar y 50% al entregar. La maqueta es gratis: la ves antes de pagar nada.» cerca del total en /cotizar y en la cotización (pantalla y PDF); pregunta frecuente sobre pagos; el mensaje de WhatsApp dice si el Catálogo va a precio de lanzamiento o normal.
+- **Terminado cuando:** la impresora y el PDF siguen intactos (una página A4).
+
+### PL-5 · docs: correo sin ofuscar
+- **Qué:** quitar de ESTADO.md el pendiente del correo (Scrape Shield apagado el 2026-11-05).
+
+**Punto de control PL:** push, vista previa `https://feature-precios-lanzamiento.nissidev-web.pages.dev` y «Listo para revisión» con base `16b0b1e`.
+
 ## Supuestos de este plan
 1. `formatearSoles` vive en `src/ui/formato.ts` (la SPEC no tiene carpeta para utilidades compartidas, y lo usan tanto el carrito como la demo).
 2. Las dependencias se instalan en la tarea que las usa, no todas en la T01, y cada una se pide antes.

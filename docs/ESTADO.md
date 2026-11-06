@@ -71,7 +71,9 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - **Ningún rubro es protagonista** (ADR-004, 2026-10-25): la web muestra sistemas para distintos rubros; la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos, nunca en los textos generales.
 - **Sin ubicación** (ADR-004, 2026-10-25): ningún texto público menciona «Este de Lima» ni otra zona. La zona es estrategia interna y solo puede quedar como nota interna en BRIEF/SPEC.
 - Stack: Astro + islas de React (ADR-001), movimiento solo con CSS (ADR-002), vidrio + Geist (ADR-003). Cloudflare Pages desde GitHub.
-- Precios: Catálogo web desde S/ 700 · Panel desde S/ 500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 80/mes · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales".
+- Precios (2026-11-05): Catálogo web desde S/ 900, con **precio de lanzamiento S/ 700 para los primeros 5 proyectos** · Panel del dueño desde S/ 1,500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 120/mes, o S/ 180/mes si el sistema incluye Panel del dueño · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales". Detalle en *Precios de lanzamiento* de `tasks/plan.md`.
+- Pago: 50% al empezar y 50% al entregar. La maqueta es gratis: se muestra antes de pagar nada.
+- **Cupos de lanzamiento: el contador muestra SOLO proyectos reales; no se inventa escasez.** `LANZAMIENTO.usados` sube solo al cerrar un proyecto real a precio de lanzamiento.
 - Cotización: código `NSD-AAAA-XXXX` al azar (sin correlativo, no hay servidor), válida 15 días, enviada a WhatsApp **+51 913 351 627**; PDF con `window.print()`.
 - Demo: negocio ficticio "Dulcería La Golosa", marcas ficticias, sello "Demo · datos de ejemplo" siempre visible, nada cobra ni abre WhatsApp de verdad (muestra el mensaje y "Quiero esto para mi negocio").
 - Selector de rubro del celular: empieza en Dulcería, la única con demo completa (decisión pequeña, 2026-10-25).
