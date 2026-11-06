@@ -1,4 +1,5 @@
-// Módulos vendibles de NissiDev. Montos en céntimos; precios referenciales (proforma NSD-2026-001).
+// Módulos vendibles de NissiDev. Montos en céntimos; precios referenciales y NORMALES (2026-11-05).
+// El precio de lanzamiento del Catálogo web vive en lanzamiento.ts y lo aplica precioAplicado (precio.ts).
 
 export type ModuloId =
   | 'catalogo-web'
@@ -23,6 +24,8 @@ export interface ModuloServicio {
   descripcion: string;
   precioInicial: PrecioInicial;
   mensualidad?: number;
+  /** Otra mensualidad si en la selección está ese módulo (Mantenimiento con Panel del dueño). */
+  mensualidadCon?: { modulo: ModuloId; centimos: number };
   dependencias: ModuloId[];
   /** Solo tiene sentido junto a otro módulo (Mantenimiento). */
   requiereOtroModulo?: boolean;
@@ -33,7 +36,7 @@ export const MODULOS: readonly ModuloServicio[] = [
     id: 'catalogo-web',
     nombre: 'Catálogo web',
     descripcion: 'Tu página con todos tus productos y precios, lista para compartir por WhatsApp y redes.',
-    precioInicial: { tipo: 'desde', centimos: 70000 },
+    precioInicial: { tipo: 'desde', centimos: 90000 },
     dependencias: [],
   },
   {
@@ -47,7 +50,7 @@ export const MODULOS: readonly ModuloServicio[] = [
     id: 'panel-dueno',
     nombre: 'Panel del dueño',
     descripcion: 'Ves en un solo lugar cuánto vendiste hoy, lo que más sale y cómo va cada local o puesto.',
-    precioInicial: { tipo: 'desde', centimos: 50000 },
+    precioInicial: { tipo: 'desde', centimos: 150000 },
     dependencias: ['catalogo-web'],
   },
   {
@@ -92,7 +95,8 @@ export const MODULOS: readonly ModuloServicio[] = [
     descripcion:
       'Nos encargamos de que tu sistema siga funcionando: copias de seguridad, ajustes pequeños y soporte cuando lo necesites.',
     precioInicial: { tipo: 'ninguno' },
-    mensualidad: 8000,
+    mensualidad: 12000,
+    mensualidadCon: { modulo: 'panel-dueno', centimos: 18000 },
     dependencias: [],
     requiereOtroModulo: true,
   },

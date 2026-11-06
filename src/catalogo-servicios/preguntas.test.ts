@@ -5,13 +5,13 @@ const respuesta = (inicio: string) => PREGUNTAS.find((p) => p.pregunta.startsWit
 
 describe('preguntas frecuentes de Servicios', () => {
   it('los precios salen del catálogo, siempre como referenciales', () => {
-    expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 700');
-    expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 500');
+    expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 900 (S/ 700 de lanzamiento para los primeros 5 proyectos)');
+    expect(respuesta('¿Cuánto cuesta')).toContain('desde S/ 1,500');
     expect(respuesta('¿Cuánto cuesta')).toContain('referenciales');
   });
 
   it('las mensualidades son las decididas', () => {
-    expect(respuesta('¿Hay pagos')).toContain('S/ 80/mes');
+    expect(respuesta('¿Hay pagos')).toContain('S/ 120/mes (S/ 180/mes con Panel del dueño)');
     expect(respuesta('¿Hay pagos')).toContain('S/ 60/mes');
   });
 

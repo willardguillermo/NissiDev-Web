@@ -1,6 +1,8 @@
 import { DIAS_VALIDEZ } from '../cotizacion/cotizacion';
+import { formatearSoles } from '../ui/formato';
+import { LANZAMIENTO } from './lanzamiento';
 import { obtenerModulo } from './modulos';
-import { textoPrecio } from './precio';
+import { precioAplicado, textoPrecio } from './precio';
 import { PASOS } from './proceso';
 
 // Preguntas frecuentes de /servicios. Las respuestas solo usan lo ya decidido (SPEC y ESTADO) y lo arman con
@@ -14,6 +16,13 @@ export interface Pregunta {
 /** Solo la primera letra en minúscula: «Desde S/ 700» → «desde S/ 700». */
 const enFrase = (texto: string) => texto.charAt(0).toLowerCase() + texto.slice(1);
 const desde = (id: Parameters<typeof obtenerModulo>[0]) => enFrase(textoPrecio(obtenerModulo(id)));
+
+/** «desde S/ 900 (S/ 700 de lanzamiento para los primeros 5 proyectos)», o solo «desde S/ 900» sin cupos. */
+function desdeCatalogo(): string {
+  const { precioInicial, precioNormal } = precioAplicado(obtenerModulo('catalogo-web'));
+  if (precioNormal === undefined || precioInicial.tipo !== 'desde') return desde('catalogo-web');
+  return `desde ${formatearSoles(precioNormal)} (${formatearSoles(precioInicial.centimos)} de lanzamiento para los primeros ${LANZAMIENTO.cupos} proyectos)`;
+}
 const paso = (titulo: string) => enFrase(PASOS.find((p) => p.titulo === titulo)!.texto).replace(/\.$/, '');
 
 export const PREGUNTAS: readonly Pregunta[] = [
@@ -23,7 +32,7 @@ export const PREGUNTAS: readonly Pregunta[] = [
   },
   {
     pregunta: '¿Cuánto cuesta?',
-    respuesta: `Depende de las funciones que elijas. Por ejemplo, el ${obtenerModulo('catalogo-web').nombre} va ${desde('catalogo-web')} y el ${obtenerModulo('panel-dueno').nombre} ${desde('panel-dueno')}. Son precios referenciales: en la propuesta recibes el precio cerrado y qué incluye.`,
+    respuesta: `Depende de las funciones que elijas. Por ejemplo, el ${obtenerModulo('catalogo-web').nombre} va ${desdeCatalogo()} y el ${obtenerModulo('panel-dueno').nombre} ${desde('panel-dueno')}. Son precios referenciales: en la propuesta recibes el precio cerrado y qué incluye.`,
   },
   {
     pregunta: '¿Cuánto demora?',

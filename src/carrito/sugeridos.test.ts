@@ -11,7 +11,7 @@ describe('cargarSugerido', () => {
   });
 
   it('Dulcería: totales correctos', () => {
-    expect(calcularTotales(cargarSugerido('dulceria'))).toEqual({ inicial: 120000, mensual: 0, incluyeCotizar: false });
+    expect(calcularTotales(cargarSugerido('dulceria'))).toEqual({ inicial: 220000, mensual: 0, incluyeCotizar: false });
   });
 
   it.each(rubros)('%s: todas las dependencias quedan resueltas y sin duplicados', (rubro) => {

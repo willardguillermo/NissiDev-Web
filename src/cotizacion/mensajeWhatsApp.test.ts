@@ -24,23 +24,23 @@ describe('mensajeWhatsApp', () => {
 
   it('lista cada módulo con su texto de precio', () => {
     const texto = mensajeWhatsApp(cotizacion(dulceriaConCaja));
-    expect(texto).toContain('- Catálogo web: Desde S/ 700');
+    expect(texto).toContain('- Catálogo web: Desde S/ 700 · precio de lanzamiento (normal S/ 900)');
     expect(texto).toContain('- Pedidos por WhatsApp: Incluido en Catálogo web');
-    expect(texto).toContain('- Panel del dueño: Desde S/ 500');
+    expect(texto).toContain('- Panel del dueño: Desde S/ 1,500');
     expect(texto).toContain('- Inventario con vencimientos: Cotizar');
     expect(texto).toContain('- Caja con Yape/Plin: S/ 60/mes + instalación (Cotizar)');
   });
 
   it('separa inversión inicial y mensualidad, y nombra lo que falta cotizar', () => {
     const texto = mensajeWhatsApp(cotizacion(dulceriaConCaja));
-    expect(texto).toContain('Inversión inicial: desde S/ 1,200 (sin contar lo que falta cotizar)');
+    expect(texto).toContain('Inversión inicial: desde S/ 2,200 (sin contar lo que falta cotizar)');
     expect(texto).toContain('Falta cotizar: Inventario con vencimientos y Caja con Yape/Plin (instalación)');
     expect(texto).toContain('Mensualidad: S/ 60/mes');
   });
 
   it('sin módulos por cotizar no menciona "falta cotizar"', () => {
     const texto = mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')));
-    expect(texto).toContain('Inversión inicial: desde S/ 1,200');
+    expect(texto).toContain('Inversión inicial: desde S/ 2,200');
     expect(texto).not.toContain('cotizar');
     expect(texto).toContain('Mensualidad: sin mensualidad');
   });

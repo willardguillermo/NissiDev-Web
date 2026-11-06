@@ -57,7 +57,7 @@ export function mensajeWhatsApp({ codigo, emitida, validaHasta, carrito, negocio
     ...(nombreNegocio ? [`Negocio: ${nombreNegocio}`] : []),
     '',
     'Módulos:',
-    ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m)}`),
+    ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m, { items: carrito.items })}`),
     '',
     lineaInicial,
     ...(faltaCotizar.length > 0 ? [`Falta cotizar: ${unirTextos(faltaCotizar)}`] : []),

@@ -104,7 +104,7 @@ export default function Carrito() {
             <li key={modulo.id} className="carrito-modulo">
               <div className="carrito-modulo__info">
                 <h2 className="carrito-modulo__nombre">{modulo.nombre}</h2>
-                <p className="carrito-modulo__precio">{textoPrecio(modulo)}</p>
+                <p className="carrito-modulo__precio">{textoPrecio(modulo, { items: carrito.items })}</p>
                 <p className="carrito-modulo__descripcion">{modulo.descripcion}</p>
                 {necesita.length > 0 && <p className="carrito-modulo__nota">Necesita: {necesita.join(', ')}</p>}
                 {modulo.requiereOtroModulo && <p className="carrito-modulo__nota">Se agrega junto a otro módulo.</p>}

@@ -40,7 +40,7 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
           return (
             <li key={id} className="cotizacion__modulo">
               <span>{modulo.nombre}</span>
-              <span className="cotizacion__precio">{textoPrecio(modulo)}</span>
+              <span className="cotizacion__precio">{textoPrecio(modulo, { items: carrito.items })}</span>
             </li>
           );
         })}

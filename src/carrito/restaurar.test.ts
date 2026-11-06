@@ -33,7 +33,7 @@ describe('restaurarCarrito', () => {
   it('solo Caja → se completan Inventario, Panel y Catálogo, y los totales cuadran', () => {
     const carrito = restaurarCarrito(guardado({ items: ['caja'] }));
     expect(carrito.items).toEqual(['catalogo-web', 'panel-dueno', 'inventario', 'caja']);
-    expect(calcularTotales(carrito)).toEqual({ inicial: 120000, mensual: 6000, incluyeCotizar: true });
+    expect(calcularTotales(carrito)).toEqual({ inicial: 220000, mensual: 6000, incluyeCotizar: true });
   });
 
   it('solo Mantenimiento → carrito vacío', () => {

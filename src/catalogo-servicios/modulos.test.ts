@@ -64,16 +64,21 @@ describe('catálogo de módulos', () => {
       MODULOS.map((m) => [m.id, { inicial: m.precioInicial, mensual: m.mensualidad, deps: m.dependencias }]),
     );
     expect(resumen).toEqual({
-      'catalogo-web': { inicial: { tipo: 'desde', centimos: 70000 }, mensual: undefined, deps: [] },
+      'catalogo-web': { inicial: { tipo: 'desde', centimos: 90000 }, mensual: undefined, deps: [] },
       'pedidos-whatsapp': { inicial: { tipo: 'incluido', en: 'catalogo-web' }, mensual: undefined, deps: ['catalogo-web'] },
-      'panel-dueno': { inicial: { tipo: 'desde', centimos: 50000 }, mensual: undefined, deps: ['catalogo-web'] },
+      'panel-dueno': { inicial: { tipo: 'desde', centimos: 150000 }, mensual: undefined, deps: ['catalogo-web'] },
       reservas: { inicial: { tipo: 'cotizar' }, mensual: undefined, deps: [] },
       inventario: { inicial: { tipo: 'cotizar' }, mensual: undefined, deps: ['panel-dueno'] },
       caja: { inicial: { tipo: 'cotizar' }, mensual: 6000, deps: ['inventario'] },
       'boletas-sunat': { inicial: { tipo: 'cotizar' }, mensual: undefined, deps: ['caja'] },
       chatbot: { inicial: { tipo: 'cotizar' }, mensual: undefined, deps: [] },
-      mantenimiento: { inicial: { tipo: 'ninguno' }, mensual: 8000, deps: [] },
+      mantenimiento: { inicial: { tipo: 'ninguno' }, mensual: 12000, deps: [] },
     });
+  });
+
+  it('Mantenimiento cuesta S/ 180/mes si el sistema incluye Panel del dueño', () => {
+    expect(obtenerModulo('mantenimiento').mensualidadCon).toEqual({ modulo: 'panel-dueno', centimos: 18000 });
+    expect(MODULOS.filter((m) => m.mensualidadCon).map((m) => m.id)).toEqual(['mantenimiento']);
   });
 
   it('solo Mantenimiento exige otro módulo', () => {
