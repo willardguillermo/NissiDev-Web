@@ -1,18 +1,23 @@
 # Estado del proyecto
 
-> Última actualización: 2026-11-04 (PR #7 unido: correo, T26 y redes en producción. Pendiente: arreglar el correo que Cloudflare ofusca al navegar (decide Guillermo). Sigue: T27).
+> Última actualización: 2026-11-05 (rama `feature/precios-lanzamiento` lista para revisión, base `16b0b1e`: precios nuevos, cupos de lanzamiento, pago 50/50 y maqueta gratis. Correo sin ofuscar en producción. Sigue: revisión de Codex, luego T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
 
+## Precios de lanzamiento — rama `feature/precios-lanzamiento` (lista para revisión)
+- Plan PL-1…PL-5 en `tasks/plan.md` (*Precios de lanzamiento*). Vista previa: https://feature-precios-lanzamiento.nissidev-web.pages.dev
+- `LANZAMIENTO` en `src/catalogo-servicios/lanzamiento.ts`: **al cerrar un proyecto real a S/ 700, subir `usados` en 1** (y nada más). Con `usados = cupos` la barra desaparece y el Catálogo pasa solo a «Desde S/ 900».
+- Barra de cupos en /servicios y /cotizar; línea de pago junto al total en /cotizar y en la cotización (pantalla y PDF); pregunta «¿Cómo se paga?»; WhatsApp con el precio aplicado.
+
 ## Correo, analítica y redes — cerrada ([PR #7](https://github.com/willardguillermo/NissiDev-Web/pull/7), merge commit `4b7051c`; rama borrada)
 - **Correo:** `hola@nissidev.dev` (Email Routing de Cloudflare, reenvía al Gmail de Guillermo), con enlace `mailto:` en el footer y en `/contacto`, debajo de WhatsApp.
 - **Redes de NissiDev:** Instagram y Facebook en `REDES` (`src/config/contacto.ts`), como enlaces de texto sin logos en la columna Contacto del footer y en `/sobre-mi`. Guillermo los probó en su celular. **TikTok pendiente:** la cuenta aún no existe; cuando exista, es una línea en `REDES`.
 - **T26 hecha:** Web Analytics inyectado por Pages, sin código propio. En producción (2026-11-04), `/contacto/` tiene 1 script del beacon al cargar directo y sigue en 1 tras navegar Inicio → Servicios → Contacto.
 - Codex aprobó la rama (revisión adversarial, base `303d17d`, sin hallazgos).
-- **Pendiente (decide Guillermo): el correo se rompe al navegar.** En nissidev.dev, Cloudflare ofusca los correos («Email Address Obfuscation»): el HTML llega con `href="/cdn-cgi/l/email-protection#…"` y `email-decode.min.js` lo corrige al cargar. Cargando `/contacto/` directo funciona (`mailto:hola@nissidev.dev`). Pero al llegar a `/contacto/` navegando con View Transitions, ese script no se vuelve a ejecutar y los dos enlaces muestran «[email protected]» y apuntan a `/cdn-cgi/l/email-protection#…`. Propuesta, sin aplicar: (a) desactivar «Email Address Obfuscation» para nissidev.dev en Cloudflare (Scrape Shield), que es lo más simple y no lleva código; o (b) envolver el correo en `<!--email_off-->…<!--/email_off-->` en `Base.astro` y `ContactoTarjeta.astro` y comprobar que el comentario sobrevive al build de Astro. Recomendación: (a). El correo ya es público a propósito, así que ocultarlo no aporta.
+- **Correo sin ofuscar (2026-11-05):** Guillermo apagó «Email Address Obfuscation» en Cloudflare (Scrape Shield). Claude comprobó que el HTML de nissidev.dev trae `mailto:hola@nissidev.dev` directo en Contacto y en el footer, así que ya no se rompe al navegar con View Transitions.
 
 ## Estructura por rubros — cerrada ([PR #6](https://github.com/willardguillermo/NissiDev-Web/pull/6), merge commit `0d75934`; rama borrada)
 - Spec `docs/estructura-rubros.md`, ADR-004 y plan ER-a…ER-h en `tasks/plan.md`. Implementó Claude Code; Codex aprobó (2 revisiones, la última con base `37a7544`, sin hallazgos) y Guillermo aprobó en su celular.
@@ -61,7 +66,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
-1. **Arreglar el correo ofuscado al navegar** (ver arriba; decide Guillermo).
+1. **Revisión de `feature/precios-lanzamiento`** (base `16b0b1e`) y unirla a main con la aprobación de Guillermo.
 2. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 3. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
@@ -71,7 +76,10 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - **Ningún rubro es protagonista** (ADR-004, 2026-10-25): la web muestra sistemas para distintos rubros; la dulcería es solo la primera demo. Lo particular de un rubro vive en su demo o en sus datos, nunca en los textos generales.
 - **Sin ubicación** (ADR-004, 2026-10-25): ningún texto público menciona «Este de Lima» ni otra zona. La zona es estrategia interna y solo puede quedar como nota interna en BRIEF/SPEC.
 - Stack: Astro + islas de React (ADR-001), movimiento solo con CSS (ADR-002), vidrio + Geist (ADR-003). Cloudflare Pages desde GitHub.
-- Precios: Catálogo web desde S/ 700 · Panel desde S/ 500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 80/mes · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales".
+- Precios (2026-11-05): Catálogo web desde S/ 900, con **precio de lanzamiento S/ 700 para los primeros 5 proyectos** · Panel del dueño desde S/ 1,500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 120/mes, o S/ 180/mes si el sistema incluye Panel del dueño · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales". Detalle en *Precios de lanzamiento* de `tasks/plan.md`.
+- Pago: 50% al empezar y 50% al entregar. La maqueta es gratis: se muestra antes de pagar nada.
+- **Precio de una cotización emitida:** se mantiene durante sus 15 días de validez aunque los cupos de lanzamiento se llenen después; Guillermo la respeta al confirmar por WhatsApp. (La página la recalcula con los cupos del momento, así que el precio que vale es el del mensaje o PDF de esa fecha.)
+- **Cupos de lanzamiento: el contador muestra SOLO proyectos reales; no se inventa escasez.** `LANZAMIENTO.usados` sube solo al cerrar un proyecto real a precio de lanzamiento.
 - Cotización: código `NSD-AAAA-XXXX` al azar (sin correlativo, no hay servidor), válida 15 días, enviada a WhatsApp **+51 913 351 627**; PDF con `window.print()`.
 - Demo: negocio ficticio "Dulcería La Golosa", marcas ficticias, sello "Demo · datos de ejemplo" siempre visible, nada cobra ni abre WhatsApp de verdad (muestra el mensaje y "Quiero esto para mi negocio").
 - Selector de rubro del celular: empieza en Dulcería, la única con demo completa (decisión pequeña, 2026-10-25).

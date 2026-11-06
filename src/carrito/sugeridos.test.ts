@@ -1,3 +1,4 @@
+import { LANZAMIENTO_ACTIVO } from '../catalogo-servicios/lanzamiento.prueba';
 import { describe, expect, it } from 'vitest';
 import { obtenerModulo } from '../catalogo-servicios/modulos';
 import { calcularTotales } from './carrito';
@@ -11,7 +12,7 @@ describe('cargarSugerido', () => {
   });
 
   it('Dulcería: totales correctos', () => {
-    expect(calcularTotales(cargarSugerido('dulceria'))).toEqual({ inicial: 120000, mensual: 0, incluyeCotizar: false });
+    expect(calcularTotales(cargarSugerido('dulceria'), LANZAMIENTO_ACTIVO)).toEqual({ inicial: 220000, mensual: 0, incluyeCotizar: false });
   });
 
   it.each(rubros)('%s: todas las dependencias quedan resueltas y sin duplicados', (rubro) => {

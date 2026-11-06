@@ -1,5 +1,6 @@
 import type { Ref } from 'react';
 import { obtenerModulo } from '../../catalogo-servicios/modulos';
+import { TEXTO_PAGO } from '../../catalogo-servicios/pago';
 import { textoPrecio } from '../../catalogo-servicios/precio';
 import { calcularTotales } from '../../carrito/carrito';
 import { textoTotales } from '../../carrito/textos';
@@ -40,7 +41,7 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
           return (
             <li key={id} className="cotizacion__modulo">
               <span>{modulo.nombre}</span>
-              <span className="cotizacion__precio">{textoPrecio(modulo)}</span>
+              <span className="cotizacion__precio">{textoPrecio(modulo, { items: carrito.items })}</span>
             </li>
           );
         })}
@@ -60,6 +61,7 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
         </div>
       </dl>
 
+      <p className="cotizacion__pago">{TEXTO_PAGO}</p>
       <p className="cotizacion__referencial">Precios referenciales; la cotización final se confirma por WhatsApp.</p>
       <p className="cotizacion__documento">Cotización referencial · No es un comprobante de pago</p>
       <div className="cotizacion__barras" aria-hidden="true" />

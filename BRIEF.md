@@ -100,19 +100,21 @@ Todo vive en archivos del repo, sin base de datos. Los montos se guardan en cén
 | **Carrito** | módulos elegidos, total inicial, total mensual, ¿incluye módulos "Cotizar"? |
 | **Cotización** | código (`NSD-AAAA-XXXX`), fecha, válida hasta (fecha + 15 días), módulos, totales, rubro, nombre del negocio (opcional), aviso de precios referenciales, texto para WhatsApp |
 
-**Módulos del carrito y su referencia de precio** (de la proforma NSD-2026-001):
+**Módulos del carrito y su referencia de precio** (actualizados por Guillermo el 2026-11-05):
 
 | Módulo | Depende de | Precio |
 |---|---|---|
-| Catálogo web | — | **Desde S/ 700** (la cotización final la ajusta Guillermo) |
+| Catálogo web | — | **Desde S/ 900**; precio de lanzamiento **S/ 700 para los primeros 5 proyectos** (la cotización final la ajusta Guillermo) |
 | Pedidos por WhatsApp | Catálogo web | Incluido en el catálogo |
-| Panel del dueño | Catálogo web | Referencia S/ 500 |
+| Panel del dueño | Catálogo web | Desde S/ 1,500 |
 | Reservas | — | Cotizar |
 | Inventario con vencimientos | Panel del dueño | Cotizar |
 | Caja con Yape/Plin | Inventario | Desde S/ 60/mes + instalación |
 | Boletas SUNAT | Caja | Cotizar |
 | Chatbot | — | Cotizar |
-| Mantenimiento | Cualquier módulo | S/ 80/mes |
+| Mantenimiento | Cualquier módulo | S/ 120/mes; S/ 180/mes si el sistema incluye Panel del dueño |
+
+Forma de pago: **50% al empezar y 50% al entregar**. La maqueta es gratis: se muestra antes de pagar nada. El contador de cupos de lanzamiento muestra solo proyectos reales.
 
 ### Configuración de un rubro
 | Entidad | Campos clave |
@@ -157,7 +159,7 @@ Regla: el stock y las cantidades se piensan en unidad base, y el pedido guarda e
 **Cerradas (2026-10-21):**
 - Negocio de ejemplo: **Dulcería La Golosa**, con ~30 productos genéricos y sin marcas reales.
 - Imágenes: ilustraciones simples o marcadores; se reemplazan después por fotos de Guillermo.
-- Catálogo web: **desde S/ 700**.
+- Catálogo web: **desde S/ 700** (cambió el 2026-11-05: desde S/ 900, con S/ 700 de lanzamiento para los primeros 5 proyectos).
 - Textos: primer borrador de Claude Code, corregido por Guillermo.
 - Cotización: código único `NSD-AAAA-XXXX` generado en el navegador (sin servidor ni correlativo) y validez de 15 días.
 - Analítica: Cloudflare Web Analytics.

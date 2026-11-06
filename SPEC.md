@@ -102,7 +102,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 ## Supuestos
 1. Es un sitio **solo frontend**; no hay base de datos ni login en el MVP.
 2. Un repo nuevo y **público** en GitHub (`willardguillermo/NissiDev-Web`), que también suma al portafolio.
-3. Precios "desde" tomados de la proforma NSD-2026-001 (catálogo, panel, mantenimiento, caja). **Reservas, Inventario, Boletas SUNAT y Chatbot muestran "Cotizar"** (decidido).
+3. Precios "desde" (actualizados el 2026-11-05, ver *Precios de lanzamiento* en `tasks/plan.md`): Catálogo web desde S/ 900, con precio de lanzamiento S/ 700 para los primeros 5 proyectos; Panel del dueño desde S/ 1,500; Mantenimiento S/ 120/mes o S/ 180/mes si incluye Panel del dueño; Caja S/ 60/mes + instalación. **Reservas, Inventario, Boletas SUNAT y Chatbot muestran "Cotizar"** (decidido). Pago: 50% al empezar y 50% al entregar; la maqueta es gratis. El contador de cupos muestra solo proyectos reales: no se inventa escasez.
 4. El PDF se genera con la impresión del navegador ("Guardar como PDF") y una hoja de estilos de impresión, sin librería extra.
 5. Las imágenes de productos de la demo son ilustraciones o marcadores propios, no fotos de marcas.
 6. El código lo escribe Guillermo con Claude Code en la terminal, a partir de prompts por tarea que prepara Claude; cada tarea termina en un commit (implementar → test → verificar → commit). En cada punto de control del plan, Codex revisa (`/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar) y se aplica lo que corresponda antes de seguir.
@@ -114,7 +114,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - Módulos sin precio de referencia: "Cotizar".
 
 - Demo: **Dulcería La Golosa**, ~30 productos genéricos sin marcas reales; ilustraciones o marcadores como imágenes.
-- Catálogo web desde S/ 700 · cotización con código único `NSD-AAAA-XXXX` (sin correlativo) y 15 días de validez · Cloudflare Web Analytics.
+- Catálogo web desde S/ 900, S/ 700 de lanzamiento para los primeros 5 proyectos (2026-11-05) · cotización con código único `NSD-AAAA-XXXX` (sin correlativo) y 15 días de validez · Cloudflare Web Analytics.
 - Textos: borrador de Claude Code, corregido por Guillermo.
 
 ## Preguntas abiertas

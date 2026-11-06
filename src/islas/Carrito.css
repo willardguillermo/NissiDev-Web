@@ -189,6 +189,12 @@
   font-size: var(--texto-xs);
 }
 
+.carrito-resumen__pago {
+  color: var(--texto-sobre-oscuro);
+  font-size: var(--texto-sm);
+  font-weight: 600;
+}
+
 .carrito-resumen__referencial {
   color: var(--nota-sobre-oscuro);
   font-size: var(--texto-xs);

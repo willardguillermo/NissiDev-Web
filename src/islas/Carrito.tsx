@@ -1,9 +1,12 @@
 import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
+import { TEXTO_PAGO } from '../catalogo-servicios/pago';
 import { textoPrecio } from '../catalogo-servicios/precio';
+import { lanzamientoActivo, LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
 import { calcularTotales } from '../carrito/carrito';
 import { cargarSugeridoEnStore } from '../carrito/store';
 import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
 import { avisoSugerido, preguntaQuitar, preguntaReemplazar, textoTotales, unirNombres } from '../carrito/textos';
+import CuposLanzamiento from './CuposLanzamiento';
 import { Interruptor } from './Interruptor';
 import { formatearSoles } from '../ui/formato';
 import { useCarritoInteractivo } from './useCarritoInteractivo';
@@ -104,7 +107,11 @@ export default function Carrito() {
             <li key={modulo.id} className="carrito-modulo">
               <div className="carrito-modulo__info">
                 <h2 className="carrito-modulo__nombre">{modulo.nombre}</h2>
-                <p className="carrito-modulo__precio">{textoPrecio(modulo)}</p>
+                {modulo.id === LANZAMIENTO.modulo && lanzamientoActivo() ? (
+                  <CuposLanzamiento />
+                ) : (
+                  <p className="carrito-modulo__precio">{textoPrecio(modulo, { items: carrito.items })}</p>
+                )}
                 <p className="carrito-modulo__descripcion">{modulo.descripcion}</p>
                 {necesita.length > 0 && <p className="carrito-modulo__nota">Necesita: {necesita.join(', ')}</p>}
                 {modulo.requiereOtroModulo && <p className="carrito-modulo__nota">Se agrega junto a otro módulo.</p>}
@@ -178,6 +185,7 @@ export default function Carrito() {
           </dl>
         )}
         {cantidad > 0 && totales.notaCotizar && <p className="carrito-resumen__cotizar">Incluye módulos a cotizar.</p>}
+        {cantidad > 0 && <p className="carrito-resumen__pago">{TEXTO_PAGO}</p>}
         <p className="carrito-resumen__referencial">
           {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales; la cotización final se confirma
           por WhatsApp.

@@ -1,4 +1,6 @@
+import { LANZAMIENTO, type Lanzamiento } from '../catalogo-servicios/lanzamiento';
 import { obtenerModulo, type ModuloId } from '../catalogo-servicios/modulos';
+import { precioAplicado } from '../catalogo-servicios/precio';
 
 export interface Carrito {
   items: ModuloId[];
@@ -16,7 +18,7 @@ export type ResultadoQuitar =
   | { estado: 'requiere-confirmacion'; carrito: Carrito; afectados: ModuloId[] };
 
 export interface Totales {
-  /** Suma de los precios "desde", en céntimos. */
+  /** Suma de los precios "desde" aplicados (con el de lanzamiento si rige), en céntimos. */
   inicial: number;
   /** Suma de las mensualidades, en céntimos. */
   mensual: number;
@@ -85,10 +87,10 @@ export function quitarModulo(
   return { estado: 'quitado', carrito: { items: restantes }, tambienQuitados: afectados };
 }
 
-export function calcularTotales(carrito: Carrito): Totales {
+export function calcularTotales(carrito: Carrito, lanzamiento: Lanzamiento = LANZAMIENTO): Totales {
   return carrito.items.reduce<Totales>(
     (totales, id) => {
-      const { precioInicial, mensualidad = 0 } = obtenerModulo(id);
+      const { precioInicial, mensualidad = 0 } = precioAplicado(obtenerModulo(id), { items: carrito.items, lanzamiento });
       return {
         inicial: totales.inicial + (precioInicial.tipo === 'desde' ? precioInicial.centimos : 0),
         mensual: totales.mensual + mensualidad,

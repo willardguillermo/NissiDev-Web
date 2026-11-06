@@ -1,3 +1,4 @@
+import { LANZAMIENTO_ACTIVO } from '../catalogo-servicios/lanzamiento.prueba';
 import { describe, expect, it } from 'vitest';
 import { calcularTotales, CARRITO_VACIO } from './carrito';
 import { restaurarCarrito, serializarCarrito } from './restaurar';
@@ -33,7 +34,7 @@ describe('restaurarCarrito', () => {
   it('solo Caja → se completan Inventario, Panel y Catálogo, y los totales cuadran', () => {
     const carrito = restaurarCarrito(guardado({ items: ['caja'] }));
     expect(carrito.items).toEqual(['catalogo-web', 'panel-dueno', 'inventario', 'caja']);
-    expect(calcularTotales(carrito)).toEqual({ inicial: 120000, mensual: 6000, incluyeCotizar: true });
+    expect(calcularTotales(carrito, LANZAMIENTO_ACTIVO)).toEqual({ inicial: 220000, mensual: 6000, incluyeCotizar: true });
   });
 
   it('solo Mantenimiento → carrito vacío', () => {
