@@ -1,14 +1,15 @@
 # Estado del proyecto
 
-> Última actualización: 2026-11-05 (rama `feature/precios-lanzamiento` lista para revisión, base `16b0b1e`: precios nuevos, cupos de lanzamiento, pago 50/50 y maqueta gratis. Correo sin ofuscar en producción. Sigue: revisión de Codex, luego T27).
+> Última actualización: 2026-11-05 (PR #8 unido: precios de lanzamiento, cupos y pago 50/50 en producción. Sigue: T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
 
-## Precios de lanzamiento — rama `feature/precios-lanzamiento` (lista para revisión)
-- Plan PL-1…PL-5 en `tasks/plan.md` (*Precios de lanzamiento*). Vista previa: https://feature-precios-lanzamiento.nissidev-web.pages.dev
+## Precios de lanzamiento — cerrada ([PR #8](https://github.com/willardguillermo/NissiDev-Web/pull/8), merge commit `ee04b73`; rama borrada)
+- Plan PL-1…PL-5 en `tasks/plan.md` (*Precios de lanzamiento*). Codex: revisión adversarial (base `16b0b1e`, 1 hallazgo medio corregido en `89e1bbc`: tests independientes del contador real) y aprobación del arreglo (base `390b20f`). Guillermo revisó Servicios, Cotizar y el PDF en su celular.
+- Comprobado en producción (2026-11-05): `/servicios/` con «quedan 5 de 5 cupos», Panel desde S/ 1,500, Mantenimiento S/ 120/mes (S/ 180 con Panel) y «¿Cómo se paga?»; `/cotizar/` con S/ 700 y S/ 900 tachado junto al Catálogo, sugerido Dulcería en «Desde S/ 2,200» y la línea de pago junto al total, sin errores de página.
 - `LANZAMIENTO` en `src/catalogo-servicios/lanzamiento.ts`: **al cerrar un proyecto real a S/ 700, subir `usados` en 1** (y nada más). Con `usados = cupos` la barra desaparece y el Catálogo pasa solo a «Desde S/ 900».
 - Barra de cupos en /servicios y /cotizar; línea de pago junto al total en /cotizar y en la cotización (pantalla y PDF); pregunta «¿Cómo se paga?»; WhatsApp con el precio aplicado.
 
@@ -48,7 +49,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - Inicio, Soluciones, Servicios, Cotizar, Cotización, Sobre mí y Contacto con **Liquid Glass + Geist (TD2)**.
 - Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
 - Demo de dulcería: `/soluciones/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
-- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2), #5 (entrega TD2 + impresora hacia main), #6 (estructura por rubros y dominio) y #7 (correo, analítica y redes).
+- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2), #5 (entrega TD2 + impresora hacia main), #6 (estructura por rubros y dominio), #7 (correo, analítica y redes) y #8 (precios de lanzamiento).
 
 ## Liquid Glass + Geist — TD2
 - Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/`; ADR-003.
@@ -66,9 +67,8 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
-1. **Revisión de `feature/precios-lanzamiento`** (base `16b0b1e`) y unirla a main con la aprobación de Guillermo.
-2. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
-3. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
+1. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
+2. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
 - Etapa 2: enlace personalizado de la demo (nombre y color del negocio) y demos completas de los rubros que hoy son «Próximamente» (Restaurante, Salón de belleza, Clínica, Negocio por mayor). Etapa 3: chatbot con n8n.
 
