@@ -3,9 +3,11 @@ import Boton from '../components/Boton.astro';
 import IntroPagina from '../components/IntroPagina.astro';
 import Proceso from '../components/Proceso.astro';
 import ServiciosBento from '../components/ServiciosBento.astro';
+import { LANZAMIENTO, lanzamientoActivo } from '../catalogo-servicios/lanzamiento';
 import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { PREGUNTAS } from '../catalogo-servicios/preguntas';
+import CuposLanzamiento from '../islas/CuposLanzamiento';
 import Base from '../layouts/Base.astro';
 
 // Todo sobre crear el sistema: tipos, funciones, proceso, precios y preguntas. Los textos de cada función y
@@ -61,10 +63,19 @@ const necesita = (ids: readonly Parameters<typeof obtenerModulo>[0][]) => ids.ma
     <dl class="precios" data-aparecer>
       {
         MODULOS.map((modulo) => (
-          <div class="precios__fila">
-            <dt>{modulo.nombre}</dt>
-            <dd>{textoPrecio(modulo)}</dd>
-          </div>
+          modulo.id === LANZAMIENTO.modulo && lanzamientoActivo() ? (
+            <div class="precios__fila precios__fila--lanzamiento">
+              <dt>{modulo.nombre}</dt>
+              <dd>
+                <CuposLanzamiento />
+              </dd>
+            </div>
+          ) : (
+            <div class="precios__fila">
+              <dt>{modulo.nombre}</dt>
+              <dd>{textoPrecio(modulo)}</dd>
+            </div>
+          )
         ))
       }
     </dl>
