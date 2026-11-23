@@ -1,3 +1,4 @@
+import { enlaceCotizarRubro } from '../../carrito/sugeridos';
 import { consultasDeLaSemana, consultasPorInmueble, inmueblesActivos, masVistos, type ConDato } from '../../demo/inmuebles/panel';
 import type { InmobiliariaConfig } from '../../demo/inmuebles/tipos';
 import { largoDelNombre, proporciones, textoFecha } from '../../demo/panel';
@@ -70,7 +71,7 @@ export function PanelInmobiliaria({ config }: { config: InmobiliariaConfig }) {
 
       <div className="demo-panel__cierre">
         <p>¿Te sirve ver tus inmuebles así?</p>
-        <a className="demo-boton" href="/cotizar">
+        <a className="demo-boton" href={enlaceCotizarRubro(config.id)}>
           Quiero esto para mi negocio
         </a>
       </div>

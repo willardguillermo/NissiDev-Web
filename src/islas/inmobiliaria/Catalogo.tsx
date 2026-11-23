@@ -1,3 +1,4 @@
+import { enlaceCotizarRubro } from '../../carrito/sugeridos';
 import {
   cambiarOperacion,
   cuantosFiltros,
@@ -166,7 +167,7 @@ export function Catalogo({ config, filtros, cambiarFiltros, abrir, verAgente, av
           <IconoWhatsApp /> Escríbenos
         </button>
         <p className="demo-pie__nissidev">
-          Demo hecha por NissiDev con datos de ejemplo. <a href="/cotizar">Quiero esto para mi negocio</a>
+          Demo hecha por NissiDev con datos de ejemplo. <a href={enlaceCotizarRubro(config.id)}>Quiero esto para mi negocio</a>
         </p>
       </footer>
     </>

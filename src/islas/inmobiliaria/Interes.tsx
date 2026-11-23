@@ -1,3 +1,4 @@
+import { enlaceCotizarRubro } from '../../carrito/sugeridos';
 import { useRef } from 'react';
 import { mensajeInteres } from '../../demo/inmuebles/mensaje';
 import type { InmobiliariaConfig, Inmueble } from '../../demo/inmuebles/tipos';
@@ -25,7 +26,7 @@ export function Interes({ config, inmueble }: { config: InmobiliariaConfig; inmu
         <pre className="demo-dialogo__mensaje">{mensajeInteres(inmueble.codigo)}</pre>
         <p className="demo-dialogo__aviso">{AVISO_INTERES}</p>
         <div className="demo-dialogo__acciones">
-          <a className="demo-boton" href="/cotizar">
+          <a className="demo-boton" href={enlaceCotizarRubro(config.id)}>
             Quiero esto para mi negocio
           </a>
           <button type="button" className="demo-boton demo-boton--claro" onClick={() => dialogo.current?.close()}>

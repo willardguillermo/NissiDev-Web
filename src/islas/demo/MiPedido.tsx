@@ -1,3 +1,4 @@
+import { enlaceCotizarRubro } from '../../carrito/sugeridos';
 import { useEffect, useId, useRef, useState } from 'react';
 import { normalizarCantidad } from '../../demo/cantidad';
 import { intentarCambiarCantidad } from '../../demo/disponibilidad';
@@ -255,7 +256,7 @@ export function MiPedido({ config, pedido, cambiarPedido, ir, volver, ilustracio
         <pre className="demo-dialogo__mensaje">{mensajePedido(config, pedido, datos).replaceAll('S/ ', 'S/\u00a0')}</pre>
         <p className="demo-dialogo__aviso">{AVISO_PEDIDO}</p>
         <div className="demo-dialogo__acciones">
-          <a className="demo-boton" href="/cotizar">
+          <a className="demo-boton" href={enlaceCotizarRubro(config.id)}>
             Quiero esto para mi negocio
           </a>
           <button type="button" className="demo-boton demo-boton--claro" onClick={() => dialogo.current?.close()}>

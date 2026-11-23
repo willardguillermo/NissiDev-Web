@@ -47,3 +47,6 @@ export function sinSugerido(url: string): string {
   nueva.searchParams.delete('sugerido');
   return `${nueva.pathname}${nueva.search}${nueva.hash}`;
 }
+
+/** «Quiero esto para mi negocio» de una demo: /cotizar con su sistema sugerido, si el rubro lo tiene. */
+export const enlaceCotizarRubro = (id: string) => (esRubroSugerido(id) ? enlaceSugerido(id) : '/cotizar/');

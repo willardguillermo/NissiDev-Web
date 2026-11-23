@@ -5,6 +5,7 @@ import { calcularTotales } from './carrito';
 import {
   cargarSugerido,
   CARRITOS_SUGERIDOS,
+  enlaceCotizarRubro,
   enlaceSugerido,
   mismoContenido,
   sinSugerido,
@@ -76,5 +77,16 @@ describe('enlace directo ?sugerido=', () => {
   it('sinSugerido quita solo ese parámetro', () => {
     expect(sinSugerido('https://nissidev.dev/cotizar/?sugerido=inmobiliaria')).toBe('/cotizar/');
     expect(sinSugerido('https://nissidev.dev/cotizar/?a=1&sugerido=dulceria#vitrina')).toBe('/cotizar/?a=1#vitrina');
+  });
+});
+
+describe('enlaceCotizarRubro (botón «Quiero esto para mi negocio» de las demos)', () => {
+  it('lleva el sistema sugerido del rubro de la demo', () => {
+    expect(enlaceCotizarRubro('inmobiliaria')).toBe('/cotizar/?sugerido=inmobiliaria');
+    expect(enlaceCotizarRubro('dulceria')).toBe('/cotizar/?sugerido=dulceria');
+  });
+
+  it('un rubro sin sugerido va a /cotizar/ a secas', () => {
+    expect(enlaceCotizarRubro('restaurante')).toBe('/cotizar/');
   });
 });
