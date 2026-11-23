@@ -129,6 +129,8 @@ describe('variables de diseño', () => {
     const definidas = new Set([
       ...[...tokensCss.matchAll(/(--[a-z0-9-]+)\s*:/g)].map((m) => m[1]),
       ...Object.keys(variablesDeTema(RUBRO_DE_PRUEBA.tema)),
+      // Base de todas las demos (.demo en demo.css): la demo inmobiliaria la carga junto a su propio CSS.
+      ...[...String(fuentes['../islas/demo/demo.css']).matchAll(/(--d-[a-z0-9-]+)\s*:/g)].map((m) => m[1]),
     ]);
     const sinDefinir: string[] = [];
     for (const [archivo, contenido] of Object.entries(fuentes)) {

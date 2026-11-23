@@ -140,3 +140,33 @@ describe('enlaceWhatsApp', () => {
     expect(enlace.searchParams.get('text')).toBe(mensaje);
   });
 });
+
+describe('mensajeWhatsApp con la Vitrina', () => {
+  const conVitrina = (carrito: Carrito, mantenimiento: boolean): Cotizacion => ({
+    ...cotizacion(carrito),
+    vitrina: { elegida: true, mantenimiento },
+  });
+
+  it('solo la Vitrina: sin sección de módulos y con precio cerrado', () => {
+    const texto = mensajeWhatsApp(conVitrina(CARRITO_VACIO, true));
+    expect(texto).toContain('Paquete Vitrina (aparte de los módulos):');
+    expect(texto).toContain('- Vitrina: S/ 350 · precio cerrado, entrega en 5 a 7 días');
+    expect(texto).toContain('- Mantenimiento de la Vitrina: S/ 60/mes');
+    expect(texto).toContain('- El dominio va aparte y lo paga el cliente.');
+    expect(texto).not.toContain('Módulos:');
+    expect(texto).toContain('Inversión inicial: S/ 350 (precio cerrado)');
+    expect(texto).toContain('Mensualidad: S/ 60/mes');
+  });
+
+  it('con módulos, la Vitrina va en su propio bloque antes de los módulos y se suma al total', () => {
+    const texto = mensajeWhatsApp(conVitrina(cargarSugerido('dulceria'), false));
+    expect(texto.indexOf('Paquete Vitrina')).toBeLessThan(texto.indexOf('Módulos:'));
+    expect(texto).not.toContain('Mantenimiento de la Vitrina');
+    expect(texto).toContain('Inversión inicial: desde S/ 2,550');
+    expect(texto).toContain('- Catálogo web: Desde S/ 700 · precio de lanzamiento (normal S/ 900)');
+  });
+
+  it('sin Vitrina el mensaje no la menciona', () => {
+    expect(mensajeWhatsApp(cotizacion(cargarSugerido('dulceria')))).not.toContain('Vitrina');
+  });
+});

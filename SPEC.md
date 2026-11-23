@@ -9,6 +9,7 @@
 | `cotizacion` | Resumen imprimible/PDF y mensaje de WhatsApp a partir del carrito | `carrito` |
 | `demo` | Motor de demos: lee la configuración de un rubro y muestra vista cliente y vista dueño con datos de ejemplo | `ui` |
 | `rubros/dulceria` | Configuración y datos ficticios de la dulcería | `demo` |
+| `demo/inmuebles` · `rubros/inmobiliaria` | Demo inmobiliaria con su propia configuración (ADR-005): filtros, ficha, mensaje y panel; datos inventados | `demo` |
 | `sitio` | Páginas de NissiDev: Inicio, Servicios y stack, Demos, Arma tu sistema, Contacto | todos |
 
 Orden de construcción: `ui` → `catalogo-servicios` → `carrito` → `cotizacion` → `demo` → `rubros/dulceria` → `sitio`.
@@ -102,7 +103,7 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 ## Supuestos
 1. Es un sitio **solo frontend**; no hay base de datos ni login en el MVP.
 2. Un repo nuevo y **público** en GitHub (`willardguillermo/NissiDev-Web`), que también suma al portafolio.
-3. Precios "desde" (actualizados el 2026-11-05, ver *Precios de lanzamiento* en `tasks/plan.md`): Catálogo web desde S/ 900, con precio de lanzamiento S/ 700 para los primeros 5 proyectos; Panel del dueño desde S/ 1,500; Mantenimiento S/ 120/mes o S/ 180/mes si incluye Panel del dueño; Caja S/ 60/mes + instalación. **Reservas, Inventario, Boletas SUNAT y Chatbot muestran "Cotizar"** (decidido). Pago: 50% al empezar y 50% al entregar; la maqueta es gratis. El contador de cupos muestra solo proyectos reales: no se inventa escasez.
+3. Precios "desde" (actualizados el 2026-11-05, ver *Precios de lanzamiento* en `tasks/plan.md`): Catálogo web desde S/ 900, con precio de lanzamiento S/ 700 para los primeros 5 proyectos; Panel del dueño desde S/ 1,500; Mantenimiento S/ 120/mes o S/ 180/mes si incluye Panel del dueño; Caja S/ 60/mes + instalación. **Reservas, Inventario, Boletas SUNAT y Chatbot muestran "Cotizar"** (decidido). Pago: 50% al empezar y 50% al entregar; la maqueta es gratis. **Vitrina (2026-11-22):** paquete aparte de los módulos, S/ 350 precio cerrado, entrega en 5 a 7 días (página de una sección con fotos, horario y ubicación, botón de WhatsApp y perfil de Google Maps creado u optimizado con la cuenta del dueño); Mantenimiento de la Vitrina S/ 60/mes; dominio aparte, lo paga el cliente; no cuenta para los cupos. **Inmobiliaria (2026-11-22):** Catálogo web (cuenta para los cupos) + Mantenimiento S/ 120/mes, con el que Guillermo sube los cambios de inmuebles; Panel del dueño desde S/ 1,500 si el agente quiere actualizarlo solo. El contador de cupos muestra solo proyectos reales: no se inventa escasez.
 4. El PDF se genera con la impresión del navegador ("Guardar como PDF") y una hoja de estilos de impresión, sin librería extra.
 5. Las imágenes de productos de la demo son ilustraciones o marcadores propios, no fotos de marcas.
 6. El código lo escribe Guillermo con Claude Code en la terminal, a partir de prompts por tarea que prepara Claude; cada tarea termina en un commit (implementar → test → verificar → commit). En cada punto de control del plan, Codex revisa (`/codex:review` para código, `/codex:adversarial-review` para diseño o antes de publicar) y se aplica lo que corresponda antes de seguir.
@@ -116,6 +117,8 @@ export function agregarModulo(carrito: Carrito, id: ModuloId): Carrito {
 - Demo: **Dulcería La Golosa**, ~30 productos genéricos sin marcas reales; ilustraciones o marcadores como imágenes.
 - Catálogo web desde S/ 900, S/ 700 de lanzamiento para los primeros 5 proyectos (2026-11-05) · cotización con código único `NSD-AAAA-XXXX` (sin correlativo) y 15 días de validez · Cloudflare Web Analytics.
 - Textos: borrador de Claude Code, corregido por Guillermo.
+
+- Demo inmobiliaria (2026-11-22): agentes independientes e inmobiliarias chicas; datos y distritos inventados, sin fotos de portales ni de agentes reales; registro MVCS de ejemplo marcado como ejemplo.
 
 ## Preguntas abiertas
 - No bloquean: permiso para mostrar Continental Hydraulic y hosting de n8n (etapa 3). Ver `BRIEF.md`.

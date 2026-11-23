@@ -401,3 +401,9 @@
     color: #333;
   }
 }
+
+.cotizacion__nota-vitrina {
+  margin-top: calc(-1 * var(--espacio-2));
+  color: var(--texto-suave);
+  font-size: var(--texto-xs);
+}

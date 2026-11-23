@@ -54,9 +54,10 @@ Ver la sección *Estructura* de `SPEC.md`. Resumen: `src/pages` (.astro), `src/l
 - Cerrar cada tarea con `CAMBIOS:` / `NO TOQUÉ (a propósito):` / `VERIFICACIÓN:` (comando y resultado) y 1–3 líneas de "Qué aprender de esta tarea" (Guillermo es estudiante).
 - Decisiones de arquitectura nuevas → ADR en `docs/decisions/`.
 
-## Roles y revisión (Claude Code y Codex)
-- Cualquiera de los dos agentes puede implementar. Desde el 2026-10-24, **Codex implementa** la mayor parte.
-- **Quien implementa no revisa su propio trabajo.** Si implementa Codex, revisa Claude Code (o una sesión nueva sin el contexto de la implementación). Si implementa Claude Code, revisa Codex con `/codex:review`.
+## Roles y revisión (desde el 2026-11-22, sin Codex)
+- **Codex ya no está disponible.** **Claude Code implementa.**
+- **Quien implementa no revisa su propio trabajo.** Revisa una **sesión nueva de Claude Code, sin el contexto de la implementación**, con **postura adversarial**: busca qué se rompe, qué falta y qué no cumple el BRIEF, la SPEC o este archivo, en vez de confirmar que todo está bien. Solo recibe la rama, el commit base y los documentos del proyecto, no la conversación de quien implementó.
+- (Hasta el 2026-11-21 revisaba Codex con `/codex:review` y `/codex:adversarial-review`; las menciones en `docs/ESTADO.md` son historia.)
 - La revisión se hace en cada **punto de control** de `tasks/plan.md` (o al cerrar una rama), no en cada tarea.
 - Al llegar a un punto de control: detenerse y escribir "Listo para revisión" con el **commit base** (el último commit de `main`, o el que cerró el punto de control anterior) para revisar con `--base <hash>`.
 - Cuando Guillermo pegue una revisión, evaluar cada punto: aplicar lo correcto y explicar por qué se descarta lo demás. Después, hacer el commit.

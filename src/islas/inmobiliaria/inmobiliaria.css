@@ -1,0 +1,497 @@
+/* Demo inmobiliaria (ADR-005): usa la base de demo.css y solo agrega lo propio de un catálogo de inmuebles.
+   Colores del negocio siempre por variables --d-*; las escenas son dibujos, nunca fotos. */
+
+.inmo .demo-titulo,
+.inmo .demo-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.inmo-titulo {
+  font-size: clamp(1.625rem, 1.3rem + 1.4vw, 2.5rem);
+  overflow-wrap: anywhere;
+}
+
+.inmo-logo {
+  font-size: 1.25rem;
+}
+
+.inmo-agente-boton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.875rem 0.25rem 0.25rem;
+  background: var(--d-fondo-suave);
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+
+.inmo-agente-boton .inmo-iniciales {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.8125rem;
+}
+
+.inmo-agente-boton:active {
+  transform: scale(0.97);
+}
+
+/* Avatar con iniciales en lugar de una foto */
+.inmo-iniciales {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.inmo-hero {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 1.5rem 1.25rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio-grande);
+}
+
+.inmo-hero p {
+  max-width: 46ch;
+  color: var(--d-texto-suave);
+}
+
+.inmo-filtros__nota {
+  min-height: 2.5rem;
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.inmo-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.inmo-tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--d-fondo);
+  border-radius: var(--d-radio);
+  box-shadow: var(--d-borde), var(--d-sombra);
+}
+
+.inmo-tarjeta__imagen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+}
+
+.inmo-tarjeta__imagen svg,
+.inmo-galeria svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.inmo-etiqueta {
+  display: inline-block;
+  padding: 0.125rem 0.625rem;
+  background: var(--d-fondo);
+  color: var(--d-texto);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.inmo-tarjeta__imagen .inmo-etiqueta {
+  position: absolute;
+  top: 0.625rem;
+  left: 0.625rem;
+}
+
+.inmo-tarjeta__imagen .inmo-etiqueta--separado {
+  right: 0.625rem;
+  left: auto;
+}
+
+.inmo-etiqueta--separado {
+  background: var(--d-amarillo);
+}
+
+.inmo-tarjeta__cuerpo {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem 1rem;
+}
+
+.inmo-tarjeta__precio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+}
+
+.inmo-tarjeta__precio strong {
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.inmo-tarjeta__precio span,
+.inmo-tarjeta__lugar {
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.inmo-tarjeta__titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Todo el cuadro abre la ficha */
+.inmo-tarjeta__abrir {
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.inmo-tarjeta__abrir::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--d-radio);
+}
+
+.inmo-tarjeta__abrir:focus-visible {
+  outline: none;
+}
+
+.inmo-tarjeta__abrir:focus-visible::after {
+  outline: 3px solid var(--foco);
+  outline-offset: -3px;
+}
+
+.inmo-codigo {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.inmo-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.inmo-datos div {
+  padding: 0.5rem 0.75rem;
+  background: var(--d-fondo-suave);
+  border-radius: 0.75rem;
+}
+
+.inmo-datos dt {
+  color: var(--d-texto-suave);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.inmo-datos dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.inmo-datos--corto {
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.inmo-datos--corto div {
+  padding: 0;
+  background: none;
+}
+
+.inmo-datos--corto dd {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.inmo-seccion {
+  margin-top: 2.5rem;
+}
+
+.inmo-agente-mini {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio);
+}
+
+.inmo-agente-mini > div {
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+.inmo-agente-mini__nombre {
+  font-weight: 700;
+}
+
+.inmo-agente-mini__cargo {
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.inmo-pie .demo-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.inmo-volver {
+  justify-self: start;
+  margin-top: 0.5rem;
+  text-decoration: none;
+}
+
+/* ——— Ficha ——— */
+
+/* Galería que se desliza con el dedo; cada ilustración se detiene en su lugar */
+.inmo-galeria {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 1.25rem 0.5rem;
+  margin: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  list-style: none;
+}
+
+.inmo-galeria:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: -3px;
+}
+
+.inmo-galeria li {
+  flex: none;
+  width: min(85%, 34rem);
+  scroll-snap-align: start;
+}
+
+.inmo-galeria figure {
+  margin: 0;
+}
+
+.inmo-galeria svg {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--d-radio);
+}
+
+.inmo-galeria figcaption {
+  margin-top: 0.375rem;
+  color: var(--d-texto-suave);
+  font-size: 0.8125rem;
+}
+
+.inmo-ficha__cuerpo {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.inmo-ficha__principal,
+.inmo-ficha__lado {
+  display: grid;
+  align-content: start;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.inmo-ficha__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inmo-ficha__etiquetas .inmo-etiqueta {
+  background: var(--d-fondo-suave);
+}
+
+.inmo-ficha__etiquetas .inmo-etiqueta--separado {
+  background: var(--d-amarillo);
+}
+
+.inmo-ficha__lugar,
+.inmo-ficha__nota {
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.inmo-ficha__precio {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--d-fondo-suave);
+  border-radius: var(--d-radio);
+}
+
+.inmo-ficha__precio strong {
+  color: var(--d-marca-texto);
+  font-size: 1.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.inmo-ficha__precio span {
+  color: var(--d-texto-suave);
+  font-weight: 600;
+}
+
+.inmo-subtitulo {
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.inmo-caracteristicas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0;
+  list-style: none;
+}
+
+.inmo-caracteristicas li {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--d-texto) 20%, transparent);
+  font-size: 0.875rem;
+}
+
+.inmo-mapa {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--d-radio);
+}
+
+.inmo-interes {
+  max-width: 30rem;
+  margin-inline: auto;
+  background: var(--d-marca);
+  color: var(--d-sobre-marca);
+}
+
+/* ——— Perfil del agente ——— */
+
+.inmo-perfil {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 44rem;
+  padding-bottom: 2rem;
+}
+
+.inmo-perfil__cabeza {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.inmo-perfil__cabeza .inmo-iniciales {
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 1.5rem;
+}
+
+.inmo-perfil__cargo {
+  color: var(--d-texto-suave);
+}
+
+.inmo-registro {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--d-radio);
+  box-shadow: inset 0 0 0 2px var(--d-amarillo);
+}
+
+.inmo-registro__titulo {
+  color: var(--d-texto-suave);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.inmo-registro__codigo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.inmo-registro__ejemplo {
+  padding: 0.125rem 0.625rem;
+  background: var(--d-amarillo);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.inmo-registro__nota {
+  color: var(--d-texto-suave);
+  font-size: 0.875rem;
+}
+
+.inmo-perfil__datos {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.inmo-perfil__datos dt {
+  color: var(--d-texto-suave);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.inmo-perfil__datos dd {
+  margin: 0;
+}
+
+.inmo-perfil__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .inmo-ficha__cuerpo {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 3rem;
+  }
+
+  .inmo-galeria {
+    padding-inline: max(1.25rem, calc((100% - 70rem) / 2));
+    scroll-padding-inline: max(1.25rem, calc((100% - 70rem) / 2));
+  }
+
+  .inmo-galeria li {
+    width: min(48%, 34rem);
+  }
+}

@@ -16,8 +16,12 @@
 }
 
 .carrito-sugerido__detalle {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0;
   color: var(--texto-suave);
   font-size: var(--texto-sm);
+  list-style: none;
 }
 
 /* Tarjetas de módulos */
@@ -218,4 +222,46 @@
 
 .carrito-resumen__cotizacion:active {
   transform: scale(0.97);
+}
+
+/* Paquete Vitrina: aparte de los módulos, con un borde dorado que lo separa de las tarjetas de funciones */
+.carrito-vitrina {
+  display: grid;
+  gap: var(--espacio-2);
+  scroll-margin-top: 6rem;
+}
+
+.carrito-vitrina__etiqueta {
+  color: var(--acento-texto);
+  font-size: var(--texto-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.carrito-vitrina__tarjeta {
+  max-width: 40rem;
+  box-shadow: var(--vidrio-sombra-chica), inset 0 0 0 1.5px var(--acento);
+}
+
+.carrito-vitrina__incluye {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: var(--espacio-1);
+  padding-left: 1.125rem;
+  font-size: var(--texto-sm);
+}
+
+.carrito-vitrina__extra {
+  display: flex;
+  flex-basis: 100%;
+  align-items: flex-start;
+  gap: var(--espacio-3) var(--espacio-4);
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-linea);
+}
+
+.carrito-vitrina__extra-nombre {
+  font-size: 1rem;
+  font-weight: var(--peso-titulo);
 }

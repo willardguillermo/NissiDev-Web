@@ -1,11 +1,29 @@
 # Estado del proyecto
 
-> Última actualización: 2026-11-05 (PR #8 unido: precios de lanzamiento, cupos y pago 50/50 en producción. Sigue: T27).
+> Última actualización: 2026-11-22 (rama `feature/inmobiliaria-vitrina`: 1.ª revisión aprobada con base `d9e3297`; arreglos listos para la 2.ª revisión con base `74063b0`. Sigue: esa revisión, prueba de Guillermo en su celular y T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
+
+## Inmobiliaria y Vitrina — en revisión (rama `feature/inmobiliaria-vitrina`)
+- Plan IV-1…IV-5 y arreglos IV-6…IV-8 en `tasks/plan.md` (*Inmobiliaria y Vitrina*). ADR-005 **aceptado** por Guillermo (2026-11-22); los distritos de ejemplo se quedan como están.
+- **1.ª revisión independiente: APROBADA** (base `d9e3297`), con detalles menores. Arreglos (2.ª revisión con base `74063b0`, por una sesión nueva de Claude Code):
+  - `369ab5f` al volver de una ficha (Atrás o «Volver»), el foco y el scroll vuelven a la tarjeta que se abrió, en la demo inmobiliaria y en la dulcería (regla pura `src/demo/foco.ts`).
+  - `0be27d5` el botón «Cotizar (n)» dice «1 elegido» / «2 elegidos» para lectores de pantalla (la Vitrina no es una «función»).
+  - `2a39369` «Sugerido: Inmobiliaria» (Catálogo web + Mantenimiento) y enlace directo **`https://nissidev.dev/cotizar/?sugerido=inmobiliaria`** para mandarlo por WhatsApp (también `?sugerido=dulceria`). Si ya había otros módulos, pregunta antes de reemplazar.
+  - «Quiero esto para mi negocio» de cada demo abre `/cotizar/?sugerido=<rubro>` con su sistema ya cargado.
+- **2.ª revisión: APROBADA** (base `74063b0`, sesión nueva de Claude Code, sin bloqueantes). Guillermo la probó en su celular.
+- **Pendientes menores de la 2.ª revisión (no arreglados a propósito):**
+  1. Al llegar con `?sugerido=` y un carrito con otros módulos, la confirmación se abre y `useCarritoInteractivo.ts:40` le da el foco a «Cancelar» al cargar la página, lo que puede mover el scroll sin que el dueño haya tocado nada (`Carrito.tsx:80`, `useCarritoInteractivo.ts:40`).
+  2. Si el dueño recarga la página antes de responder esa confirmación, la sugerencia se pierde: el parámetro ya se quitó de la URL (`Carrito.tsx:79`).
+  3. Con un valor inválido (`?sugerido=restaurante`), el parámetro no se quita de la URL (`Carrito.tsx:78` sale antes de limpiarla).
+- **Demo inmobiliaria** `/soluciones/inmobiliaria/` («Llave Propia Inmuebles», agente ficticia Carla Rivas, registro MVCS `PN-00000` marcado como ejemplo): catálogo con filtros, ficha con escenas dibujadas, precio S/ y US$ (tipo de cambio de ejemplo 3.75), mapa aproximado dibujado y «Me interesa» con «Hola, me interesa el inmueble [código]»; vista dueño con activos, consultas por inmueble y más vistos. Distritos inventados (ADR-004).
+- Inmobiliaria segunda en `RUBROS`: celular del Inicio (sigue empezando en Dulcería), tarjetas y Soluciones. Grillas de 6 rubros en 1/2/3 columnas.
+- **Vitrina** en /servicios (sección `#vitrina`) y /cotizar (tarjeta aparte, store `nissidev:vitrina`); cotización, PDF y WhatsApp la muestran en su propio bloque. La barra de cupos no cambia.
+- `fix:` el diálogo del pedido de la demo de dulcería estaba pegado arriba a la izquierda (el reset le quitaba `margin: auto`); ya se centra.
+- Verificado en la 1.ª entrega: 494 tests, `astro check` 0 errores, lint y build en verde; Playwright a 375×667, 390×844 y 1366×768 en Inicio, Soluciones, las 2 demos, Servicios, Cotizar y Cotización sin desborde ni errores; PDF A4 de 1 página con Vitrina + 3 módulos.
 
 ## Precios de lanzamiento — cerrada ([PR #8](https://github.com/willardguillermo/NissiDev-Web/pull/8), merge commit `ee04b73`; rama borrada)
 - Plan PL-1…PL-5 en `tasks/plan.md` (*Precios de lanzamiento*). Codex: revisión adversarial (base `16b0b1e`, 1 hallazgo medio corregido en `89e1bbc`: tests independientes del contador real) y aprobación del arreglo (base `390b20f`). Guillermo revisó Servicios, Cotizar y el PDF en su celular.
@@ -67,6 +85,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
+0. **2.ª revisión de Inmobiliaria y Vitrina** (sesión nueva de Claude Code, adversarial, base `74063b0`) y aprobación de Guillermo en su celular; luego PR con merge commit.
 1. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 2. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
@@ -77,6 +96,8 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - **Sin ubicación** (ADR-004, 2026-10-25): ningún texto público menciona «Este de Lima» ni otra zona. La zona es estrategia interna y solo puede quedar como nota interna en BRIEF/SPEC.
 - Stack: Astro + islas de React (ADR-001), movimiento solo con CSS (ADR-002), vidrio + Geist (ADR-003). Cloudflare Pages desde GitHub.
 - Precios (2026-11-05): Catálogo web desde S/ 900, con **precio de lanzamiento S/ 700 para los primeros 5 proyectos** · Panel del dueño desde S/ 1,500 · Pedidos por WhatsApp incluido · Caja con Yape/Plin S/ 60/mes + instalación (Cotizar) · Mantenimiento S/ 120/mes, o S/ 180/mes si el sistema incluye Panel del dueño · Reservas, Inventario, Boletas SUNAT y Chatbot: "Cotizar". Siempre "desde" y "referenciales". Detalle en *Precios de lanzamiento* de `tasks/plan.md`.
+- **Inmobiliaria (2026-11-22):** rubro con demo completa (`/soluciones/inmobiliaria/`, ADR-005) para agentes independientes e inmobiliarias chicas. Se vende con el Catálogo web (cuenta para los cupos) + Mantenimiento S/ 120/mes, con el que Guillermo sube los cambios de inmuebles; Panel del dueño desde S/ 1,500 si el agente quiere actualizarlo solo. Datos y distritos inventados; registro MVCS de ejemplo, marcado.
+- **Vitrina (2026-11-22):** paquete aparte de los módulos, **S/ 350 precio cerrado**, entrega en 5 a 7 días: página de una sección (fotos, horario, ubicación), botón de WhatsApp y perfil de Google Maps creado u optimizado **con la cuenta del dueño**. Mantenimiento de la Vitrina S/ 60/mes. Dominio aparte, lo paga el cliente. No toca la barra de cupos.
 - Pago: 50% al empezar y 50% al entregar. La maqueta es gratis: se muestra antes de pagar nada.
 - **Precio de una cotización emitida:** se mantiene durante sus 15 días de validez aunque los cupos de lanzamiento se llenen después; Guillermo la respeta al confirmar por WhatsApp. (La página la recalcula con los cupos del momento, así que el precio que vale es el del mensaje o PDF de esa fecha.)
 - **Cupos de lanzamiento: el contador muestra SOLO proyectos reales; no se inventa escasez.** `LANZAMIENTO.usados` sube solo al cerrar un proyecto real a precio de lanzamiento.
@@ -86,6 +107,9 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - Movimiento: ease-out en entradas, `scale(0.97)` al tocar, hover solo con mouse, nada se mueve solo (sin carruseles automáticos), movimiento reducido = menos y más suave, transparencia reducida = superficies sólidas.
 - Texto: contraste ≥ 4.5:1 (lo vigila `tokens.test.ts`); nunca texto gris claro sobre vidrio.
 - Continental Hydraulic no se muestra como caso hasta tener permiso del cliente.
+
+## Revisión (desde el 2026-11-22)
+- Codex ya no está disponible. Implementa Claude Code y revisa una **sesión nueva de Claude Code sin el contexto de la implementación, con postura adversarial** (ver *Roles y revisión* en `AGENTS.md`), con el commit base que da «Listo para revisión».
 
 ## Cómo trabaja Guillermo
 - Es estudiante (Tecsup, Diseño y Desarrollo de Software) y está construyendo su portafolio: cada tarea cierra con "Qué aprender".

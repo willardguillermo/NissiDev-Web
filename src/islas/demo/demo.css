@@ -1330,6 +1330,8 @@
 
 /* Aviso del envío: <dialog> nativo (Esc lo cierra). Entra con fundido y escala desde 0.96. */
 .demo-dialogo {
+  /* El reset (* { margin: 0 }) le quita al <dialog> el margin: auto que lo centra */
+  margin: auto;
   width: min(100% - 2rem, 30rem);
   max-height: calc(100dvh - 2rem);
   padding: 1.5rem;

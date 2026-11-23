@@ -1,3 +1,4 @@
+import { enlaceCotizarRubro } from '../../carrito/sugeridos';
 import type { CSSProperties } from 'react';
 import {
   cobrosPorMedio,
@@ -27,7 +28,7 @@ interface Fila {
 }
 
 /** Barras con CSS: el largo es scaleX(proporción). El valor siempre va en texto; la barra es adorno. */
-function Barras({ filas }: { filas: Fila[] }) {
+export function Barras({ filas }: { filas: Fila[] }) {
   return (
     <ul className="demo-barras">
       {filas.map((fila) => (
@@ -155,7 +156,7 @@ export function Panel({ config }: Props) {
 
       <div className="demo-panel__cierre">
         <p>¿Te sirve ver tu negocio así?</p>
-        <a className="demo-boton" href="/cotizar">
+        <a className="demo-boton" href={enlaceCotizarRubro(config.id)}>
           Quiero esto para mi negocio
         </a>
       </div>

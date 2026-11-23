@@ -1,7 +1,8 @@
 import { LANZAMIENTO, type Lanzamiento } from '../catalogo-servicios/lanzamiento';
 import { obtenerModulo } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
-import { calcularTotales } from '../carrito/carrito';
+import { normalizarVitrina, SIN_VITRINA, textoMantenimientoVitrina, textoPrecioVitrina, VITRINA } from '../catalogo-servicios/vitrina';
+import { totalesSistema } from '../carrito/totales';
 import { unirTextos } from '../carrito/textos';
 import { WHATSAPP_ENLACE } from '../config/contacto';
 import { formatearSoles } from '../ui/formato';
@@ -37,16 +38,18 @@ function textoBienFormado(texto: string): string {
 
 /** Texto plano para WhatsApp: líneas cortas, sin tablas ni emojis, fácil de leer en el celular. */
 export function mensajeWhatsApp(
-  { codigo, emitida, validaHasta, carrito, negocio }: Cotizacion,
+  { codigo, emitida, validaHasta, carrito, negocio, vitrina = SIN_VITRINA }: Cotizacion,
   lanzamiento: Lanzamiento = LANZAMIENTO,
 ): string {
   const modulos = carrito.items.map(obtenerModulo);
-  const { inicial, mensual } = calcularTotales(carrito, lanzamiento);
+  const { inicial, mensual, soloVitrina } = totalesSistema(carrito, vitrina, lanzamiento);
+  const paquete = normalizarVitrina(vitrina);
   const porCotizar = modulos.filter((m) => m.precioInicial.tipo === 'cotizar');
   const nombreNegocio = limpiarNegocio(negocio);
 
-  const lineaInicial =
-    inicial === 0 && porCotizar.length > 0
+  const lineaInicial = soloVitrina
+    ? `Inversión inicial: ${formatearSoles(inicial)} (precio cerrado)`
+    : inicial === 0 && porCotizar.length > 0
       ? 'Inversión inicial: por cotizar'
       : `Inversión inicial: desde ${formatearSoles(inicial)}${porCotizar.length > 0 ? ' (sin contar lo que falta cotizar)' : ''}`;
 
@@ -59,9 +62,19 @@ export function mensajeWhatsApp(
     `Fecha: ${formatearFecha(emitida)}`,
     `Válida hasta: ${formatearFecha(validaHasta)}`,
     ...(nombreNegocio ? [`Negocio: ${nombreNegocio}`] : []),
-    '',
-    'Módulos:',
-    ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m, { items: carrito.items, lanzamiento })}`),
+    // La Vitrina va aparte de los módulos: precio cerrado, plazo y dominio a cargo del cliente.
+    ...(paquete.elegida
+      ? [
+          '',
+          `Paquete ${VITRINA.nombre} (aparte de los módulos):`,
+          `- ${VITRINA.nombre}: ${textoPrecioVitrina()}, entrega en ${VITRINA.plazo}`,
+          ...(paquete.mantenimiento ? [`- ${VITRINA.mantenimiento.nombre}: ${textoMantenimientoVitrina()}`] : []),
+          `- ${VITRINA.dominio}`,
+        ]
+      : []),
+    ...(modulos.length > 0
+      ? ['', 'Módulos:', ...modulos.map((m) => `- ${m.nombre}: ${textoPrecio(m, { items: carrito.items, lanzamiento })}`)]
+      : []),
     '',
     lineaInicial,
     ...(faltaCotizar.length > 0 ? [`Falta cotizar: ${unirTextos(faltaCotizar)}`] : []),

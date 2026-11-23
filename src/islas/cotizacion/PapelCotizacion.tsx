@@ -2,8 +2,8 @@ import type { Ref } from 'react';
 import { obtenerModulo } from '../../catalogo-servicios/modulos';
 import { TEXTO_PAGO } from '../../catalogo-servicios/pago';
 import { textoPrecio } from '../../catalogo-servicios/precio';
-import { calcularTotales } from '../../carrito/carrito';
-import { textoTotales } from '../../carrito/textos';
+import { normalizarVitrina, SIN_VITRINA, textoMantenimientoVitrina, textoPrecioVitrina, VITRINA } from '../../catalogo-servicios/vitrina';
+import { textoTotalesSistema, totalesSistema } from '../../carrito/totales';
 import { formatearFecha } from '../../cotizacion/fecha';
 import type { Cotizacion } from '../../cotizacion/tipos';
 import { WHATSAPP_VISIBLE } from '../../config/contacto';
@@ -12,8 +12,9 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
   cotizacion: Cotizacion;
   refPapel?: Ref<HTMLElement>;
 }) {
-  const { carrito, negocio, ...emision } = cotizacion;
-  const totales = textoTotales(calcularTotales(carrito));
+  const { carrito, negocio, vitrina = SIN_VITRINA, ...emision } = cotizacion;
+  const totales = textoTotalesSistema(totalesSistema(carrito, vitrina));
+  const paquete = normalizarVitrina(vitrina);
   return (
     <article ref={refPapel} className="cotizacion__papel" aria-labelledby="cotizacion-codigo">
       <header className="cotizacion__cabeza">
@@ -34,8 +35,28 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
       </header>
 
       {negocio?.trim() && <p className="cotizacion__negocio-impreso">Negocio: {negocio.trim()}</p>}
-      <h3 className="cotizacion__subtitulo">Módulos</h3>
-      <ul className="cotizacion__modulos" role="list">
+      {paquete.elegida && (
+        <>
+          <h3 className="cotizacion__subtitulo">Paquete {VITRINA.nombre} · aparte de los módulos</h3>
+          <ul className="cotizacion__modulos" role="list">
+            <li className="cotizacion__modulo">
+              <span>
+                {VITRINA.nombre} · entrega en {VITRINA.plazo}
+              </span>
+              <span className="cotizacion__precio">{textoPrecioVitrina()}</span>
+            </li>
+            {paquete.mantenimiento && (
+              <li className="cotizacion__modulo">
+                <span>{VITRINA.mantenimiento.nombre}</span>
+                <span className="cotizacion__precio">{textoMantenimientoVitrina()}</span>
+              </li>
+            )}
+          </ul>
+          <p className="cotizacion__nota-vitrina">{VITRINA.dominio}</p>
+        </>
+      )}
+      {carrito.items.length > 0 && <h3 className="cotizacion__subtitulo">Módulos</h3>}
+      {carrito.items.length > 0 && <ul className="cotizacion__modulos" role="list">
         {carrito.items.map((id) => {
           const modulo = obtenerModulo(id);
           return (
@@ -45,7 +66,7 @@ export default function PapelCotizacion({ cotizacion, refPapel }: {
             </li>
           );
         })}
-      </ul>
+      </ul>}
 
       <dl className="cotizacion__totales">
         <div>

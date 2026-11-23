@@ -1,8 +1,9 @@
-// Rubros que muestra la web, en el mismo orden en el celular del Inicio, sus tarjetas y Soluciones (ADR-004:
+// Rubros que muestra la web (las demos activas primero), en el mismo orden en el celular del Inicio, sus tarjetas y Soluciones (ADR-004:
 // ninguno es protagonista). Una demo activa enlaza a su página; los demás se piden por WhatsApp.
 // Para activar un rubro: crear su config y su página, y cambiar aquí el estado.
 import { whatsappConMensaje } from '../config/contacto';
 import { DULCERIA } from './dulceria/config';
+import { INMOBILIARIA } from './inmobiliaria/config';
 
 interface RubroBase {
   id: string;
@@ -26,6 +27,15 @@ export const RUBROS: readonly RubroDemo[] = [
     descripcion: 'Catálogo con precios por mayor, pedidos por WhatsApp y el panel del dueño con ventas y vencimientos.',
     estado: 'activa',
     ruta: `/soluciones/${DULCERIA.id}/`,
+  },
+  {
+    id: INMOBILIARIA.id,
+    nombre: INMOBILIARIA.rubro,
+    negocio: INMOBILIARIA.negocio,
+    resumen: 'Inmuebles con filtros y consultas por WhatsApp.',
+    descripcion: 'Para agentes e inmobiliarias: tus inmuebles con filtros, cada consulta por WhatsApp con su código y los más vistos.',
+    estado: 'activa',
+    ruta: `/soluciones/${INMOBILIARIA.id}/`,
   },
   {
     id: 'restaurante',

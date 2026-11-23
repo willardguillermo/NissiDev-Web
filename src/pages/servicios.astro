@@ -7,6 +7,8 @@ import { LANZAMIENTO, lanzamientoActivo } from '../catalogo-servicios/lanzamient
 import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { PREGUNTAS } from '../catalogo-servicios/preguntas';
+import { textoMantenimientoVitrina, VITRINA } from '../catalogo-servicios/vitrina';
+import { formatearSoles } from '../ui/formato';
 import CuposLanzamiento from '../islas/CuposLanzamiento';
 import Base from '../layouts/Base.astro';
 
@@ -79,6 +81,32 @@ const necesita = (ids: readonly Parameters<typeof obtenerModulo>[0][]) => ids.ma
         ))
       }
     </dl>
+  </section>
+
+  <!-- Paquete aparte de los módulos: precio cerrado (no «desde») y no cuenta para los cupos -->
+  <section id="vitrina" class="contenedor seccion" aria-labelledby="vitrina-titulo">
+    <div class="seccion__cabeza" data-aparecer>
+      <h2 id="vitrina-titulo" class="titulo-2">Vitrina para tu negocio</h2>
+      <p class="seccion__bajada">¿Solo necesitas que te encuentren? Un paquete aparte de los módulos, con precio cerrado.</p>
+    </div>
+    <div class="vitrina" data-aparecer>
+      <p class="vitrina__precio">
+        <strong>{formatearSoles(VITRINA.precioCentimos)}</strong>
+        <span>precio cerrado · entrega en {VITRINA.plazo}</span>
+      </p>
+      <p class="vitrina__texto">{VITRINA.descripcion}</p>
+      <ul class="vitrina__incluye">
+        {VITRINA.incluye.map((item) => <li>{item}</li>)}
+      </ul>
+      <dl class="vitrina__extra">
+        <div>
+          <dt>{VITRINA.mantenimiento.nombre}</dt>
+          <dd>{textoMantenimientoVitrina()}</dd>
+        </div>
+      </dl>
+      <p class="vitrina__nota">{VITRINA.dominio}</p>
+      <Boton href="/cotizar#vitrina">Cotizar la Vitrina</Boton>
+    </div>
   </section>
 
   <section class="contenedor seccion" aria-labelledby="preguntas-titulo">
@@ -194,6 +222,81 @@ const necesita = (ids: readonly Parameters<typeof obtenerModulo>[0][]) => ids.ma
     color: var(--acento-texto);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Vitrina: capa sólida como los precios (las cifras no van sobre vidrio, ADR-003) */
+  .vitrina {
+    display: grid;
+    justify-items: start;
+    gap: var(--espacio-3);
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--espacio-6) var(--espacio-5);
+    background: var(--fondo-elevado);
+    border-radius: var(--radio-tarjeta);
+    box-shadow: var(--sombra-tarjeta), inset 0 0 0 1.5px var(--acento);
+    text-align: left;
+  }
+
+  .vitrina__precio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--espacio-1) var(--espacio-3);
+  }
+
+  .vitrina__precio strong {
+    font-size: var(--texto-xl);
+    font-weight: var(--peso-titulo);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .vitrina__precio span {
+    color: var(--acento-texto);
+    font-weight: 600;
+  }
+
+  .vitrina__texto,
+  .vitrina__nota {
+    color: var(--texto-suave);
+  }
+
+  .vitrina__nota {
+    font-size: var(--texto-sm);
+  }
+
+  .vitrina__incluye {
+    display: grid;
+    gap: var(--espacio-1);
+    padding-left: 1.25rem;
+  }
+
+  .vitrina__extra {
+    width: 100%;
+    padding-top: var(--espacio-3);
+    border-top: 1px solid var(--color-linea);
+  }
+
+  .vitrina__extra div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--espacio-1) var(--espacio-4);
+  }
+
+  .vitrina__extra dt {
+    font-weight: 600;
+  }
+
+  .vitrina__extra dd {
+    margin: 0;
+    color: var(--acento-texto);
+    font-weight: 600;
+  }
+
+  .vitrina :global(.boton) {
+    margin-top: var(--espacio-2);
   }
 
   .preguntas {

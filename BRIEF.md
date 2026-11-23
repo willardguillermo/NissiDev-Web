@@ -70,6 +70,7 @@
 | Inicio | Hero 5-10-15 · botón principal "Ver la demo de mi rubro" · WhatsApp como secundario · resumen de servicios · llamado al carrito |
 | Demos | Tarjetas por rubro (en el MVP solo Dulcería; las demás como "Próximamente") |
 | Demo Dulcería | Cambio entre vista cliente y vista dueño |
+| Demo Inmobiliaria (2026-11-22) | Vista cliente: catálogo de inmuebles con filtros, ficha (galería ilustrada, m², dormitorios, baños, S/ y US$, mapa aproximado, WhatsApp) y perfil del agente con registro MVCS de ejemplo. Vista dueño: activos, consultas por inmueble y más vistos |
 | Arma tu sistema | Carrito de funcionalidades, carrito sugerido y totales |
 | Cotización | Resumen imprimible y botón de WhatsApp |
 | Servicios y stack | Proceso (maqueta → propuesta → ≈4 semanas de desarrollo → soporte) y tecnologías |
@@ -113,6 +114,10 @@ Todo vive en archivos del repo, sin base de datos. Los montos se guardan en cén
 | Boletas SUNAT | Caja | Cotizar |
 | Chatbot | — | Cotizar |
 | Mantenimiento | Cualquier módulo | S/ 120/mes; S/ 180/mes si el sistema incluye Panel del dueño |
+
+**Paquete Vitrina** (2026-11-22), aparte del carrito de módulos: **S/ 350, precio cerrado**, entrega en 5 a 7 días. Incluye una página de una sección (fotos, horario, ubicación), botón de WhatsApp y el perfil de Google Maps creado u optimizado **con la cuenta del dueño**. Mantenimiento de la Vitrina: **S/ 60/mes**. El dominio va aparte y lo paga el cliente. No cuenta para los cupos de lanzamiento.
+
+**Inmobiliaria** (2026-11-22): agentes independientes e inmobiliarias chicas usan el Catálogo web (cuenta para los cupos) y Mantenimiento S/ 120/mes, con el que Guillermo sube los cambios de inmuebles. Si el agente quiere actualizarlo solo, Panel del dueño desde S/ 1,500.
 
 Forma de pago: **50% al empezar y 50% al entregar**. La maqueta es gratis: se muestra antes de pagar nada. El contador de cupos de lanzamiento muestra solo proyectos reales.
 
