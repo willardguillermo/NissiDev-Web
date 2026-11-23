@@ -1,0 +1,12 @@
+---
+import DemoInmobiliaria from '../../islas/DemoInmobiliaria';
+import Demo from '../../layouts/Demo.astro';
+import { INMOBILIARIA } from '../../rubros/inmobiliaria/config';
+---
+
+<Demo
+  titulo={INMOBILIARIA.rubro}
+  descripcion="Demo de un sistema para agentes inmobiliarios: catálogo de inmuebles con filtros, ficha con WhatsApp y panel con consultas. Datos de ejemplo."
+>
+  <DemoInmobiliaria client:load config={INMOBILIARIA} />
+</Demo>

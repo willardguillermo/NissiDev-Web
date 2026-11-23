@@ -7,7 +7,7 @@ export type Operacion = 'venta' | 'alquiler';
 export type Moneda = 'PEN' | 'USD';
 export type TipoInmueble = 'departamento' | 'casa' | 'terreno' | 'local' | 'oficina';
 /** Escenas dibujadas de la galería (ver islas/inmobiliaria/Escena.tsx). Nunca fotos. */
-export type Escena = 'fachada' | 'sala' | 'dormitorio' | 'cocina' | 'bano' | 'terreno' | 'local';
+export type Escena = 'fachada' | 'edificio' | 'sala' | 'dormitorio' | 'cocina' | 'bano' | 'terreno' | 'local';
 /** Separado: hay una reserva, sigue visible pero ya no se puede pedir. */
 export type EstadoInmueble = 'disponible' | 'separado';
 

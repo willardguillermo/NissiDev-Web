@@ -27,7 +27,7 @@ interface Fila {
 }
 
 /** Barras con CSS: el largo es scaleX(proporción). El valor siempre va en texto; la barra es adorno. */
-function Barras({ filas }: { filas: Fila[] }) {
+export function Barras({ filas }: { filas: Fila[] }) {
   return (
     <ul className="demo-barras">
       {filas.map((fila) => (
