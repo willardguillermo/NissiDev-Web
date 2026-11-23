@@ -331,21 +331,21 @@ Rama `feature/inmobiliaria-vitrina` desde `d9e3297`. Implementa Claude Code; rev
 5. La Vitrina vive en un store propio (`nissidev:vitrina`), aparte del carrito de módulos; se puede pedir sola o junto a módulos. Cuenta 1 en el botón «Cotizar (n)».
 6. Inmobiliaria va segunda en `RUBROS` (las demos activas primero); el celular del Inicio sigue empezando en Dulcería.
 
-### IV-1 · docs: spec y plan de Inmobiliaria y Vitrina
+### IV-1 · docs: spec y plan de Inmobiliaria y Vitrina — ✅ `7fa1f99`
 - **Qué:** esta sección, ADR-005, SPEC, BRIEF y «Decisiones vigentes» de ESTADO.
 
-### IV-2 · feat: lógica de la demo inmobiliaria
+### IV-2 · feat: lógica de la demo inmobiliaria — ✅ `bf0cb0e`
 - **Qué:** tipos, filtros (operación, distrito, precio, dormitorios), precio en S/ y US$, mensaje de WhatsApp y cálculos del panel (activos, consultas por inmueble, más vistos) en `src/demo/inmuebles/`; datos inventados en `src/rubros/inmobiliaria/`.
 - **Terminado cuando:** tests de filtros, del mensaje y del panel; test de integridad de los datos (códigos únicos, distritos existentes, consultas de inmuebles que existen).
 
-### IV-3 · feat: demo /soluciones/inmobiliaria/
+### IV-3 · feat: demo /soluciones/inmobiliaria/ — ✅ `ac4e9e2` (antes, `fix:` del diálogo de la plantilla)
 - **Qué:** vista cliente (catálogo con filtros, ficha con galería ilustrada, m², dormitorios, baños, precio S/ y US$, mapa aproximado, WhatsApp; perfil del agente con registro MVCS de ejemplo marcado) y vista dueño.
 - **Terminado cuando:** se usa con teclado; sin desborde a 375 px; sello visible siempre.
 
-### IV-4 · feat: Inmobiliaria en el Inicio y en Soluciones
+### IV-4 · feat: Inmobiliaria en el Inicio y en Soluciones — ✅ `cc3fd2e`
 - **Qué:** `RUBROS`, historia del celular desde la config, dibujos; fila de rubros y grillas sin huecos con 6 rubros.
 
-### IV-5 · feat: paquete Vitrina en Servicios y Cotizar
+### IV-5 · feat: paquete Vitrina en Servicios y Cotizar — ✅ `a220bb8`
 - **Qué:** `VITRINA` con precio cerrado, qué incluye, plazo y su mantenimiento; sección en /servicios; tarjeta aparte en /cotizar; la cotización (pantalla, PDF) y el WhatsApp la muestran separada de los módulos.
 - **Terminado cuando:** tests de precios y totales con y sin módulos; la barra de cupos no cambia.
 

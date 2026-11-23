@@ -1,11 +1,19 @@
 # Estado del proyecto
 
-> Última actualización: 2026-11-05 (PR #8 unido: precios de lanzamiento, cupos y pago 50/50 en producción. Sigue: T27).
+> Última actualización: 2026-11-22 (rama `feature/inmobiliaria-vitrina` lista para revisión, base `d9e3297`. Sigue: revisión de Codex, prueba de Guillermo en su celular y T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
+
+## Inmobiliaria y Vitrina — en revisión (rama `feature/inmobiliaria-vitrina`, base `d9e3297`)
+- Plan IV-1…IV-5 en `tasks/plan.md` (*Inmobiliaria y Vitrina*), ADR-005. Implementó Claude Code; falta la revisión de Codex (`--base d9e3297`) y que Guillermo la pruebe en su celular.
+- **Demo inmobiliaria** `/soluciones/inmobiliaria/` («Llave Propia Inmuebles», agente ficticia Carla Rivas, registro MVCS `PN-00000` marcado como ejemplo): catálogo con filtros, ficha con escenas dibujadas, precio S/ y US$ (tipo de cambio de ejemplo 3.75), mapa aproximado dibujado y «Me interesa» con «Hola, me interesa el inmueble [código]»; vista dueño con activos, consultas por inmueble y más vistos. Distritos inventados (ADR-004).
+- Inmobiliaria segunda en `RUBROS`: celular del Inicio (sigue empezando en Dulcería), tarjetas y Soluciones. Grillas de 6 rubros en 1/2/3 columnas.
+- **Vitrina** en /servicios (sección `#vitrina`) y /cotizar (tarjeta aparte, store `nissidev:vitrina`); cotización, PDF y WhatsApp la muestran en su propio bloque. La barra de cupos no cambia.
+- `fix:` el diálogo del pedido de la demo de dulcería estaba pegado arriba a la izquierda (el reset le quitaba `margin: auto`); ya se centra.
+- Verificado: 494 tests, `astro check` 0 errores, lint y build en verde; Playwright a 375×667, 390×844 y 1366×768 en Inicio, Soluciones, las 2 demos, Servicios, Cotizar y Cotización sin desborde ni errores; PDF A4 de 1 página con Vitrina + 3 módulos.
 
 ## Precios de lanzamiento — cerrada ([PR #8](https://github.com/willardguillermo/NissiDev-Web/pull/8), merge commit `ee04b73`; rama borrada)
 - Plan PL-1…PL-5 en `tasks/plan.md` (*Precios de lanzamiento*). Codex: revisión adversarial (base `16b0b1e`, 1 hallazgo medio corregido en `89e1bbc`: tests independientes del contador real) y aprobación del arreglo (base `390b20f`). Guillermo revisó Servicios, Cotizar y el PDF en su celular.
@@ -67,6 +75,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
+0. **Revisión de Inmobiliaria y Vitrina** (Codex, base `d9e3297`) y aprobación de Guillermo en su celular; luego PR con merge commit.
 1. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 2. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
