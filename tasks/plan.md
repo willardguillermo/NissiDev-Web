@@ -349,7 +349,20 @@ Rama `feature/inmobiliaria-vitrina` desde `d9e3297`. Implementa Claude Code; rev
 - **Qué:** `VITRINA` con precio cerrado, qué incluye, plazo y su mantenimiento; sección en /servicios; tarjeta aparte en /cotizar; la cotización (pantalla, PDF) y el WhatsApp la muestran separada de los módulos.
 - **Terminado cuando:** tests de precios y totales con y sin módulos; la barra de cupos no cambia.
 
-**Punto de control IV:** push, vista previa `https://feature-inmobiliaria-vitrina.nissidev-web.pages.dev` y «Listo para revisión» con base `d9e3297`.
+**Punto de control IV:** push, vista previa `https://feature-inmobiliaria-vitrina.nissidev-web.pages.dev` y «Listo para revisión» con base `d9e3297`. ✅ Revisión independiente APROBADA con detalles menores; Guillermo aceptó ADR-005 (`4071f87`) y deja los distritos de ejemplo.
+
+### IV-6 · fix: foco al volver de una ficha — ✅ `369ab5f`
+- **Qué:** al volver de la ficha (Atrás o «Volver») al catálogo, el foco y el scroll vuelven a la tarjeta abierta, en la demo inmobiliaria y en la dulcería (también al inicio). Regla pura `destinoDelFoco` y botón marcado con `data-abrir`.
+- **Verificación:** tests de la regla y de las tarjetas; Playwright: foco en la tarjeta y centrada, también con filtros.
+
+### IV-7 · fix: «Cotizar (n)» neutro — ✅ `0be27d5`
+- **Qué:** «Cotizar: 1 elegido» / «2 elegidos» (`etiquetaCotizar`), con test.
+
+### IV-8 · feat: sugerido Inmobiliaria con enlace directo — ✅ `2a39369`
+- **Qué:** Catálogo web + Mantenimiento; `/cotizar/?sugerido=inmobiliaria` lo carga al abrir (pregunta si ya había otros módulos) y quita el parámetro.
+- **Verificación:** tests de `sugeridoDeUrl`, `enlaceSugerido`, `sinSugerido` y de los totales; Playwright con carrito vacío, con otro carrito y al recargar.
+
+**Punto de control IV-2:** push y «Listo para revisión» con base `74063b0`; revisa una sesión nueva de Claude Code (Codex ya no está, `31265e2`).
 
 ## Supuestos de este plan
 1. `formatearSoles` vive en `src/ui/formato.ts` (la SPEC no tiene carpeta para utilidades compartidas, y lo usan tanto el carrito como la demo).
