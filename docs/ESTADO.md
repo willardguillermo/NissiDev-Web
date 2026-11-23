@@ -1,13 +1,19 @@
 # Estado del proyecto
 
-> Última actualización: 2026-11-22 (rama `feature/inmobiliaria-vitrina`: 1.ª revisión aprobada con base `d9e3297`; arreglos listos para la 2.ª revisión con base `74063b0`. Sigue: esa revisión, prueba de Guillermo en su celular y T27).
+> Última actualización: 2026-11-23 (PR #9 unido: demo inmobiliaria, paquete Vitrina y sugeridos por rubro en producción. Sigue: T27).
 
 ## Dominio
 - **Producción: https://nissidev.dev** (comprado en Cloudflare; nissidev.com estaba ocupado). Las vistas previas por rama siguen en `https://<rama-con-guiones>.nissidev-web.pages.dev`.
 - Comprobado en producción (2026-10-31): Inicio con selector de 5 rubros y sin «Este de Lima»; `/soluciones/`, `/servicios/`, `/cotizar/`, `/sobre-mi/` y `/contacto/` responden 200; `/demos/dulceria/?puestos=3` da 301 a `/soluciones/dulceria/?puestos=3`.
 - **Redirecciones de dominio hechas** en Bulk Redirects (lista `nissidev_dominio`, regla «Dominio principal nissidev.dev»). Comprobado el 2026-10-31: `www.nissidev.dev` y `nissidev-web.pages.dev` dan 301 a `https://nissidev.dev` conservando la ruta y la query; las vistas previas por rama no se redirigen.
 
-## Inmobiliaria y Vitrina — en revisión (rama `feature/inmobiliaria-vitrina`)
+## Inmobiliaria y Vitrina — cerrada ([PR #9](https://github.com/willardguillermo/NissiDev-Web/pull/9), merge commit `7f98bee`; rama borrada)
+- **Comprobado en producción (2026-11-23):**
+  - `/soluciones/inmobiliaria/`: el filtro Alquiler deja 5 inmuebles y «Me interesa» muestra «Hola, me interesa el inmueble DEP-103».
+  - `/cotizar/?sugerido=inmobiliaria`: carga Catálogo web y Mantenimiento («Desde S/ 700», «S/ 120/mes») y la URL queda en `/cotizar/`.
+  - `/servicios/#vitrina`: S/ 350 «precio cerrado · entrega en 5 a 7 días».
+  - Inicio: 6 rubros en el selector del celular y 6 tarjetas en 3 × 2.
+  - Sin errores de página.
 - Plan IV-1…IV-5 y arreglos IV-6…IV-8 en `tasks/plan.md` (*Inmobiliaria y Vitrina*). ADR-005 **aceptado** por Guillermo (2026-11-22); los distritos de ejemplo se quedan como están.
 - **1.ª revisión independiente: APROBADA** (base `d9e3297`), con detalles menores. Arreglos (2.ª revisión con base `74063b0`, por una sesión nueva de Claude Code):
   - `369ab5f` al volver de una ficha (Atrás o «Volver»), el foco y el scroll vuelven a la tarjeta que se abrió, en la demo inmobiliaria y en la dulcería (regla pura `src/demo/foco.ts`).
@@ -67,7 +73,8 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - Inicio, Soluciones, Servicios, Cotizar, Cotización, Sobre mí y Contacto con **Liquid Glass + Geist (TD2)**.
 - Cotización con ticketera animada, acciones accesibles y PDF A4, sin cobros.
 - Demo de dulcería: `/soluciones/dulceria/` (vista Cliente y Dueño; variantes por URL: `?puestos=1|3`, `?campana=navidad|dia-del-nino|ninguna`).
-- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2), #5 (entrega TD2 + impresora hacia main), #6 (estructura por rubros y dominio), #7 (correo, analítica y redes) y #8 (precios de lanzamiento).
+- Demo inmobiliaria: `/soluciones/inmobiliaria/` (vista Cliente y Dueño). Paquete Vitrina en `/servicios/#vitrina` y `/cotizar/#vitrina`. Enlaces directos `/cotizar/?sugerido=inmobiliaria` y `?sugerido=dulceria`.
+- Historial: #1 (Ensamble), #2 (plantilla de demo), #3 (páginas MVP), #4 (impresora hacia TD2), #5 (entrega TD2 + impresora hacia main), #6 (estructura por rubros y dominio), #7 (correo, analítica y redes), #8 (precios de lanzamiento) y #9 (inmobiliaria, Vitrina y sugeridos por rubro).
 
 ## Liquid Glass + Geist — TD2
 - Aprobado por Guillermo el 2026-10-24. Referencia: `docs/referencias/td2/`; ADR-003.
@@ -85,7 +92,7 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - PR [#4](https://github.com/willardguillermo/NissiDev-Web/pull/4) unido a TD2 en `b575d9e` tras cerrar la revisión y recibir la autorización. Publicación conjunta hacia main en #5.
 
 ## Después (según `tasks/plan.md`)
-0. **2.ª revisión de Inmobiliaria y Vitrina** (sesión nueva de Claude Code, adversarial, base `74063b0`) y aprobación de Guillermo en su celular; luego PR con merge commit.
+0. (Opcional, cuando convenga) los 3 pendientes menores del enlace `?sugerido=` anotados en *Inmobiliaria y Vitrina*.
 1. **T27**: verificación final del MVP (celular real, Lighthouse publicado, teclado, contraste, README).
 2. **Punto de control 7**: revisión de diseño del sitio completo antes de darlo por terminado.
 - Ideas de mejora de diseño: nota "Mejoras de diseño" del vault.
