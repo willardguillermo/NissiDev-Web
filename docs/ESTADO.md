@@ -14,7 +14,11 @@
   - `0be27d5` el botón «Cotizar (n)» dice «1 elegido» / «2 elegidos» para lectores de pantalla (la Vitrina no es una «función»).
   - `2a39369` «Sugerido: Inmobiliaria» (Catálogo web + Mantenimiento) y enlace directo **`https://nissidev.dev/cotizar/?sugerido=inmobiliaria`** para mandarlo por WhatsApp (también `?sugerido=dulceria`). Si ya había otros módulos, pregunta antes de reemplazar.
   - «Quiero esto para mi negocio» de cada demo abre `/cotizar/?sugerido=<rubro>` con su sistema ya cargado.
-- Falta que Guillermo la pruebe en su celular.
+- **2.ª revisión: APROBADA** (base `74063b0`, sesión nueva de Claude Code, sin bloqueantes). Guillermo la probó en su celular.
+- **Pendientes menores de la 2.ª revisión (no arreglados a propósito):**
+  1. Al llegar con `?sugerido=` y un carrito con otros módulos, la confirmación se abre y `useCarritoInteractivo.ts:40` le da el foco a «Cancelar» al cargar la página, lo que puede mover el scroll sin que el dueño haya tocado nada (`Carrito.tsx:80`, `useCarritoInteractivo.ts:40`).
+  2. Si el dueño recarga la página antes de responder esa confirmación, la sugerencia se pierde: el parámetro ya se quitó de la URL (`Carrito.tsx:79`).
+  3. Con un valor inválido (`?sugerido=restaurante`), el parámetro no se quita de la URL (`Carrito.tsx:78` sale antes de limpiarla).
 - **Demo inmobiliaria** `/soluciones/inmobiliaria/` («Llave Propia Inmuebles», agente ficticia Carla Rivas, registro MVCS `PN-00000` marcado como ejemplo): catálogo con filtros, ficha con escenas dibujadas, precio S/ y US$ (tipo de cambio de ejemplo 3.75), mapa aproximado dibujado y «Me interesa» con «Hola, me interesa el inmueble [código]»; vista dueño con activos, consultas por inmueble y más vistos. Distritos inventados (ADR-004).
 - Inmobiliaria segunda en `RUBROS`: celular del Inicio (sigue empezando en Dulcería), tarjetas y Soluciones. Grillas de 6 rubros en 1/2/3 columnas.
 - **Vitrina** en /servicios (sección `#vitrina`) y /cotizar (tarjeta aparte, store `nissidev:vitrina`); cotización, PDF y WhatsApp la muestran en su propio bloque. La barra de cupos no cambia.
