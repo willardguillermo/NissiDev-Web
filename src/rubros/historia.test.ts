@@ -7,6 +7,7 @@ import { HISTORIA_CLINICA } from './clinica/historia';
 import { RUBROS } from './rubros';
 import { DULCERIA } from './dulceria/config';
 import { historiaDeLaDemo } from '../demo/historia';
+import { mensajeInteres } from '../demo/inmuebles/mensaje';
 
 const TEMA = DULCERIA.tema;
 const datos: DatosHistoria = {
@@ -56,7 +57,7 @@ describe('armarHistoria', () => {
   });
 });
 
-describe('historias de los 5 rubros', () => {
+describe('historias de los rubros', () => {
   it('los 4 pasos son generales, no de un rubro', () => {
     expect(PASOS_HISTORIA.map((p) => p.nombre)).toEqual([
       'Tu vitrina',
@@ -81,7 +82,12 @@ describe('historias de los 5 rubros', () => {
         expect(h.panel.secundario.barras.length).toBeGreaterThan(0);
       });
 
-      it('el mensaje saluda al negocio y repite el total', () => {
+      it('el mensaje saluda al negocio y repite el total (la inmobiliaria: el de la ficha, con el código)', () => {
+        expect(h.whatsapp.mensaje).not.toContain('');
+        if (id === 'inmobiliaria') {
+          expect(h.whatsapp.mensaje).toEqual([mensajeInteres(h.pedido.items[1].id)]);
+          return;
+        }
         expect(h.whatsapp.mensaje[0]).toContain(h.negocio);
         expect(h.whatsapp.mensaje).toContain(`Total: ${h.pedido.total}`);
         expect(h.whatsapp.mensaje).not.toContain('');

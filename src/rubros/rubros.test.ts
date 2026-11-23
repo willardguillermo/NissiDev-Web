@@ -10,8 +10,9 @@ describe('rubros de la página Soluciones', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('la dulcería es la única demo activa en el MVP', () => {
-    expect(RUBROS.filter((r) => r.estado === 'activa').map((r) => r.id)).toEqual(['dulceria']);
+  it('las demos activas son dulcería e inmobiliaria, y van primero', () => {
+    expect(RUBROS.filter((r) => r.estado === 'activa').map((r) => r.id)).toEqual(['dulceria', 'inmobiliaria']);
+    expect(RUBROS.slice(0, 2).every((r) => r.estado === 'activa')).toBe(true);
   });
 
   it('cada demo activa enlaza a una página que existe', () => {
@@ -22,8 +23,8 @@ describe('rubros de la página Soluciones', () => {
     }
   });
 
-  it('son los 5 rubros de ADR-004, en orden', () => {
-    expect(RUBROS.map((r) => r.nombre)).toEqual(['Dulcería', 'Restaurante', 'Salón de belleza', 'Clínica', 'Negocio por mayor']);
+  it('son los 5 rubros de ADR-004 más Inmobiliaria (2026-11-22), en orden', () => {
+    expect(RUBROS.map((r) => r.nombre)).toEqual(['Dulcería', 'Inmobiliaria', 'Restaurante', 'Salón de belleza', 'Clínica', 'Negocio por mayor']);
   });
 
   it('pedir la demo por WhatsApp nombra el rubro', () => {

@@ -9,7 +9,7 @@ import { enlacePedirDemo, RUBROS } from '../../rubros/rubros';
 const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en la lista. Me gustaría ver cómo sería mi sistema.');
 ---
 
-<Base titulo="Soluciones" descripcion="Sistemas para dulcerías, restaurantes, salones de belleza, clínicas y negocios por mayor. Prueba la demo de tu rubro o pídela por WhatsApp.">
+<Base titulo="Soluciones" descripcion="Sistemas para dulcerías, inmobiliarias, restaurantes, salones de belleza, clínicas y negocios por mayor. Prueba la demo de tu rubro o pídela por WhatsApp.">
   <section class="contenedor" aria-labelledby="soluciones-titulo">
     <IntroPagina etiqueta="Soluciones" titulo="Un sistema para tu rubro." id="soluciones-titulo">
       Prueba la demo de tu rubro con un negocio y datos de ejemplo. Si aún no está lista, pídela por WhatsApp.
@@ -134,19 +134,18 @@ const enlaceOtroRubro = whatsappConMensaje('Hola, mi rubro no está en la lista.
     color: var(--texto-suave);
   }
 
-  /* 5 rubros sin huecos: 2 arriba (más anchos, la demo disponible primero) y 3 abajo, sobre 6 columnas */
+  /* 6 rubros sin huecos: en tableta, 2 por fila (3 filas); en escritorio, 3 por fila (2 filas).
+     Las demos disponibles van primero (RUBROS), así que siempre quedan arriba. */
   @media (min-width: 48rem) {
     .rubros {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: none;
     }
+  }
 
-    .rubro {
-      grid-column: span 2;
-    }
-
-    .rubro:nth-child(-n + 2) {
-      grid-column: span 3;
+  @media (min-width: 64rem) {
+    .rubros {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>

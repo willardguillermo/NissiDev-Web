@@ -304,9 +304,10 @@ import { RUBROS } from '../rubros/rubros';
     color: var(--acento-texto);
   }
 
+  /* 6 rubros sin huecos: 1, 2 o 3 columnas (6 se divide entre las tres). Con auto-fit salían 4 o 5 por fila. */
   .rubros {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--espacio-3);
     width: 100%;
     padding: 0;
@@ -315,6 +316,18 @@ import { RUBROS } from '../rubros/rubros';
 
   .rubros li {
     display: grid;
+  }
+
+  @media (min-width: 30rem) {
+    .rubros {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .rubros {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .rubro {
