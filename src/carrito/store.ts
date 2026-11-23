@@ -1,5 +1,6 @@
 import { persistentAtom, setPersistentEngine, windowPersistentEvents } from '@nanostores/persistent';
 import type { ModuloId } from '../catalogo-servicios/modulos';
+import { normalizarVitrina, restaurarVitrina, SIN_VITRINA, type SeleccionVitrina } from '../catalogo-servicios/vitrina';
 import { agregarModulo, CARRITO_VACIO, quitarModulo, type Carrito } from './carrito';
 import { crearAlmacenamientoSeguro } from './almacenamiento';
 import { restaurarCarrito, serializarCarrito } from './restaurar';
@@ -36,4 +37,14 @@ export function cargarSugeridoEnStore(rubro: RubroSugerido) {
   const carrito = cargarSugerido(rubro);
   $carrito.set(carrito);
   return carrito;
+}
+
+/** Paquete Vitrina: aparte del carrito de módulos, con su propia clave guardada. */
+export const $vitrina = persistentAtom<SeleccionVitrina>('nissidev:vitrina', SIN_VITRINA, {
+  encode: (seleccion) => JSON.stringify(normalizarVitrina(seleccion)),
+  decode: restaurarVitrina,
+});
+
+export function cambiarVitrina(cambios: Partial<SeleccionVitrina>) {
+  $vitrina.set(normalizarVitrina({ ...$vitrina.get(), ...cambios }));
 }

@@ -2,15 +2,19 @@ import { MODULOS, obtenerModulo } from '../catalogo-servicios/modulos';
 import { TEXTO_PAGO } from '../catalogo-servicios/pago';
 import { textoPrecio } from '../catalogo-servicios/precio';
 import { lanzamientoActivo, LANZAMIENTO } from '../catalogo-servicios/lanzamiento';
-import { calcularTotales } from '../carrito/carrito';
-import { cargarSugeridoEnStore } from '../carrito/store';
+import { useStore } from '@nanostores/react';
+import { useEffect, useState } from 'react';
+import { SIN_VITRINA } from '../catalogo-servicios/vitrina';
+import { $vitrina, cargarSugeridoEnStore } from '../carrito/store';
+import { textoTotalesSistema, totalesSistema } from '../carrito/totales';
 import { cargarSugerido, CARRITOS_SUGERIDOS, mismoContenido } from '../carrito/sugeridos';
-import { avisoSugerido, preguntaQuitar, preguntaReemplazar, textoTotales, unirNombres } from '../carrito/textos';
+import { avisoSugerido, preguntaQuitar, preguntaReemplazar, unirNombres } from '../carrito/textos';
 import CuposLanzamiento from './CuposLanzamiento';
 import { Interruptor } from './Interruptor';
 import { formatearSoles } from '../ui/formato';
 import { useCarritoInteractivo } from './useCarritoInteractivo';
 import { useContador } from './useContador';
+import VitrinaCarrito from './VitrinaCarrito';
 import './Carrito.css';
 
 const SUGERIDO = CARRITOS_SUGERIDOS.dulceria;
@@ -49,10 +53,17 @@ export default function Carrito() {
     setEnfocar('sugerido');
   };
 
-  const calculados = calcularTotales(carrito);
-  const totales = textoTotales(calculados);
+  // Igual que el carrito: el HTML del servidor no conoce lo guardado, hasta montar no hay Vitrina.
+  const vitrinaGuardada = useStore($vitrina);
+  const [montado, setMontado] = useState(false);
+  useEffect(() => setMontado(true), []);
+  const vitrina = montado ? vitrinaGuardada : SIN_VITRINA;
+
+  const calculados = totalesSistema(carrito, vitrina);
+  const totales = textoTotalesSistema(calculados);
   const cantidad = carrito.items.length;
-  const cifra = useContador<HTMLElement>(calculados.inicial, desde);
+  const hayAlgo = cantidad > 0 || calculados.vitrina;
+  const cifra = useContador<HTMLElement>(calculados.inicial, calculados.soloVitrina ? formatearSoles : desde);
 
   return (
     <div className="carrito">
@@ -163,12 +174,14 @@ export default function Carrito() {
         })}
       </ul>
 
+      <VitrinaCarrito vitrina={vitrina} />
+
       <p className="solo-lector" role="status">
         {aviso?.texto}
       </p>
 
       <section className="carrito-resumen zona-oscura" aria-label="Resumen de tu sistema">
-        {cantidad === 0 ? (
+        {!hayAlgo ? (
           <p className="carrito-resumen__vacio">Aún no elegiste módulos.</p>
         ) : (
           <dl className="carrito-resumen__totales">
@@ -185,12 +198,15 @@ export default function Carrito() {
           </dl>
         )}
         {cantidad > 0 && totales.notaCotizar && <p className="carrito-resumen__cotizar">Incluye módulos a cotizar.</p>}
-        {cantidad > 0 && <p className="carrito-resumen__pago">{TEXTO_PAGO}</p>}
+        {calculados.vitrina && <p className="carrito-resumen__cotizar">Incluye la Vitrina (precio cerrado).</p>}
+        {hayAlgo && <p className="carrito-resumen__pago">{TEXTO_PAGO}</p>}
         <p className="carrito-resumen__referencial">
-          {cantidad === 1 ? '1 módulo' : `${cantidad} módulos`} · Precios referenciales; la cotización final se confirma
-          por WhatsApp.
+          {[cantidad > 0 || !calculados.vitrina ? (cantidad === 1 ? '1 módulo' : `${cantidad} módulos`) : '', calculados.vitrina ? 'Vitrina' : '']
+            .filter(Boolean)
+            .join(' + ')}{' '}
+          · Precios referenciales; la cotización final se confirma por WhatsApp.
         </p>
-        {cantidad > 0 && (
+        {hayAlgo && (
           <a className="carrito-resumen__cotizacion" href="/cotizacion">
             Ver mi cotización
           </a>

@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/react';
 import { useEffect, useId, useState } from 'react';
-import { $carrito } from '../carrito/store';
+import { $carrito, $vitrina } from '../carrito/store';
 import { crearCotizacion } from '../cotizacion/cotizacion';
 import { fechaLocalDeHoy } from '../cotizacion/fecha';
 import type { Cotizacion as DatosCotizacion } from '../cotizacion/tipos';
@@ -10,6 +10,7 @@ import './Cotizacion.css';
 
 export default function Cotizacion() {
   const carrito = useStore($carrito);
+  const vitrina = useStore($vitrina);
   // Código y fecha se crean una vez, en el navegador (usan crypto y la fecha local): no cambian al
   // escribir el nombre del negocio. En el HTML del servidor no hay cotización todavía.
   const [emision, setEmision] = useState<Pick<DatosCotizacion, 'codigo' | 'emitida' | 'validaHasta'> | null>(null);
@@ -21,7 +22,7 @@ export default function Cotizacion() {
     setEmision({ codigo, emitida, validaHasta });
   }, []);
 
-  if (emision && carrito.items.length === 0) {
+  if (emision && carrito.items.length === 0 && !vitrina.elegida) {
     return (
       <div className="cotizacion"><div className="cotizacion-vacia">
         <p className="cotizacion-vacia__titulo">Aún no elegiste módulos.</p>
@@ -34,7 +35,7 @@ export default function Cotizacion() {
   }
 
   // El carrito puede cambiar en otra pestaña: los módulos y totales siempre son los actuales.
-  const cotizacion: DatosCotizacion | null = emision ? { ...emision, carrito, negocio } : null;
+  const cotizacion: DatosCotizacion | null = emision ? { ...emision, carrito, vitrina, negocio } : null;
 
   return (
     <div className="cotizacion">
