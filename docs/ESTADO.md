@@ -13,6 +13,7 @@
   - `369ab5f` al volver de una ficha (Atrás o «Volver»), el foco y el scroll vuelven a la tarjeta que se abrió, en la demo inmobiliaria y en la dulcería (regla pura `src/demo/foco.ts`).
   - `0be27d5` el botón «Cotizar (n)» dice «1 elegido» / «2 elegidos» para lectores de pantalla (la Vitrina no es una «función»).
   - `2a39369` «Sugerido: Inmobiliaria» (Catálogo web + Mantenimiento) y enlace directo **`https://nissidev.dev/cotizar/?sugerido=inmobiliaria`** para mandarlo por WhatsApp (también `?sugerido=dulceria`). Si ya había otros módulos, pregunta antes de reemplazar.
+  - «Quiero esto para mi negocio» de cada demo abre `/cotizar/?sugerido=<rubro>` con su sistema ya cargado.
 - Falta que Guillermo la pruebe en su celular.
 - **Demo inmobiliaria** `/soluciones/inmobiliaria/` («Llave Propia Inmuebles», agente ficticia Carla Rivas, registro MVCS `PN-00000` marcado como ejemplo): catálogo con filtros, ficha con escenas dibujadas, precio S/ y US$ (tipo de cambio de ejemplo 3.75), mapa aproximado dibujado y «Me interesa» con «Hola, me interesa el inmueble [código]»; vista dueño con activos, consultas por inmueble y más vistos. Distritos inventados (ADR-004).
 - Inmobiliaria segunda en `RUBROS`: celular del Inicio (sigue empezando en Dulcería), tarjetas y Soluciones. Grillas de 6 rubros en 1/2/3 columnas.
