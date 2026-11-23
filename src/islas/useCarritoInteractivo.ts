@@ -3,21 +3,22 @@ import { useEffect, useRef, useState } from 'react';
 import type { ModuloId } from '../catalogo-servicios/modulos';
 import { CARRITO_VACIO, type Carrito } from '../carrito/carrito';
 import { $carrito, agregar, quitar } from '../carrito/store';
+import type { RubroSugerido } from '../carrito/sugeridos';
 import { avisoAgregar, avisoQuitar } from '../carrito/textos';
 
 // Comportamiento de las islas que editan el carrito (hoy, Arma tu sistema): reglas, confirmaciones,
 // avisos y manejo del foco, separados del dibujo para que otra isla pueda reutilizarlos.
 
-/** Dónde ocurrió la última acción: la tarjeta de un módulo o el bloque del carrito sugerido. */
-export type Lugar = ModuloId | 'sugerido';
+/** Dónde ocurrió la última acción: la tarjeta de un módulo o el botón del sistema sugerido de un rubro. */
+export type Lugar = ModuloId | `sugerido:${RubroSugerido}`;
 
 /** Confirmación abierta, con el carrito tal como estaba al pedirla. */
 export type Confirmacion =
   | { tipo: 'quitar'; id: ModuloId; afectados: ModuloId[]; carrito: Carrito }
-  | { tipo: 'sugerido'; carrito: Carrito };
+  | { tipo: 'sugerido'; rubro: RubroSugerido; carrito: Carrito };
 
 const lugarDe = (confirmacion: Confirmacion): Lugar =>
-  confirmacion.tipo === 'quitar' ? confirmacion.id : 'sugerido';
+  confirmacion.tipo === 'quitar' ? confirmacion.id : `sugerido:${confirmacion.rubro}`;
 
 export function useCarritoInteractivo() {
   const guardado = useStore($carrito);

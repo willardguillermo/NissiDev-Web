@@ -16,8 +16,12 @@
 }
 
 .carrito-sugerido__detalle {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0;
   color: var(--texto-suave);
   font-size: var(--texto-sm);
+  list-style: none;
 }
 
 /* Tarjetas de módulos */
