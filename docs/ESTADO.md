@@ -98,6 +98,9 @@ Web de NissiDev: un *showroom* donde el dueño de un negocio de cualquier rubro 
 - Texto: contraste ≥ 4.5:1 (lo vigila `tokens.test.ts`); nunca texto gris claro sobre vidrio.
 - Continental Hydraulic no se muestra como caso hasta tener permiso del cliente.
 
+## Revisión (desde el 2026-11-22)
+- Codex ya no está disponible. Implementa Claude Code y revisa una **sesión nueva de Claude Code sin el contexto de la implementación, con postura adversarial** (ver *Roles y revisión* en `AGENTS.md`), con el commit base que da «Listo para revisión».
+
 ## Cómo trabaja Guillermo
 - Es estudiante (Tecsup, Diseño y Desarrollo de Software) y está construyendo su portafolio: cada tarea cierra con "Qué aprender".
 - Da prompts largos (~1 hora) y no mira mientras tanto: decide lo pequeño y anótalo; detente solo en los casos de `AGENTS.md`.
