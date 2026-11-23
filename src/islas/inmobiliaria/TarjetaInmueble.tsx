@@ -24,7 +24,7 @@ export function TarjetaInmueble({ inmueble, tipoCambio, abrir }: { inmueble: Inm
           <span>{precio.equivalente}</span>
         </p>
         <h2 className="inmo-tarjeta__titulo">
-          <button type="button" className="inmo-tarjeta__abrir" onClick={abrir}>
+          <button type="button" className="inmo-tarjeta__abrir" onClick={abrir} data-abrir={inmueble.codigo}>
             {inmueble.titulo}
           </button>
         </h2>

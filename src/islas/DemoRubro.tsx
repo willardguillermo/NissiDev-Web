@@ -5,7 +5,9 @@ import { NAVEGACION_INICIAL, navegar, type Accion, type Navegacion } from '../de
 import { PEDIDO_VACIO, presentacionesEnPedido, totalPedido } from '../demo/pedido';
 import { personalizacionDeUrl, personalizar, type Personalizacion } from '../demo/rubro';
 import { contarPresentacion } from '../demo/presentaciones';
+import { destinoDelFoco, type DestinoFoco } from '../demo/foco';
 import { variablesDeTema } from '../demo/tema';
+import { enfocar } from './demo/enfocar';
 import type { Pedido, Producto, RubroConfig } from '../demo/tipos';
 import { formatearSoles } from '../ui/formato';
 import { Catalogo } from './demo/Catalogo';
@@ -32,7 +34,20 @@ export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Prop
   const [pedido, setPedido] = useState<Pedido>(PEDIDO_VACIO);
   const [aviso, setAviso] = useState<{ id: number; texto: string } | null>(null);
   const raiz = useRef<HTMLDivElement>(null);
-  const moverFoco = useRef(false);
+  // A dónde mover el foco después de dibujar la pantalla nueva (null = no moverlo).
+  const moverFoco = useRef<DestinoFoco | null>(null);
+  // La pantalla actual, para que el listener de popstate (creado una vez) sepa de dónde se vuelve.
+  const navActual = useRef(nav);
+  useEffect(() => {
+    navActual.current = nav;
+  }, [nav]);
+  // El detalle se abre desde el catálogo o desde el inicio (más vendidos): las dos tienen tarjetas.
+  const destino = (desde: Navegacion, hacia: Navegacion) =>
+    destinoDelFoco(
+      { vista: desde.vista, pantalla: desde.pantalla, id: desde.productoId },
+      { vista: hacia.vista, pantalla: hacia.pantalla },
+      { ficha: 'detalle', listas: ['catalogo', 'inicio'] },
+    );
 
   // Vista previa por URL (?puestos=1&campana=ninguna). Se lee después de hidratar para que
   // el primer dibujo coincida con el HTML del servidor.
@@ -50,25 +65,26 @@ export default function DemoRubro({ plantilla, personalizacion, peorCaso }: Prop
     const alVolver = (evento: PopStateEvent) => {
       const anterior = (evento.state as { demo?: Navegacion } | null)?.demo;
       if (!anterior) return;
-      moverFoco.current = true;
+      moverFoco.current = destino(navActual.current, anterior);
       setNav(anterior);
     };
     window.addEventListener('popstate', alVolver);
     return () => window.removeEventListener('popstate', alVolver);
   }, []);
 
-  // Al cambiar de pantalla: arriba del todo y el foco en su título (el lector de pantalla lo anuncia).
+  // Al cambiar de pantalla: foco en su título (el lector de pantalla lo anuncia), arriba del todo; al volver
+  // de un detalle, en la tarjeta de ese producto.
   useEffect(() => {
     if (!moverFoco.current) return;
-    moverFoco.current = false;
-    window.scrollTo({ top: 0 });
-    raiz.current?.querySelector<HTMLElement>('[data-titulo-pantalla]')?.focus({ preventScroll: true });
+    const destinoActual = moverFoco.current;
+    moverFoco.current = null;
+    enfocar(raiz.current, destinoActual);
   }, [nav]);
 
   const ir = (accion: Accion) => {
     const siguiente = navegar(nav, accion);
     history.pushState({ demo: siguiente }, '');
-    moverFoco.current = true;
+    moverFoco.current = destino(nav, siguiente);
     setNav(siguiente);
     // El aviso era de la pantalla anterior: en la nueva podría tapar un botón
     setAviso(null);

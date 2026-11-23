@@ -2,7 +2,9 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { FiltrosInmueble } from '../demo/inmuebles/filtros';
 import { NAVEGACION_INMO_INICIAL, navegarInmo, type AccionInmo, type NavegacionInmo } from '../demo/inmuebles/navegacion';
 import type { InmobiliariaConfig } from '../demo/inmuebles/tipos';
+import { destinoDelFoco, type DestinoFoco } from '../demo/foco';
 import { variablesDeTema } from '../demo/tema';
+import { enfocar } from './demo/enfocar';
 import { AVISO_WHATSAPP, IconoWhatsApp } from './demo/Inicio';
 import { Marco } from './demo/Marco';
 import { Pendiente } from './demo/Pendiente';
@@ -20,7 +22,19 @@ export default function DemoInmobiliaria({ config }: { config: InmobiliariaConfi
   const [filtros, setFiltros] = useState<FiltrosInmueble>({});
   const [aviso, setAviso] = useState<{ id: number; texto: string } | null>(null);
   const raiz = useRef<HTMLDivElement>(null);
-  const moverFoco = useRef(false);
+  // A dónde mover el foco después de dibujar la pantalla nueva (null = no moverlo).
+  const moverFoco = useRef<DestinoFoco | null>(null);
+  // La pantalla actual, para que el listener de popstate (creado una vez) sepa de dónde se vuelve.
+  const navActual = useRef(nav);
+  useEffect(() => {
+    navActual.current = nav;
+  }, [nav]);
+  const destino = (desde: NavegacionInmo, hacia: NavegacionInmo) =>
+    destinoDelFoco(
+      { vista: desde.vista, pantalla: desde.pantalla, id: desde.codigo },
+      { vista: hacia.vista, pantalla: hacia.pantalla },
+      { ficha: 'ficha', listas: ['catalogo'] },
+    );
 
   // Cada pantalla entra al historial: el botón Atrás del celular vuelve a la anterior en vez de salir.
   useEffect(() => {
@@ -28,25 +42,25 @@ export default function DemoInmobiliaria({ config }: { config: InmobiliariaConfi
     const alVolver = (evento: PopStateEvent) => {
       const anterior = (evento.state as { inmo?: NavegacionInmo } | null)?.inmo;
       if (!anterior) return;
-      moverFoco.current = true;
+      moverFoco.current = destino(navActual.current, anterior);
       setNav(anterior);
     };
     window.addEventListener('popstate', alVolver);
     return () => window.removeEventListener('popstate', alVolver);
   }, []);
 
-  // Al cambiar de pantalla: arriba del todo y el foco en su título.
+  // Al cambiar de pantalla: foco en su título, arriba del todo; al volver de una ficha, en su tarjeta.
   useEffect(() => {
     if (!moverFoco.current) return;
-    moverFoco.current = false;
-    window.scrollTo({ top: 0 });
-    raiz.current?.querySelector<HTMLElement>('[data-titulo-pantalla]')?.focus({ preventScroll: true });
+    const destinoActual = moverFoco.current;
+    moverFoco.current = null;
+    enfocar(raiz.current, destinoActual);
   }, [nav]);
 
   const ir = (accion: AccionInmo) => {
     const siguiente = navegarInmo(nav, accion);
     history.pushState({ inmo: siguiente }, '');
-    moverFoco.current = true;
+    moverFoco.current = destino(nav, siguiente);
     setNav(siguiente);
     setAviso(null);
   };
