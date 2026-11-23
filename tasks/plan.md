@@ -316,6 +316,41 @@ Rama `feature/precios-lanzamiento` desde `16b0b1e`. Implementa Claude Code; revi
 
 **Punto de control PL:** push, vista previa `https://feature-precios-lanzamiento.nissidev-web.pages.dev` y «Listo para revisión» con base `16b0b1e`.
 
+## Inmobiliaria y Vitrina (2026-11-22)
+Rama `feature/inmobiliaria-vitrina` desde `d9e3297`. Implementa Claude Code; revisa Codex. ADR-005.
+
+**Decisiones de Guillermo (2026-11-22):**
+- Rubro nuevo **Inmobiliaria** (agentes independientes e inmobiliarias chicas) con demo completa. Usan el Catálogo web actual (S/ 700 de lanzamiento / S/ 900; cuenta para los cupos) y Mantenimiento S/ 120/mes, con el que Guillermo sube los cambios de inmuebles. Panel del dueño (para que el agente actualice solo) desde S/ 1,500.
+- Paquete nuevo **Vitrina**: S/ 350 (precio cerrado), entrega en 5 a 7 días. Incluye página de una sección (fotos, horario, ubicación), botón de WhatsApp y perfil de Google Maps creado u optimizado **con la cuenta del dueño**. Mantenimiento de la Vitrina S/ 60/mes. El dominio va aparte y lo paga el cliente. No toca los cupos.
+
+**Supuestos (decisiones pequeñas de Claude Code, para revisar):**
+1. La demo inmobiliaria reutiliza la plantilla de demos (franja con sello y Cliente/Dueño, tema `--d-*`, estilos, layout `Demo.astro`, registro `RUBROS`), pero con su propia configuración `InmobiliariaConfig`: `RubroConfig` describe productos con presentaciones y puestos, y un inmueble no encaja ahí (ADR-005).
+2. Distritos **inventados** (Las Lomas, Valle Verde…): ni zonas reales (ADR-004) ni marcas. Mapa aproximado dibujado (calles y un círculo), sin mapas de terceros.
+3. Precios de venta en US$ y de alquiler en S/, cada uno con su equivalente aproximado según un tipo de cambio **de ejemplo** de la config. El filtro de precio aparece al elegir venta o alquiler.
+4. El botón de WhatsApp de la ficha muestra el mensaje y no abre WhatsApp (regla de las demos); el mensaje es «Hola, me interesa el inmueble [código]».
+5. La Vitrina vive en un store propio (`nissidev:vitrina`), aparte del carrito de módulos; se puede pedir sola o junto a módulos. Cuenta 1 en el botón «Cotizar (n)».
+6. Inmobiliaria va segunda en `RUBROS` (las demos activas primero); el celular del Inicio sigue empezando en Dulcería.
+
+### IV-1 · docs: spec y plan de Inmobiliaria y Vitrina
+- **Qué:** esta sección, ADR-005, SPEC, BRIEF y «Decisiones vigentes» de ESTADO.
+
+### IV-2 · feat: lógica de la demo inmobiliaria
+- **Qué:** tipos, filtros (operación, distrito, precio, dormitorios), precio en S/ y US$, mensaje de WhatsApp y cálculos del panel (activos, consultas por inmueble, más vistos) en `src/demo/inmuebles/`; datos inventados en `src/rubros/inmobiliaria/`.
+- **Terminado cuando:** tests de filtros, del mensaje y del panel; test de integridad de los datos (códigos únicos, distritos existentes, consultas de inmuebles que existen).
+
+### IV-3 · feat: demo /soluciones/inmobiliaria/
+- **Qué:** vista cliente (catálogo con filtros, ficha con galería ilustrada, m², dormitorios, baños, precio S/ y US$, mapa aproximado, WhatsApp; perfil del agente con registro MVCS de ejemplo marcado) y vista dueño.
+- **Terminado cuando:** se usa con teclado; sin desborde a 375 px; sello visible siempre.
+
+### IV-4 · feat: Inmobiliaria en el Inicio y en Soluciones
+- **Qué:** `RUBROS`, historia del celular desde la config, dibujos; fila de rubros y grillas sin huecos con 6 rubros.
+
+### IV-5 · feat: paquete Vitrina en Servicios y Cotizar
+- **Qué:** `VITRINA` con precio cerrado, qué incluye, plazo y su mantenimiento; sección en /servicios; tarjeta aparte en /cotizar; la cotización (pantalla, PDF) y el WhatsApp la muestran separada de los módulos.
+- **Terminado cuando:** tests de precios y totales con y sin módulos; la barra de cupos no cambia.
+
+**Punto de control IV:** push, vista previa `https://feature-inmobiliaria-vitrina.nissidev-web.pages.dev` y «Listo para revisión» con base `d9e3297`.
+
 ## Supuestos de este plan
 1. `formatearSoles` vive en `src/ui/formato.ts` (la SPEC no tiene carpeta para utilidades compartidas, y lo usan tanto el carrito como la demo).
 2. Las dependencias se instalan en la tarea que las usa, no todas en la T01, y cada una se pide antes.
