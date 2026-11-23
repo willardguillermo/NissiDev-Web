@@ -1,7 +1,8 @@
 # ADR-005: La demo inmobiliaria usa la plantilla de demos con su propia configuración
 
 ## Estado
-Propuesto por Claude Code (2026-11-22), para que Guillermo lo revise junto con la rama `feature/inmobiliaria-vitrina`.
+Aceptado por Guillermo (2026-11-22), tras la revisión independiente de la rama `feature/inmobiliaria-vitrina`.
+Propuesto por Claude Code ese mismo día.
 
 ## Contexto
 - Guillermo pidió una demo completa para Inmobiliaria «con la plantilla de demos (RubroConfig)».
