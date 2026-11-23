@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { LANZAMIENTO_ACTIVO, LANZAMIENTO_AGOTADO } from '../catalogo-servicios/lanzamiento.prueba';
 import { CARRITO_VACIO } from './carrito';
 import { cargarSugerido } from './sugeridos';
-import { cantidadElegida, textoTotalesSistema, totalesSistema } from './totales';
+import { cantidadElegida, etiquetaCotizar, textoTotalesSistema, totalesSistema } from './totales';
 
 const VITRINA = { elegida: true, mantenimiento: false };
 const VITRINA_MANT = { elegida: true, mantenimiento: true };
@@ -40,5 +40,11 @@ describe('totales con la Vitrina', () => {
     expect(cantidadElegida(CARRITO_VACIO, VITRINA_MANT)).toBe(1);
     expect(cantidadElegida(cargarSugerido('dulceria'), VITRINA)).toBe(4);
     expect(cantidadElegida(CARRITO_VACIO, { elegida: false, mantenimiento: true })).toBe(0);
+  });
+
+  it('el botón Cotizar dice «elegido(s)», sin llamar «función» a la Vitrina', () => {
+    expect(etiquetaCotizar(1)).toBe('Cotizar: 1 elegido');
+    expect(etiquetaCotizar(2)).toBe('Cotizar: 2 elegidos');
+    expect(etiquetaCotizar(cantidadElegida(CARRITO_VACIO, VITRINA))).not.toMatch(/funci/);
   });
 });

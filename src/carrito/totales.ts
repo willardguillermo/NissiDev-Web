@@ -40,3 +40,6 @@ export function textoTotalesSistema(totales: TotalesSistema): TextoTotales {
 /** Cuántas cosas eligió: módulos + la Vitrina (cuenta 1, con o sin su mantenimiento). Para «Cotizar (n)». */
 export const cantidadElegida = (carrito: Carrito, vitrina: SeleccionVitrina) =>
   carrito.items.length + (normalizarVitrina(vitrina).elegida ? 1 : 0);
+
+/** Para lectores de pantalla. Neutro: la Vitrina es un paquete, no una «función». */
+export const etiquetaCotizar = (cantidad: number) => `Cotizar: ${cantidad} ${cantidad === 1 ? 'elegido' : 'elegidos'}`;

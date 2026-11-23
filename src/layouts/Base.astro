@@ -263,10 +263,10 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
     </script>
 
     <script>
-      // Botón "Cotizar (n)" del header: siempre visible; el contador aparece si hay funciones elegidas. Sin React.
+      // Botón "Cotizar (n)" del header: siempre visible; el contador aparece si hay algo elegido (módulos o la Vitrina). Sin React.
       // La Vitrina (paquete aparte) cuenta 1.
       import { $carrito, $vitrina } from '../carrito/store';
-      import { cantidadElegida } from '../carrito/totales';
+      import { cantidadElegida, etiquetaCotizar } from '../carrito/totales';
 
       const pintar = () => {
         const enlace = document.querySelector<HTMLElement>('[data-cotizar]');
@@ -276,7 +276,7 @@ const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/';
         cantidad.hidden = n === 0;
         cantidad.textContent = String(n);
         if (n === 0) enlace.removeAttribute('aria-label');
-        else enlace.setAttribute('aria-label', `Cotizar: ${n} ${n === 1 ? 'función elegida' : 'funciones elegidas'}`);
+        else enlace.setAttribute('aria-label', etiquetaCotizar(n));
       };
 
       $carrito.subscribe(pintar);
